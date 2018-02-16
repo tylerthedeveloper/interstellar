@@ -1,0 +1,17 @@
+{
+  "type": "https://stellar.org/horizon-errors/transaction_failed",
+  "title": "Transaction Failed",
+  "status": 400,
+  "detail": "The transaction failed when submitted to the stellar network. The `extras.result_codes` field on this response contains further details.  Descriptions of each code can be found at: https://www.stellar.org/developers/learn/concepts/list-of-operations.html",
+  "instance": "horizon-testnet-001/6VNfUsVQkZ-33082317",
+  "extras": {
+    "envelope_xdr": "AAAAAGXNhLrhGtltTwCpmqlarh7s1DB2hIkbP//jgzn4Fos/AAAAZAAACT0AAS3bAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAGMBoUZG6coyWfvEeiakzK3EWK9YqLVSXds+/gOTd5AcAAAAXSHboAAAAAAAAAAAB+BaLPwAAAEA1vXZFiM43Be73vvTduDMYcmXHEL5bOLsWCRUmjUtEtheWlHEzdjPBftgSA5yt8KWZuY/Z+nl0HdBPL+boRfoJ",
+    "result_codes": {
+      "transaction": "tx_failed",
+      "operations": [
+        "op_already_exists"
+      ]
+    },
+    "result_xdr": "AAAAAAAAAGT/////AAAAAQAAAAAAAAAA/////AAAAAA="
+  }
+}
