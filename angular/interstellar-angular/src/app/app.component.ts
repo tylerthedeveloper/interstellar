@@ -21,7 +21,7 @@ export class AppComponent {
     public constructor(private _stellarService: StellarService) {}
 
     public createAccount() {
-      this._stellarService.createAccount();
+      alert(this._stellarService.createAccount().subscribe(resp => resp.json()));
     }
 
     public checkBalance() {
