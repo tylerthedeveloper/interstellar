@@ -24,8 +24,8 @@ export class AppComponent {
       alert(this._stellarService.createAccount().subscribe(resp => resp.json()));
     }
 
-    public checkBalance() {
-        this._stellarService.checkBalance();
+    public getBalance(secretKey: string) {
+        this._stellarService.getBalance(secretKey);
     }
 
     public getWalletAndMarketValue() {}

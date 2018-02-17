@@ -13,33 +13,42 @@ import { Observable } from 'rxjs/Observable';
 // --> import {AccountBalance} from '../../account/account-balance/account-balance.model';
 // -> import {forEach} from '@angular/router/src/utils/collection';
 
+export class AccountBalance {
+  asset_type: string;
+  balance: string;
+}
 
 @Injectable()
 export class StellarService {
 
-  public server: any;
-  public pubKey: string;
-  private privKey: string;
+    public server: any;
 
-  constructor(private _http: Http) {
-    this.server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
-    StellarSdk.Network.useTestNetwork();
-    this.pubKey = "GDGBTSMUSTHKK2E7NBBNQ33Q2XBK4CCYJZZFHKSCDWIWXODQCQU4DJC2";
-  }
+    public _pubKey: string = "";
+    public _privKey: string= ""; //SESSION MAMNAGEMENT
+    public balanceAmt: number;
+    public balanceAssetType: string;
 
-  getAccountKeys() {
-    // let pair: any = StellarSdk.Keypair.random();
-    // let stellarKeys: IStellarKeyPair = new IStellarKeyPair();
-    // stellarKeys.publicKey = pair.publicKey();
-    // stellarKeys.secretKey = pair.secret();
-    // return stellarKeys;
-  }
+    constructor(private _http: Http) {
+      this.server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+      StellarSdk.Network.useTestNetwork();
+      //this.pubKey = "GDGBTSMUSTHKK2E7NBBNQ33Q2XBK4CCYJZZFHKSCDWIWXODQCQU4DJC2";
+      this.balanceAmt = 0;
+      this.balanceAssetType = "none";
+    }
 
-  createAccount() { // : Observable<Response>
+    getAccountKeys() {
+      // let pair: any = StellarSdk.Keypair.random();
+      // let stellarKeys: IStellarKeyPair = new IStellarKeyPair();
+      // stellarKeys.publicKey = pair.publicKey();
+      // stellarKeys.secretKey = pair.secret();
+      // return stellarKeys;
+    }
+
+    createAccount() { // : Observable<Response>
       let apiUrl: string = 'https://horizon-testnet.stellar.org/friendbot';
       let pair = StellarSdk.Keypair.random();
-      this.pubKey = pair.publicKey();
-      this.privKey = pair.secret();
+      this._pubKey = pair.publicKey();
+      this._privKey = pair.secret();
       alert(pair.secret()); // SDYNRKS26KECW72663P6XD7N4SDKH5QERBIKYOTEH2TY25NLKW5QBBHL
       alert(pair.publicKey()); // GATQTGZDN5GMJLNXQHWRCV4ZMBH4YFZXPACUUL756DIEP2NUGNUNBCHD
 
@@ -54,14 +63,39 @@ export class StellarService {
         .catch(this.HandleError);
     }
 
-    checkBalance() : void { 
-      if (this.pubKey) {
-        // alert(this.pubKey);
-        let pubkey = this.pubKey;
+    
+
+    isValidSecretKey = (secretKey : string) : any => {
+        try {
+            return StellarSdk.Keypair.fromSecret(secretKey);
+        } catch (e) {
+            //alert("Account does not exist or key is invalid: \n " + e);
+            return;
+        }
+    }
+
+    authenticate = (secretKey : string) : boolean => {
+        let pubkey = this.isValidSecretKey(secretKey); 
+        if (!pubkey) return false;
+        this._privKey = secretKey;
+        this._pubKey = pubkey;
+        this.server.loadAccount(pubkey).then(function(account) {
+          alert('Balances for account: ' + pubkey);
+          account.balances.forEach(function(balance) {
+            alert('Type:' + balance.asset_type +  ', Balance:' + balance.balance);
+          });
+        });
+    }
+
+
+    getBalance(secretKey: string) : void { 
+        var pubkey = this.isValidSecretKey(secretKey).publicKey(); 
+        if (pubkey) {
         this.server.loadAccount(pubkey).then(function(account) {
           // if (error || response.statusCode !== 200) {
           //   console.error('ERROR!', error || body);
           // }      
+        // alert("ccc");          
           alert('Balances for account: ' + pubkey);
           account.balances.forEach(function(balance) {
             alert('Type:' + balance.asset_type +  ', Balance:' + balance.balance);
@@ -69,7 +103,7 @@ export class StellarService {
         }); 
       }
       else {
-        alert("null balanve");
+        alert("no account exists ");
       }
     }
 
