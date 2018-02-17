@@ -9,7 +9,9 @@ import * as StellarSDK from "stellar-sdk";
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { Observable } from 'rxjs/Observable';
+//--> import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx';
+
 // --> import {AccountBalance} from '../../account/account-balance/account-balance.model';
 // -> import {forEach} from '@angular/router/src/utils/collection';
 
@@ -17,6 +19,17 @@ export class AccountBalance {
   asset_type: string;
   balance: string;
 }
+
+const isValidSecretKey = (secretKey : string) : string => {
+  try {
+      return StellarSdk.Keypair.fromSecret(secretKey).publicKey();
+  } catch (e) {
+      //alert("Account does not exist or key is invalid: \n " + e);
+      return;
+  }
+}
+
+export {isValidSecretKey}
 
 @Injectable()
 export class StellarService {
@@ -65,17 +78,10 @@ export class StellarService {
 
     
 
-    isValidSecretKey = (secretKey : string) : any => {
-        try {
-            return StellarSdk.Keypair.fromSecret(secretKey);
-        } catch (e) {
-            //alert("Account does not exist or key is invalid: \n " + e);
-            return;
-        }
-    }
+    
 
     authenticate = (secretKey : string) : boolean => {
-        let pubkey = this.isValidSecretKey(secretKey); 
+        let pubkey = isValidSecretKey(secretKey); 
         if (!pubkey) return false;
         this._privKey = secretKey;
         this._pubKey = pubkey;
@@ -88,23 +94,16 @@ export class StellarService {
     }
 
 
-    getBalance(secretKey: string) : void { 
-        var pubkey = this.isValidSecretKey(secretKey).publicKey(); 
+    getBalance(secretKey: string) : Observable<Array<AccountBalance>> {
+        var pubkey = isValidSecretKey(secretKey); 
         if (pubkey) {
-        this.server.loadAccount(pubkey).then(function(account) {
-          // if (error || response.statusCode !== 200) {
-          //   console.error('ERROR!', error || body);
-          // }      
-        // alert("ccc");          
-          alert('Balances for account: ' + pubkey);
-          account.balances.forEach(function(balance) {
-            alert('Type:' + balance.asset_type +  ', Balance:' + balance.balance);
-          });
-        }); 
-      }
-      else {
-        alert("no account exists ");
-      }
+            return Observable.fromPromise(this.server.loadAccount(pubkey)
+              .then(function (account) {
+                return account;
+              }))
+              .map((r: any) => <Array<AccountBalance>> r.balances)
+              .catch(this.HandleError);        
+        }
     }
 
     HandleError(error: Response) {

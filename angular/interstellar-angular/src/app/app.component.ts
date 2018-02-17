@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import request from 'request';
-import { StellarService } from './stellar.service';
+import { StellarService, isValidSecretKey } from './stellar.service';
 import StellarSdk from 'stellar-sdk';
 
 @Component({
@@ -8,6 +8,8 @@ import StellarSdk from 'stellar-sdk';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
+
 
 export class AppComponent {
 
@@ -17,6 +19,8 @@ export class AppComponent {
     pubKey = "";
     privKey = "";
     accountBal = 0;
+    public balances: AccountBalance[] = new Array<AccountBalance>();
+
 
     public constructor(private _stellarService: StellarService) {}
 
@@ -24,8 +28,16 @@ export class AppComponent {
       alert(this._stellarService.createAccount().subscribe(resp => resp.json()));
     }
 
-    public getBalance(secretKey: string) {
-        this._stellarService.getBalance(secretKey);
+    public authenticate(secretKey: string) {
+        if (isValidSecretKey(secretKey)) {
+          this.balances = [];
+          this._stellarService.getBalance(secretKey).subscribe(res => {
+                  this.balances = res;
+                },
+                error => {
+                  //errorMessage = <any>error;
+                });
+        }
     }
 
     public getWalletAndMarketValue() {}
@@ -112,3 +124,8 @@ export class AppComponent {
 //   .catch(function (err) {
 //     console.error(err);
 //   })
+
+export class AccountBalance {
+  asset_type: string;
+  balance: string;
+}

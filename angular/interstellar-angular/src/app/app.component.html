@@ -10,12 +10,29 @@
 <br />
 <br />
 <br />
-<label> {{ balanceAmt }}</label>
-<label> {{ balanceAssetType }}</label>
 
-<!-- <label [(ngModel)]="_pubKey"> -->
-<!-- <label> {{_privKey}} </label> -->
+<!-- balances -->
+<div>
+  <h1>My Balances</h1>
+  <ul>
+    <li *ngFor="let bal of balances">
+      {{ bal.balance }} {{ bal.asset_type }} 
+    </li>
+  </ul>
+</div>
+<!-- end balances -->
+
+
 <input #privKeyBox type="text" > <!-- [(ngModel)]="_privKey"  -->
 <button (click)="createAccount()"> make account </button>
-<button (click)="getBalance(privKeyBox.value)"> check balance </button>
+<button (click)="authenticate(privKeyBox.value)"> check balance </button>
 <!-- SAS63NV6NEIP6DQVCIR2AYCGMSUMGQVMJBUCWXIWVBS6JVQOSTXDK2YV -->
+<!-- GCVLMM6H4SRWUSXI6ZNV7WCYEQEOTXW6DPOPZDLWOAGJIV53UKOXBNJB -->
+<!-- SDMD67UHGJ7R72ASQJL32OUJUWWOQQF3D5MCRC6OXIMG2IICWULQBOSE
+GCDUP6Z5FNQK4QEPKT534R2ROUQSIM7VP532OC3REIMACBRXNX44U4XK
+
+GDGBTSMUSTHKK2E7NBBNQ33Q2XBK4CCYJZZFHKSCDWIWXODQCQU4DJC2
+
+
+SCYQVVSG2G4LUOQX4LQ2EF4DKWOZ6E5YEKC6USNUWKN55337RNUYSCGI
+GBG3WGOC2S7BAUALQSPRVRHYRB677PZH6JFLTY5KPKZ7DLZFRBMXMYO3 -->
