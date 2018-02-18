@@ -34,7 +34,7 @@ export {isValidSecretKey}
 @Injectable()
 export class StellarService {
 
-    public server: any;
+    public _server: any;
 
     public _pubKey: string = "";
     public _privKey: string= ""; //SESSION MAMNAGEMENT
@@ -42,7 +42,7 @@ export class StellarService {
     public balanceAssetType: string;
 
     constructor(private _http: Http) {
-      this.server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+      this._server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
       StellarSdk.Network.useTestNetwork();
       //this.pubKey = "GDGBTSMUSTHKK2E7NBBNQ33Q2XBK4CCYJZZFHKSCDWIWXODQCQU4DJC2";
       this.balanceAmt = 0;
@@ -76,35 +76,82 @@ export class StellarService {
         .catch(this.HandleError);
     }
 
-    
-
-    
-
-    authenticate = (secretKey : string) : boolean => {
-        let pubkey = isValidSecretKey(secretKey); 
-        if (!pubkey) return false;
-        this._privKey = secretKey;
-        this._pubKey = pubkey;
-        this.server.loadAccount(pubkey).then(function(account) {
-          alert('Balances for account: ' + pubkey);
-          account.balances.forEach(function(balance) {
-            alert('Type:' + balance.asset_type +  ', Balance:' + balance.balance);
-          });
-        });
-    }
+    // authenticate = (secretKey : string) : boolean => {
+    //     let pubkey = isValidSecretKey(secretKey); 
+    //     if (!pubkey) return false;
+    //     this._privKey = secretKey;
+    //     this._pubKey = pubkey;
+    //     this.server.loadAccount(pubkey).then(function(account) {
+    //       alert('Balances for account: ' + pubkey);
+    //       account.balances.forEach(function(balance) {
+    //         alert('Type:' + balance.asset_type +  ', Balance:' + balance.balance);
+    //       });
+    //     });
+    // }
 
 
-    getBalance(secretKey: string) : Observable<Array<AccountBalance>> {
-        var pubkey = isValidSecretKey(secretKey); 
+    authenticate = (secretKey: string) : Observable<Array<AccountBalance>> => {
+        var pubkey = isValidSecretKey(secretKey);
         if (pubkey) {
-            return Observable.fromPromise(this.server.loadAccount(pubkey)
-              .then(function (account) {
-                return account;
-              }))
-              .map((r: any) => <Array<AccountBalance>> r.balances)
-              .catch(this.HandleError);        
+            this._pubKey = pubkey;
+            this._privKey = secretKey;        
+            return Observable.fromPromise(this._server.loadAccount(pubkey)
+                .catch(StellarSdk.NotFoundError, function (error) {
+                  throw new Error('The destination account does not exist!');
+                })
+                .then(account => account))
+                // .then(function (account) {
+                //   return account;
+                // }))
+                .map((r: any) => <Array<AccountBalance>> r.balances)
+                .catch(this.HandleError);        
         }
     }
+
+    sendPayment = (destinationKey: string, assetType: string, amount: string, memo: string) : Observable<Response> => {
+          if (!this._privKey) return; 
+          let pubkey = this._pubKey;
+          var sourceKeys = StellarSdk.Keypair.fromSecret(this._privKey);
+          var server = this._server;
+          var transaction;
+          return Observable.fromPromise(server.loadAccount(destinationKey)
+              .catch(StellarSdk.NotFoundError, function (error) {
+                  throw new Error('The destination account does not exist!');
+              })
+              .then(() => server.loadAccount(pubkey))
+              .then(function(sourceAccount) {
+                transaction = new StellarSdk.TransactionBuilder(sourceAccount) // Start building the transaction.
+                    .addOperation(StellarSdk.Operation.payment({
+                        destination: destinationKey,
+                        asset: StellarSdk.Asset.native(),
+                        /*
+
+
+                          map to right asset
+
+
+
+                        */
+                        amount: amount
+                    }))
+                  .addMemo(StellarSdk.Memo.text(memo))
+                  .build();
+                transaction.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
+                return server.submitTransaction(transaction); // And finally, send it off to Stellar!
+              })
+              // .then(function(result) {
+              //     //alert('Success! Results:' + result);
+              //     return result;
+              // })
+              .then(result => result)              
+              .catch(function(error) {
+                  console.error('Something went wrong!', error);
+                  this.HandleError(error);
+                // If the result is unknown (no response body, timeout etc.) we simply resubmit
+                // already built transaction:
+                // server.submitTransaction(transaction);
+              }));
+      }
 
     HandleError(error: Response) {
       alert(error);

@@ -11,6 +11,7 @@
 <br />
 <br />
 
+<label> Publlic key {{ pubKey }}</label>
 <!-- balances -->
 <div>
   <h1>My Balances</h1>
@@ -22,10 +23,20 @@
 </div>
 <!-- end balances -->
 
-
 <input #privKeyBox type="text" > <!-- [(ngModel)]="_privKey"  -->
 <button (click)="createAccount()"> make account </button>
 <button (click)="authenticate(privKeyBox.value)"> check balance </button>
+<br />
+
+<input #sendMoneyAddress type="text" placeholder="address"> 
+<input #sendMoneyType type="text" placeholder="asset type"> 
+<input #sendMoneyAmount type="text" placeholder="amount"> 
+<input #sendMoneyMemo type="text" placeholder="memo"> 
+<button (click)="sendPayment(sendMoneyAddress.value, sendMoneyType.value, 
+                sendMoneyAmount.value, sendMoneyMemo.value)"> 
+        send money 
+</button>
+
 <!-- SAS63NV6NEIP6DQVCIR2AYCGMSUMGQVMJBUCWXIWVBS6JVQOSTXDK2YV -->
 <!-- GCVLMM6H4SRWUSXI6ZNV7WCYEQEOTXW6DPOPZDLWOAGJIV53UKOXBNJB -->
 <!-- SDMD67UHGJ7R72ASQJL32OUJUWWOQQF3D5MCRC6OXIMG2IICWULQBOSE
@@ -36,3 +47,7 @@ GDGBTSMUSTHKK2E7NBBNQ33Q2XBK4CCYJZZFHKSCDWIWXODQCQU4DJC2
 
 SCYQVVSG2G4LUOQX4LQ2EF4DKWOZ6E5YEKC6USNUWKN55337RNUYSCGI
 GBG3WGOC2S7BAUALQSPRVRHYRB677PZH6JFLTY5KPKZ7DLZFRBMXMYO3 -->
+
+<!-- 
+SDLI5ARZU5RNKG5X2TXEH6T74BA352NUJTDJLR7OR7YSYUB7WS7WWRLA 
+GCQUN3ZEQOI6ENJCXJBMZZRYBCES6PXLOSD6PICGS5QR6GLC7TIFWZWU -->
