@@ -13,18 +13,26 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { StellarService } from './stellar/stellar.service';
 
+import { UIModule } from './UI/ui.app.module';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule,
-    HttpModule,
-    FormsModule,
-    
-    AngularFireModule.initializeApp(environment.firebase),
-        AngularFireAuthModule, AngularFireDatabaseModule,
+      //angular
+      BrowserModule, HttpModule, FormsModule,
+      
+      //firebase
+      AngularFireModule.initializeApp(environment.firebase),
+      AngularFireAuthModule, AngularFireDatabaseModule,
+  
+      //Other
+      UIModule, AppRoutingModule
+  ],
+  exports: [
+    //NavBarComponent
   ],
   providers: [StellarService],
   bootstrap: [AppComponent]

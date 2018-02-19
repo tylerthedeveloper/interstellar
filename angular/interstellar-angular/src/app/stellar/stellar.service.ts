@@ -61,6 +61,8 @@ export class StellarService {
     authenticate = (secretKey: string) : Observable<Array<AccountBalance>> => {
         var pubkey = isValidSecretKey(secretKey);
         if (pubkey) {
+            sessionStorage.setItem("public_key", pubkey);
+            sessionStorage.setItem("seed_key", secretKey);
             this._pubKey = pubkey;
             this._privKey = secretKey;        
             return Observable.fromPromise(this._server.loadAccount(pubkey)
@@ -73,7 +75,13 @@ export class StellarService {
         }
     }
 
-    
+
+    /*
+
+        NEED BETTER ERROR HANDLING FOR INSUFFICIENT FUNDS
+        THROW REAL ERROR
+
+    */
     sendPayment = (destinationKey: string, assetType: string, amount: string, memo: string) : Observable<Response> => {
           if (!this._privKey) return;
           let pubkey = this._pubKey;
@@ -107,10 +115,17 @@ export class StellarService {
                     transaction.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
                     return server.submitTransaction(transaction); // And finally, send it off to Stellar!
               })
+              .catch(function(error) {
+                // handleError(error);
+                // return error;
+                throw error;
+              // If the result is unknown (no response body, timeout etc.) we simply resubmit
+              // already built transaction:
+              // server.submitTransaction(transaction);
+              })
               .then(result => result)
               // .catch(handleError));
               .catch(function(error) {
-                  // console.error('Something went wrong!', error);
                   // handleError(error);
                   // return error;
                   throw error;

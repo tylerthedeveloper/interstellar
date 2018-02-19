@@ -1,0 +1,108 @@
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+});
+</script>
+
+<!-- <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+<script>
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyCwgf7Aa2sma4E5d8XKh-lOwrcKVkkDOoA",
+    authDomain: "ewf-nh.firebaseapp.com",
+    databaseURL: "https://ewf-nh.firebaseio.com",
+    projectId: "ewf-nh",
+    storageBucket: "",
+    messagingSenderId: "1056076336153"
+};
+firebase.initializeApp(config);
+</script> -->
+<span class="top-space"></span>
+<div class="nav-spacing"> <!-- style="position: fixed;"" -->
+    <md-toolbar class="bottom-nav">
+        <!-- <button md-button [routerLink]="['/posts']" routerLinkActive="active">
+            POSTS
+        </button> -->
+        <!-- 
+        <button md-button [routerLink]="['/people']" routerLinkActive="active">
+            PEOPLE
+        </button>
+        <button md-button [routerLink]="['/projects']" routerLinkActive="active">
+            PROJECTS
+        </button> -->
+    </md-toolbar>
+    <div class="navbar">
+        <div class="container">
+            <md-toolbar class="main-nav">
+                <!-- <button md-raised-button id="profile" *ngIf="loggedIn" 
+                (click)="changePage('profile')" [routerLink]="['/profile', user.uid]" 
+                routerLinkActive="active" class="main-nav-button">
+                PROFILE
+                </button> -->
+                <button md-raised-button id="home" [routerLink]="['/home']" 
+                        (click)="changePage('home')" routerLinkActive="active"
+                        class="main-nav-button">
+                    Home
+                </button>
+                <button md-raised-button id="profile" [routerLink]="['/profile']" 
+                        (click)="changePage('profile')" routerLinkActive="active"
+                        class="main-nav-button">
+                    Profile
+                </button> 
+                <!--
+                <button md-raised-button id="projects" [routerLink]="['/projects']" 
+                        (click)="changePage('projects')" routerLinkActive="active"
+                        class="main-nav-button">
+                    PROJECTS
+                </button>
+                <span class="example-fill-remaining-space"></span>  
+                <div style="float:right;">
+                    <button md-raised-button id="contact" [routerLink]="['/contact']" 
+                        (click)="changePage('contact')" routerLinkActive="active"
+                        class="main-nav-button">
+                        CONTACT
+                    </button>
+                </div> -->
+                    <button md-raised-button class="main-nav-button" (click)="toggle(sidenav)">
+                            Login / Signup
+                    </button>
+                            <!-- <span *ngIf="!loggedIn; else logswitch" (click)="login()"> Login / Signup </span>
+                            <ng-template #logswitch> <span (click)="logout()">LOGOUT </span> </ng-template> -->
+            </md-toolbar>
+        </div>
+    </div>
+    <md-card class="demo-panel">
+        <!-- <mat-drawer-container #drawer class="example-container" autosize>
+            <mat-drawer  class="example-sidenav" mode="side">
+                <p>Auto-resizing sidenav</p>
+                <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
+                <button (click)="showFiller = !showFiller" mat-raised-button>
+                Toggle extra text
+                </button>
+            </mat-drawer>
+            
+            <div class="example-sidenav-content">
+                <button type="button" mat-button (click)="toggle(drawer)">
+                Toggle sidenav
+                </button>
+            </div>
+            
+        </mat-drawer-container> -->
+        <mat-sidenav #sidenav mode="side" class="app-sidenav">
+                <!-- <mat-nav-list>
+                    <a md-list-item href="page1.html">Page 1</a>
+                    <a md-list-item href="page2.html">Page 2</a>
+                    <a md-list-item href="page3.html">Page 3</a>
+                </mat-nav-list> -->
+                <button type="button" mat-button (click)="toggle(sidenav)">
+                        Hide
+                </button>
+                <h1> login or sign up </h1>
+                <p> Enter public key </p>
+                <input />
+                <br />
+                <button>login now</button>
+                <button>signup  now</button>
+        </mat-sidenav>
+    </md-card>
+</div>
