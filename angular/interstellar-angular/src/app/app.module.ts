@@ -3,8 +3,15 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms'; //ReactiveFormsModule
 import { HttpModule } from "@angular/http";
 
+//fire base
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+
+import { environment } from '../environments/environment';
+
 import { AppComponent } from './app.component';
-import { StellarService } from './stellar.service';
+import { StellarService } from './stellar/stellar.service';
 
 
 @NgModule({
@@ -14,7 +21,10 @@ import { StellarService } from './stellar.service';
   imports: [
     BrowserModule,
     HttpModule,
-    FormsModule      
+    FormsModule,
+    
+    AngularFireModule.initializeApp(environment.firebase),
+        AngularFireAuthModule, AngularFireDatabaseModule,
   ],
   providers: [StellarService],
   bootstrap: [AppComponent]

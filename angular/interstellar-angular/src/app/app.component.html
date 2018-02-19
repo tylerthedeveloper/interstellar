@@ -28,10 +28,10 @@
 <button (click)="authenticate(privKeyBox.value)"> check balance </button>
 <br />
 
-<input #sendMoneyAddress type="text" placeholder="address"> 
-<input #sendMoneyType type="text" placeholder="asset type"> 
-<input #sendMoneyAmount type="text" placeholder="amount"> 
-<input #sendMoneyMemo type="text" placeholder="memo"> 
+<input #sendMoneyAddress type="text" placeholder="address" value="GCQUN3ZEQOI6ENJCXJBMZZRYBCES6PXLOSD6PICGS5QR6GLC7TIFWZWU"> 
+<input #sendMoneyType type="text" placeholder="asset type" value="native"> 
+<input #sendMoneyAmount type="text" placeholder="amount" value="10000"> 
+<input #sendMoneyMemo type="text" placeholder="memo" value="asaaaa"> 
 <button (click)="sendPayment(sendMoneyAddress.value, sendMoneyType.value, 
                 sendMoneyAmount.value, sendMoneyMemo.value)"> 
         send money 

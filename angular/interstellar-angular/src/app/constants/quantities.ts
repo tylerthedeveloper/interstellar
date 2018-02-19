@@ -1,0 +1,1 @@
+export const StellarLumensMinimum = 5.0;
