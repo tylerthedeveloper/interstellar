@@ -20,8 +20,8 @@ export class NavBarComponent implements OnInit {
   
   // constructor(public afService : AFService, private router: Router) {
     constructor() {
-      this.currentPage= "home";
-      
+        this.currentPage= "home";
+        this.loggedIn = (sessionStorage.getItem("seed_key")) ? true : false;
       // let user = this.afService.getUser();
       // if (user != null) this.loggedIn = true;
       // else this.loggedIn = false;
@@ -30,10 +30,6 @@ export class NavBarComponent implements OnInit {
     ngOnInit(): void {
         document.getElementById(this.currentPage).style.textDecoration = "underline";
     }
-
-  //init
-  //if (user != null) this.loggedIn = true;
-    // else this.loggedIn = false;
 
   // call auth service to logout
   // login() : firebase.Promise<any> {
@@ -45,12 +41,20 @@ export class NavBarComponent implements OnInit {
   //   return this.afService.logout();
   // }
 
+  // if (sideNav.opened) {
+  //   sideNav.close()
+  // } else {
+  //   sideNav.open();
+  // }
+
+  /*
+      login ... 
+      router to register  
+
+  */
+
+
   toggle = (sideNav: any) : void => {
-      // if (sideNav.opened) {
-      //   sideNav.close()
-      // } else {
-      //   sideNav.open();
-      // }
       sideNav.toggle();
   }
 

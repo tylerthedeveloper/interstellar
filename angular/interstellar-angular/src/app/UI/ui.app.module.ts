@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MaterialDesignModule } from './ng-md.module';
 import { RouterModule, Router } from '@angular/router';
 
-import { NavBarComponent, ProfileComponent, WelcomeComponent } from './index';
+import { NavBarComponent, ProfileComponent, RegisterComponent, WelcomeComponent } from './index';
 
 @NgModule({
     imports : [
@@ -18,7 +18,11 @@ import { NavBarComponent, ProfileComponent, WelcomeComponent } from './index';
         //            CdkTableModule
             ],
     declarations:  [ 
-                        NavBarComponent, ProfileComponent, WelcomeComponent
+                        //UI Pages
+                        NavBarComponent, 
+                        ProfileComponent, 
+                        WelcomeComponent,
+                        RegisterComponent
                     ],
     exports: [ 
                     //angular modules
@@ -28,10 +32,11 @@ import { NavBarComponent, ProfileComponent, WelcomeComponent } from './index';
                     // NgbModule, 
                     MaterialDesignModule, 
 
-                    //pages
+                    //UI Pages
                     NavBarComponent, 
                     ProfileComponent,
-                    WelcomeComponent
+                    WelcomeComponent,
+                    RegisterComponent
                 ],
     entryComponents: [],
     schemas: [ NO_ERRORS_SCHEMA ],
