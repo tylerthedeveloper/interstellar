@@ -45,11 +45,17 @@ $(document).ready(function(){
                         (click)="changePage('register')" routerLinkActive="active"
                         class="main-nav-button">
                         Signup or Register
+                    </button>
+                    <button md-raised-button *ngIf="!loggedIn" (click)="toggle(sidenav)" class="main-nav-button"> 
+                        Login
+                    </button>
+                    <button md-raised-button class="main-nav-button" *ngIf="loggedIn" (click)="logout()"> 
+                        Logout 
                     </button> 
-                    <button md-raised-button class="main-nav-button"> 
+                    <!-- <button md-raised-button class="main-nav-button"> 
                         <span (click)="toggle(sidenav)" *ngIf="!loggedIn; else logswitch"> Login </span>
                         <ng-template #logswitch> <span (click)="logout()"> Logout </span> </ng-template>
-                    </button>
+                    </button> -->
                 </div>
             </mat-toolbar>
         </div>
