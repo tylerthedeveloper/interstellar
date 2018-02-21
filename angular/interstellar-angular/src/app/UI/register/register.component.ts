@@ -17,7 +17,7 @@ export class RegisterComponent {
     private stellarServer: any;
     private wallet: any;
 
-    private constructor(private _stellarService: StellarService) {
+    constructor(private _stellarService: StellarService) {
         if (sessionStorage.getItem("seed_key"))
             alert("already logged in ... need to router redirect!")
     }
@@ -41,7 +41,6 @@ export class RegisterComponent {
             alert("there is no account associated with that ID, please make a new one");
         }
     }
-
 
     private sessionstorage = () => {
         alert(sessionStorage.getItem("public_key"));

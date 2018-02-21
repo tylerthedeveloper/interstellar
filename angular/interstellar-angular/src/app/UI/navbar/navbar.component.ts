@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { AFService } from '../../../_services/af.service';
 import { Observable } from 'rxjs/Observable';
 import { RouterModule, Routes, Router, ActivatedRoute} from '@angular/router';
 import * as firebase from 'firebase/app';
+import { MatSidenav } from '@angular/material';
 
 @Component({
   selector: 'nav-bar',
@@ -14,54 +15,49 @@ import * as firebase from 'firebase/app';
 
 export class NavBarComponent implements OnInit {
 
-  public currentPage: string;
-  private loggedIn : boolean;
-  private user: firebase.User;
-  
-  // constructor(public afService : AFService, private router: Router) {
-    constructor() {
+    public currentPage: string;
+    private loggedIn : boolean;
+    private user: firebase.User;
+    // constructor(public afService : AFService, ) {
+    @ViewChild('sidenav') public sideNav: MatSidenav;
+    constructor(private router: Router) {
         this.currentPage= "home";
         this.loggedIn = (sessionStorage.getItem("seed_key")) ? true : false;
-      // let user = this.afService.getUser();
-      // if (user != null) this.loggedIn = true;
-      // else this.loggedIn = false;
     }
     
     ngOnInit(): void {
         document.getElementById(this.currentPage).style.textDecoration = "underline";
     }
 
-  // call auth service to logout
-  // login() : firebase.Promise<any> {
-  //   return this.afService.loginWithGoogle();
-  // }
-
-  // // call auth service to logout
-  // logout() : firebase.Promise<any> {
-  //   return this.afService.logout();
-  // }
-
-  // if (sideNav.opened) {
-  //   sideNav.close()
-  // } else {
-  //   sideNav.open();
-  // }
-
   /*
       login ... 
       router to register  
-
   */
+    login = () => {
+        this.loggedIn = true;
+    }
 
+    logout = () : void => {
+         this.loggedIn = false;
+    }
 
-  toggle = (sideNav: any) : void => {
-      sideNav.toggle();
-  }
+    createNewAccount = () : void => {
+        this.loggedIn = false;
+    }
 
-  changePage(nextPage: string) {
-      document.getElementById(this.currentPage).style.textDecoration = "none";
-      this.currentPage = nextPage;
-      document.getElementById(this.currentPage).style.textDecoration = "underline";
-  }
+    mergeAccountWithKey = (secretKey: string) : void => {
+        this.loggedIn = false;
+    }
 
+    toggle = (sideNav: any) : void => {
+        sideNav.toggle();
+    }
+
+    changePage(nextPage: string) {
+        document.getElementById(this.currentPage).style.textDecoration = "none";
+        this.currentPage = nextPage;
+        document.getElementById(this.currentPage).style.textDecoration = "underline";
+        if (this.sideNav.opened)
+            this.sideNav.close();
+    }
 }

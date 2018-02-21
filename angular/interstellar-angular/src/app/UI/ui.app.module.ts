@@ -10,34 +10,30 @@ import { NavBarComponent, ProfileComponent, RegisterComponent, WelcomeComponent 
 
 @NgModule({
     imports : [
-                    CommonModule,
-    //                NgbModule.forRoot(),
-                   MaterialDesignModule,
-                    RouterModule, 
-                    FormsModule, 
-        //            CdkTableModule
-            ],
+        CommonModule,
+       MaterialDesignModule,
+        RouterModule, 
+        FormsModule, 
+//            CdkTableModule
+    ],
     declarations:  [ 
-                        //UI Pages
-                        NavBarComponent, 
-                        ProfileComponent, 
-                        WelcomeComponent,
-                        RegisterComponent
-                    ],
+                //UI Pages
+                NavBarComponent, 
+                ProfileComponent, 
+                WelcomeComponent,
+                RegisterComponent
+            ],
     exports: [ 
-                    //angular modules
-                    RouterModule, 
-                    FormsModule,
-                    CommonModule,
-                    // NgbModule, 
-                    MaterialDesignModule, 
+            RouterModule, 
+            FormsModule,
+            CommonModule,
+            MaterialDesignModule, 
 
-                    //UI Pages
-                    NavBarComponent, 
-                    ProfileComponent,
-                    WelcomeComponent,
-                    RegisterComponent
-                ],
+            NavBarComponent, 
+            ProfileComponent,
+            WelcomeComponent,
+            RegisterComponent
+        ],
     entryComponents: [],
     schemas: [ NO_ERRORS_SCHEMA ],
 
