@@ -39,16 +39,17 @@ $(document).ready(function(){
                 </button>
                 <!--  <span class="example-fill-remaining-space"></span>  -->
                 <div style="float:right;">                
-                    <button md-raised-button class="main-nav-button" (click)="toggle(sidenav)">
-                        <span *ngIf="!loggedIn; else logswitch"> Login / Signup </span>
+                    <!-- (click)="toggle(sidenav)" -->
+                    <button md-raised-button class="main-nav-button"> 
+                        <span (click)="login()" *ngIf="!loggedIn; else logswitch"> Login / Signup </span>
                         <ng-template #logswitch> <span (click)="logout()"> Logout </span> </ng-template>
                     </button>
                 </div>
             </mat-toolbar>
         </div>
     </div>
-    <mat-sidenav-layout mode="over"> 
-        <mat-sidenav #sidenav align="end" class="app-sidenav" style="float: right;">  <!-- right: 10%;  -->
+    <!-- <mat-sidenav-layout mode="over"> 
+        <mat-sidenav #sidenav align="end" class="app-sidenav" style="float: right;">  right: 10%;
                 <button type="button" mat-button (click)="toggle(sidenav)">
                         Hide
                 </button>
@@ -59,5 +60,5 @@ $(document).ready(function(){
                 <button (click)="login()">login now</button>
                 <button (click)="createAccount()">signup now</button>
             </mat-sidenav>
-    </mat-sidenav-layout>
+    </mat-sidenav-layout> -->
 </div>

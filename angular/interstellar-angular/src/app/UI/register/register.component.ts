@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter} from '@angular/core';
 import request from 'request';
 
 import StellarSdk from 'stellar-sdk';
-import { StellarService } from '../../stellar/stellar.service';
-import { AccountBalance } from '../../stellar/account/account-balance';
+import { StellarAccountService } from '../../stellar/account/stellar.account.service';
 import { isValidSecretKey, updateBalance } from '../../stellar/utils';
+import { EventEmitterService } from '../../event-emitter.service';
+//- import { EventEmitter } from 'events';
 
 @Component({
   selector: 'register',
@@ -17,9 +18,20 @@ export class RegisterComponent {
     private stellarServer: any;
     private wallet: any;
 
-    constructor(private _stellarService: StellarService) {
-        if (sessionStorage.getItem("seed_key"))
-            alert("already logged in ... need to router redirect!")
+    // @Output() 
+    // changeLoginStatus: EventEmitter<string> = new EventEmitter<string>();
+
+    constructor(private _stellarService: StellarAccountService,
+                private _eventEmiter: EventEmitterService) {
+        
+                    // if (sessionStorage.getItem("seed_key"))
+                    //     alert("already logged in ... need to router redirect!")
+    }
+
+    private change() {
+        sessionStorage.setItem("seed_key", "private");
+        alert(sessionStorage.getItem("seed_key"));
+        this._eventEmiter.sendMessage(sessionStorage.getItem("seed_key"));
     }
 
     private createAccount() {
@@ -33,6 +45,7 @@ export class RegisterComponent {
     private authenticate(secretKey: string) {
         let pubkey = isValidSecretKey(secretKey);
         if (pubkey) {
+            // this.changeLoginStatus.emit("changeStatus");
             sessionStorage.setItem("my_balances", JSON.stringify(null));
             this._stellarService.authenticate(secretKey).subscribe(
                 res => { sessionStorage.setItem("my_balances", JSON.stringify(res)); },

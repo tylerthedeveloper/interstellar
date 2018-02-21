@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { RouterModule, Routes, Router, ActivatedRoute} from '@angular/router';
 import * as firebase from 'firebase/app';
 import { MatSidenav } from '@angular/material';
+import { EventEmitterService } from '../../event-emitter.service';
 
 @Component({
   selector: 'nav-bar',
@@ -18,27 +19,37 @@ export class NavBarComponent implements OnInit {
     public currentPage: string;
     private loggedIn : boolean;
     private user: firebase.User;
-    // constructor(public afService : AFService, ) {
-    @ViewChild('sidenav') public sideNav: MatSidenav;
-    constructor(private router: Router) {
-        this.currentPage= "home";
-        this.loggedIn = (sessionStorage.getItem("seed_key")) ? true : false;
+
+
+    // @ViewChild('sidenav') public sideNav: MatSidenav;
+    constructor(private router: Router,
+                private _eventEmiter: EventEmitterService) {
+                    
+                this.currentPage = "home";
+                this.loggedIn = (sessionStorage.getItem("seed_key")) ? true : false;
     }
     
     ngOnInit(): void {
         document.getElementById(this.currentPage).style.textDecoration = "underline";
     }
 
-  /*
-      login ... 
-      router to register  
-  */
+    // updateLoginStatus = (event) => {
+    //     alert(event);
+    //     this.loggedIn = !this.loggedIn;
+    // }
+
+    setDataStr() {
+        this._eventEmiter.dataStr.subscribe(data => console.log(data))
+    }
+    
     login = () => {
+        this.router.navigate(['/register']);
         this.loggedIn = true;
     }
 
     logout = () : void => {
-         this.loggedIn = false;
+        this.router.navigate(['/home']);
+        this.loggedIn = false;
     }
 
     createNewAccount = () : void => {
@@ -49,15 +60,15 @@ export class NavBarComponent implements OnInit {
         this.loggedIn = false;
     }
 
-    toggle = (sideNav: any) : void => {
-        sideNav.toggle();
+    toggle = () : void => { //sideNav: any
+        //this.sideNav.toggle();
     }
 
     changePage(nextPage: string) {
         document.getElementById(this.currentPage).style.textDecoration = "none";
         this.currentPage = nextPage;
         document.getElementById(this.currentPage).style.textDecoration = "underline";
-        if (this.sideNav.opened)
-            this.sideNav.close();
+        // if (this.sideNav.opened)
+        //     this.sideNav.close();
     }
 }

@@ -11,10 +11,11 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
-import { StellarService } from './stellar/stellar.service';
+import { StellarAccountService, StellarPaymentService } from './stellar/index';
 
 import { UIModule } from './UI/ui.app.module';
 import { AppRoutingModule } from './app-routing.module';
+import { EventEmitterService } from './event-emitter.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { AppRoutingModule } from './app-routing.module';
       BrowserModule, HttpModule, FormsModule,
       
       //firebase
-      AngularFireModule.initializeApp(environment.firebase),
+      //AngularFireModule.initializeApp(environment.firebase),
       AngularFireAuthModule, AngularFireDatabaseModule,
   
       //Other
@@ -34,7 +35,12 @@ import { AppRoutingModule } from './app-routing.module';
   exports: [
     //NavBarComponent
   ],
-  providers: [StellarService],
+  providers: [
+              EventEmitterService, 
+    
+              StellarAccountService, 
+              StellarPaymentService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
