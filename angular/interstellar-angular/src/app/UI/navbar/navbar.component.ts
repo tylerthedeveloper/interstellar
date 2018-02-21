@@ -33,9 +33,14 @@ export class NavBarComponent implements OnInit {
             
     ngOnInit(): void {
         document.getElementById(this.currentPage).style.textDecoration = "underline";
-        this._eventEmiter.dataStr.subscribe(data => {
-            if (data === "logout") this.loggedIn = false;
-            else this.loggedIn = true;
+        this._eventEmiter.dataStr.subscribe((data: any) => {
+                if (data.message === "logout") this.loggedIn = false;
+                else if (data.message === "login") {
+                    // this.loggedIn = true;
+                    console.log(data);
+                    this.handleLogin(data.data);
+                }
+                else return;
         });
     }
     
@@ -43,12 +48,7 @@ export class NavBarComponent implements OnInit {
     login = (secretKey: string) => {
         if (secretKey) {
             this._stellarAccountService.authenticate(secretKey).subscribe(
-                res => { 
-                        sessionStorage.setItem("my_balances", JSON.stringify(null));
-                        sessionStorage.setItem("my_balances", JSON.stringify(res)); 
-                        this.loggedIn = true;
-                        this.changePage("profile")
-                },
+                res => this.handleLogin(res),
                 err => alert("There was an error: \n" + err));
         } else {
             alert("Please enter a key")
@@ -65,6 +65,15 @@ export class NavBarComponent implements OnInit {
         this.loggedIn = false;
     }
 
+    handleLogin = (payload: any) : void => {
+        this.loggedIn = true;
+        sessionStorage.setItem("my_balances", JSON.stringify(null));
+        sessionStorage.setItem("my_balances", JSON.stringify(payload)); 
+        this.loggedIn = true;
+        this.changePage("profile")
+    } 
+
+
     toggle = () : void => { //sideNav: any
         this.sideNav.toggle();
     }
@@ -79,7 +88,7 @@ export class NavBarComponent implements OnInit {
             document.getElementById(this.currentPage).style.textDecoration = "none";
         this.currentPage = nextPage;
         document.getElementById(this.currentPage).style.textDecoration = "underline";
-        if (this.sideNav2.opened) this.sideNav2.close();
+        if (this.sideNav.opened) this.sideNav.close();
         this.router.navigate(['/' + nextPage]);        
     }
 }

@@ -9,7 +9,7 @@ export class EventEmitterService {
     
     constructor() {}
 
-    sendMessage = (data: string) => {
+    sendMessage = (data: {}) => {
         this.dataStr.next(data);
     }
 }

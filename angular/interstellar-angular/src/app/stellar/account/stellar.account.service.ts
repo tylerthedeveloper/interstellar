@@ -38,13 +38,14 @@ export class StellarAccountService {
         sessionStorage.setItem("public_key", pair.publicKey()); // GATQTGZDN5GMJLNXQHWRCV4ZMBH4YFZXPACUUL756DIEP2NUGNUNBCHD
         sessionStorage.setItem("seed_key", pair.secret()); // SDYNRKS26KECW72663P6XD7N4SDKH5QERBIKYOTEH2TY25NLKW5QBBHL
         let params = new URLSearchParams();
-        params.set('addr', pair.pubKey);
+        params.set('addr', pair.publicKey());
         let options = new RequestOptions({
           params: params
         });  
         return this._http.request(apiUrl, options)
           .map((response: Response) => response.json())
           .catch(this.HandleError);
+          //.subscribe(() => { return this.authenticate(pair.secret() }));
     }
 
     authenticate = (secretKey: string) : Observable<Array<AccountBalance>> => {

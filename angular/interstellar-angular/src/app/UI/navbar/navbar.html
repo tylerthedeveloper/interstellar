@@ -47,7 +47,7 @@ $(document).ready(function(){
                         Signup or Register
                     </button> 
                     <button md-raised-button class="main-nav-button"> 
-                        <span (click)="toggle2(sidenav2)" *ngIf="!loggedIn; else logswitch"> Login </span>
+                        <span (click)="toggle(sidenav)" *ngIf="!loggedIn; else logswitch"> Login </span>
                         <ng-template #logswitch> <span (click)="logout()"> Logout </span> </ng-template>
                     </button>
                 </div>
@@ -55,8 +55,8 @@ $(document).ready(function(){
         </div>
     </div>
     <!-- <mat-sidenav-layout mode="over">  -->
-        <mat-sidenav #sidenav2 align="end" class="app-sidenav" style="float: right;">   <!-- right: 10%; -->
-                <button type="button" mat-button (click)="toggle2(sidenav2)">
+        <mat-sidenav #sidenav align="end" class="app-sidenav" style="float: right;">   <!-- right: 10%; -->
+                <button type="button" mat-button (click)="toggle(sidenav)">
                         Hide
                 </button>
                 <h1> login with secret key </h1>

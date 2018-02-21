@@ -40,8 +40,24 @@ export class RegisterComponent {
     //     this._eventEmiter.sendMessage("login");
     // }
 
-    private createAccount() {
-        alert(this._stellarService.createAccount().subscribe(resp => resp.json()));
+    public createAccount() {
+        this._stellarService.createAccount().subscribe(
+                resp => {
+                    let _ = sessionStorage.getItem("seed_key");
+                    this._stellarService.authenticate(_).subscribe(
+                        resp => this._eventEmiter.sendMessage(resp),
+                        err => alert("there was an error creating your account")            
+                    );
+                },
+                err => alert("there was an error creating your account")
+                
+                // let data = {
+                //     data: resp,
+                //     message: "login"
+                // };
+                // //console.log(resp);
+                // this._eventEmiter.sendMessage(data);
+        );
     }
 
     private mergeAccountWithKey(secretKey: string) {
