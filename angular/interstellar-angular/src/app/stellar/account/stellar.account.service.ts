@@ -59,6 +59,9 @@ export class StellarAccountService {
                 .then(account => account))
                 .map((r: any) => <Array<AccountBalance>> r.balances)
                 .catch(this.HandleError);        
+                // .catch(e => Observable.throw(e));
+        } else {
+            return Observable.throw('That is not a valid secret key');   
         }
     }
 

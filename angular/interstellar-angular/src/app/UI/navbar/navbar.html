@@ -29,7 +29,8 @@ $(document).ready(function(){
                 <!-- *ngIf="loggedIn"   [routerLink]="['/profile', user.uid]"   -->
                 <button md-raised-button id="profile" [routerLink]="['/profile']" 
                         (click)="changePage('profile')" routerLinkActive="active"
-                        class="main-nav-button">
+                        class="main-nav-button"
+                        >
                     Profile
                 </button> 
                 <button md-raised-button id="products" [routerLink]="['/products']" 
@@ -41,24 +42,29 @@ $(document).ready(function(){
                 <div style="float:right;">                
                     <!-- (click)="toggle(sidenav)" -->
                     <button md-raised-button class="main-nav-button"> 
-                        <span (click)="login()" *ngIf="!loggedIn; else logswitch"> Login / Signup </span>
+                        <span (click)="toggle(sidenav)" *ngIf="!loggedIn; else logswitch"> Login </span>
                         <ng-template #logswitch> <span (click)="logout()"> Logout </span> </ng-template>
                     </button>
+                    <button *ngIf="!loggedIn" md-raised-button id="register" [routerLink]="['/register']" 
+                        (click)="changePage('register')" routerLinkActive="active"
+                        class="main-nav-button">
+                        Signup or Register
+                    </button> 
                 </div>
             </mat-toolbar>
         </div>
     </div>
-    <!-- <mat-sidenav-layout mode="over"> 
-        <mat-sidenav #sidenav align="end" class="app-sidenav" style="float: right;">  right: 10%;
+    <mat-sidenav-layout mode="over"> 
+        <mat-sidenav #sidenav align="end" class="app-sidenav" style="float: right;">   <!-- right: 10%; -->
                 <button type="button" mat-button (click)="toggle(sidenav)">
                         Hide
                 </button>
-                <h1> login or sign up </h1>
-                <p> Enter public key </p>
-                <input />
+                <h1> login with secret key </h1>
+                <input #secretKeyLogin type="text" required/>
                 <br />
-                <button (click)="login()">login now</button>
-                <button (click)="createAccount()">signup now</button>
+                <button (click)="login(secretKeyLogin.value)" style="color:black">login now</button>
+                <!-- <h2> Sign up or merge your existing stellar account </h2>
+                <button (click)="signUp()"> Signup now </button> -->
             </mat-sidenav>
-    </mat-sidenav-layout> -->
+    </mat-sidenav-layout>
 </div>

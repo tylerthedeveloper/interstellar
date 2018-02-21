@@ -31,7 +31,13 @@ export class RegisterComponent {
     private change() {
         sessionStorage.setItem("seed_key", "private");
         alert(sessionStorage.getItem("seed_key"));
-        this._eventEmiter.sendMessage(sessionStorage.getItem("seed_key"));
+        this._eventEmiter.sendMessage("logout");
+    }
+
+    private change2() {
+        sessionStorage.setItem("seed_key", "private");
+        alert(sessionStorage.getItem("seed_key"));
+        this._eventEmiter.sendMessage("login");
     }
 
     private createAccount() {
