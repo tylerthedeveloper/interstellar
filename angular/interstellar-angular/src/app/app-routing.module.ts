@@ -6,6 +6,10 @@ import { UIModule } from './UI/ui.app.module';
 import { AppComponent } from './app.component';
 import { RegisterComponent, ProfileComponent, WelcomeComponent } from './UI';
 
+
+    //handle AuthGuard
+
+
 const appRoutes: Routes = [
    { path: 'home', component: WelcomeComponent }, //canActivate: [AuthGuard] 
     { path: 'profile', component: ProfileComponent }, // /:uid

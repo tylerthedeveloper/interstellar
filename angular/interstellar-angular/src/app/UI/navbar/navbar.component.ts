@@ -20,37 +20,34 @@ export class NavBarComponent implements OnInit {
     public currentPage: string;
     private loggedIn : boolean;
     private user: firebase.User;
-
+    public sideNav2: any;
 
     @ViewChild('sidenav') public sideNav: MatSidenav;
     constructor(public router: Router,
                 private _eventEmiter: EventEmitterService,
                 private _stellarAccountService: StellarAccountService) {
 
-                this.currentPage = "home";
-                this.loggedIn = (sessionStorage.getItem("seed_key")) ? true : false;
-    }
-    
+                    this.loggedIn = (sessionStorage.getItem("seed_key")) ? true : false;
+                    this.currentPage = "home";
+            }
+            
     ngOnInit(): void {
         document.getElementById(this.currentPage).style.textDecoration = "underline";
         this._eventEmiter.dataStr.subscribe(data => {
-            //     this.loggedIn = !this.loggedIn;
             if (data === "logout") this.loggedIn = false;
             else this.loggedIn = true;
         });
     }
-
-    // setDataStr() {
-    //     this._eventEmiter.dataStr.subscribe(data => console.log(data))
-    // }
     
     //SCYQVVSG2G4LUOQX4LQ2EF4DKWOZ6E5YEKC6USNUWKN55337RNUYSCGI
     login = (secretKey: string) => {
         if (secretKey) {
             this._stellarAccountService.authenticate(secretKey).subscribe(
                 res => { 
-                    this.loggedIn = true;
-                    this.changePage("profile")
+                        sessionStorage.setItem("my_balances", JSON.stringify(null));
+                        sessionStorage.setItem("my_balances", JSON.stringify(res)); 
+                        this.loggedIn = true;
+                        this.changePage("profile")
                 },
                 err => alert("There was an error: \n" + err));
         } else {
@@ -63,29 +60,26 @@ export class NavBarComponent implements OnInit {
     }
 
     logout = () : void => {
-        this.loggedIn = false;
         sessionStorage.clear();
         this.changePage("home")
+        this.loggedIn = false;
     }
-
-    // createNewAccount = () : void => {
-    //     this.loggedIn = false;
-    // }
-
-    // mergeAccountWithKey = (secretKey: string) : void => {
-    //     this.loggedIn = false;
-    // }
 
     toggle = () : void => { //sideNav: any
         this.sideNav.toggle();
     }
 
+    toggle2 = (sideNav: any) : void => { //sideNav: any
+        sideNav.toggle();
+    }
+
     //handle AuthGuard
     changePage(nextPage: string) {
-        document.getElementById(this.currentPage).style.textDecoration = "none";
+        if (document.getElementById(this.currentPage))
+            document.getElementById(this.currentPage).style.textDecoration = "none";
         this.currentPage = nextPage;
         document.getElementById(this.currentPage).style.textDecoration = "underline";
-        if (this.sideNav.opened) this.sideNav.close();
+        if (this.sideNav2.opened) this.sideNav2.close();
         this.router.navigate(['/' + nextPage]);        
     }
 }

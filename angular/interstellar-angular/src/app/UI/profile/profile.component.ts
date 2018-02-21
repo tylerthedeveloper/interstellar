@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import request from 'request';
 
 import StellarSdk from 'stellar-sdk';
@@ -12,39 +12,24 @@ import { StellarAccountService } from '../../stellar/account/stellar.account.ser
   styleUrls: ['./profile.component.css']
 })
 
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
 
+    //public wallet: any;
     private stellarServer: any;
-    public wallet: any;
     private balances: AccountBalance[];
 
-    public constructor(private _stellarService: StellarAccountService) {
+    constructor(private _stellarService: StellarAccountService) {
         this.balances = new Array<AccountBalance>()
     }
 
-    public createAccount() {
-        alert(this._stellarService.createAccount().subscribe(resp => resp.json()));
+    ngOnInit(): void {
+        this.balances = <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances"));
+        alert(JSON.stringify(this.balances));
     }
 
-    // public authenticate(secretKey: string) {
-    //     let pubkey = isValidSecretKey(secretKey);
-    //     if (pubkey) {
-    //       this.balances = [];
-    //       this._stellarService.authenticate(secretKey).subscribe(
-    //           res => { this.balances = res; },
-    //           error => {}); ////errorMessage = <any>error;
-    //     } else {
-    //         alert("there is no account associated with that ID, please make a new one");
-    //     }
-    // }
-
-
     // public getWalletAndMarketValue() {}
-
     // public getWalletValue(address: string) {}
-
     // public getMarketValue() {}
-
     // public createTransaction() {}
 
     sessionstorage = () => {

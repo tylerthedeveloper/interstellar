@@ -41,22 +41,22 @@ $(document).ready(function(){
                 <!--  <span class="example-fill-remaining-space"></span>  -->
                 <div style="float:right;">                
                     <!-- (click)="toggle(sidenav)" -->
-                    <button md-raised-button class="main-nav-button"> 
-                        <span (click)="toggle(sidenav)" *ngIf="!loggedIn; else logswitch"> Login </span>
-                        <ng-template #logswitch> <span (click)="logout()"> Logout </span> </ng-template>
-                    </button>
                     <button *ngIf="!loggedIn" md-raised-button id="register" [routerLink]="['/register']" 
                         (click)="changePage('register')" routerLinkActive="active"
                         class="main-nav-button">
                         Signup or Register
                     </button> 
+                    <button md-raised-button class="main-nav-button"> 
+                        <span (click)="toggle2(sidenav2)" *ngIf="!loggedIn; else logswitch"> Login </span>
+                        <ng-template #logswitch> <span (click)="logout()"> Logout </span> </ng-template>
+                    </button>
                 </div>
             </mat-toolbar>
         </div>
     </div>
-    <mat-sidenav-layout mode="over"> 
-        <mat-sidenav #sidenav align="end" class="app-sidenav" style="float: right;">   <!-- right: 10%; -->
-                <button type="button" mat-button (click)="toggle(sidenav)">
+    <!-- <mat-sidenav-layout mode="over">  -->
+        <mat-sidenav #sidenav2 align="end" class="app-sidenav" style="float: right;">   <!-- right: 10%; -->
+                <button type="button" mat-button (click)="toggle2(sidenav2)">
                         Hide
                 </button>
                 <h1> login with secret key </h1>
@@ -66,5 +66,5 @@ $(document).ready(function(){
                 <!-- <h2> Sign up or merge your existing stellar account </h2>
                 <button (click)="signUp()"> Signup now </button> -->
             </mat-sidenav>
-    </mat-sidenav-layout>
+    <!-- </mat-sidenav-layout> -->
 </div>

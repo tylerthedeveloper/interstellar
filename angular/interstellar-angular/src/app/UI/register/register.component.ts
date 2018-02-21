@@ -34,11 +34,11 @@ export class RegisterComponent {
         this._eventEmiter.sendMessage("logout");
     }
 
-    private change2() {
-        sessionStorage.setItem("seed_key", "private");
-        alert(sessionStorage.getItem("seed_key"));
-        this._eventEmiter.sendMessage("login");
-    }
+    // private change2() {
+    //     sessionStorage.setItem("seed_key", "private");
+    //     alert(sessionStorage.getItem("seed_key"));
+    //     this._eventEmiter.sendMessage("login");
+    // }
 
     private createAccount() {
         alert(this._stellarService.createAccount().subscribe(resp => resp.json()));
@@ -48,18 +48,26 @@ export class RegisterComponent {
         alert(this._stellarService.createAccount().subscribe(resp => resp.json()));
     }
 
-    private authenticate(secretKey: string) {
-        let pubkey = isValidSecretKey(secretKey);
-        if (pubkey) {
-            // this.changeLoginStatus.emit("changeStatus");
-            sessionStorage.setItem("my_balances", JSON.stringify(null));
-            this._stellarService.authenticate(secretKey).subscribe(
-                res => { sessionStorage.setItem("my_balances", JSON.stringify(res)); },
-                error => {}); ////errorMessage = <any>error;
-        } else {
-            alert("there is no account associated with that ID, please make a new one");
-        }
-    }
+        // createNewAccount = () : void => {
+    //     this.loggedIn = false;
+    // }
+
+    // mergeAccountWithKey = (secretKey: string) : void => {
+    //     this.loggedIn = false;
+    // }
+
+    // private authenticate(secretKey: string) {
+    //     let pubkey = isValidSecretKey(secretKey);
+    //     if (pubkey) {
+    //         // this.changeLoginStatus.emit("changeStatus");
+    //         sessionStorage.setItem("my_balances", JSON.stringify(null));
+    //         this._stellarService.authenticate(secretKey).subscribe(
+    //             res => { sessionStorage.setItem("my_balances", JSON.stringify(res)); },
+    //             error => {}); ////errorMessage = <any>error;
+    //     } else {
+    //         alert("there is no account associated with that ID, please make a new one");
+    //     }
+    // }
 
     private sessionstorage = () => {
         alert(sessionStorage.getItem("public_key"));
