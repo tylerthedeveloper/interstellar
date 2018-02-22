@@ -1,5 +1,5 @@
 import { AccountBalance } from './account/account-balance';
-import { StellarLumensMinimum } from '../constants/quantities';
+import { StellarLumensMinimum } from '../_constants/quantities';
 
 const currencyAssetsMapper = { 
     "native" : "Lumens",

@@ -4,7 +4,7 @@ import request from 'request';
 import StellarSdk from 'stellar-sdk';
 import { StellarAccountService } from '../../stellar/account/stellar.account.service';
 import { isValidSecretKey, updateBalance } from '../../stellar/utils';
-import { EventEmitterService } from '../../event-emitter.service';
+import { EventEmitterService } from '../../_helpers/event-emitter.service';
 //- import { EventEmitter } from 'events';
 
 @Component({

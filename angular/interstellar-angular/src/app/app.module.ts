@@ -15,7 +15,8 @@ import { StellarAccountService, StellarPaymentService } from './stellar/index';
 
 import { UIModule } from './UI/ui.app.module';
 import { AppRoutingModule } from './app-routing.module';
-import { EventEmitterService } from './event-emitter.service';
+import { AuthGuardService } from './_helpers/auth-guard.service';
+import { EventEmitterService } from './_helpers/event-emitter.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,9 @@ import { EventEmitterService } from './event-emitter.service';
     //NavBarComponent
   ],
   providers: [
-              EventEmitterService, 
+              EventEmitterService,
+              // AuthService,
+              AuthGuardService,
     
               StellarAccountService, 
               StellarPaymentService
