@@ -68,7 +68,7 @@ $(document).ready(function(){
                 <h1> login with secret key </h1>
                 <input #secretKeyLogin type="text" required/>
                 <br />
-                <button (click)="login(secretKeyLogin.value)" style="color:black">login now</button>
+                <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">login now</button>
                 <!-- <h2> Sign up or merge your existing stellar account </h2>
                 <button (click)="signUp()"> Signup now </button> -->
             </mat-sidenav>

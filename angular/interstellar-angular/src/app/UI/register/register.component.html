@@ -3,3 +3,8 @@
 <button (click)="change2()"> change stat </button>
 
 <button (click)="createAccount()"> make account </button>
+
+<br />
+<br />
+<input #accountMerge type="text" >
+<button (click)="mergeAccountWithKey(accountMerge.value); accountMerge.value = null;"> merge account </button>

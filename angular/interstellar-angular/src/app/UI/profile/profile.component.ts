@@ -23,8 +23,10 @@ export class ProfileComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances")).forEach(element => {
+            console.log(element);
+        });
         this.balances = <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances"));
-        // alert(JSON.stringify(this.balances));
     }
 
     // public getWalletAndMarketValue() {}

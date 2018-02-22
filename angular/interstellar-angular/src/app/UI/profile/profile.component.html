@@ -5,7 +5,7 @@
   <h1>My Balances</h1>
   <ul>
     <li *ngFor="let bal of balances">
-      {{ bal.balance }} {{ bal.asset_type }} 
+      {{ bal?.balance }} {{ bal?.asset_type }} 
     </li>
   </ul>
 </div>

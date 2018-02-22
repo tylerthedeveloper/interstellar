@@ -44,17 +44,10 @@ export class RegisterComponent {
         this._stellarService.createAccount().subscribe(
                 resp => {
                     let _ = sessionStorage.getItem("seed_key");
-                    alert(_);
+                    // alert(_);
                     this._stellarService.authenticate(_).subscribe(
-                        resp => {
-                            let data = {
-                                data: resp,
-                                message: "login"
-                            }
-                            this._eventEmiter.sendMessage(data);
-                            // console.log(JSON.stringify(resp));
-                        },
-                        err => alert("there was an error creating your account")            
+                        resp => this.handleAuthLogin(JSON.stringify(resp)),
+                        err => alert("there was an error logging you in")
                     );
                 },
                 err => alert("there was an error creating your account")
@@ -68,8 +61,22 @@ export class RegisterComponent {
         );
     }
 
-    private mergeAccountWithKey(secretKey: string) {
-        alert(this._stellarService.createAccount().subscribe(resp => resp.json()));
+    private mergeAccountWithKey = (secretKey: string) : void => {
+        this._stellarService.mergeAccountWithKey(secretKey).subscribe(
+            res => this.handleAuthLogin(JSON.stringify(res)),
+            //this.handleAuthLogin(JSON.stringify(res)),
+            err => alert("there was an error conducting the merge")
+        );
+            // resp => this.handleAuthResponse(resp));
+    }
+
+
+    private handleAuthLogin = (res: string) : void => {
+        let data = {
+            data: res,
+            message: "login"
+        }
+        this._eventEmiter.sendMessage(data);
     }
 
         // createNewAccount = () : void => {

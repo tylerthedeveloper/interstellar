@@ -29,18 +29,17 @@ export class NavBarComponent implements OnInit {
 
                     this.loggedIn = (sessionStorage.getItem("seed_key")) ? true : false;
                     this.currentPage = "home";
-            }
+    }            
             
     ngOnInit(): void {
         document.getElementById(this.currentPage).style.textDecoration = "underline";
         this._eventEmiter.dataStr.subscribe((data: any) => {
                 if (data.message === "logout") this.loggedIn = false;
                 else if (data.message === "login") {
-                    // this.loggedIn = true;
                     console.log(data);
                     this.handleLogin(data.data);
                 }
-                else return;
+                else alert("There was an unknown error");
         });
     }
     
@@ -48,7 +47,7 @@ export class NavBarComponent implements OnInit {
     login = (secretKey: string) => {
         if (secretKey) {
             this._stellarAccountService.authenticate(secretKey).subscribe(
-                res => this.handleLogin(res),
+                res => this.handleLogin(JSON.stringify(res)),
                 err => alert("There was an error: \n" + err));
         } else {
             alert("Please enter a key")
@@ -67,12 +66,11 @@ export class NavBarComponent implements OnInit {
 
     handleLogin = (payload: any) : void => {
         this.loggedIn = true;
-        sessionStorage.setItem("my_balances", JSON.stringify(null));
-        sessionStorage.setItem("my_balances", JSON.stringify(payload)); 
+        console.log(payload);
+        sessionStorage.setItem("my_balances", payload);
         this.loggedIn = true;
-        this.changePage("profile")
+        this.changePage("profile");
     } 
-
 
     toggle = () : void => { //sideNav: any
         this.sideNav.toggle();
@@ -89,6 +87,6 @@ export class NavBarComponent implements OnInit {
         this.currentPage = nextPage;
         document.getElementById(this.currentPage).style.textDecoration = "underline";
         if (this.sideNav.opened) this.sideNav.close();
-        this.router.navigate(['/' + nextPage]);        
+        this.router.navigate(['/' + nextPage]);
     }
 }

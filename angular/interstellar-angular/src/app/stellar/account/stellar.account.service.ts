@@ -66,6 +66,15 @@ export class StellarAccountService {
         }
     }
 
+    mergeAccountWithKey = (secretKey: string) => {
+        var pubkey = isValidSecretKey(secretKey);
+        if (pubkey) {
+            return this.authenticate(secretKey);
+        } else {
+            alert("That doesn't seem to be a valid stellar key");
+        }
+    }
+
     HandleError(error: Response) {
         //alert(error);
         return Observable.throw(error || 'Server error');
