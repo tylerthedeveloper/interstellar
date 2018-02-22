@@ -5,8 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import { RouterModule, Routes, Router, ActivatedRoute} from '@angular/router';
 import * as firebase from 'firebase/app';
 import { MatSidenav } from '@angular/material';
-import { EventEmitterService } from '../../_helpers/event-emitter.service';
 import { StellarAccountService } from 'app/stellar';
+import { EventEmitterService } from '../../_helpers/event-emitter.service';
 
 @Component({
   selector: 'nav-bar',
@@ -39,7 +39,6 @@ export class NavBarComponent implements OnInit {
                     console.log(data);
                     this.handleLogin(data.data);
                 }
-                else if (data.message === "unauthenticated") this.handleUnauthenticated();
                 else alert("There was an unknown error");
         });
     }
@@ -69,16 +68,8 @@ export class NavBarComponent implements OnInit {
         this.loggedIn = true;
         console.log(payload);
         sessionStorage.setItem("my_balances", payload);
-        this.loggedIn = true;
         this.changePage("profile");
-    }
-    
-    handleUnauthenticated = () : void => {
-        this.loggedIn = false;
-        alert("You must be logged into to view your profile! \n" + 
-                "Please sign up or login!");
-        this.changePage("register");
-    }
+    } 
 
     toggle = () : void => { //sideNav: any
         this.sideNav.toggle();
