@@ -22,7 +22,7 @@ export class UserService {
         this.usersCollection = afs.collection<User>('users');
     }
 
-    getAllUsers = () : AngularFirestoreCollection <User> => {
+    getAllUsers = () : AngularFirestoreCollection<User> => {
         return this.usersCollection;
     }
 
@@ -61,7 +61,7 @@ export class UserService {
     }
 
     deleteUser = (user: User) :  Observable<any> => {
-        return Observable.fromPromise(this.usersCollection.add(user));
+        return Observable.fromPromise(this.usersCollection.doc(user.id).delete());
     }
 
     updateProfile(user : User) : Observable<any> {
