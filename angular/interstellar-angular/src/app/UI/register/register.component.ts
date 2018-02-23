@@ -5,6 +5,8 @@ import StellarSdk from 'stellar-sdk';
 import { StellarAccountService } from '../../stellar/account/stellar.account.service';
 import { isValidSecretKey, updateBalance } from '../../stellar/utils';
 import { EventEmitterService } from '../../_helpers/event-emitter.service';
+import { UserService } from '../../user.service';
+import { User } from '../../user';
 //- import { EventEmitter } from 'events';
 
 @Component({
@@ -22,6 +24,7 @@ export class RegisterComponent {
     // changeLoginStatus: EventEmitter<string> = new EventEmitter<string>();
 
     constructor(private _stellarService: StellarAccountService,
+                private _userService: UserService,
                 private _eventEmiter: EventEmitterService) {
         
                     // if (sessionStorage.getItem("seed_key"))
@@ -44,48 +47,31 @@ export class RegisterComponent {
         this._stellarService.createAccount().subscribe(
                 resp => {
                     let _ = sessionStorage.getItem("seed_key");
-                    // alert(_);
                     this._stellarService.authenticate(_).subscribe(
-                        resp => this.handleAuthLogin(JSON.stringify(resp)),
+                        resp => this.handleAuthRegistration(JSON.stringify(resp)),
                         err => alert("there was an error logging you in")
                     );
                 },
                 err => alert("there was an error creating your account")
-                
-                // let data = {
-                //     data: resp,
-                //     message: "login"
-                // };
-                // //console.log(resp);
-                // this._eventEmiter.sendMessage(data);
         );
     }
 
     private mergeAccountWithKey = (secretKey: string) : void => {
         this._stellarService.mergeAccountWithKey(secretKey).subscribe(
-            res => this.handleAuthLogin(JSON.stringify(res)),
-            //this.handleAuthLogin(JSON.stringify(res)),
+            res => this.handleAuthRegistration(JSON.stringify(res)),
             err => alert("there was an error conducting the merge")
         );
-            // resp => this.handleAuthResponse(resp));
     }
 
 
-    private handleAuthLogin = (res: string) : void => {
-        let data = {
-            data: res,
-            message: "login"
-        }
+    private handleAuthRegistration = (res: string) : void => {
+        let data = { message: "login" }
+        // console.log(res);
+        this._userService.addUser(new User(sessionStorage.getItem("public_key")));
+        sessionStorage.setItem("my_balances", res);
         this._eventEmiter.sendMessage(data);
     }
 
-        // createNewAccount = () : void => {
-    //     this.loggedIn = false;
-    // }
-
-    // mergeAccountWithKey = (secretKey: string) : void => {
-    //     this.loggedIn = false;
-    // }
 
     // private authenticate(secretKey: string) {
     //     let pubkey = isValidSecretKey(secretKey);

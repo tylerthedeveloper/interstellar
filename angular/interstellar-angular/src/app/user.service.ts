@@ -1,8 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 
-// import { User, Follower } from '../_models/index';
-// import { FollowerService } from '../_services/follower.service';
-// import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
+//-- import { AngularFireDatabase, AngularFireObject , AngularFireList  } from 'angularfire2/database-deprecated';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import * as firebase from 'firebase/app';
 import { Subject } from 'rxjs/Subject';
@@ -10,56 +9,66 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 import { User } from './user';
 
-declare var GeoFire: any;
+// declare var GeoFire: any;
 
 @Injectable()
 export class UserService {
 
     firebaseRef : firebase.database.Reference;
 
-    // constructor(public database: AngularFireDatabase) {
-    constructor() {
-                    // this.firebaseRef = firebase.database().ref('locations');
-                }
-
-
-    //                  //
-    //    Other Users   //
-    //                  //
-    getAllUsers() : FirebaseListObservable<any> {
-        return this.database.list('/users');
+    private usersCollection: AngularFirestoreCollection<User>;
+    
+    constructor(private afs: AngularFirestore) {
+        this.usersCollection = afs.collection<User>('users');
     }
 
-    getUserByFbID(uid : string) : Observable<any> {
-        return this.database.object(`/users/${uid}`).take(1);
+    getAllUsers = () : AngularFirestoreCollection <User> => {
+        return this.usersCollection;
     }
 
-    getUserByName(name : string) : Observable<any> {
-        if (name === "") return this.getAllUsers();
-        return this.database.list('/users', {
-            query: {
-                orderByChild: 'name',
-                equalTo: name
-            }
-        }).take(1);
+    getCurrentUser = () : Observable<any> => {
+        let _pKey = sessionStorage.getItem("public_key");
+        return this.afs.collection("users", ref => ref.where("publicKey", "==", _pKey)).valueChanges();
+    }
+    
+    getUsersByQuery = (queryPayload: any) : Observable<any> => {
+        let node = queryPayload.queryNode;        
+        let attribute = queryPayload.queryAttribute;
+        let operator = queryPayload.queryOperator;
+        let value = queryPayload.queryValue;
+        return this.afs.collection(node, ref => ref.where(attribute, operator, value)).valueChanges();
+    }
+    
+    // getUserByFbID(uid : string) {}}
+
+    // getUserByName(userName : string) : Observable<any> {
+    //     if (userName === "") return; 
+    //     return this.afs.collection('users', ref => ref.where('username', '==', username)).valueChanges();
+    // }
+
+    // getUserByPubKey(pubKey: string) : Observable<any> {
+    //     if (name === "") return this.getAllUsers();
+    //     return this.database.list('/users', {
+    //         query: {
+    //             orderByChild: 'public_key',
+    //             equalTo: pubKey
+    //         }
+    //     }).take(1);
+    // }
+
+    addUser = (user: User) : Observable<any> => {
+        return Observable.fromPromise(this.usersCollection.add(user));
     }
 
-    getUserByPubKey(pubKey: string) : Observable<any> {
-        if (name === "") return this.getAllUsers();
-        return this.database.list('/users', {
-            query: {
-                orderByChild: 'public_key',
-                equalTo: pubKey
-            }
-        }).take(1);
+    deleteUser = (user: User) :  Observable<any> => {
+        return Observable.fromPromise(this.usersCollection.add(user));
     }
 
-
-    //                    //
-    //    User Profile    //
-    //                    //
     updateProfile(user : User) : Observable<any> {
-        return Observable.fromPromise(this.database.object(`/users/${user.uid}`).update(user));
+        return Observable.fromPromise(
+                this.usersCollection
+                    .doc(user.id)
+                    .update({user : user}));
     }
     
 }

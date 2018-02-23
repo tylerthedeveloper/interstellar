@@ -6,7 +6,7 @@ import { HttpModule } from "@angular/http";
 //fire base
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireDatabaseModule } from 'angularfire2/database-deprecated';
 
 import { environment } from '../environments/environment';
 
@@ -27,7 +27,7 @@ import { EventEmitterService } from './_helpers/event-emitter.service';
       BrowserModule, HttpModule, FormsModule,
       
       //firebase
-      //AngularFireModule.initializeApp(environment.firebase),
+      AngularFireModule.initializeApp(environment.firebase),
       AngularFireAuthModule, AngularFireDatabaseModule,
   
       //Other

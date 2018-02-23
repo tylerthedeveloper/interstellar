@@ -37,8 +37,10 @@ export class NavBarComponent implements OnInit {
                 if (data.message === "logout") this.loggedIn = false;
                 else if (data.message === "login") {
                     console.log(data);
-                    this.handleLogin(data.data);
+                    this.handleLogin();
                 }
+                else if (data.message === "unauthenticated")
+                    alert("You must be logged in to view your profile")
                 else alert("There was an unknown error");
         });
     }
@@ -64,10 +66,12 @@ export class NavBarComponent implements OnInit {
         this.loggedIn = false;
     }
 
-    handleLogin = (payload: any) : void => {
+    handleLogin = (payload: string = "") : void => {
         this.loggedIn = true;
-        console.log(payload);
-        sessionStorage.setItem("my_balances", payload);
+        if (payload) { 
+            console.log(payload);
+            sessionStorage.setItem("my_balances", payload);
+        }
         this.changePage("profile");
     } 
 
@@ -81,6 +85,7 @@ export class NavBarComponent implements OnInit {
 
     //handle AuthGuard
     changePage(nextPage: string) {
+        if (!this.loggedIn) return;
         if (document.getElementById(this.currentPage))
             document.getElementById(this.currentPage).style.textDecoration = "none";
         this.currentPage = nextPage;
