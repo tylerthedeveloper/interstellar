@@ -20,13 +20,13 @@ export class RegisterComponent {
     private stellarServer: any;
     private wallet: any;
 
-    // @Output() 
+    // @Output()
     // changeLoginStatus: EventEmitter<string> = new EventEmitter<string>();
 
     constructor(private _stellarService: StellarAccountService,
                 private _userService: UserService,
                 private _eventEmiter: EventEmitterService) {
-        
+
                     // if (sessionStorage.getItem("seed_key"))
                     //     alert("already logged in ... need to router redirect!")
     }
@@ -47,6 +47,10 @@ export class RegisterComponent {
         this._stellarService.createAccount().subscribe(
                 resp => {
                     let _ = sessionStorage.getItem("seed_key");
+                    alert("YOu are about to see your private key. \n " +
+                          "Please write it down and do not show anyone");
+                    alert("Here is your private key: " + _);
+                    
                     this._stellarService.authenticate(_).subscribe(
                         resp => this.handleAuthRegistration(JSON.stringify(resp)),
                         err => alert("there was an error logging you in")
@@ -94,4 +98,3 @@ export class RegisterComponent {
         alert(JSON.stringify(sessionStorage.getItem("my_balances")));
     }
   }
-  
