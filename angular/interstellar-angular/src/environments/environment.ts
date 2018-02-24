@@ -6,10 +6,10 @@
 import { firebaseConfig } from '../../_firebase';
 
 export const environment = {
-  
+
     production: false, //not in production
-    
+
     apiUrl: 'http://localhost:4200', // URL of development API
-    
+
    firebase: firebaseConfig
 };

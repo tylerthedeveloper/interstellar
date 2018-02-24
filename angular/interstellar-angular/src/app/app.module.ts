@@ -27,13 +27,12 @@ import { AngularFirestore, AngularFirestoreModule } from 'angularfire2/firestore
   imports: [
       //angular
       BrowserModule, HttpModule, FormsModule,
-      
+
       //firebase
-      // AngularFirestore,
       AngularFireModule.initializeApp(environment.firebase),
       AngularFirestoreModule.enablePersistence(),
       AngularFireAuthModule, AngularFireDatabaseModule,
-  
+
       //Other
       UIModule, AppRoutingModule
   ],
@@ -43,13 +42,13 @@ import { AngularFirestore, AngularFirestoreModule } from 'angularfire2/firestore
   providers: [
               EventEmitterService,
               AuthGuardService,
-    
-              StellarAccountService, 
+
+              StellarAccountService,
               StellarPaymentService,
 
 
               UserService,
-              
+
   ],
   bootstrap: [AppComponent]
 })
