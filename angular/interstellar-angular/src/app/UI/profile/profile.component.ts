@@ -7,7 +7,10 @@ import { isValidSecretKey, updateBalance } from '../../stellar/utils';
 import { StellarAccountService } from '../../stellar/account/stellar.account.service';
 import { User } from '../../user';
 import { UserService } from '../../user.service';
+
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/first';
+
 
 @Component({
   selector: 'profile',
@@ -29,11 +32,11 @@ export class ProfileComponent implements OnInit {
                 }
                 
     ngOnInit(): void {
-        this._userService.getCurrentUser().subscribe(user => {
+        this._userService.getCurrentUser().first().subscribe(user => {
             // this._user = <User>JSON.parse(user);
             this.user = user;
             console.log(user);
-            console.log(this.user);
+            // console.log(this.user);
         });
         this.balances = new Array<AccountBalance>();
         this.balances = <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances"));

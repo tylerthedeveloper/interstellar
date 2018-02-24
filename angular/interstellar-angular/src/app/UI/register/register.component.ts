@@ -67,13 +67,10 @@ export class RegisterComponent {
     private handleAuthRegistration = (res: string) : void => {
         let data = { message: "login" }
         // console.log(res);
-        let _user = { 
-            publicKey : sessionStorage.getItem("public_key") 
-        };
-
-        this._userService.addUser(_user);
+        let _user = { publicKey : sessionStorage.getItem("public_key") };
 
         sessionStorage.setItem("my_balances", res);
+        this._userService.addUser(_user);
         this._eventEmiter.sendMessage(data);
     }
 

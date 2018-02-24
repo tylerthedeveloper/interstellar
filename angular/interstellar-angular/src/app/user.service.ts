@@ -1,14 +1,14 @@
 import { Injectable, OnInit } from '@angular/core';
 
 //-- import { AngularFireDatabase, AngularFireObject , AngularFireList  } from 'angularfire2/database-deprecated';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-
 import * as firebase from 'firebase/app';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromPromise';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { User } from './user';
 
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/first';
+import 'rxjs/add/observable/fromPromise';
 // declare var GeoFire: any;
 
 @Injectable()
@@ -27,8 +27,9 @@ export class UserService {
     }
 
     getCurrentUser = () : Observable<any> => {
-        let _pKey = sessionStorage.getItem("public_key");
-        return this.afs.collection("users", ref => ref.where("publicKey", "==", _pKey)). .valueChanges();
+        let _curUserDocID = sessionStorage.getItem("user_doc_id");
+        return this.usersCollection.doc(_curUserDocID).valueChanges().first();
+        //return this.afs.collection("users", ref => ref.where("publicKey", "==", _pKey)).valueChanges().first();
     }
     
     getUsersByQuery = (queryPayload: any) : Observable<any> => {
@@ -41,9 +42,14 @@ export class UserService {
   
     addUser = (user: any) : Observable<any> => {
         let _docID = this.afs.createId();
+        console.log(_docID);
         sessionStorage.setItem("user_doc_id", _docID);
-        // const item: User = { _docID, name };
-        return Observable.fromPromise(this.usersCollection.add(user));
+        // const _user: User = { 
+        //                         id: _docID,
+        //                         publicKey: 
+        //                     };
+        user.id = _docID;
+        return Observable.fromPromise(this.usersCollection.doc(_docID).set(user));
     }
 
     deleteUser = (user: User) :  Observable<any> => {

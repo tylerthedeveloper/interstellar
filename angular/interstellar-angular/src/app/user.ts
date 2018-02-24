@@ -16,7 +16,7 @@ export class User {
     isValidSeller: boolean;
     
     
-    constructor(publicKey: string) {}
+    constructor(id: string, publicKey: string) {}
     
     
 }

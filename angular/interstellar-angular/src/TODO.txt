@@ -1,10 +1,18 @@
 small
-    profile page nav logic
-    auth guard
-    
+    profile page nav logic ... remove from nav bar .... better auth guard 
+    logout logic ... clear session?
+        allow options?
+    home landing page
 
-user profile data
-product stuff
+
+profile page - NG MODEL
+
+
+products
+    design page
+    implement service
+    design DB
+
 buy / seller experience
 
 
