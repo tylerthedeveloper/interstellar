@@ -1,3 +1,5 @@
+export * from './components/dialog/confirm.dialog.component';
+
 export * from './navbar/navbar.component';
 export * from './profile/profile.component';
 export * from './register/register.component';

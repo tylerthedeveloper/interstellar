@@ -27,7 +27,9 @@ export class NavBarComponent implements OnInit {
                 private _eventEmiter: EventEmitterService,
                 private _stellarAccountService: StellarAccountService) {
 
-                    this.loggedIn = (sessionStorage.getItem("seed_key")) ? true : false;
+                    if (sessionStorage.getItem("seed_key")) this.loggedIn = true;
+                    else if (localStorage.getItem("seed_key")) this.loggedIn = true;
+                    else this.loggedIn = false;
                     this.currentPage = "home";
     }            
             

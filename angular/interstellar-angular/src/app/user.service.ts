@@ -28,6 +28,7 @@ export class UserService {
 
     getCurrentUser = () : Observable<any> => {
         let _curUserDocID = sessionStorage.getItem("user_doc_id");
+        if (!_curUserDocID) localStorage.getItem("user_doc_id");
         return this.usersCollection.doc(_curUserDocID).valueChanges().first();
         //return this.afs.collection("users", ref => ref.where("publicKey", "==", _pKey)).valueChanges().first();
     }
@@ -40,10 +41,11 @@ export class UserService {
         return this.afs.collection(node, ref => ref.where(attribute, operator, value)).valueChanges();
     }
   
-    addUser = (user: any) : Observable<any> => {
+    addUser = (user: any, localStore: boolean) : Observable<any> => {
         let _docID = this.afs.createId();
         console.log(_docID);
-        sessionStorage.setItem("user_doc_id", _docID);
+        if (localStore) sessionStorage.setItem("user_doc_id", _docID);
+        localStorage.setItem("user_doc_id", _docID);
         // const _user: User = { 
         //                         id: _docID,
         //                         publicKey: 

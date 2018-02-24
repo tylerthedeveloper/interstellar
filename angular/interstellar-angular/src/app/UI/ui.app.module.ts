@@ -7,6 +7,7 @@ import { MaterialDesignModule } from './ng-md.module';
 import { RouterModule, Router } from '@angular/router';
 
 import { NavBarComponent, ProfileComponent, RegisterComponent, WelcomeComponent } from './index';
+import { ConfirmDialogComponent } from 'app/UI/components/dialog/confirm.dialog.component';
 
 @NgModule({
     imports : [
@@ -21,7 +22,8 @@ import { NavBarComponent, ProfileComponent, RegisterComponent, WelcomeComponent 
                 NavBarComponent, 
                 ProfileComponent, 
                 WelcomeComponent,
-                RegisterComponent
+                RegisterComponent,
+                ConfirmDialogComponent
             ],
     exports: [ 
             RouterModule, 
@@ -32,9 +34,10 @@ import { NavBarComponent, ProfileComponent, RegisterComponent, WelcomeComponent 
             NavBarComponent, 
             ProfileComponent,
             WelcomeComponent,
-            RegisterComponent
+            RegisterComponent,
+            ConfirmDialogComponent
         ],
-    entryComponents: [],
+    entryComponents: [ ConfirmDialogComponent ], // DialogComponent, 
     schemas: [ NO_ERRORS_SCHEMA ],
 
 })

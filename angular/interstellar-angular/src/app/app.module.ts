@@ -19,6 +19,7 @@ import { AuthGuardService } from './_helpers/auth-guard.service';
 import { EventEmitterService } from './_helpers/event-emitter.service';
 import { UserService } from './user.service';
 import { AngularFirestore, AngularFirestoreModule } from 'angularfire2/firestore';
+import { ConfirmDialogComponent } from './UI/components/dialog/confirm.dialog.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { AngularFirestore, AngularFirestoreModule } from 'angularfire2/firestore
   ],
   exports: [
     //NavBarComponent
+    //ConfirmDialogComponent
   ],
   providers: [
               EventEmitterService,
@@ -48,8 +50,9 @@ import { AngularFirestore, AngularFirestoreModule } from 'angularfire2/firestore
 
 
               UserService,
+              //ConfirmDialogComponent
 
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

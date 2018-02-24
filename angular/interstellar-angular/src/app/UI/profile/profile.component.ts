@@ -39,7 +39,9 @@ export class ProfileComponent implements OnInit {
             // console.log(this.user);
         });
         this.balances = new Array<AccountBalance>();
-        this.balances = <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances"));
+        let _balances = sessionStorage.getItem("my_balances");
+        if (!_balances) _balances = localStorage.getItem("my_balances");
+        this.balances = <AccountBalance[]>JSON.parse(_balances);
     // console.log(JSON.parse(sessionStorage.getItem("my_balances")));
         // <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances")).forEach(element => {
         //     console.log(element);

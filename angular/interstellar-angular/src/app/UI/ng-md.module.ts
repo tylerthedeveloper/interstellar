@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { 
           MatButtonModule,  MatTabsModule, MatMenuModule, MatCardModule, MatInputModule, 
           MatGridListModule, MatTableModule, MatSidenavModule, MatSelectModule, 
-          MatDialogModule, 
+          MatDialogModule
         } from '@angular/material';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

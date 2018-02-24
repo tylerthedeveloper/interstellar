@@ -5,6 +5,8 @@ small
     home landing page
 
 
+create CORE and SHARED Module 
+
 profile page - NG MODEL
 
 
