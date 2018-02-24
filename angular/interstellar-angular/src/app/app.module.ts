@@ -17,6 +17,8 @@ import { UIModule } from './UI/ui.app.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthGuardService } from './_helpers/auth-guard.service';
 import { EventEmitterService } from './_helpers/event-emitter.service';
+import { UserService } from './user.service';
+import { AngularFirestore, AngularFirestoreModule } from 'angularfire2/firestore';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { EventEmitterService } from './_helpers/event-emitter.service';
       BrowserModule, HttpModule, FormsModule,
       
       //firebase
+      // AngularFirestore,
       AngularFireModule.initializeApp(environment.firebase),
+      AngularFirestoreModule.enablePersistence(),
       AngularFireAuthModule, AngularFireDatabaseModule,
   
       //Other
@@ -38,11 +42,14 @@ import { EventEmitterService } from './_helpers/event-emitter.service';
   ],
   providers: [
               EventEmitterService,
-              // AuthService,
               AuthGuardService,
     
               StellarAccountService, 
-              StellarPaymentService
+              StellarPaymentService,
+
+
+              UserService,
+              
   ],
   bootstrap: [AppComponent]
 })

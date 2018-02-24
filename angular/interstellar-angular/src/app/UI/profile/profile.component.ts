@@ -20,24 +20,27 @@ export class ProfileComponent implements OnInit {
     //public wallet: any;
     private stellarServer: any;
     private balances: AccountBalance[];
-    private _user : Observable<User>;
+    public user : Observable<User>;
 
     constructor(private _userService: UserService,
                 private _stellarService: StellarAccountService) {
                 
-                    this.balances = new Array<AccountBalance>()
-                    this._userService.getCurrentUser()
                     // .map((o:any) => <User> o)
-                        .map(o => o.json())
-                        .subscribe(user => this._user = user);
-    }
-
+                }
+                
     ngOnInit(): void {
-        console.log(JSON.parse(sessionStorage.getItem("my_balances")));
-        <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances")).forEach(element => {
-            console.log(element);
+        this._userService.getCurrentUser().subscribe(user => {
+            // this._user = <User>JSON.parse(user);
+            this.user = user;
+            console.log(user);
+            console.log(this.user);
         });
+        this.balances = new Array<AccountBalance>();
         this.balances = <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances"));
+    // console.log(JSON.parse(sessionStorage.getItem("my_balances")));
+        // <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances")).forEach(element => {
+        //     console.log(element);
+        // });
     }
 
     // public getWalletAndMarketValue() {}

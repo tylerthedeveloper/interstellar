@@ -28,7 +28,7 @@ export class UserService {
 
     getCurrentUser = () : Observable<any> => {
         let _pKey = sessionStorage.getItem("public_key");
-        return this.afs.collection("users", ref => ref.where("publicKey", "==", _pKey)).valueChanges();
+        return this.afs.collection("users", ref => ref.where("publicKey", "==", _pKey)). .valueChanges();
     }
     
     getUsersByQuery = (queryPayload: any) : Observable<any> => {
@@ -38,25 +38,11 @@ export class UserService {
         let value = queryPayload.queryValue;
         return this.afs.collection(node, ref => ref.where(attribute, operator, value)).valueChanges();
     }
-    
-    // getUserByFbID(uid : string) {}}
-
-    // getUserByName(userName : string) : Observable<any> {
-    //     if (userName === "") return; 
-    //     return this.afs.collection('users', ref => ref.where('username', '==', username)).valueChanges();
-    // }
-
-    // getUserByPubKey(pubKey: string) : Observable<any> {
-    //     if (name === "") return this.getAllUsers();
-    //     return this.database.list('/users', {
-    //         query: {
-    //             orderByChild: 'public_key',
-    //             equalTo: pubKey
-    //         }
-    //     }).take(1);
-    // }
-
-    addUser = (user: User) : Observable<any> => {
+  
+    addUser = (user: any) : Observable<any> => {
+        let _docID = this.afs.createId();
+        sessionStorage.setItem("user_doc_id", _docID);
+        // const item: User = { _docID, name };
         return Observable.fromPromise(this.usersCollection.add(user));
     }
 
@@ -72,3 +58,20 @@ export class UserService {
     }
     
 }
+
+  // getUserByFbID(uid : string) {}}
+
+    // getUserByName(userName : string) : Observable<any> {
+    //     if (userName === "") return; 
+    //     return this.afs.collection('users', ref => ref.where('username', '==', username)).valueChanges();
+    // }
+
+    // getUserByPubKey(pubKey: string) : Observable<any> {
+    //     if (name === "") return this.getAllUsers();
+    //     return this.database.list('/users', {
+    //         query: {
+    //             orderByChild: 'public_key',
+    //             equalTo: pubKey
+    //         }
+    //     }).take(1);
+    // }

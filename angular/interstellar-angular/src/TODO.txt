@@ -1,0 +1,31 @@
+small
+    profile page nav logic
+    auth guard
+    
+
+user profile data
+product stuff
+buy / seller experience
+
+
+
+
+
+
+Considerations
+    to or to not use Redux
+    to switch to react
+    realtime DB vs Cloud Store
+        a lot of rules
+        more powerful
+        can accomplish algoilia?
+
+        
+    firebase auth
+    local cache more ...
+    money -> payment processor
+
+    exchange...
+        pull from Stellar term
+    
+
