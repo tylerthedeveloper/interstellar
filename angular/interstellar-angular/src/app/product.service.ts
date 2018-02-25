@@ -1,6 +1,6 @@
 import { Injectable  } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Product } from './product'
+import { Product, ProductCategory } from './product'
 
 //-- import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
@@ -10,46 +10,44 @@ import { UserService } from './user.service';
 import { Subject } from 'rxjs/Subject';
 
 // import { StateStore } from "../_stores/state.store";
-
 import { User } from './user';
 
-declare var GeoFire: any;
 
 @Injectable()
 export class ProductService {
 
     // products: FirebaseListObservable<any>;
     //user: firebase.User;
-    user: User;
-    location: Position;
-    firebaseRef : firebase.database.Reference;
-    geoFire : any;
-    geoFireRef : any;
+    // user: User;
+    // location: Position;
+    // firebaseRef : firebase.database.Reference;
+    // geoFire : any;
+    // geoFireRef : any;
+    private productsCollection: AngularFirestoreCollection<Product>;
+    private productCategoriesCollection: AngularFirestoreCollection<ProductCategory>;
+    private userProductsCollection: AngularFirestoreCollection<User>;
 
     constructor(private afs: AngularFirestore) {
                 
 
 
-
-                // db.list('/posts'); store here ???
-                                // when ask for them??
-                                // infinite scroll, etstablish socket!
+                // when ask for them??
+                // infinite scroll, etstablish socket!
                 
                 // let _user = ... 
                 //sesh storage... service:
                 // CREATE PARENT COMPONENT
 
-
-                this.firebaseRef = firebase.database().ref('locations/posts');
-                this.geoFire = new GeoFire(this.firebaseRef);
-                this.geoFireRef = this.geoFire.ref(); 
+            this.productsCollection = afs.collection<Product>('products');
+            this.productCategoriesCollection = afs.collection<ProductCategory>('products-categories');
+            this.userProductsCollection = afs.collection<User>('users-products');
     }
 
-    // getAllPosts(): Observable<any> {
-    //     return this.afs.list('/posts', { query: { orderByChild: 'timestamp' }});
-    // }
+    getAllPosts(): Observable<Product[]> {
+        return this.productsCollection.valueChanges();
+    }
     
-    addProduct(productData: {}) {
+    addProduct(productData: string) : void {
         
         ////
         ///temp value!!!!!
@@ -71,18 +69,38 @@ export class ProductService {
         // this.afs.database.ref(`user-products/ids/${this.user.uid}/${productKey}`).set(productData);
         // this.afs.database.ref(`user-products/names/${this.user.name}/${productKey}`).set(productData);
         // this.afs.database.ref(`product-categories/${catstring}/${productKey}`).set(productData);
+
+        let _userID = sessionStorage.getItem("user_doc_id") || 
+                        localStorage.getItem("user_doc_id");
+        if (!_userID) {
+            alert("You must be logged in order to post a new product");
+            return;
+        }
+
+        let _productData = <Product>JSON.parse(productData);
+
+        let _docID = this.afs.createId();
+        let _cat = _productData.productCategory.toString();
+        _productData.id = _docID;
+        this.productsCollection.doc(_docID).set(_productData);
+        this.productCategoriesCollection.doc(`${_cat}/products/${_docID}`).set(_productData);
+        this.userProductsCollection.doc(`${_userID}/products/${_docID}`).set(_productData);
+
+        // this.productsCollection.add(_productData);
+        // this.productCategoriesCollection.doc(_cat).set(_productData);
+        // this.userProductsCollection.doc(`${_userID}/products/${_docID}`).set(_productData);
     
     }
 
-    updatePost(key: string, newText: string) {
+    updateProduct(key: string, newProductData: string) {
         // this.products.update(key, { text: newText });
     }
 
-    deletePost(key: string) {    
+    deleteProduct(productID: string) {    
         // this.products.remove(key); 
     }
 
-    getPostsByUserID(userID : string): Observable<any> {
+    getProductsByUserID(userID : string): Observable<any> {
         // return this.afs.list(`/user-products/ids/${userID}`);
         return;
     }

@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import request from 'request';
 
 import StellarSdk from 'stellar-sdk';
-import { AccountBalance } from '../../stellar/account/account-balance';
-import { isValidSecretKey, updateBalance } from '../../stellar/utils';
 
 @Component({
   selector: 'welcome',
@@ -15,7 +13,6 @@ export class WelcomeComponent {
 
     private stellarServer: any;
     public wallet: any;
-    private balances: AccountBalance[];
 
     public constructor() {
         // this.balances = new Array<AccountBalance>()

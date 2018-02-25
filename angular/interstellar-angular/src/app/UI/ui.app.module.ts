@@ -8,6 +8,8 @@ import { RouterModule, Router } from '@angular/router';
 
 import { NavBarComponent, ProfileComponent, RegisterComponent, WelcomeComponent } from './index';
 import { ConfirmDialogComponent } from 'app/UI/components/dialog/confirm.dialog.component';
+import { ProductComponent } from 'app/UI/product/product.component';
+import { ProductfeedComponent } from './productfeed/productfeed.component';
 
 @NgModule({
     imports : [
@@ -23,7 +25,9 @@ import { ConfirmDialogComponent } from 'app/UI/components/dialog/confirm.dialog.
                 ProfileComponent, 
                 WelcomeComponent,
                 RegisterComponent,
-                ConfirmDialogComponent
+                ConfirmDialogComponent,
+                ProductComponent,
+                ProductfeedComponent
             ],
     exports: [ 
             RouterModule, 
@@ -35,7 +39,9 @@ import { ConfirmDialogComponent } from 'app/UI/components/dialog/confirm.dialog.
             ProfileComponent,
             WelcomeComponent,
             RegisterComponent,
-            ConfirmDialogComponent
+            ConfirmDialogComponent,
+            ProductComponent,
+            ProductfeedComponent
         ],
     entryComponents: [ ConfirmDialogComponent ], // DialogComponent, 
     schemas: [ NO_ERRORS_SCHEMA ],

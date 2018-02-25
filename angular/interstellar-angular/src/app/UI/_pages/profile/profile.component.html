@@ -2,8 +2,8 @@
 
 <!-- <label> Publlic key {{ pubKey }}</label> -->
 <div>
-  <h1>My Balances</h1>
   <h1>Pkey: {{ (user)?.id }}</h1>  
+  <h1>My Balances</h1>
   <ul>
     <li *ngFor="let bal of balances">
       {{ bal?.balance }} {{ bal?.asset_type }} 

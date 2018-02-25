@@ -14,8 +14,8 @@ import 'rxjs/add/observable/fromPromise';
 @Injectable()
 export class UserService {
 
-    firebaseRef : firebase.database.Reference;
-
+    //firebaseRef : firebase.database.Reference;
+    public currentUser: User;
     private usersCollection: AngularFirestoreCollection<User>;
     
     constructor(private afs: AngularFirestore) {
@@ -27,6 +27,10 @@ export class UserService {
     }
 
     getCurrentUser = () : Observable<any> => {
+        //
+        //if (this.currentUser) return this.currentUser;
+        //
+
         let _curUserDocID = sessionStorage.getItem("user_doc_id");
         if (!_curUserDocID) localStorage.getItem("user_doc_id");
         return this.usersCollection.doc(_curUserDocID).valueChanges().first();
@@ -44,8 +48,8 @@ export class UserService {
     addUser = (user: any, localStore: boolean) : Observable<any> => {
         let _docID = this.afs.createId();
         console.log(_docID);
-        if (localStore) sessionStorage.setItem("user_doc_id", _docID);
-        localStorage.setItem("user_doc_id", _docID);
+        if (localStore) localStorage.setItem("user_doc_id", _docID);
+        sessionStorage.setItem("user_doc_id", _docID);
         // const _user: User = { 
         //                         id: _docID,
         //                         publicKey: 

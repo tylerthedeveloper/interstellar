@@ -30,7 +30,9 @@ export class NavBarComponent implements OnInit {
                     if (sessionStorage.getItem("seed_key")) this.loggedIn = true;
                     else if (localStorage.getItem("seed_key")) this.loggedIn = true;
                     else this.loggedIn = false;
-                    this.currentPage = "home";
+                    // this.currentPage = "home";
+                    console.log(router.parseUrl(router.url));
+                
     }            
             
     ngOnInit(): void {

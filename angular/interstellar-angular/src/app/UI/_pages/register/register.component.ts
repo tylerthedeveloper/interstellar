@@ -2,15 +2,12 @@ import { Component, Output, EventEmitter} from '@angular/core';
 import request from 'request';
 
 import StellarSdk from 'stellar-sdk';
-import { StellarAccountService } from '../../stellar/account/stellar.account.service';
-import { isValidSecretKey, updateBalance } from '../../stellar/utils';
-import { EventEmitterService } from '../../_helpers/event-emitter.service';
-import { UserService } from '../../user.service';
-import { User } from '../../user';
-//- import { EventEmitter } from 'events';
 
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material'; 
-import { ConfirmDialogComponent } from '../components/dialog/confirm.dialog.component';
+import { StellarAccountService } from 'app/stellar';
+import { UserService } from 'app/user.service';
+import { EventEmitterService } from 'app/_helpers/event-emitter.service';
+import { ConfirmDialogComponent } from 'app/UI/_components/dialog/confirm.dialog.component';
 
 
 
@@ -90,7 +87,6 @@ export class RegisterComponent {
                     localStorage.setItem("public_key", _pubKey);
                     localStorage.setItem("seed_key", _privKey);
                     localStorage.setItem("my_balances", res);
-
                 }
                 sessionStorage.setItem("my_balances", res);
                 this._userService.addUser(_user, _localStore);

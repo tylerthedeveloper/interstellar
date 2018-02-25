@@ -1,6 +1,7 @@
 export class Product {
     
-    userName: string;
+    id: string;
+    itemName: string;
     description: string;
     publicKey: string;     
     price: number;
@@ -16,11 +17,22 @@ export class ShippingInformation {
     validShipService: boolean;
     isShipped: boolean;
 
-
 }
 
+export class ProductCategory {
 
-export const enum ProductCategory {
+    productCategoryEnum: ProductCategoryEnum;
+    category: string;
+    thumbnailLink: string;
+    /////// need to change
+    ////
+    constructor(category: string,
+                thumbnailLink: string) {}
+    ///
+    ///
+};
+
+export const enum ProductCategoryEnum {
 
     apparel,
     electronics,

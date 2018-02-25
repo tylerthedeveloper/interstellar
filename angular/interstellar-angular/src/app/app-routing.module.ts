@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { UIModule } from './UI/ui.app.module';
 import { AppComponent } from './app.component';
-import { RegisterComponent, ProfileComponent, WelcomeComponent } from './UI';
+import { RegisterComponent, ProfileComponent, WelcomeComponent, ProductComponent } from './UI';
 
 import {  AuthGuardService as AuthGuard } from './_helpers/auth-guard.service';
   
@@ -14,7 +14,7 @@ import {  AuthGuardService as AuthGuard } from './_helpers/auth-guard.service';
 const appRoutes: Routes = [
    { path: 'home', component: WelcomeComponent }, // 
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }, // /:uid
-    { path: 'products', redirectTo: '/home', pathMatch: 'full' },
+    { path: 'products', component: ProductComponent, pathMatch: 'full' },
     { path: 'register', component: RegisterComponent, pathMatch: 'full' },
     { path: '*', redirectTo: '/home', pathMatch: 'full' },
     { path: '', redirectTo: '/home', pathMatch: 'full' },

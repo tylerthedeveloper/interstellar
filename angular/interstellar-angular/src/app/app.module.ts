@@ -20,6 +20,7 @@ import { EventEmitterService } from './_helpers/event-emitter.service';
 import { UserService } from './user.service';
 import { AngularFirestore, AngularFirestoreModule } from 'angularfire2/firestore';
 import { ConfirmDialogComponent } from './UI/components/dialog/confirm.dialog.component';
+import { ProductService } from './product.service';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { ConfirmDialogComponent } from './UI/components/dialog/confirm.dialog.co
 
 
               UserService,
+              ProductService
               //ConfirmDialogComponent
 
   ],
