@@ -16,6 +16,7 @@ import { MaterialModule } from '../material.module';
 
 export class NavBarComponent implements OnInit {
 
+    
     public currentPage: string;
     private loggedIn : boolean;
     private user: firebase.User;
@@ -36,7 +37,8 @@ export class NavBarComponent implements OnInit {
     ngOnInit(): void {
         document.getElementById(this.currentPage).style.textDecoration = "underline";
         this._eventEmiter.dataStr.subscribe((data: any) => {
-                if (data.message === "logout") this.loggedIn = false;
+                if (data.message === "category") this.selectCategory(data.category);                
+                else if (data.message === "logout") this.loggedIn = false;
                 else if (data.message === "login") {
                     console.log(data);
                     this.handleLogin();
@@ -83,6 +85,10 @@ export class NavBarComponent implements OnInit {
 
     toggle2 = (sideNav: any) : void => { //sideNav: any
         sideNav.toggle();
+    }
+
+    selectCategory(category: string): any {
+        this.router.navigate(['/categories', category]);
     }
 
     //handle AuthGuard

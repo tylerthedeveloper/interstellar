@@ -1,13 +1,8 @@
 <h1> productfeed works! </h1>
 
 <!-- | async -->
-<div *ngFor="let category of _categories "> 
-    <!-- <div class="post-top">
-        {{category.timestamp | date: 'EEEE M/d HH:mm'}}
-    </div> -->
-    <mat-card style="margin-bottom:20px;">
-        <mat-card-title>{{category.title }}</mat-card-title>
-        <!-- <mat-card-subtitle>{{category.author}}</mat-card-subtitle>
-        <mat-card-content>{{category.content}}</mat-card-content> -->
-    </mat-card>
+<div style="width:300px;">
+    <div *ngFor="let category of _categories">
+        <category-card [category]="category" (notify)="onSelectCategory($event)"></category-card>
+    </div>
 </div>

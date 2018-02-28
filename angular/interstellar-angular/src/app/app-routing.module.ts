@@ -13,7 +13,7 @@ import { CategoryFeedComponent, ProductPageComponent } from './marketplace';
 
 
 const appRoutes: Routes = [
-   { path: 'home', component: WelcomeComponent }, // 
+    { path: 'home', component: WelcomeComponent }, // 
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }, // /:uid
     // { path: 'products', component: ProductPageComponent, pathMatch: 'full' },
     { path: 'categories', loadChildren: 'app/marketplace/market.module#MarketModule'},

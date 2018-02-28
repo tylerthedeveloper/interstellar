@@ -30,6 +30,9 @@ export class RegisterComponent {
                 private _eventEmiter: EventEmitterService,
                 public dialog: MatDialog) {
 
+      console.log("creating register page")        
+                    
+
                     // if (sessionStorage.getItem("seed_key"))
                     //     alert("already logged in ... need to router redirect!")
     }

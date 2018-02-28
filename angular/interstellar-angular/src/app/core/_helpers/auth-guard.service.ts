@@ -13,7 +13,9 @@ import { isValidSecretKey } from '../../stellar/utils';
 export class AuthGuardService implements CanActivate {
   
     // constructor(public jwtHelper: JwtHelperService) {}
-    constructor(private _eventEmitter: EventEmitterService) {}
+    constructor(private _eventEmitter: EventEmitterService) {
+        console.log("creating auth guard")        
+    }
 
     canActivate(): boolean {
         if (!this.isAuthenticated()) {

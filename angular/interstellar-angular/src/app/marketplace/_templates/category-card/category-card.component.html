@@ -1,0 +1,23 @@
+    <!-- <div class="post-top">
+        {{category.timestamp | date: 'EEEE M/d HH:mm'}}
+    </div> -->
+
+<div style="width:200 px;">
+  <mat-card class="example-card" (click)="selectCategory(category.category)">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title> {{ category.category }} </mat-card-title>
+      <mat-card-subtitle> {{ category.subtitle }}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="{{ category.thumbnailLink }}" style="width:150px; height: 150px;" alt="alt">
+    <mat-card-content>
+      <p>
+        {{ category.description }}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>LIKE</button>
+      <button mat-button>SHARE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

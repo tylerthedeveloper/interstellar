@@ -1,15 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-category-page',
+  selector: 'category-page',
   templateUrl: './category-page.component.html',
   styleUrls: ['./category-page.component.css']
 })
 export class CategoryPageComponent implements OnInit {
 
-  constructor() { }
+    
+    constructor(private location: Location) { 
+        console.log("cat pag  comp")
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
+
+    allCategories() {
+        this.location.back(); 
+    }
+  
 
 }

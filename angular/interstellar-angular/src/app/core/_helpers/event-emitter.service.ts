@@ -7,9 +7,18 @@ export class EventEmitterService {
     //dataStr = new EventEmitter();
     dataStr = new Subject();
     
-    constructor() {}
+    constructor() {
+        console.log("creating ervent emitter")
+    }
 
     sendMessage = (data: {}) => {
         this.dataStr.next(data);
     }
+
+    selectCategory = (category: string) => {
+        this.dataStr.next({
+            message: "category",
+            category: category
+        });
+    } 
 }

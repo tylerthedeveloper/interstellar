@@ -6,14 +6,13 @@ import { CategoryPageComponent } from './_pages';
 const routes: Routes = [
   {
     path: '',
-    component: CategoryFeedComponent,
+    // component: CategoryFeedComponent,
     children: [
-      {
-        path: ':id',
-        component: CategoryPageComponent,
-      },
+      { path: '', component: CategoryFeedComponent },
+      { path: ':id', component: CategoryPageComponent },
     ]
   },
+  { path: ':id', component: CategoryPageComponent },  
 ];
 
 @NgModule({
