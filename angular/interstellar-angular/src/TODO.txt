@@ -1,3 +1,12 @@
+modules
+    SHARED
+    CORE
+    UI Module
+        no material
+            use [...spead] from consants 
+    
+    
+
 small
     profile page nav logic ... remove from nav bar .... better auth guard 
     logout logic ... clear session?
