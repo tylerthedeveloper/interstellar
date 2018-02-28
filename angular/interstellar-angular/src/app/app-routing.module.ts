@@ -4,9 +4,10 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { UIModule } from './UI/ui.app.module';
 import { AppComponent } from './app.component';
-import { RegisterComponent, ProfileComponent, WelcomeComponent, ProductPageComponent } from './UI/_pages/index';
+import { RegisterComponent, ProfileComponent, WelcomeComponent } from './UI/_pages/index';
+import { AuthGuardService as AuthGuard } from './core';
+import { CategoryFeedComponent, ProductPageComponent } from './marketplace';
 
-import {  AuthGuardService as AuthGuard } from './_helpers/auth-guard.service';
   
     //handle AuthGuard
 
@@ -14,7 +15,8 @@ import {  AuthGuardService as AuthGuard } from './_helpers/auth-guard.service';
 const appRoutes: Routes = [
    { path: 'home', component: WelcomeComponent }, // 
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }, // /:uid
-    { path: 'products', component: ProductPageComponent, pathMatch: 'full' },
+    // { path: 'products', component: ProductPageComponent, pathMatch: 'full' },
+    { path: 'categories', loadChildren: 'app/marketplace/market.module#MarketModule'},
     { path: 'register', component: RegisterComponent, pathMatch: 'full' },
     { path: '*', redirectTo: '/home', pathMatch: 'full' },
     { path: '', redirectTo: '/home', pathMatch: 'full' },

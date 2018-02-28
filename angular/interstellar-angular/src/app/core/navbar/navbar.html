@@ -32,12 +32,12 @@ $(document).ready(function(){
                         class="main-nav-button">
                     Profile
                 </button> 
-                <button md-raised-button id="products" [routerLink]="['/products']" 
-                    (click)="changePage('products')" routerLinkActive="active"
+                <button md-raised-button id="categories" (click)="changePage('categories')" 
+                        [routerLink]="['/categories']" routerLinkActive="active"
                     class="main-nav-button">
-                    Products
+                    Categories
                 </button>
-                <!--  <span class="example-fill-remaining-space"></span>  -->
+                <span class="example-fill-remaining-space"></span> 
                 <div style="float:right;">                
                     <!-- (click)="toggle(sidenav)" -->
                     <button *ngIf="!loggedIn" md-raised-button id="register" [routerLink]="['/register']" 

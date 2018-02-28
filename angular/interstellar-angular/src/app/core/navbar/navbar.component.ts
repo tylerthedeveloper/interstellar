@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-// import { AFService } from '../../../_services/af.service';
 import { Observable } from 'rxjs/Observable';
 import { RouterModule, Routes, Router, ActivatedRoute} from '@angular/router';
 import * as firebase from 'firebase/app';
 import { MatSidenav } from '@angular/material';
 import { StellarAccountService } from 'app/stellar';
-import { EventEmitterService } from '../../_helpers/event-emitter.service';
+import { EventEmitterService } from 'app/core/_helpers/event-emitter.service';
+import { MaterialModule } from '../material.module';
 
 @Component({
   selector: 'nav-bar',
@@ -30,8 +29,7 @@ export class NavBarComponent implements OnInit {
                     if (sessionStorage.getItem("seed_key")) this.loggedIn = true;
                     else if (localStorage.getItem("seed_key")) this.loggedIn = true;
                     else this.loggedIn = false;
-                    // this.currentPage = "home";
-                    console.log(router.parseUrl(router.url));
+                    this.currentPage = "home";
                 
     }            
             
@@ -89,7 +87,7 @@ export class NavBarComponent implements OnInit {
 
     //handle AuthGuard
     changePage(nextPage: string) {
-        if (!this.loggedIn) return;
+// if (!this.loggedIn) return;
         if (document.getElementById(this.currentPage))
             document.getElementById(this.currentPage).style.textDecoration = "none";
         this.currentPage = nextPage;

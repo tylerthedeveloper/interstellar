@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductCategory } from 'app/product';
+import { ProductCategory } from '../../_market-models/product';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-category',
-  templateUrl: './categoryfeed.component.html',
-  styleUrls: ['./category.component.css']
+  templateUrl: './category-feed.component.html',
+  styleUrls: ['./category-feed.component.css']
 })
 export class CategoryFeedComponent implements OnInit {
 

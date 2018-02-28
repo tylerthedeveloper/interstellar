@@ -20,8 +20,8 @@ export class StellarAccountService {
 
     //this.pubKey = "GDGBTSMUSTHKK2E7NBBNQ33Q2XBK4CCYJZZFHKSCDWIWXODQCQU4DJC2";
     constructor(private _http: Http) {
-        this._server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
         StellarSdk.Network.useTestNetwork();
+        this._server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
     }
 
     getAccountKeys() {
@@ -42,7 +42,7 @@ export class StellarAccountService {
         let options = new RequestOptions({
           params: params
         });  
-        return this._http.request(apiUrl, options)
+        return this._http.get(apiUrl, options)
           .map((response: Response) => response.json())
           .catch(this.HandleError);
           //.subscribe(() => { return this.authenticate(pair.secret() }));

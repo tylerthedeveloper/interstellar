@@ -4,10 +4,10 @@
 // 
 
 import { Injectable } from '@angular/core';
-import { isValidSecretKey } from '../stellar/utils';
 // -> import { JwtHelperService } from '@auth0/angular-jwt';
 import { CanActivate } from '@angular/router';
 import { EventEmitterService } from './event-emitter.service';
+import { isValidSecretKey } from '../../stellar/utils';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
@@ -29,8 +29,8 @@ export class AuthGuardService implements CanActivate {
         // return !this.jwtHelper.isTokenExpired(token);
         
         /// MAYEB CHECK IF PUBLIC KEY IS IN DB AND IS REAL ....???
-        let _key = localStorage.getItem("seed_key");
-        if (!_key) sessionStorage.getItem("seed_key");
+        let _key = sessionStorage.getItem("seed_key");
+        if (!_key) _key = localStorage.getItem("seed_key");
         return  (_key !== null && isValidSecretKey(_key) != null);
         ////////////////////////////////////////////////////
 

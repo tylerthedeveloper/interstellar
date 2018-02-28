@@ -6,8 +6,8 @@ import StellarSdk from 'stellar-sdk';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material'; 
 import { StellarAccountService } from 'app/stellar';
 import { UserService } from 'app/user.service';
-import { EventEmitterService } from 'app/_helpers/event-emitter.service';
 import { ConfirmDialogComponent } from 'app/UI/_components/dialog/confirm.dialog.component';
+import { EventEmitterService } from 'app/core';
 
 
 

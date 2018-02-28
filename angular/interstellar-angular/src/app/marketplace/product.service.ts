@@ -1,16 +1,15 @@
 import { Injectable  } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Product, ProductCategory } from './product'
+import { Product, ProductCategory } from './_market-models/product'
 
 //-- import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import * as firebase from 'firebase/app';
-import { UserService } from './user.service';
 import { Subject } from 'rxjs/Subject';
 
 // import { StateStore } from "../_stores/state.store";
-import { User } from './user';
+import { User } from '../user';
 
 
 @Injectable()
@@ -43,7 +42,7 @@ export class ProductService {
             this.userProductsCollection = afs.collection<User>('users-products');
     }
 
-    getAllPosts(): Observable<Product[]> {
+    getAllProducts(): Observable<Product[]> {
         return this.productsCollection.valueChanges();
     }
     
@@ -105,7 +104,7 @@ export class ProductService {
         return;
     }
 
-    getPostsByUserName(name : string): Observable<any> {
+    getProductsByUserName(name : string): Observable<any> {
         /*
         Observable.create((observer : any) => {
             this.userService.getUserByName(name).first().subscribe(user => {
@@ -119,12 +118,12 @@ export class ProductService {
         
     }
 
-    getPostsByCategory(category : string): Observable<any> {
+    getProductsByCategory(category : string): Observable<any> {
         // return this.afs.list(`/product-categories/${category}`);
         return;
     }
     
-    getPostsByUserTitle(title : string): Observable<any> {
+    getProductsByUserTitle(title : string): Observable<any> {
         // if(title !== "") {
         //     return Observable.create((observer : any) => {
         //         var self = this.afs;
