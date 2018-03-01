@@ -119,8 +119,7 @@ export class ProductService {
     }
 
     getProductsByCategory(category : string): Observable<any> {
-        // return this.afs.list(`/product-categories/${category}`);
-        return;
+        return this.productCategoriesCollection.doc(category).collection("products").valueChanges();
     }
     
     getProductsByUserTitle(title : string): Observable<any> {

@@ -26,7 +26,7 @@ export class CategoryFeedComponent implements OnInit {
     ngOnInit() {}
 
     onSelectCategory = (category: string) => {
-        console.log(category);
+        // console.log(category);
         this._eventMitter.selectCategory(category);
     }
 

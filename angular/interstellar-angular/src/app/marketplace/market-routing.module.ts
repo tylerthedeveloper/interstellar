@@ -9,10 +9,10 @@ const routes: Routes = [
     // component: CategoryFeedComponent,
     children: [
       { path: '', component: CategoryFeedComponent },
-      { path: ':id', component: CategoryPageComponent },
+      { path: ':category', component: CategoryPageComponent },
     ]
   },
-  { path: ':id', component: CategoryPageComponent },  
+  // { path: ':category', component: CategoryPageComponent },  
 ];
 
 @NgModule({

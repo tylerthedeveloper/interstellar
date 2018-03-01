@@ -24,17 +24,24 @@ export class NavBarComponent implements OnInit {
 
     @ViewChild('sidenav') public sideNav: MatSidenav;
     constructor(public router: Router,
+                private activatedRoute: ActivatedRoute,
                 private _eventEmiter: EventEmitterService,
                 private _stellarAccountService: StellarAccountService) {
 
                     if (sessionStorage.getItem("seed_key")) this.loggedIn = true;
                     else if (localStorage.getItem("seed_key")) this.loggedIn = true;
                     else this.loggedIn = false;
-                    this.currentPage = "home";
+                    
+                }            
                 
-    }            
-            
     ngOnInit(): void {
+
+        
+        this.currentPage = (this.currentPage) ? this.currentPage : "home";
+        //let curPage = window.location.pathname.substr(1);
+        // this.currentPage = curPage;        
+        
+        
         document.getElementById(this.currentPage).style.textDecoration = "underline";
         this._eventEmiter.dataStr.subscribe((data: any) => {
                 if (data.message === "category") this.selectCategory(data.category);                
@@ -93,7 +100,7 @@ export class NavBarComponent implements OnInit {
 
     //handle AuthGuard
     changePage(nextPage: string) {
-// if (!this.loggedIn) return;
+        if (nextPage === "profile" && !this.loggedIn) return;
         if (document.getElementById(this.currentPage))
             document.getElementById(this.currentPage).style.textDecoration = "none";
         this.currentPage = nextPage;

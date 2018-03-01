@@ -1,5 +1,15 @@
+<h1> {{ pageCategory }} </h1>
+
 <p>
   category-page works!
 </p>
 
+<button (click)="addProduct()"> add product </button>
+
 <button (click)="allCategories()"> Return to Categories </button>
+
+<div style="width:300px;">
+    <div *ngFor="let product of categoriedProducts">
+        {{ product }}
+    </div>
+</div>
