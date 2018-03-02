@@ -100,8 +100,9 @@ export class ProductService {
     }
 
     getProductsByUserID(userID : string): Observable<any> {
-        // return this.afs.list(`/user-products/ids/${userID}`);
-        return;
+        //`${_userID}/products/${_docID}`
+        if (!userID) userID = sessionStorage.getItem("user_doc_id") || localStorage.getItem("user_doc_id");
+        return this.userProductsCollection.doc(userID).collection("products").valueChanges();
     }
 
     getProductsByUserName(name : string): Observable<any> {
