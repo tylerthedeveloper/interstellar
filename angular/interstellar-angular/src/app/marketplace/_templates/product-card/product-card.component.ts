@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Product } from '../../_market-models/product';
 
 @Component({
-  selector: 'app-product-card',
+  selector: 'product-card',
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.css']
 })
 export class ProductCardComponent implements OnInit {
 
-  constructor() { }
+    @Input() product : Product;
+    @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+    constructor() { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {}
+
+    selectProduct = (category: string) => {
+        this.notify.emit(category);
+    }
 
 }
