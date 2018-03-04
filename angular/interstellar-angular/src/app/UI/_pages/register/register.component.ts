@@ -91,6 +91,8 @@ export class RegisterComponent {
                     localStorage.setItem("seed_key", _privKey);
                     localStorage.setItem("my_balances", res);
                 }
+                console.log(result)
+                console.log(_localStore)
                 sessionStorage.setItem("my_balances", res);
                 this._userService.addUser(_user, _localStore);
                 this._eventEmiter.sendMessage(data);

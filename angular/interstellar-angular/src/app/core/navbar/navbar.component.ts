@@ -73,6 +73,7 @@ export class NavBarComponent implements OnInit {
 
     logout = () : void => {
         sessionStorage.clear();
+        localStorage.clear();
         this.changePage("home")
         this.loggedIn = false;
     }

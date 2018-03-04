@@ -33,8 +33,16 @@ export class UserService {
 
         let _curUserDocID = sessionStorage.getItem("user_doc_id");
         if (!_curUserDocID) localStorage.getItem("user_doc_id");
-        return this.usersCollection.doc(_curUserDocID).valueChanges().first();
-        //return this.afs.collection("users", ref => ref.where("publicKey", "==", _pKey)).valueChanges().first();
+        console.log(_curUserDocID)
+        //return this.usersCollection.doc(_curUserDocID).valueChanges().first();
+        let _pKey = sessionStorage.getItem("public_key");        
+        return Observable.create((observer : any) => {
+            this.afs.collection("users", ref => ref.where("publicKey", "==", _pKey))
+                .valueChanges()
+                .first()
+                .subscribe(user =>  observer.next(user[0])
+            );
+        });
     }
     
     getUsersByQuery = (queryPayload: any) : Observable<any> => {
@@ -48,12 +56,18 @@ export class UserService {
     addUser = (user: any, localStore: boolean) : Observable<any> => {
         let _docID = this.afs.createId();
         console.log(_docID);
-        if (localStore) localStorage.setItem("user_doc_id", _docID);
+        console.log(localStore);
+        if (localStore) {
+            localStorage.setItem("user_doc_id", _docID);
+            console.log("in local store");
+        }
         sessionStorage.setItem("user_doc_id", _docID);
         // const _user: User = { 
         //                         id: _docID,
         //                         publicKey: 
         //                     };
+        // console.log(sessionStorage.getItem("user_doc_id");        
+        // console.log(localStorage.getItem("user_doc_id"));        
         user.id = _docID;
         return Observable.fromPromise(this.usersCollection.doc(_docID).set(user));
     }

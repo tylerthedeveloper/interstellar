@@ -29,7 +29,7 @@ export class ProfileComponent implements OnInit {
                 
     ngOnInit(): void {
         this._userService.getCurrentUser().first().subscribe(user => {
-            // this._user = <User>JSON.parse(user);
+            // this.user = <User>JSON.parse(user);
             this.user = user;
             console.log(user);
             // console.log(this.user);
