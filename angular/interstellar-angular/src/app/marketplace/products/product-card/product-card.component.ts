@@ -14,8 +14,8 @@ export class ProductCardComponent implements OnInit {
 
     ngOnInit() {}
 
-    selectProduct = (category: string) => {
-        this.notify.emit(category);
+    selectProduct = (product: string) => {
+        this.notify.emit(product);
     }
 
 }

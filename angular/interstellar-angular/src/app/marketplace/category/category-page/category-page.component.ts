@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Product } from '../../_market-models/product';
-import { ProductService } from '../../product.service';
 import { Observable } from 'rxjs/Observable';
+import { ProductCardComponent } from'../../products/product-card/product-card.component';
+import { CommonModule } from '@angular/common';
+import { ProductService } from 'app/core/services/product.service';
+import { PartialProduct } from '../../_market-models/partial-product';
 
 @Component({
   selector: 'category-page',
@@ -15,11 +17,12 @@ export class CategoryPageComponent implements OnInit {
 
     
     private pageCategory: string;
-    private categoriedProducts: Observable<Product[]>;
+    private categoriedProducts: Observable<PartialProduct[]>;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private _productService: ProductService,
-                private location: Location) { 
+                private location: Location,
+                public router: Router) { 
         
                   console.log("cat pag  comp")
     }
@@ -38,21 +41,27 @@ export class CategoryPageComponent implements OnInit {
     }
 
     addProduct () {
-      let _pubKey = sessionStorage.getItem("public_key") || 
-                          localStorage.getItem("public_key");
-      var productData = {  
-            itemName: "hot dog",
-            description: "cha already know",
-            publicKey: _pubKey,
-            price: 10,
-            quantity: 10,
-            productCategory: "food"
-        };
-      this._productService.addProduct(JSON.stringify(productData));
+        let _pubKey = sessionStorage.getItem("public_key") || 
+                            localStorage.getItem("public_key");
+        var productData = {  
+              itemName: "hot dog",
+              description: "cha already know",
+              publicKey: _pubKey,
+              price: 10,
+              quantity: 10,
+              productCategory: "food"
+          };
+        this._productService.addProduct(JSON.stringify(productData));
     } 
 
     allCategories() {
         this.location.back(); 
+    }
+
+    onSelectProduct = (product: string) => {
+      console.log(product["id"])
+      this.router.navigate(['/products', product["id"]]);
+
     }
   
 

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CategoryFeedComponent } from '.';
-import { CategoryPageComponent } from './_pages';
+import { CategoryFeedComponent } from './category-feed/category-feed.component';
+import { CategoryPageComponent } from './category-page/category-page.component';
 
 const routes: Routes = [
   {
@@ -20,6 +20,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class MarketRoutingModule { }
-
-// export const routedComponents = [VehiclesComponent, VehicleListComponent, VehicleComponent];
+export class CategoryRoutingModule { }

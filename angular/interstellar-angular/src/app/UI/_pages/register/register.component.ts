@@ -7,9 +7,7 @@ import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { StellarAccountService } from 'app/stellar';
 import { UserService } from 'app/user.service';
 import { ConfirmDialogComponent } from 'app/UI/_components/dialog/confirm.dialog.component';
-import { EventEmitterService } from 'app/core';
-
-
+import { EventEmitterService } from 'app/core/_helpers/event-emitter.service';
 
 @Component({
   selector: 'register',

@@ -15,13 +15,13 @@ import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module'
-import { CoreModule } from './core/core.module';
 
 
 import { UIModule } from './UI/ui.app.module';
 import { MaterialModule } from './core/material.module';
 import { StellarAccountService, StellarPaymentService } from './stellar/index';
 import { UserService } from './user.service';
+import { CoreModule } from 'app/core';
 
 
 @NgModule({

@@ -1,15 +1,16 @@
 import { Injectable  } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Product, ProductCategory } from './_market-models/product'
 
 //-- import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import * as firebase from 'firebase/app';
 import { Subject } from 'rxjs/Subject';
+import { User } from 'app/user';
+import { ProductCategory } from 'app/marketplace/_market-models/product-category';
+import { Product } from 'app/marketplace/_market-models/product';
 
 // import { StateStore } from "../_stores/state.store";
-import { User } from '../user';
 
 
 @Injectable()
@@ -99,6 +100,11 @@ export class ProductService {
         // this.products.remove(key); 
     }
 
+    getProductByProductId(productID: string): Observable<any> {
+        // return this.afs.collection("products", ref => ref.where("id", "==", productID)).valueChanges().first();
+        return this.productsCollection.doc(productID).valueChanges();
+    }
+    
     getProductsByUserID(userID : string): Observable<any> {
         //`${_userID}/products/${_docID}`
         if (!userID) userID = sessionStorage.getItem("user_doc_id") || localStorage.getItem("user_doc_id");

@@ -9,6 +9,7 @@ export class SellerPageComponent implements OnInit {
 
   constructor() { }
 
+  
   ngOnInit() {
   }
 

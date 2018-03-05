@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ProductCategory } from '../../_market-models/product';
+import { ProductCategory } from 'app/marketplace/_market-models/product-category';
 
 @Component({
   selector: 'category-card',

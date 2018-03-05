@@ -1,3 +1,5 @@
+import { ProductCategory } from "./product-category";
+
 export class Product {
     
     id: string;
@@ -6,7 +8,8 @@ export class Product {
     publicKey: string;     
     price: number;
     quantity: number;
-    productCategory: ProductCategory
+    productCategory: ProductCategory;
+    images: string[];
     
 }
 
@@ -19,30 +22,3 @@ export class ShippingInformation {
 
 }
 
-export class ProductCategory {
-
-    productCategoryEnum: ProductCategoryEnum;
-    category: string;
-    thumbnailLink: string;
-    description: string;
-
-    constructor(category: string,
-                description: string,
-                thumbnailLink: string) {
-                    
-                this.category = category;
-                this.description = description;
-                this.thumbnailLink = thumbnailLink;
-    }
-};
-
-export const enum ProductCategoryEnum {
-
-    apparel,
-    electronics,
-    houseware,
-    software,
-
-    other
-
-};

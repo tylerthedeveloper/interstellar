@@ -10,6 +10,6 @@
 
 <div style="width:300px;">
     <div *ngFor="let product of categoriedProducts">
-        <product-card [product]="product" (notify)="selectProduct($event)"></product-card>
+        <category-product-card [product]="product" (notify)="onSelectProduct($event)"></category-product-card>
     </div>
 </div>

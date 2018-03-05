@@ -33,15 +33,18 @@ export class UserService {
 
         let _curUserDocID = sessionStorage.getItem("user_doc_id");
         if (!_curUserDocID) localStorage.getItem("user_doc_id");
-        console.log(_curUserDocID)
+        // console.log(_curUserDocID)
         //return this.usersCollection.doc(_curUserDocID).valueChanges().first();
         let _pKey = sessionStorage.getItem("public_key");        
+        if (!_pKey) localStorage.getItem("public_key");
         return Observable.create((observer : any) => {
             this.afs.collection("users", ref => ref.where("publicKey", "==", _pKey))
                 .valueChanges()
                 .first()
-                .subscribe(user =>  observer.next(user[0])
-            );
+                .subscribe(user =>  {
+                    observer.next(user[0])
+                    console.log(user[0])
+                });
         });
     }
     
