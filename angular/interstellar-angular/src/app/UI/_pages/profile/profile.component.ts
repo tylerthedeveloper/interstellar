@@ -5,10 +5,14 @@ import StellarSdk from 'stellar-sdk';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
+
+import { StellarAccountService } from 'app/stellar';
 import { AccountBalance } from 'app/stellar/account/account-balance';
+
 import { User } from 'app/user';
 import { UserService } from 'app/user.service';
-import { StellarAccountService } from 'app/stellar';
+import { ProductService } from 'app/core/services/product.service';
+import { Product } from 'app/marketplace/_market-models/product';
 
 
 @Component({
@@ -21,27 +25,40 @@ export class ProfileComponent implements OnInit {
 
     //public wallet: any;
     private stellarServer: any;
-    private balances: AccountBalance[];
+
     public user : Observable<User>;
+    private balances: AccountBalance[];
+    private products: Observable<Product[]>;
 
     constructor(private _userService: UserService,
-                private _stellarService: StellarAccountService) {}
+                private _stellarService: StellarAccountService,
+                private _productService: ProductService) {}
                 
     ngOnInit(): void {
+
+        // User Init //
+        // switch too this.user$ ... auto destroy / unsubscribe
+        // this.user = this._userService.getCurrentUser().first();
+        
         this._userService.getCurrentUser().first().subscribe(user => {
-            // this.user = <User>JSON.parse(user);
             this.user = user;
             console.log(user);
-            // console.log(this.user);
+            
+            // User's products //
+            let userID = (<User>JSON.parse(user)).id;
+            this.products = this._productService.getProductsByUserID(userID);
         });
+
+        // User balances //
         this.balances = new Array<AccountBalance>();
         let _balances = sessionStorage.getItem("my_balances");
         if (!_balances) _balances = localStorage.getItem("my_balances");
-        this.balances = <AccountBalance[]>JSON.parse(_balances);
+        if (_balances) this.balances = <AccountBalance[]>JSON.parse(_balances);
         // console.log(JSON.parse(sessionStorage.getItem("my_balances")));
         // <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances")).forEach(element => {
         //     console.log(element);
         // });
+        
     }
 
     // public getWalletAndMarketValue() {}

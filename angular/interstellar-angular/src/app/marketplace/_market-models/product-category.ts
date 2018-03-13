@@ -19,6 +19,7 @@ export const enum ProductCategoryEnum {
 
     apparel,
     electronics,
+    food,
     houseware,
     software,
 

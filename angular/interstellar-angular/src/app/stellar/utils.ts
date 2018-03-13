@@ -1,9 +1,9 @@
 import { AccountBalance } from './account/account-balance';
-import { StellarLumensMinimum } from 'app/core/_constants/quantities';
+import { StellarLumensMinimum, TyCoinMinimum } from 'app/core/_constants/quantities';
 
 const currencyAssetsMapper = { 
     "native" : "Lumens",
-    "TyCoin" : "TyCoins"
+    "tycoin" : "TyCoins"
 }
 
 const isValidSecretKey = (secretKey : string) : string => {
@@ -21,6 +21,17 @@ const isValidNewBalance = (currentBalance: number, outlay: string) : boolean => 
     return newBalance > 0 && newBalance > StellarLumensMinimum;
 }
 
+const isValidNewBalance2 = (assetType: string, currentBalance: number, outlay: number) : boolean => {
+    // let _outlay = parseInt(outlay);
+    let newBalance = (currentBalance - outlay);
+    if (newBalance >= 0) {
+        if (assetType === "native") return (newBalance > StellarLumensMinimum)
+        else if (assetType === "tycoin") return (newBalance > TyCoinMinimum)
+        return true;
+    }
+    return false;
+}
+
 const updateBalance = (balanceArray: Array<AccountBalance>, assetType: string, amount: string): void => {
     let index = balanceArray.findIndex(bal => bal.asset_type === assetType);
     let newbal = parseInt(balanceArray[index].balance) - parseInt(amount);
@@ -32,4 +43,4 @@ const getBalanceforAsset = (balanceArray: Array<AccountBalance>, assetType: stri
     return parseInt(balanceArray[index].balance);
 }
 
-export { isValidSecretKey, currencyAssetsMapper, getBalanceforAsset, updateBalance, isValidNewBalance, StellarLumensMinimum }
+export { isValidSecretKey, currencyAssetsMapper, getBalanceforAsset, updateBalance, isValidNewBalance, isValidNewBalance2, StellarLumensMinimum }

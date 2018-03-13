@@ -48,6 +48,10 @@ export class UserService {
         });
     }
     
+    getUsersByID = (userID: string) : Observable<User> => {
+        return this.usersCollection.doc(userID).valueChanges().map(user => <User>user);
+    }
+
     getUsersByQuery = (queryPayload: any) : Observable<any> => {
         let node = queryPayload.queryNode;        
         let attribute = queryPayload.queryAttribute;

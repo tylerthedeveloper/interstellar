@@ -110,7 +110,7 @@ export class ProductService {
         if (!userID) userID = sessionStorage.getItem("user_doc_id") || localStorage.getItem("user_doc_id");
         return this.userProductsCollection.doc(userID).collection("products").valueChanges();
     }
-
+    
     getProductsByUserName(name : string): Observable<any> {
         /*
         Observable.create((observer : any) => {

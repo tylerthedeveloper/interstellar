@@ -1,15 +1,29 @@
 import { ProductCategory } from "./product-category";
 
+//import { currencyAssetsMapper } from '../../stellar/utils';
+
+
 export class Product {
     
     id: string;
-    itemName: string;
-    description: string;
-    publicKey: string;     
+    productName: string;
+    productShortDescription: string;
+    productLongDescription: string;
     price: number;
     quantity: number;
+    productPrices: Array<ProductPrice>; 
+    
+    productImages: string[];
     productCategory: ProductCategory;
-    images: string[];
+
+    productSellerID: string;
+    productSellerName: string;
+    productSellerPublicKey: string;
+    
+    // some day
+    productRating: number;
+    productReviews: string[];
+
     
 }
 
@@ -21,4 +35,11 @@ export class ShippingInformation {
     isShipped: boolean;
 
 }
+
+class ProductPrice {
+    productCost: number;
+    productAssetType: string; 
+}
+
+
 
