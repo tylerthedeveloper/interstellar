@@ -1,11 +1,24 @@
 modules
     SHARED
+        Models
+        templates
+            product, category        
     CORE
     UI Module
         no material
             use [...spead] from consants 
     
+
+    *** Loading ***
+        load ALL after home page is complete!!!
+        
+    REDUX -> NGRX
+        central Store
+
     
+    
+
+
 
 small
     profile page nav logic ... remove from nav bar .... better auth guard 
