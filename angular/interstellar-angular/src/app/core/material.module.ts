@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-//NoConflictStyleCompatibilityMode, MaterialModule
+// NoConflictStyleCompatibilityMode, MaterialModule
 
 
-import { 
+import {
     MatButtonModule,  MatTabsModule, MatMenuModule, MatCardModule, MatInputModule, 
     MatGridListModule, MatTableModule, MatSidenavModule, MatSelectModule, 
     MatDialogModule, MatToolbarModule
@@ -17,11 +17,11 @@ const materialModules = [ MatButtonModule, MatTabsModule, MatMenuModule,
 ];
 
 @NgModule({
-  imports: [ 
-      ...materialModules        
+  imports: [
+      ...materialModules
   ],
-  exports: [ 
-      ...materialModules        
+  exports: [
+      ...materialModules
   ]
 })
 export class MaterialModule { }

@@ -3,7 +3,7 @@
 
 import { NgModule } from '@angular/core';  // , Optional, SkipSelf
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material.module';
 import { NavBarComponent } from './components/navbar/navbar.component';
@@ -14,10 +14,10 @@ import { ProductService } from './services/product.service';
 
 @NgModule({
     imports: [
-        CommonModule, FormsModule, RouterModule, MaterialModule
+        CommonModule, FormsModule, RouterModule, MaterialModule, ReactiveFormsModule
     ],
     exports: [
-        CommonModule, FormsModule, RouterModule, MaterialModule,
+        CommonModule, FormsModule, RouterModule, MaterialModule, ReactiveFormsModule,
         [NavBarComponent]
     ],
     declarations: [NavBarComponent],

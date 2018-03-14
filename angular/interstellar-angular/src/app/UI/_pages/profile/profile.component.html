@@ -2,11 +2,21 @@
 
 <!-- <label> Publlic key {{ pubKey }}</label> -->
 <div>
-  <h1>Pkey: {{ (user)?.publicKey }}</h1>  
-  <h1>My Balances</h1>
+  <h3>Pkey: {{ (user)?.publicKey }}</h3>  
+  <h3>My Balances</h3>
   <ul>
     <li *ngFor="let bal of balances">
       {{ bal?.balance }} {{ bal?.asset_type }} 
+    </li>
+  </ul>
+</div>
+
+
+<div>
+  <h2>MyProducts</h2>
+  <ul>
+    <li *ngFor="let prod of products">
+      {{ prod?.productName }} 
     </li>
   </ul>
 </div>

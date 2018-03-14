@@ -1,7 +1,7 @@
 import { Injectable  } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-//-- import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+// -- import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import * as firebase from 'firebase/app';
@@ -17,7 +17,7 @@ import { Product } from 'app/marketplace/_market-models/product';
 export class ProductService {
 
     // products: FirebaseListObservable<any>;
-    //user: firebase.User;
+    // user: firebase.User;
     // user: User;
     // location: Position;
     // firebaseRef : firebase.database.Reference;
@@ -28,14 +28,10 @@ export class ProductService {
     private userProductsCollection: AngularFirestoreCollection<User>;
 
     constructor(private afs: AngularFirestore) {
-                
-
-
                 // when ask for them??
                 // infinite scroll, etstablish socket!
-                
-                // let _user = ... 
-                //sesh storage... service:
+                // let _user = ...
+                // sesh storage... service:
                 // CREATE PARENT COMPONENT
 
             this.productsCollection = afs.collection<Product>('products');
@@ -46,17 +42,16 @@ export class ProductService {
     getAllProducts(): Observable<Product[]> {
         return this.productsCollection.valueChanges();
     }
-    
-    addProduct(productData: string) : void {
-        
+
+    addProduct(productData: string): void {
         ////
-        ///temp value!!!!!
-        //category = "Idea";
+        // /temp value!!!!!
+        // category = "Idea";
 
         /////
         ///
-        // var productData = {  
-        //     authorID: this.user.id,            
+        // var productData = {
+        //     authorID: this.user.id,
         //     author: this.user.fullName,
         //     title: title,
         //     content: content,
@@ -70,17 +65,17 @@ export class ProductService {
         // this.afs.database.ref(`user-products/names/${this.user.name}/${productKey}`).set(productData);
         // this.afs.database.ref(`product-categories/${catstring}/${productKey}`).set(productData);
 
-        let _userID = sessionStorage.getItem("user_doc_id") || 
-                        localStorage.getItem("user_doc_id");
+        const _userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         if (!_userID) {
-            alert("You must be logged in order to post a new product");
+            alert('You must be logged in order to post a new product');
             return;
         }
 
-        let _productData = <Product>JSON.parse(productData);
+        const _productData = <Product>JSON.parse(productData);
 
-        let _docID = this.afs.createId();
-        let _cat = _productData.productCategory.toString();
+        const _docID = this.afs.createId();
+        const _cat = _productData.productCategory;
+        console.log(_cat);
         _productData.id = _docID;
         this.productsCollection.doc(_docID).set(_productData);
         this.productCategoriesCollection.doc(`${_cat}/products/${_docID}`).set(_productData);
@@ -89,47 +84,58 @@ export class ProductService {
         // this.productsCollection.add(_productData);
         // this.productCategoriesCollection.doc(_cat).set(_productData);
         // this.userProductsCollection.doc(`${_userID}/products/${_docID}`).set(_productData);
-    
+
     }
 
     updateProduct(key: string, newProductData: string) {
         // this.products.update(key, { text: newText });
     }
 
-    deleteProduct(productID: string) {    
-        // this.products.remove(key); 
+    deleteProduct(productID: string) {
+        // this.products.remove(key);
     }
 
     getProductByProductId(productID: string): Observable<any> {
-        // return this.afs.collection("products", ref => ref.where("id", "==", productID)).valueChanges().first();
-        return this.productsCollection.doc(productID).valueChanges();
+        console.log(this.productsCollection.doc(productID).valueChanges());
+        // return this.afs.collection('products', ref => ref.where('id', '==', productID)).valueChanges();
+        // return this.productsCollection.doc(productID).valueChanges();
+        return Observable.create((observer: any) => {
+            this.afs.collection('products', ref => ref.where('id', '==', productID))
+                .valueChanges()
+                // .first()
+                .subscribe(prod =>  {
+                    observer.next(prod[0]);
+                    console.log(prod[0]);
+                });
+        });
     }
-    
-    getProductsByUserID(userID : string): Observable<any> {
-        //`${_userID}/products/${_docID}`
-        if (!userID) userID = sessionStorage.getItem("user_doc_id") || localStorage.getItem("user_doc_id");
-        return this.userProductsCollection.doc(userID).collection("products").valueChanges();
+
+    getProductsByUserID(userID: string): Observable<any> {
+        // `${_userID}/products/${_docID}`
+        // if (!userID) userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
+        return this.userProductsCollection.doc(userID).collection('products').valueChanges();
     }
-    
-    getProductsByUserName(name : string): Observable<any> {
+
+    getProductsByUserName(name: string): Observable<any> {
         /*
         Observable.create((observer : any) => {
             this.userService.getUserByName(name).first().subscribe(user => {
                 //console.log(user[0].uid);
-                observer.next(new Array(this.afs.list(`/user-products/${user[0].uid}`)));        
+                observer.next(new Array(this.afs.list(`/user-products/${user[0].uid}`)));
             });
         });
         */
-        // return this.afs.list(`/user-products/names/${name}`);        
+        // return this.afs.list(`/user-products/names/${name}`);
         return;
-        
+
     }
 
-    getProductsByCategory(category : string): Observable<any> {
-        return this.productCategoriesCollection.doc(category).collection("products").valueChanges();
+    getProductsByCategory(category: string): Observable<any> {
+        console.log(category);
+        return this.productCategoriesCollection.doc(category).collection('products').valueChanges();
     }
-    
-    getProductsByUserTitle(title : string): Observable<any> {
+
+    getProductsByUserTitle(title: string): Observable<any> {
         // if(title !== "") {
         //     return Observable.create((observer : any) => {
         //         var self = this.afs;
@@ -148,31 +154,32 @@ export class ProductService {
     }
 
     private getKeyByCategoryId(_category: string) {
-        //var cat = "";
+        // var cat = "";
         // return Object.keys(PostCategory).find(key => PostCategory[key] === _category)
         return;
     }
 
+//     private getCategoryString(category: any): string {
+//         switch(category) {
+//             case ProductCategory.Apparel:
+//                 return "Idea";
+//             case ProductCategory.Meetup:
+//                 return "Meetup";
+//             case ProductCategory.Social:
+//                 return "Social";
+//             case ProductCategory.Question:
+//                 ProductCategory "Question";
+//             case Category.Other:
+//                 return "Other";
+//         }
+//         return "";
+//     }
 }
 
+// Apparel,
+// Electronics,
+// Food,
+// Houseware,
+// Software,
 
-
-/*
-    private getCategoryString(category: string) : string {
-        switch(category) {
-            case Category.Idea:
-                return "Idea";
-            case Category.Meetup:
-                return "Meetup";
-            case Category.Social:
-                return "Social";
-            case Category.Question:
-                return "Question";
-            case Category.Interview:
-                return "Interview";
-            case Category.Other:
-                return "Other";
-        }
-        return "";
-    }
-        */
+// Other

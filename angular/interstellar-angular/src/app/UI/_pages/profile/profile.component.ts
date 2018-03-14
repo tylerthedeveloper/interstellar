@@ -20,33 +20,33 @@ import { Product } from 'app/marketplace/_market-models/product';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-
 export class ProfileComponent implements OnInit {
-
-    //public wallet: any;
+    // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
+    // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
+    // public wallet: any;
     private stellarServer: any;
 
-    public user : Observable<User>;
+    public user: Observable<User>;
     private balances: AccountBalance[];
     private products: Observable<Product[]>;
 
     constructor(private _userService: UserService,
                 private _stellarService: StellarAccountService,
                 private _productService: ProductService) {}
-                
+
     ngOnInit(): void {
 
         // User Init //
         // switch too this.user$ ... auto destroy / unsubscribe
         // this.user = this._userService.getCurrentUser().first();
-        
-        this._userService.getCurrentUser().first().subscribe(user => {
-            this.user = user;
-            console.log(user);
-            
-            // User's products //
-            let userID = (<User>JSON.parse(user)).id;
-            this.products = this._productService.getProductsByUserID(userID);
+
+        this._userService.getCurrentUser().first()
+            .subscribe(user => {
+                this.user = user;
+                console.log(user);
+                const userID = user.id;
+                this._productService.getProductsByUserID(userID)
+                                    .subscribe(products => this.products = products);
         });
 
         // User balances //
@@ -58,7 +58,7 @@ export class ProfileComponent implements OnInit {
         // <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances")).forEach(element => {
         //     console.log(element);
         // });
-        
+
     }
 
     // public getWalletAndMarketValue() {}
@@ -67,8 +67,8 @@ export class ProfileComponent implements OnInit {
     // public createTransaction() {}
 
     sessionstorage = () => {
-        alert(sessionStorage.getItem("public_key"));
-        alert(sessionStorage.getItem("seed_key"));
+        alert(sessionStorage.getItem('public_key'));
+        alert(sessionStorage.getItem('seed_key'));
     }
   }
-  
+
