@@ -1,4 +1,4 @@
-import { ProductCategory } from "./product-category";
+import { ProductCategory } from './product-category';
 
 // import { currencyAssetsMapper } from '../../stellar/utils';
 
@@ -15,9 +15,9 @@ export class Product {
 
     productImages: string[];
     //////////////
-    productCategory: string; ///////////////ProductCategory
+    productCategory: string; /////////////// ProductCategory
     ////////////
-    
+
     productSellerID: string;
     productSellerName: string;
     productSellerPublicKey: string;

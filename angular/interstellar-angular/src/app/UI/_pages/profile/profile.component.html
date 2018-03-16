@@ -2,8 +2,8 @@
 
 <!-- <label> Publlic key {{ pubKey }}</label> -->
 <div>
-  <h3>Pkey: {{ (user)?.publicKey }}</h3>  
-  <h3>My Balances</h3>
+  <h4>Pkey: {{ (user)?.publicKey }}</h4>  
+  <h4>My Balances</h4>
   <ul>
     <li *ngFor="let bal of balances">
       {{ bal?.balance }} {{ bal?.asset_type }} 
@@ -11,7 +11,113 @@
   </ul>
 </div>
 
+<h4>My Profile</h4>
+<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" (click)="editProfile()">Edit profile</i>
 
+<div>
+    <div class="container">
+        <div class="row profile-top">
+        </div>
+        <div class="row">
+            <div class="col-12 col-mat-4">
+                <mat-card>
+                    <div class="profile-image">
+                        <img class="main-profile-pic" src="{{_userModel?.photoUrl}}" />
+                    </div>
+                    <div class="profile-image-two">
+    
+                    </div>
+                    <mat-card-content *ngIf="!edit">
+                        <h2>Name: {{_userModel?.fullName}}</h2>
+                        <ul>
+                            <li>
+                                <i class="fa fa-envelope" aria-hidden="true"></i> Public Key: {{_userModel?.publicKey}}
+                            </li>
+                            <li>
+                                <i class="fa fa-github" aria-hidden="true"></i> Username: {{_userModel?.userName}}
+                            </li>
+                        </ul>
+                    </mat-card-content>
+                    <mat-card-content *ngIf="edit">
+                        <form [formGroup]="profileForm" >
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <mat-input-container>
+                                    <input matInput type="text" id="fullName" formControlName="fullName"
+                                    [(ngModel)]="_userModel.fullName" name="fullName">
+                                </mat-input-container>
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Username</label>
+                                <mat-input-container>
+                                    <input matInput type="text" id="userName" formControlName="userName"
+                                    [(ngModel)]="_userModel.userName">
+                                </mat-input-container>
+                            </div>
+                            <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" mat-raised-button >Submit</button>
+                            <!-- <input type="submit" class="button expanded" value="Update Profile"> -->
+                            <!--   -->
+                        </form>
+                        <!-- <a href="https://github.com/{{userModel.gitUsername}}"> git link </a> -->
+                    </mat-card-content>
+                    <mat-card-footer *ngIf="!edit">
+                        <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" (click)="editProfile()"></i>
+                    </mat-card-footer>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<br />
+<button mat-raised-button (click)="sessionstorage()">temp </button>
+<br />
+<br />
+
+
+<!-- <form novalidate [formGroup]="profileForm">
+        Name: <input type="text" formControlName="name">
+        Location: <input type="text" formControlName="location">
+        <button  (click)="updateProfile(myGroup); $event.preventDefault(); " class="btn btn-primary"> Submit</button>
+      </form> -->
+
+
+<br />
+
+<!-- <form [formGroup]="profileForm">
+    <div class="form-group">
+      <label class="center-block">Name:
+        <input class="form-control" formControlName="name">
+      </label>
+    </div>
+  </form>
+  
+  <p>Form value: {{ profileForm.value | json }}</p>
+   -->
+
+  
+<!-- 
+<form class="form-horizontal" [formGroup]="form">
+
+        <div class="form-group">
+          <div class="col-sm-12">
+            <label for="email" class="control-label">Email</label>
+            <input type="text" id="email" class="form-control" formControlName="email">
+          </div>
+        </div>
+      
+        <div class="form-group">
+          <div class="col-sm-12">
+            <label for="password" class="control-label">Password</label>
+            <input type="password" id="password" class="form-control" formControlName="password">
+          </div>
+        </div>
+      
+        <button class="btn btn-primary" (click)="$event.preventDefault(); updateProfile(form.value)">Submit</button>
+      </form>
+   -->
+<!--   
 <div>
   <h2>MyProducts</h2>
   <ul>
@@ -19,4 +125,4 @@
       {{ prod?.productName }} 
     </li>
   </ul>
-</div>
+</div> -->

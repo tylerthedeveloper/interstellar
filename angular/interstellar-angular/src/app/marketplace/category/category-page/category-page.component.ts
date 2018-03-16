@@ -22,9 +22,8 @@ export class CategoryPageComponent implements OnInit {
     constructor(private activatedRoute: ActivatedRoute,
                 private _productService: ProductService,
                 private location: Location,
-                public router: Router) { 
-        
-                  console.log("cat pag  comp")
+                public router: Router) {
+                  // console.log("cat pag  comp")
     }
 
     ngOnInit() {
@@ -59,7 +58,7 @@ export class CategoryPageComponent implements OnInit {
     }
 
     onSelectProduct = (product: string) => {
-      console.log(product["id"])
+      // console.log(product["id"])
       this.router.navigate(['/products', product["id"]]);
 
     }

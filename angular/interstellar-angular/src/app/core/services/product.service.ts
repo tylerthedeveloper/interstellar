@@ -96,7 +96,7 @@ export class ProductService {
     }
 
     getProductByProductId(productID: string): Observable<any> {
-        console.log(this.productsCollection.doc(productID).valueChanges());
+        // console.log(this.productsCollection.doc(productID).valueChanges());
         // return this.afs.collection('products', ref => ref.where('id', '==', productID)).valueChanges();
         // return this.productsCollection.doc(productID).valueChanges();
         return Observable.create((observer: any) => {
@@ -105,7 +105,7 @@ export class ProductService {
                 // .first()
                 .subscribe(prod =>  {
                     observer.next(prod[0]);
-                    console.log(prod[0]);
+                    // console.log(prod[0]);
                 });
         });
     }

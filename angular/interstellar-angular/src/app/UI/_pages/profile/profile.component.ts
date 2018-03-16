@@ -6,13 +6,14 @@ import StellarSdk from 'stellar-sdk';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
 
-import { StellarAccountService } from 'app/stellar';
-import { AccountBalance } from 'app/stellar/account/account-balance';
+import { AccountBalance, StellarAccountService } from '../../../stellar';
 
-import { User } from 'app/user';
-import { UserService } from 'app/user.service';
 import { ProductService } from 'app/core/services/product.service';
 import { Product } from 'app/marketplace/_market-models/product';
+import { User, publicUserData } from '../../../user';
+import { UserService } from '../../../user.service';
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({
@@ -24,36 +25,58 @@ export class ProfileComponent implements OnInit {
     // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
     // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
     // public wallet: any;
-    private stellarServer: any;
+    // private stellarServer: any;
 
-    public user: Observable<User>;
+    private _userModel: User;
+    private user: Observable<User>;
+    // private user: User;
     private balances: AccountBalance[];
     private products: Observable<Product[]>;
 
+    public edit = false;
+    private profileForm: FormGroup;
+
     constructor(private _userService: UserService,
                 private _stellarService: StellarAccountService,
-                private _productService: ProductService) {}
+                private _productService: ProductService,
+                private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
 
         // User Init //
         // switch too this.user$ ... auto destroy / unsubscribe
         // this.user = this._userService.getCurrentUser().first();
+        // this.userModel = new User('', '', '', '', '', '', 0);
 
-        this._userService.getCurrentUser().first()
-            .subscribe(user => {
-                this.user = user;
-                console.log(user);
-                const userID = user.id;
-                this._productService.getProductsByUserID(userID)
-                                    .subscribe(products => this.products = products);
+        this._userService
+                .getCurrentUser()
+                .first()
+                // .map(user => <User> user)
+                .subscribe(user => {
+                    this.user = user;
+                    console.log(user);
+                    this._userModel = <User> user;
+
+                    // this.profileForm = this.formBuilder.group(Object.keys(user).map(key => {
+                    //     console.log(key);
+                    //     return new FormControl(key || '');
+                    // }));
+                    const group: any = {};
+                    publicUserData.forEach(question => {
+                            console.log(question);
+                                group[question] = new FormControl(user[question] || '');
+                    });
+                    this.profileForm = new FormGroup(group);
+                    const userID = user.id;
+                    this._productService
+                            .getProductsByUserID(userID)
+                            .subscribe(products => this.products = products);
         });
-
         // User balances //
         this.balances = new Array<AccountBalance>();
-        let _balances = sessionStorage.getItem("my_balances");
-        if (!_balances) _balances = localStorage.getItem("my_balances");
-        if (_balances) this.balances = <AccountBalance[]>JSON.parse(_balances);
+        let _balances = sessionStorage.getItem('my_balances');
+        if (!_balances) { _balances = localStorage.getItem('my_balances'); }
+        if (_balances) { this.balances = <AccountBalance[]>JSON.parse(_balances); }
         // console.log(JSON.parse(sessionStorage.getItem("my_balances")));
         // <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances")).forEach(element => {
         //     console.log(element);
@@ -66,9 +89,25 @@ export class ProfileComponent implements OnInit {
     // public getMarketValue() {}
     // public createTransaction() {}
 
+    updateProfile(f: FormGroup) {
+        console.log(f);
+        console.log(this.profileForm.value);
+        const data = {
+            id: this._userModel.id,
+            data: this.profileForm.value
+        };
+        this._userService.updateProfile(data);
+        this.editProfile();
+    }
+
+    editProfile(): void {
+        this.edit = !this.edit;
+    }
+
     sessionstorage = () => {
-        alert(sessionStorage.getItem('public_key'));
-        alert(sessionStorage.getItem('seed_key'));
+        // console.log(this.userModel);
+        // alert(sessionStorage.getItem('public_key'));
+        // alert(sessionStorage.getItem('seed_key'));
     }
   }
 

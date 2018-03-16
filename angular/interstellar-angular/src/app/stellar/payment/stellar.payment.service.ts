@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
-import * as StellarSDK from "stellar-sdk";
+import * as StellarSDK from 'stellar-sdk';
 import { AccountBalance } from '../account/account-balance';
 import { isValidSecretKey, isValidNewBalance, getBalanceforAsset, StellarLumensMinimum } from '../utils';
 
@@ -9,8 +9,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw'; 
-import 'rxjs/add/observable/fromPromise'; 
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/observable/fromPromise';
 
 
 @Injectable()
@@ -30,21 +30,21 @@ export class StellarPaymentService {
 
     */
     sendPayment = (destinationKey: string, assetType: string, amount: string, memo: string) : Observable<Response> => {
-        let secretKey = sessionStorage.getItem("seed_key");
-        let pubKey = sessionStorage.getItem("public_key");
-        if (!secretKey) return;
-        var sourceKeys = StellarSdk.Keypair.fromSecret(secretKey);
-        var server = this._server;
-        var transaction;
-        var handleError = this.HandleError;
+        const secretKey = sessionStorage.getItem('seed_key');
+        const pubKey = sessionStorage.getItem('public_key');
+        if (!secretKey) { return; }
+        const sourceKeys = StellarSdk.Keypair.fromSecret(secretKey);
+        const server = this._server;
+        let transaction: any;
+        const handleError = this.HandleError;
         return Observable.fromPromise(server.loadAccount(destinationKey)
             .catch(StellarSdk.NotFoundError, function (error) {
                 throw new Error('The destination account does not exist!');
             })
             .then(() => server.loadAccount(pubKey))
             .then(function(sourceAccount) {
-                let curBal = getBalanceforAsset(sourceAccount.balances, assetType);
-                if (!(curBal !== -1 && isValidNewBalance(curBal, amount))) throw new InsufficientFundsException();
+                const curBal = getBalanceforAsset(sourceAccount.balances, assetType);
+                if (!(curBal !== -1 && isValidNewBalance(curBal, amount))) { throw new InsufficientFundsException(); }
                 transaction = new StellarSdk.TransactionBuilder(sourceAccount) // Start building the transaction.
                     .addOperation(StellarSdk.Operation.payment({
                         destination: destinationKey,
@@ -84,13 +84,13 @@ export class StellarPaymentService {
     }
 
     HandleError(error: Response) {
-      //alert(error);
+      // alert(error);
       return Observable.throw(error || 'Server error');
     }
 }
 
 function InsufficientFundsException() {
-    alert("Insufficient funds for that asset.\n" + 
-          "Either you don't have enough to complete the transaction \n" + 
-          "or you will end up below the minimum balance");
+    alert('Insufficient funds for that asset.\n' +
+          'Either you don\'t have enough to complete the transaction \n' +
+          'or you will end up below the minimum balance');
 }

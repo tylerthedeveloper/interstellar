@@ -1,10 +1,11 @@
-import { NgModule, NO_ERRORS_SCHEMA }  from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { CommonModule } from '@angular/common';
 // import { MaterialDesignModule } from './ng-md.module';
-import { CommonModule } from "@angular/common";
 
 import { ProfileComponent, RegisterComponent, WelcomeComponent } from './_pages';
 import { ConfirmDialogComponent } from './_components';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const uiPages = [ ProfileComponent, WelcomeComponent, RegisterComponent, ConfirmDialogComponent ];
 
@@ -12,17 +13,17 @@ const uiPages = [ ProfileComponent, WelcomeComponent, RegisterComponent, Confirm
     imports : [
     //    MaterialDesignModule,
 //            CdkTableModule
-        CommonModule
+        CommonModule, ReactiveFormsModule
     ],
-    declarations:  [ 
-                //UI Pages
+    declarations:  [
+                // UI Pages
                 ...uiPages
             ],
-    exports: [ 
-            // MaterialDesignModule, 
+    exports: [
+            // MaterialDesignModule,
             ...uiPages
         ],
-    entryComponents: [ ConfirmDialogComponent ], // DialogComponent, 
+    entryComponents: [ ConfirmDialogComponent ], // DialogComponent,
     schemas: [ NO_ERRORS_SCHEMA ],
 
 })

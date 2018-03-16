@@ -1,22 +1,34 @@
 export class User {
 
-    //FB
+    // FB
     id: string;
-    //...
+    // ...
 
     userName: string;
     fullName: string;
     email: string;
     birthdate: string;
     age: number;
-    
-    //stellar
-    publicKey: string;   
+
+    // stellar
+    publicKey: string;
     isValidBuyer: boolean;
     isValidSeller: boolean;
-    
-    
-    constructor(id: string, publicKey: string) {}
-    
-    
+
+    // constructor() {}
+    constructor(id: string = '',
+                publicKey: string = '',
+                userName: string = '',
+                fullName: string = '',
+                email: string = '',
+                birthdate: string = '',
+                age: number = -1) {}
 }
+
+export const publicUserData = [
+    'userName',
+    'fullName',
+    'email',
+    'birthdate',
+    'age'
+];
