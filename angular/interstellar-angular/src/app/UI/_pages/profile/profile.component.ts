@@ -22,8 +22,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-    // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
     // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
+    // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
     // public wallet: any;
     // private stellarServer: any;
 
@@ -35,6 +35,7 @@ export class ProfileComponent implements OnInit {
 
     public edit = false;
     private profileForm: FormGroup;
+    private profileFormMapper: any = {};
 
     constructor(private _userService: UserService,
                 private _stellarService: StellarAccountService,
@@ -54,44 +55,53 @@ export class ProfileComponent implements OnInit {
                 // .map(user => <User> user)
                 .subscribe(user => {
                     this.user = user;
-                    console.log(user);
+                    // console.log(user);
+                    // const userID = user.id;
                     this._userModel = <User> user;
-
-                    // this.profileForm = this.formBuilder.group(Object.keys(user).map(key => {
-                    //     console.log(key);
-                    //     return new FormControl(key || '');
-                    // }));
-                    const group: any = {};
-                    publicUserData.forEach(question => {
-                            console.log(question);
-                                group[question] = new FormControl(user[question] || '');
-                    });
-                    this.profileForm = new FormGroup(group);
-                    const userID = user.id;
+                    this.profileForm = this.createFormGroup();
                     this._productService
-                            .getProductsByUserID(userID)
+                            .getProductsByUserID(user.id)
                             .subscribe(products => this.products = products);
         });
+
         // User balances //
         this.balances = new Array<AccountBalance>();
-        let _balances = sessionStorage.getItem('my_balances');
-        if (!_balances) { _balances = localStorage.getItem('my_balances'); }
+        const _balances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
         if (_balances) { this.balances = <AccountBalance[]>JSON.parse(_balances); }
-        // console.log(JSON.parse(sessionStorage.getItem("my_balances")));
-        // <AccountBalance[]>JSON.parse(sessionStorage.getItem("my_balances")).forEach(element => {
-        //     console.log(element);
-        // });
-
     }
 
     // public getWalletAndMarketValue() {}
     // public getWalletValue(address: string) {}
     // public getMarketValue() {}
     // public createTransaction() {}
+    createFormGroup() {
+        const group = this.formBuilder.group({});
+        this.profileFormMapper = {};
+        publicUserData.forEach(attr => {
+            group.addControl(attr, new FormControl(this._userModel[attr] || ''));
+            // this.profileFormMapper[attr] = this._userModel[attr] || '';
+        });
+        // console.log(this.profileFormMapper);
+        return group;
+
+
+        // const group = {};
+        // group[attr] = new FormControl(this._userModel[attr] || '');
+            // this.profileForm = this.formBuilder.group(Object.keys(user).map(key => {
+                    //     console.log(key);
+                    //     return new FormControl(key || '');
+                    // }));
+                    // const group: any = {};
+                    // publicUserData.forEach(question => {
+                    //         console.log(question);
+                    //             group[question] = new FormControl(user[question] || '');
+                    // });
+                    // this.profileForm = new FormGroup(group);
+    }
 
     updateProfile(f: FormGroup) {
-        console.log(f);
-        console.log(this.profileForm.value);
+        // console.log(f);
+        // console.log(this.profileForm.value);
         const data = {
             id: this._userModel.id,
             data: this.profileForm.value

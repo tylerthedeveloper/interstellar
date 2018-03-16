@@ -40,6 +40,9 @@
                     </mat-card-content>
                     <mat-card-content *ngIf="edit">
                         <form [formGroup]="profileForm" >
+                            <!-- <div *ngFor="let prop of Object.keys(profileForm)" class="form-group">
+                                    <p>aaaa</p>
+                            </div> -->
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <mat-input-container>
