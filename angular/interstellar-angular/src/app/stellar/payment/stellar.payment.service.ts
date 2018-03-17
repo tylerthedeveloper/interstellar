@@ -29,7 +29,7 @@ export class StellarPaymentService {
         THROW REAL ERROR
 
     */
-    sendPayment = (destinationKey: string, assetType: string, amount: string, memo: string) : Observable<Response> => {
+    sendPayment = (destinationKey: string, assetType: string, amount: string, memo: string): Observable<Response> => {
         const secretKey = sessionStorage.getItem('seed_key');
         const pubKey = sessionStorage.getItem('public_key');
         if (!secretKey) { return; }
@@ -44,7 +44,7 @@ export class StellarPaymentService {
             .then(() => server.loadAccount(pubKey))
             .then(function(sourceAccount) {
                 const curBal = getBalanceforAsset(sourceAccount.balances, assetType);
-                if (!(curBal !== -1 && isValidNewBalance(curBal, amount))) { throw new InsufficientFundsException(); }
+                // if (!(curBal !== -1 && isValidNewBalance(curBal, amount))) { throw new InsufficientFundsException(); }
                 transaction = new StellarSdk.TransactionBuilder(sourceAccount) // Start building the transaction.
                     .addOperation(StellarSdk.Operation.payment({
                         destination: destinationKey,

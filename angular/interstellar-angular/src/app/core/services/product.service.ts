@@ -87,7 +87,8 @@ export class ProductService {
 
     }
 
-    updateProduct(key: string, newProductData: string) {
+    updateProduct(key: string, newProductData: {}) {
+        this.productsCollection.doc(key).update(newProductData);
         // this.products.update(key, { text: newText });
     }
 

@@ -6,14 +6,14 @@ import StellarSdk from 'stellar-sdk';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
 
-import { AccountBalance, StellarAccountService } from '../../../stellar';
 
 import { ProductService } from 'app/core/services/product.service';
 import { Product } from 'app/marketplace/_market-models/product';
-import { User, publicUserData } from '../../../user';
-import { UserService } from '../../../user.service';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { User, publicUserData } from 'app/user';
+import { AccountBalance, StellarAccountService } from 'app/stellar';
+import { UserService } from 'app/user.service';
 
 
 @Component({
@@ -22,8 +22,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-    // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
     // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
+    // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
     // public wallet: any;
     // private stellarServer: any;
 
@@ -98,6 +98,10 @@ export class ProfileComponent implements OnInit {
                     // });
                     // this.profileForm = new FormGroup(group);
     }
+
+    // get profileForm(): FormArray {
+    //     return this.profileForm.value as FormArray;
+    // };
 
     updateProfile(f: FormGroup) {
         // console.log(f);

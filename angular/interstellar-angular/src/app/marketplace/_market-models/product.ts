@@ -1,4 +1,5 @@
 import { ProductCategory } from './product-category';
+import { Asset } from '../../stellar';
 
 // import { currencyAssetsMapper } from '../../stellar/utils';
 
@@ -11,16 +12,18 @@ export class Product {
     productLongDescription: string;
     price: number;
     quantity: number;
-    productPrices: Array<ProductPrice>;
+    productPrices: Array<Asset>;
 
     productImages: string[];
     //////////////
     productCategory: string; /////////////// ProductCategory
     ////////////
 
-    productSellerID: string;
-    productSellerName: string;
-    productSellerPublicKey: string;
+    productSellerData: {
+        productSellerID: string;
+        productSellerName: string;
+        productSellerPublicKey: string;
+    };
 
     // some day
     productRating: number;
@@ -38,10 +41,10 @@ export class ShippingInformation {
 
 }
 
-export class ProductPrice {
-    productCost: number;
-    productAssetType: string;
-}
+// export class ProductPrice {
+//     productAssetAmount: number;
+//     productAssetType: string;
+// }
 
 
 

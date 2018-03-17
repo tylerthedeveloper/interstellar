@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ProfileComponent, RegisterComponent, WelcomeComponent } from './_pages';
 import { ConfirmDialogComponent } from './_components';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AbstractFormComponent } from 'app/UI/_components/abstract-form/abstract-form.component';
 
 const uiPages = [ ProfileComponent, WelcomeComponent, RegisterComponent, ConfirmDialogComponent ];
 
@@ -17,11 +18,13 @@ const uiPages = [ ProfileComponent, WelcomeComponent, RegisterComponent, Confirm
     ],
     declarations:  [
                 // UI Pages
-                ...uiPages
+                ...uiPages,
+                AbstractFormComponent
             ],
     exports: [
             // MaterialDesignModule,
-            ...uiPages
+            ...uiPages,
+            AbstractFormComponent
         ],
     entryComponents: [ ConfirmDialogComponent ], // DialogComponent,
     schemas: [ NO_ERRORS_SCHEMA ],
