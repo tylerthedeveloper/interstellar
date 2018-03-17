@@ -19,8 +19,8 @@
           </p>
         </mat-card-content>
         <mat-select id="assetSelectionType" class="asset" placeholder="Asset Type" [(ngModel)]="selectedAssetType">
-            <mat-option *ngFor="let type of assetTypes" [value]="type.value">
-                {{ type.viewValue }}
+            <mat-option *ngFor="let type of product?.productPrices" [value]="type">
+                Price: {{ type.amount }} {{ type.asset_type }} 's
             </mat-option>
         </mat-select>
         <mat-card-actions>

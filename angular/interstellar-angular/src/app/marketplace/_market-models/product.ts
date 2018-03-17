@@ -38,7 +38,7 @@ export class ShippingInformation {
 
 }
 
-class ProductPrice {
+export class ProductPrice {
     productCost: number;
     productAssetType: string;
 }

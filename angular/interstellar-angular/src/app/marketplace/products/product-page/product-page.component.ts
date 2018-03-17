@@ -7,7 +7,7 @@ import { Asset, currencyAssetsMapper, getBalanceforAsset, isValidNewBalance2, Ac
 import { ProductService } from 'app/core/services/product.service';
 
 import { validateNewQuantity } from '../product.utils';
-import { Product } from '../../_market-models/product';
+import { Product, ProductPrice } from '../../_market-models/product';
 import {  ProductCategoryEnum } from '../../_market-models/product-category';
 
 import { User } from '../../../user';
@@ -54,12 +54,15 @@ export class ProductPageComponent implements OnInit {
                         // const _product = <Product>product;
                         // this._product = _product;
                           this.product = product;
-                          this.prodSellerId = product.productSellerID;
+                          // this.prodSellerId = product.productSellerID;
                           this._sellerShortData = {
                             productSellerID: product.productSellerID,
                             productSellerName: product.productSellerName,
                             productSellerPublicKey: product.productSellerPublicKey
                           };
+                          product.productPrices.forEach((price: ProductPrice) => {
+                            console.log(price);
+                          });
 
                         // console.log(_product.productSellerID);
                         // this._userService.getUsersByID(_product.productSellerID).subscribe(
@@ -75,7 +78,10 @@ export class ProductPageComponent implements OnInit {
                         //       });
                   });
 
-                  this.assetTypes = Object.keys(currencyAssetsMapper).map((type: any) => <Array<Asset>> type);
+                  this.assetTypes = Object.keys(currencyAssetsMapper).map((type: any) => {
+                    console.log(<Array<Asset>> type);
+                    return <Array<Asset>> type;
+                  });
                   const curBalances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
                   this.balances = <Array<AccountBalance>> JSON.parse(curBalances);
                   this.myPubKeyId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
@@ -141,13 +147,21 @@ export class ProductPageComponent implements OnInit {
         // validate quantity
     }
 
+    // private validateSellerStatus(amount: number): boolean {
+        // console.log(this.balances);
+        // if (this.balances) { console.log( 'there are balances'); }
+        // if (!(validateNewQuantity(this.product.quantity, amount) && this.balances)) { return false; }
+        // const curBalance = getBalanceforAsset(this.balances, this.selectedAssetType);
+        // return (isValidNewBalance2(this.selectedAssetType, curBalance, amount));
+    // }
+
     private validateTransaction(pubKey: string, prodQuantity: number, amount: number): boolean {
-        console.log(this.balances);
-        if (this.balances) { console.log( 'there are balances'); }
-        if (!(validateNewQuantity(this.product.quantity, amount) && this.balances)) { return false; }
-        const curBalance = getBalanceforAsset(this.balances, this.selectedAssetType);
-        return (isValidNewBalance2(this.selectedAssetType, curBalance, amount));
-    }
+      console.log(this.balances);
+      if (this.balances) { console.log( 'there are balances'); }
+      if (!(validateNewQuantity(this.product.quantity, amount) && this.balances)) { return false; }
+      const curBalance = getBalanceforAsset(this.balances, this.selectedAssetType);
+      return (isValidNewBalance2(this.selectedAssetType, curBalance, amount));
+  }
 
     private conductTransaction(pubKey: string, prodId: string, amount: number) {
         const assetAmount = this.product.productPrices.find(aType => aType.productAssetType === this.selectedAssetType);
