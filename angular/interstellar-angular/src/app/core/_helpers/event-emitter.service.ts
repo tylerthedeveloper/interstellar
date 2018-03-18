@@ -4,11 +4,11 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class EventEmitterService {
 
-    //dataStr = new EventEmitter();
+    // dataStr = new EventEmitter();
     dataStr = new Subject();
-    
+
     constructor() {
-        console.log("creating ervent emitter")
+        console.log('creating ervent emitter')
     }
 
     sendMessage = (data: {}) => {
@@ -17,7 +17,7 @@ export class EventEmitterService {
 
     selectCategory = (category: string) => {
         this.dataStr.next({
-            message: "category",
+            message: 'category',
             category: category
         });
     } 

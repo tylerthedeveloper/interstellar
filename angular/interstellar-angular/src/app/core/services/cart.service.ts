@@ -1,3 +1,13 @@
+//
+// ──────────────────────────────────────────────── I ──────────
+//   :::::: T O D O : :  :   :    :     :        :          :
+// ─────────────────────────────────────────────────────────
+/**
+ *  RETURN RESPONSES FROM ACTIONS ... PROMISE OR OBSERVABLE DOESNT MATTER - NEED CONFRIMATION OF SUCCESS
+ */
+//
+
+
 import { Injectable  } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -6,81 +16,88 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import * as firebase from 'firebase/app';
 import { Subject } from 'rxjs/Subject';
 import { User } from '../../user';
-import { Order } from '../../marketplace/_market-models/order';
+import { CartItem } from '../../marketplace/_market-models/cart-item';
 
 
 @Injectable()
 export class CartService {
 
-    // private cardProductsCollection: AngularFirestoreCollection<Order>;
     private _userID: string;
-    private userCartCollection: AngularFirestoreCollection<User>;
+    private userCartCollection: AngularFirestoreCollection<CartItem>;
+    private myCartRef: firebase.firestore.CollectionReference;
 
     constructor(private afs: AngularFirestore) {
-        // this.cardProductsCollection = afs.collection<Order>('cart');
-        this.userCartCollection = afs.collection<User>('user-cart');
         this._userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
+        this.userCartCollection = afs.collection<CartItem>('user-cart').doc(this._userID).collection('cartItems');
+        this.myCartRef = this.userCartCollection.ref;
     }
 
-    getCurrentCart(): Observable<Order[]> {
-        return this.userCartCollection.doc(this._userID)
-                                        .collection('cartItems')
-                                        .valueChanges()
-                                        .map(orders => <Array<Order>> orders);
+    //
+    // ──────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: C R U D   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────
+    //
+    getCurrentCart(): Observable<CartItem[]> {
+        return this.userCartCollection.valueChanges();
+        // return this.userCartCollection.doc(this._userID)
+        //                                 .collection('cartItems')
+        //                                 .valueChanges();
+                                        // .map(res => res)
+                                        // .map(cartItems => <Array<CartItem>> cartItems);
     }
 
-    addToCart(newCartItem: string): void {
+    addToCart(newCartItem: string) {
         console.log(newCartItem);
-        if (!this._userID) {
-            return alert('You must be logged in order to view your cart');
-        }
-        const _orderData = <Object>JSON.parse(newCartItem);
-
+        const _cartItemData = <CartItem>JSON.parse(newCartItem);
 
         // FOR COMPLETE ORDER
-        // const _docID = this.afs.createId();
-        // newCartItem.orderID = _docID;
-
         // order type
 
-
-        this.userCartCollection.doc(this._userID).collection('cartItems').add(_orderData);
-
+        const _docID = this.afs.createId();
+        _cartItemData.cartItemID = _docID;
+        this.userCartCollection.doc(_docID).set(_cartItemData);
+        // this.userCartCollection.doc(this._userID).collection('cartItems').add(_cartItemData)
+        //                                 .catch(this.HandleError);
+                                        // .then(res => res)
+                                        // .map()
     }
 
-    updateOrder(key: string, newOrderData: {}) {
-        // this.ordersCollection.doc(key).update(newOrderData);
-        // this.orders.update(key, { text: newText });
+    updateCartItem(key: string, newCartItemData: {}) {
+        this.userCartCollection.doc(key).update(newCartItemData);
+        // this.userCartCollection.doc(this._userID).collection('cartItems').doc('cartItemID').update(newCartItemData);
     }
 
-    deleteOrder(orderID: string) {
-        // this.orders.remove(key);
+    removeCartItem(cartItemID: string) {
+        this.userCartCollection.doc(cartItemID).delete();
     }
 
-    getOrderByOrderId(orderID: string): Observable<any> {
-        return Observable.create((observer: any) => {
-            this.afs.collection('orders', ref => ref.where('id', '==', orderID))
-                .valueChanges()
-                // .first()
-                .subscribe(prod =>  {
-                    observer.next(prod[0]);
-                    // console.log(prod[0]);
-                });
-        });
+    emptyCart() {
+        console.log('eeee')
+        // const batch = this.afs.firestore.batch();
+        // const curItems = await this.userCartCollection.ref.get();
+        // curItems.then(items => 
+        //     items.forEach(item => {
+        //         console.log(item);
+        //         batch.delete(item.ref)
+        //     }));
+        // batch.commit();
+        this.userCartCollection.valueChanges()
+                    // .map(item => <Array<CartItem>> item)
+                    .map(items => items.forEach(item => this.myCartRef(item.cartItemID).delete()));
+        // this.userCartCollection.doc(this._userID).collection('cartItems').doc(item.cartItemID).delete();
     }
+    // ────────────────────────────────────────────────────────────────────────────────
 
-    getOrdersByUserName(name: string): Observable<any> {
-        /*
-        Observable.create((observer : any) => {
-            this.userService.getUserByName(name).first().subscribe(user => {
-                //console.log(user[0].uid);
-                observer.next(new Array(this.afs.list(`/user-orders/${user[0].uid}`)));
-            });
-        });
-        */
-        // return this.afs.list(`/user-orders/names/${name}`);
-        return;
 
+    //
+    // ────────────────────────────────────────────────────── I ──────────
+    //   :::::: H E L P E R S : :  :   :    :     :        :          :
+    // ────────────────────────────────────────────────────────────────
+    //
+    HandleError(error: Response) {
+        // alert(error);
+        return Observable.throw(error || 'Server error');
     }
+    // ────────────────────────────────────────────────────────────────────────────────
 
 }

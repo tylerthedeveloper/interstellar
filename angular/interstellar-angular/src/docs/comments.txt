@@ -1,0 +1,5 @@
+Comments	            Keybindings	        Additional Information
+Flag	                alt + shift + y	    You'll have to also give it the index number
+Section Header	        alt + y	            Section Comment for Indentation less than 2 and InSection comment for the rest
+Reverse Section Start	alt + m	            same as section comment
+Section End	            alt + l	            Line Comment for Indentation less than 2 and Separator comment for the rest

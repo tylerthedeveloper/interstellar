@@ -6,13 +6,11 @@ import { CategoryPageComponent } from './category-page/category-page.component';
 const routes: Routes = [
   {
     path: '',
-    // component: CategoryFeedComponent,
     children: [
       { path: '', component: CategoryFeedComponent },
       { path: ':category', component: CategoryPageComponent },
     ]
   },
-  // { path: ':category', component: CategoryPageComponent },  
 ];
 
 @NgModule({

@@ -14,6 +14,7 @@ export class Product {
     quantity: number;
     productPrices: Array<Asset>;
 
+    productThumbnailLink: string;
     productImages: string[];
     //////////////
     productCategory: string; /////////////// ProductCategory

@@ -1,4 +1,15 @@
-import { Injectable  } from '@angular/core';
+//
+// ──────────────────────────────────────────────── I ──────────
+//   :::::: T O D O : :  :   :    :     :        :          :
+// ─────────────────────────────────────────────────────────
+/**
+ * TODO:
+ * STATE MANAGEMENT ... ALL SERVICES
+ */
+//
+
+
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 // -- import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
@@ -12,59 +23,40 @@ import { Product } from 'app/marketplace/_market-models/product';
 
 // import { StateStore } from "../_stores/state.store";
 
-
 @Injectable()
 export class ProductService {
 
-    // products: FirebaseListObservable<any>;
-    // user: firebase.User;
-    // user: User;
-    // location: Position;
-    // firebaseRef : firebase.database.Reference;
-    // geoFire : any;
-    // geoFireRef : any;
     private productsCollection: AngularFirestoreCollection<Product>;
     private productCategoriesCollection: AngularFirestoreCollection<ProductCategory>;
     private userProductsCollection: AngularFirestoreCollection<User>;
 
     constructor(private afs: AngularFirestore) {
-                // when ask for them??
-                // infinite scroll, etstablish socket!
-                // let _user = ...
-                // sesh storage... service:
-                // CREATE PARENT COMPONENT
 
-            this.productsCollection = afs.collection<Product>('products');
-            this.productCategoriesCollection = afs.collection<ProductCategory>('products-categories');
-            this.userProductsCollection = afs.collection<User>('users-products');
+
+        // TODO: READ BELOW
+        // when ask for them??
+        // infinite scroll, etstablish socket!
+        // let _user = ...
+        // sesh storage... service:
+        // CREATE PARENT COMPONENT
+
+        this.productsCollection = afs.collection<Product>('products');
+        this.productCategoriesCollection = afs.collection<ProductCategory>('products-categories');
+        this.userProductsCollection = afs.collection<User>('users-products');
     }
 
+    //
+    // ────────────────────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: P U B L I C   C R U D   M E T H O D S : :  :   :    :     :        :          :
+    // ────────────────────────────────────────────────────────────────────────────────────────
+    //
     getAllProducts(): Observable<Product[]> {
         return this.productsCollection.valueChanges();
     }
 
     addProduct(productData: string): void {
-        ////
-        // /temp value!!!!!
-        // category = "Idea";
 
-        /////
-        ///
-        // var productData = {
-        //     authorID: this.user.id,
-        //     author: this.user.fullName,
-        //     title: title,
-        //     content: content,
-        //     timestamp: firebase.database.ServerValue.TIMESTAMP,
-        //     category: category
-        // }
-        // var catstring = this.getKeyByCategoryId(category);
-        // var productKey = this.afs.database.ref("/products").push().key;
-        // this.afs.database.ref(`products/${productKey}`).set(productData);
-        // this.afs.database.ref(`user-products/ids/${this.user.uid}/${productKey}`).set(productData);
-        // this.afs.database.ref(`user-products/names/${this.user.name}/${productKey}`).set(productData);
-        // this.afs.database.ref(`product-categories/${catstring}/${productKey}`).set(productData);
-
+        // FIXME: CHECK ON METHOD CALL NOT HERE
         const _userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         if (!_userID) {
             alert('You must be logged in order to post a new product');
@@ -72,7 +64,6 @@ export class ProductService {
         }
 
         const _productData = <Product>JSON.parse(productData);
-
         const _docID = this.afs.createId();
         const _cat = _productData.productCategory;
         console.log(_cat);
@@ -80,10 +71,6 @@ export class ProductService {
         this.productsCollection.doc(_docID).set(_productData);
         this.productCategoriesCollection.doc(`${_cat}/products/${_docID}`).set(_productData);
         this.userProductsCollection.doc(`${_userID}/products/${_docID}`).set(_productData);
-
-        // this.productsCollection.add(_productData);
-        // this.productCategoriesCollection.doc(_cat).set(_productData);
-        // this.userProductsCollection.doc(`${_userID}/products/${_docID}`).set(_productData);
 
     }
 
@@ -96,6 +83,12 @@ export class ProductService {
         // this.products.remove(key);
     }
 
+
+    //
+    // ─── QUERY METHODS ──────────────────────────────────────────────────────────────
+    //
+    // TODO: TEST THESE!!!
+    // TODO: IMPLEMENT ALGOLIA!!!
     getProductByProductId(productID: string): Observable<any> {
         // console.log(this.productsCollection.doc(productID).valueChanges());
         // return this.afs.collection('products', ref => ref.where('id', '==', productID)).valueChanges();
@@ -104,7 +97,7 @@ export class ProductService {
             this.afs.collection('products', ref => ref.where('id', '==', productID))
                 .valueChanges()
                 // .first()
-                .subscribe(prod =>  {
+                .subscribe(prod => {
                     observer.next(prod[0]);
                     // console.log(prod[0]);
                 });
@@ -153,6 +146,10 @@ export class ProductService {
         // }
         return;
     }
+    // ────────────────────────────────────────────────────────────────────────────────
+}
+
+/*
 
     private getKeyByCategoryId(_category: string) {
         // var cat = "";
@@ -160,21 +157,21 @@ export class ProductService {
         return;
     }
 
-//     private getCategoryString(category: any): string {
-//         switch(category) {
-//             case ProductCategory.Apparel:
-//                 return "Idea";
-//             case ProductCategory.Meetup:
-//                 return "Meetup";
-//             case ProductCategory.Social:
-//                 return "Social";
-//             case ProductCategory.Question:
-//                 ProductCategory "Question";
-//             case Category.Other:
-//                 return "Other";
-//         }
-//         return "";
-//     }
+    private getCategoryString(category: any): string {
+        switch(category) {
+            case ProductCategory.Apparel:
+                return "Idea";
+            case ProductCategory.Meetup:
+                return "Meetup";
+            case ProductCategory.Social:
+                return "Social";
+            case ProductCategory.Question:
+                ProductCategory "Question";
+            case Category.Other:
+                return "Other";
+        }
+        return "";
+    }
 }
 
 // Apparel,
@@ -184,3 +181,4 @@ export class ProductService {
 // Software,
 
 // Other
+*/

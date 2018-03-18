@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 
@@ -11,8 +11,8 @@ import { Product } from '../../_market-models/product';
 import {  ProductCategoryEnum } from '../../_market-models/product-category';
 
 import { updateBalance, calcTotalPurchaseAmount } from 'app/stellar/utils';
-import { Order } from '../../_market-models/order';
 import { CartService } from 'app/core/services/cart.service';
+import { CartItem } from '../../_market-models/cart-item';
 
 @Component({
   selector: 'app-product',
@@ -30,8 +30,12 @@ export class ProductPageComponent implements OnInit {
     private balances: AccountBalance[];
 
     private assetTypes: any = [];
-    private selectedAssetType: Asset;
-    private purchaseQuantity: number;
+
+    // TODO: CHANGE THIS TO NULL
+    private selectedAssetType: Asset = <Asset> { asset_type: 'native', amount: '5' };
+
+    // TODO: CHANGE THIS TO 0
+    private purchaseQuantity = 1;
 
     // private totalPurchaseAmount: number;
 
@@ -39,7 +43,8 @@ export class ProductPageComponent implements OnInit {
 
     constructor(private _productService: ProductService,
                 private _cartService: CartService,
-                private route: ActivatedRoute) {}
+                private _router: Router,
+                private route: ActivatedRoute)  {}
 
     ngOnInit() {
         // let prod = this.product.map(prod => <Product>prod);
@@ -106,73 +111,69 @@ export class ProductPageComponent implements OnInit {
         this._productService.addProduct(JSON.stringify(productData));
     }
 
-
-    onBuyProduct (purchaseQuantity: number = 3) {
-
-      // let curQuant = this.product.map(pro)
-      // let prod = this.product.map(prod => <Product>prod).map(prod => prod.quantity)
-
-        if (!this.selectedAssetType) {
-          return alert('Please select purchase asset type');
+    //
+    // ────────────────────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: P U B L I C   M A I N   M E T H O D S : :  :   :    :     :        :          :
+    // ────────────────────────────────────────────────────────────────────────────────────────
+    //
+    public onBuyProduct (purchaseQuantity: number = 3) {
+        // validate action
+        if (this.onValidateProductAction()) {
+            // validate purchase credentials //
+            const totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.amount, purchaseQuantity);
+            // const order = this.createOrder(purchaseQuantity);
+            if (this.validateTransaction(this.product.quantity, purchaseQuantity, totalPurchaseAmount)) {
+                this.conductTransaction(this.product.id, purchaseQuantity, totalPurchaseAmount);
+            }
         }
-
-        // validate purchase credentials //
-        const totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.amount, purchaseQuantity);
-        // const order = this.createOrder(purchaseQuantity);
-        if (this.validateTransaction(this.product.quantity, purchaseQuantity, totalPurchaseAmount)) {
-            this.conductTransaction(this.product.id, purchaseQuantity, totalPurchaseAmount);
-        }
-
     }
 
-    addProductToCart() {
-        if (!this.purchaseQuantity) {
-            return alert('Please select a valid quantity');
+    public addProductAndGoToCart() {
+         // validate action
+        if (this.addProductToCart()) {
+            this._router.navigate(['/cart']);
         }
-        if (!this.selectedAssetType) {
-            return alert('Please select purchase asset type');
-        }
-        const order = this.createOrder(this.purchaseQuantity);
-        this._cartService.addToCart(JSON.stringify(order));
+        // else {
+        //     alert('couldnt be completed');
+        // }
     }
 
-    // private validateSellerStatus(amount: number): boolean {
-        // console.log(this.balances);
-        // if (this.balances) { console.log( 'there are balances'); }
-        // if (!(validateNewQuantity(this.product.quantity, amount) && this.balances)) { return false; }
-        // const curBalance = getBalanceforAsset(this.balances, this.selectedAssetType);
-        // return (isValidNewBalance2(this.selectedAssetType, curBalance, amount));
-    // }
-
-    private createOrder(purchaseQuantity: number, totalPurchaseAmount: number = 0): Order {
-        totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.amount, purchaseQuantity);
-        const asset = new Asset(this.selectedAssetType.asset_type, String(totalPurchaseAmount));
-        const order = new Order(this.myPubKeyId, this._sellerShortData.productSellerID, this.product.id,
-                                this.product.productName, purchaseQuantity, asset);
-        return order;
+    public addProductToCart(): boolean {
+        // validate action
+        if (this.onValidateProductAction()) {
+            const cartItem = this.createCartItem(this.purchaseQuantity);
+            this._cartService.addToCart(JSON.stringify(cartItem));
+            this.onCompleteProductAction();
+            return true;
+        }
+        return false;
     }
+    // ────────────────────────────────────────────────────────────────────────────────
 
+
+    //
+    // ──────────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: M E T H O D   H E L P E R S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────────
+    //
     private validateTransaction(prodQuantity: number, purchaseQuantity: number, totalPurchaseAmount: number): boolean {
-      if (this.balances) { console.log(this.balances); }
-      if (!this.balances) {
-          alert('You dont seem to have any active balances, please check your account');
-          return false;
-      }
-      // console.log(this.product.quantity + ' ' + amount)
-      if (!(validateNewQuantity(this.product.quantity, purchaseQuantity))) {
-          alert('That is an invalid purchase quantity');
-          return false;
-      }
-      // console.log(this.selectedAssetType)
-      const curBalance = getBalanceforAsset(this.balances, this.selectedAssetType.asset_type);
-      // console.log(curBalance)
-      if (!isValidNewBalance(this.selectedAssetType.asset_type, curBalance, totalPurchaseAmount)) {
-          alert('You don\'t seem to have sufficient funds or \n ' +
-                'the purchase amount goes below the minimum required holding threshold');
-          return false;
-      }
-      return true;
-  }
+        if (this.balances) { console.log(this.balances); }
+        if (!this.balances) {
+            return this.errorAndAlert('You dont seem to have any active balances, please check your account');
+        }
+        // console.log(this.product.quantity + ' ' + amount)
+        if (!(validateNewQuantity(this.product.quantity, purchaseQuantity))) {
+            return this.errorAndAlert('That is an invalid purchase quantity');
+        }
+        // console.log(this.selectedAssetType)
+        const curBalance = getBalanceforAsset(this.balances, this.selectedAssetType.asset_type);
+        // console.log(curBalance)
+        if (!isValidNewBalance(this.selectedAssetType.asset_type, curBalance, totalPurchaseAmount)) {
+            return this.errorAndAlert('You don\'t seem to have sufficient funds or \n ' +
+                    'the purchase amount goes below the minimum required holding threshold');
+        }
+        return true;
+    }
 
     private conductTransaction(prodID: string, purchaseQuantity: number, totalPurchaseAmount: number) {
 
@@ -183,10 +184,10 @@ export class ProductPageComponent implements OnInit {
         this._productService.updateProduct(this.product.id, {quantity: this.product.quantity - purchaseQuantity});
 
         // create order for transaction //
-        const order = this.createOrder(purchaseQuantity, totalPurchaseAmount);
+        const cartItem = this.createCartItem(purchaseQuantity, totalPurchaseAmount);
 
         // update user balance for asset //
-        updateBalance(this.balances, order.assetPurchaseDetails);
+        updateBalance(this.balances, cartItem.assetPurchaseDetails);
 
         // need to create order / transaction for both parties
         // const asset = new Asset(this.selectedAssetType.asset_type, String(totalPurchaseAmount));
@@ -195,7 +196,66 @@ export class ProductPageComponent implements OnInit {
 
         // need to make payment - see above
 
+        this.onCompleteProductAction();
+
     }
+
+  // private validateSellerStatus(amount: number): boolean {
+        // console.log(this.balances);
+        // if (this.balances) { con sole.log( 'there are balances'); }
+        // if (!(validateNewQuantity(this.product.quantity, amount) && this.balances)) { return false; }
+        // const curBalance = getBalanceforAsset(this.balances, this.selectedAssetType);
+        // return (isValidNewBalance2(this.selectedAssetType, curBalance, amount));
+    // }
+
+    private createCartItem(purchaseQuantity: number, totalPurchaseAmount: number = 0): CartItem {
+        totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.amount, purchaseQuantity);
+        const asset = new Asset(this.selectedAssetType.asset_type, String(totalPurchaseAmount));
+        const cartItem: CartItem = <CartItem> {
+                buyerUserID: this.myUserId,
+                buyerPublicKey: this.myPubKeyId,
+
+                sellerUserID: this._sellerShortData.productSellerID,
+                sellerPublicKey: this._sellerShortData.productSellerPublicKey,
+
+                productID: this.product.id,
+                productName: this.product.productName,
+                quantityPurchased: purchaseQuantity,
+                assetPricePerItem: this.selectedAssetType.amount,
+                assetPurchaseDetails: asset
+        };
+        return cartItem;
+    }
+    // ────────────────────────────────────────────────────────────────────────────────
+
+
+    //
+    // ──────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: P A G E   H E L P E R S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────
+    //
+    private onValidateProductAction(): boolean {
+        if (!this.purchaseQuantity) {
+            return this.errorAndAlert('Please select a valid quantity');
+        }
+        if (!this.selectedAssetType) {
+            return this.errorAndAlert('Please select purchase asset type');
+        }
+        return true;
+    }
+
+    private onCompleteProductAction() {
+        this.purchaseQuantity = 0;
+        this.selectedAssetType = null;
+        // return true;
+    }
+
+    private errorAndAlert(errorMessage: string): boolean {
+        alert(errorMessage);
+        return false;
+    }
+    // ────────────────────────────────────────────────────────────────────────────────
+
 }
 
 

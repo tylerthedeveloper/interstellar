@@ -1,8 +1,24 @@
 <h1> My Cart </h1>
 
-
-<div style="width:300px;">
-    <div *ngFor="let product of cartProducts">
-        <!-- <category-product-card [product]="product" (notify)="onSelectProduct($event)"></category-product-card> -->
+<div>
+    {{ cartItemsSource?.length }}
+    <div *ngIf="cartItemsSource?.length > 0">
+        <div *ngFor="let product of cartItemsSource">
+            <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
+        </div>
     </div>
-</div>
+    <div style="width:100%;">
+        <mat-card class="example-card" style="width:550px;">    
+            <span  *ngIf="cartItemsSource?.length > 0; then isCartItems; else emptyCart"> </span>
+            <ng-template #isCartItems>
+                <button mat-button (click)="proceedToCheckout()"> Proceed to Checkout </button>
+                <button mat-button (click)="emptyOutCart()"> Empty Cart </button>
+            </ng-template>
+            <ng-template #emptyCart>
+                <h2> It seems your cart is empty, why not checkout recent products </h2>
+                <button mat-button style="width:550px;" (click)="navigateToAllProducts()"> Products </button>
+            </ng-template>
+        </mat-card> 
+    </div>
+</div>  
+

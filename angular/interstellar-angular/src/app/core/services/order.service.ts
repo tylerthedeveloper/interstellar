@@ -6,7 +6,6 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import * as firebase from 'firebase/app';
 import { Subject } from 'rxjs/Subject';
 import { User } from 'app/user';
-import { OrderCategory } from 'app/marketplace/_market-models/order-category';
 import { Order } from 'app/marketplace/_market-models/order';
 
 
@@ -34,13 +33,13 @@ export class OrderService {
 
         const _orderData = <Order>JSON.parse(orderData);
 
-        const _docID = this.afs.createId();
-        const _cat = _orderData.orderCategory;
-        console.log(_cat);
-        _orderData.id = _docID;
-        this.ordersCollection.doc(_docID).set(_orderData);
-        this.orderCategoriesCollection.doc(`${_cat}/orders/${_docID}`).set(_orderData);
-        this.userOrdersCollection.doc(`${_userID}/orders/${_docID}`).set(_orderData);
+        // const _docID = this.afs.createId();
+        // const _cat = _orderData.orderCategory;
+        // console.log(_cat);
+        // _orderData.id = _docID;
+        // this.ordersCollection.doc(_docID).set(_orderData);
+        // this.orderCategoriesCollection.doc(`${_cat}/orders/${_docID}`).set(_orderData);
+        // this.userOrdersCollection.doc(`${_userID}/orders/${_docID}`).set(_orderData);
 
         // this.ordersCollection.add(_orderData);
         // this.orderCategoriesCollection.doc(_cat).set(_orderData);
@@ -90,11 +89,6 @@ export class OrderService {
         // return this.afs.list(`/user-orders/names/${name}`);
         return;
 
-    }
-
-    getOrdersByCategory(category: string): Observable<any> {
-        console.log(category);
-        return this.orderCategoriesCollection.doc(category).collection('orders').valueChanges();
     }
 
     getOrdersByUserTitle(title: string): Observable<any> {

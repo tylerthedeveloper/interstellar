@@ -1,3 +1,12 @@
+//
+// ──────────────────────────────────────────────── I ──────────
+//   :::::: T O D O : :  :   :    :     :        :          :
+// ─────────────────────────────────────────────────────────
+/**
+ *  1 - NEED TO ABSTRACT OUT OF NAV COMPONENT - TOO MUCH GOING ON THERE
+ */
+//
+
 import { Component, OnInit, ViewChild, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router';

@@ -8,7 +8,7 @@ import { ProductCategory } from 'app/marketplace/_market-models/product-category
 })
 export class CategoryCardComponent implements OnInit {
 
-    @Input() category : ProductCategory;
+    @Input() category: ProductCategory;
     @Output() notify: EventEmitter<string> = new EventEmitter<string>();
     constructor() { }
 

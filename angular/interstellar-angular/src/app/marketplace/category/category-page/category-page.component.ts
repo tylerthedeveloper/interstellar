@@ -66,6 +66,8 @@ export class CategoryPageComponent implements OnInit {
                 { asset_type: 'tycoin', amount: 7  },
             ],
 
+            productThumbnailLink: 'https://images10.newegg.com/productimage/14-487-290-01.jpg',
+
             productSellerData: {
                 productSellerID: sessionStorage.getItem('user_doc_id'),
                 productSellerName: sessionStorage.getItem('user_name'),

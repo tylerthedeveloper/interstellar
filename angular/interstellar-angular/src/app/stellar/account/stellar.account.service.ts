@@ -1,3 +1,16 @@
+//
+// ──────────────────────────────────────────────── I ──────────
+//   :::::: T O D O : :  :   :    :     :        :          :
+// ─────────────────────────────────────────────────────────
+/**
+ *  1 - NEED TO TEST MERGE
+ *  2 - NEED TO SWITCH TO REAL NETWORK
+ *  3 - NEED TO TEST ON REAL NETWORK
+ * *** NEED TO USE COOKIE CACHING - LOCAL DOESNT WORK
+ */
+//
+
+
 import { Injectable } from '@angular/core';
 import {Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
 import * as StellarSDK from 'stellar-sdk';
@@ -79,5 +92,5 @@ export class StellarAccountService {
     HandleError(error: Response) {
         // alert(error);
         return Observable.throw(error || 'Server error');
-      }
+    }
 }

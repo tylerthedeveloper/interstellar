@@ -5,14 +5,14 @@ import { CommonModule } from '@angular/common';
 
 
 import {
-    MatButtonModule,  MatTabsModule, MatMenuModule, MatCardModule, MatInputModule, 
-    MatGridListModule, MatTableModule, MatSidenavModule, MatSelectModule, 
+    MatButtonModule,  MatTabsModule, MatMenuModule, MatCardModule, MatInputModule,
+    MatGridListModule, MatTableModule, MatSidenavModule, MatSelectModule,
     MatDialogModule, MatToolbarModule
 } from '@angular/material';
 
-const materialModules = [ MatButtonModule, MatTabsModule, MatMenuModule, 
-                          MatCardModule, MatInputModule, MatGridListModule, 
-                          MatTableModule, MatSidenavModule, MatSelectModule, 
+const materialModules = [ MatButtonModule, MatTabsModule, MatMenuModule,
+                          MatCardModule, MatInputModule, MatGridListModule,
+                          MatTableModule, MatSidenavModule, MatSelectModule,
                           MatDialogModule, MatToolbarModule
 ];
 
