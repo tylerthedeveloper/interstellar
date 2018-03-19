@@ -83,7 +83,10 @@ export class CartService {
         // batch.commit();
         this.userCartCollection.valueChanges()
                     // .map(item => <Array<CartItem>> item)
-                    .map(items => items.forEach(item => this.myCartRef(item.cartItemID).delete()));
+                    .map(items => items.forEach(item => {
+                        console.log(item)
+                        this.myCartRef.doc(item.cartItemID).delete()
+                    }));
         // this.userCartCollection.doc(this._userID).collection('cartItems').doc(item.cartItemID).delete();
     }
     // ────────────────────────────────────────────────────────────────────────────────

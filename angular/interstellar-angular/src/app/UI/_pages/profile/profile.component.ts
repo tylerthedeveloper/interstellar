@@ -55,8 +55,6 @@ export class ProfileComponent implements OnInit {
                 // .map(user => <User> user)
                 .subscribe(user => {
                     this.user = user;
-                    // console.log(user);
-                    // const userID = user.id;
                     this._userModel = <User> user;
                     this.profileForm = this.createFormGroup();
                     this._productService

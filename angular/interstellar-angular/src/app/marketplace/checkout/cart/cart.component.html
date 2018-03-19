@@ -1,7 +1,6 @@
 <h1> My Cart </h1>
 
 <div>
-    {{ cartItemsSource?.length }}
     <div *ngIf="cartItemsSource?.length > 0">
         <div *ngFor="let product of cartItemsSource">
             <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>

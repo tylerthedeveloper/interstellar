@@ -5,6 +5,7 @@ import { Order } from '../../_market-models/order';
 import { CartService } from '../../../core/services/cart.service';
 import { Router } from '@angular/router';
 import { CartItem } from '../../_market-models/cart-item';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'cart',
@@ -13,6 +14,7 @@ import { CartItem } from '../../_market-models/cart-item';
 })
 export class CartComponent implements OnInit {
 
+    private subscription: ISubscription;
     private cartItemsSource: CartItem[];
     // private cartItemsSource: Observable<CartItem[]>;
 
@@ -21,7 +23,7 @@ export class CartComponent implements OnInit {
 
     ngOnInit() {
         // this.cartItemsSource = this._cartService.getCurrentCart().map(c => c);
-        this._cartService.getCurrentCart().subscribe(c => this.cartItemsSource = c)
+        this.subscription = this._cartService.getCurrentCart().subscribe(c => this.cartItemsSource = c);
     }
 
     onCartItemAction(data: string) {
@@ -63,7 +65,14 @@ export class CartComponent implements OnInit {
     }
 
     emptyOutCart() {
-        this._cartService.emptyCart();
+        this.cartItemsSource.forEach(item => this._cartService.removeCartItem(item.cartItemID))
+        this.subscription.unsubscribe();
+        console.log(this.cartItemsSource)
+        console.log(this.cartItemsSource.length)
+        this.cartItemsSource = [];
+        console.log(this.cartItemsSource)
+        console.log(this.cartItemsSource.length)
+
     }
 
 
