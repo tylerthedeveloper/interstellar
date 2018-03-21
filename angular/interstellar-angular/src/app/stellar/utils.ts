@@ -27,6 +27,21 @@ const calcTotalPurchaseAmount = (assetAmount: string, purchaseQuantity: number):
     return (parseInt(assetAmount, 10) * purchaseQuantity);
 };
 
+const calcTotalsForMultipleAssets = (assets: Asset[]): Asset[] => {
+    const updatedAssets = new Array<Asset>();
+    assets.forEach(asset => {
+        if (!updatedAssets.find(CIT => CIT.asset_type === asset.asset_type)) {
+            updatedAssets.push(asset);
+        } else {
+            const idx = updatedAssets.findIndex(CIT => CIT.asset_type === asset.asset_type);
+            const curAssAmount = updatedAssets[0].amount;
+            const newAssAmount = (Number(curAssAmount) + Number(asset.amount));
+            updatedAssets[0].amount = String(newAssAmount);
+        }
+    });
+    return updatedAssets;
+};
+
 const isValidNewBalance = (assetType: string, currentBalance: number, totalAssetAmount: number): boolean => {
     const newBalance = (currentBalance - totalAssetAmount);
     if (newBalance >= 0) {
@@ -53,5 +68,5 @@ const getBalanceforAsset = (balanceArray: Array<AccountBalance>, assetType: stri
 
 export { isValidSecretKey, currencyAssetsMapper, getBalanceforAsset,
         calcTotalPurchaseAmount, updateBalance, isValidNewBalance,
-        StellarLumensMinimum, TyCoinMinimum
+        StellarLumensMinimum, TyCoinMinimum, calcTotalsForMultipleAssets
 };

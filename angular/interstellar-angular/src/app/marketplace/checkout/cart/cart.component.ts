@@ -6,6 +6,8 @@ import { CartService } from '../../../core/services/cart.service';
 import { Router } from '@angular/router';
 import { CartItem } from '../../_market-models/cart-item';
 import { ISubscription } from 'rxjs/Subscription';
+import { Asset } from 'app/stellar';
+import { calcTotalsForMultipleAssets } from '../../../stellar/utils';
 
 @Component({
   selector: 'cart',
@@ -14,8 +16,11 @@ import { ISubscription } from 'rxjs/Subscription';
 })
 export class CartComponent implements OnInit {
 
+    // TODO: subscription choice here?
+        // Why does async fetch first item after batch empty delete
     private subscription: ISubscription;
     private cartItemsSource: CartItem[];
+    private assetTotals: Asset[];
     // private cartItemsSource: Observable<CartItem[]>;
 
     constructor(private _cartService: CartService,
@@ -23,8 +28,38 @@ export class CartComponent implements OnInit {
 
     ngOnInit() {
         // this.cartItemsSource = this._cartService.getCurrentCart().map(c => c);
-        this.subscription = this._cartService.getCurrentCart().subscribe(c => this.cartItemsSource = c);
+        this.assetTotals = [];
+        this.subscription = this._cartService.getCurrentCart().subscribe(cartItems => {
+                this.cartItemsSource = cartItems;
+                this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
+                console.log(this.assetTotals);
+        });
     }
+
+    //
+    // ──────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────
+    //
+    proceedToCheckout() {
+        this._router.navigate(['/cart/checkout']);
+    }
+
+    navigateToAllProducts() {
+        this._router.navigate(['/products']);
+    }
+
+    emptyOutCart() {
+        this.cartItemsSource.forEach(item => this._cartService.removeCartItem(item.cartItemID));
+        this.subscription.unsubscribe();
+        this.cartItemsSource = [];
+    }
+
+    //
+    // ──────────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: H E L P E R   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────────
+    //
 
     onCartItemAction(data: string) {
         const obj = JSON.parse(data);
@@ -34,8 +69,6 @@ export class CartComponent implements OnInit {
             newCartItemData = obj.newData;
         }
 
-        // console.log(action)
-        // console.log(payload)
         switch (action) {
             case 'purchase':
                 console.log('pur');
@@ -48,32 +81,10 @@ export class CartComponent implements OnInit {
                 console.log('rem');
                 console.log(cartItem);
                 this._cartService.removeCartItem(cartItem.cartItemID);
-                this.cartItemsSource = this.cartItemsSource.filter(item => item.cartItemID !== cartItem.cartItemID)
-                // this._cartService.getCurrentCart().subscribe(c => this.cartItemsSource)
+                this.cartItemsSource = this.cartItemsSource.filter(item => item.cartItemID !== cartItem.cartItemID);
                 break;
             default:
                 return;
         }
     }
-
-    proceedToCheckout() {
-        this._router.navigate(['/cart/checkout']);
-    }
-
-    navigateToAllProducts() {
-        this._router.navigate(['/products']);
-    }
-
-    emptyOutCart() {
-        this.cartItemsSource.forEach(item => this._cartService.removeCartItem(item.cartItemID))
-        this.subscription.unsubscribe();
-        console.log(this.cartItemsSource)
-        console.log(this.cartItemsSource.length)
-        this.cartItemsSource = [];
-        console.log(this.cartItemsSource)
-        console.log(this.cartItemsSource.length)
-
-    }
-
-
 }

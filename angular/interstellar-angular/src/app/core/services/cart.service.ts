@@ -34,7 +34,7 @@ export class CartService {
 
     //
     // ──────────────────────────────────────────────────────────────── I ──────────
-    //   :::::: C R U D   M E T H O D S : :  :   :    :     :        :          :
+    //   :::::: P U B L I C  C R U D   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
     getCurrentCart(): Observable<CartItem[]> {
@@ -71,27 +71,16 @@ export class CartService {
         this.userCartCollection.doc(cartItemID).delete();
     }
 
+    // TODO: implement batch delete... determine where to pull from ... dont AWAIT subscribe
     emptyCart() {
-        console.log('eeee')
-        // const batch = this.afs.firestore.batch();
-        // const curItems = await this.userCartCollection.ref.get();
-        // curItems.then(items => 
-        //     items.forEach(item => {
-        //         console.log(item);
-        //         batch.delete(item.ref)
-        //     }));
-        // batch.commit();
-        this.userCartCollection.valueChanges()
-                    // .map(item => <Array<CartItem>> item)
-                    .map(items => items.forEach(item => {
-                        console.log(item)
-                        this.myCartRef.doc(item.cartItemID).delete()
-                    }));
-        // this.userCartCollection.doc(this._userID).collection('cartItems').doc(item.cartItemID).delete();
+        this.userCartCollection
+                .valueChanges()
+                .map(items => items.forEach(item => this.myCartRef.doc(item.cartItemID).delete()));
     }
     // ────────────────────────────────────────────────────────────────────────────────
 
 
+    // TODO: implement error handling
     //
     // ────────────────────────────────────────────────────── I ──────────
     //   :::::: H E L P E R S : :  :   :    :     :        :          :

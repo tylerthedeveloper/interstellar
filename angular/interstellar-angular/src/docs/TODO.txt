@@ -1,20 +1,25 @@
+FIGURE OUT OPTIMAL ASYNC SUBSCRIPTION METHOD
+    subscribe | set equal | async pipe  ... unsubscribe??
+
 modules
     SHARED
         Models
         templates
-            product, category        
-    CORE
-    UI Module
-        no material
-            use [...spead] from consants 
+            product, category ... any prod view / card        
     
+    CORE
+    
+    UI Module
+        no material ...? import in?
 
     *** Loading ***
         load ALL after home page is complete!!!
-        
+            careful with "lazy"
+                -> transition from lazy to eager load after init
+    
     REDUX -> NGRX
         central Store
-
+        MAKE + SHARE REDUCERS!!!
     
     
 
