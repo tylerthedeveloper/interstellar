@@ -97,13 +97,7 @@ export class ProfileComponent implements OnInit {
                     // this.profileForm = new FormGroup(group);
     }
 
-    // get profileForm(): FormArray {
-    //     return this.profileForm.value as FormArray;
-    // };
-
     updateProfile(f: FormGroup) {
-        // console.log(f);
-        // console.log(this.profileForm.value);
         const data = {
             id: this._userModel.id,
             data: this.profileForm.value

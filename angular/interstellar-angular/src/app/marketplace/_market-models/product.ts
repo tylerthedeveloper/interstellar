@@ -10,7 +10,7 @@ export class Product {
     productName: string;
     productShortDescription: string;
     productLongDescription: string;
-    price: number;
+    fixedUSDAmount: number;
     quantity: number;
     productPrices: Array<Asset>;
 

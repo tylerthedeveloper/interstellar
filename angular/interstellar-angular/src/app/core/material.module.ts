@@ -7,13 +7,13 @@ import { CommonModule } from '@angular/common';
 import {
     MatButtonModule,  MatTabsModule, MatMenuModule, MatCardModule, MatInputModule,
     MatGridListModule, MatTableModule, MatSidenavModule, MatSelectModule,
-    MatDialogModule, MatToolbarModule
+    MatDialogModule, MatToolbarModule, MatStepperModule
 } from '@angular/material';
 
 const materialModules = [ MatButtonModule, MatTabsModule, MatMenuModule,
                           MatCardModule, MatInputModule, MatGridListModule,
                           MatTableModule, MatSidenavModule, MatSelectModule,
-                          MatDialogModule, MatToolbarModule
+                          MatDialogModule, MatToolbarModule, MatStepperModule
 ];
 
 @NgModule({

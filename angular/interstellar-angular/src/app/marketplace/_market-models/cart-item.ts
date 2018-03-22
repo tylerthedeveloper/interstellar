@@ -17,6 +17,8 @@ export class CartItem {
     assetPricePerItem: string;
     assetPurchaseDetails: Asset;
 
+    fixedUSDAmount: number;
+    isInCheckout: boolean;
 
     constructor(buyerUserID: string,
                 buyerPublicKey: string,
@@ -37,5 +39,6 @@ export class CartItem {
                         this.quantityPurchased = quantityPurchased,
                         this.assetPricePerItem = assetPricePerItem,
                         this.assetPurchaseDetails = assetPurchaseDetails;
+                        this.isInCheckout = false;
                 }
 }

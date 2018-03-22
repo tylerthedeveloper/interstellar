@@ -6,38 +6,38 @@ $(document).ready(function(){
 
 <span class="top-space"></span>
 <div class="nav-spacing"> <!-- style="position: fixed;"" -->
-    <!-- <md-toolbar class="bottom-nav">
-        <button md-button [routerLink]="['/posts']" routerLinkActive="active">
+    <!-- <mat-toolbar class="bottom-nav">
+        <button mat-button [routerLink]="['/posts']" routerLinkActive="active">
             POSTS
         </button>
         
-        <button md-button [routerLink]="['/people']" routerLinkActive="active">
+        <button mat-button [routerLink]="['/people']" routerLinkActive="active">
             PEOPLE
         </button>
-        <button md-button [routerLink]="['/projects']" routerLinkActive="active">
+        <button mat-button [routerLink]="['/projects']" routerLinkActive="active">
             PROJECTS
         </button>
-    </md-toolbar> -->
+    </mat-toolbar> -->
     <div class="navbar">
         <div class="container">
             <mat-toolbar class="main-nav">
-                <button md-raised-button id="home" [routerLink]="['/home']" 
+                <button mat-raised-button id="home" [routerLink]="['/home']" 
                     (click)="changePage('home')" routerLinkActive="active"
                     class="main-nav-button">
                     Home
                 </button>
                 <!-- *ngIf="loggedIn"   [routerLink]="['/profile', user.uid]"   -->
-                <button [style.display]="!loggedIn?'none':'inherit'" md-raised-button id="profile" [routerLink]="['/profile']" 
+                <button [style.display]="!loggedIn?'none':'inherit'" mat-raised-button id="profile" [routerLink]="['/profile']" 
                         (click)="changePage('profile')" routerLinkActive="active"
                         class="main-nav-button">
                     Profile
                 </button> 
-                <button md-raised-button id="categories" (click)="changePage('categories')" 
+                <button mat-raised-button id="categories" (click)="changePage('categories')" 
                         [routerLink]="['/categories']" routerLinkActive="active"
                     class="main-nav-button">
                     Categories
                 </button>
-                <button md-raised-button id="products" (click)="changePage('products')" 
+                <button mat-raised-button id="products" (click)="changePage('products')" 
                         [routerLink]="['/products']" routerLinkActive="active"
                     class="main-nav-button">
                     Products
@@ -46,27 +46,27 @@ $(document).ready(function(){
                 <div style="float:right;">                
                     <!-- (click)="toggle(sidenav)" -->
                     <div *ngIf="loggedIn">
-                        <button md-raised-button id="cart" [routerLink]="['/cart']" 
+                        <button mat-raised-button id="cart" [routerLink]="['/cart']" 
                             (click)="changePage('cart')" routerLinkActive="active"
                             class="main-nav-button">
                             Cart {{ cartItemCount }}
                         </button>
-                        <button md-raised-button class="main-nav-button" (click)="logout()"> 
+                        <button mat-raised-button class="main-nav-button" (click)="logout()"> 
                                 Logout 
                         </button>             
                     </div>
                     <div *ngIf="!loggedIn">                    
-                        <button md-raised-button id="register" [routerLink]="['/register']" 
+                        <button mat-raised-button id="register" [routerLink]="['/register']" 
                             (click)="changePage('register')" routerLinkActive="active"
                             class="main-nav-button">
                             Signup or Register
                         </button>
                     <!-- BETTER TEMPLATING!!!! -->
-                        <button md-raised-button *ngIf="!loggedIn" (click)="toggle(sidenav)" class="main-nav-button"> 
+                        <button mat-raised-button *ngIf="!loggedIn" (click)="toggle(sidenav)" class="main-nav-button"> 
                             Login
                         </button>
                     </div>
-                    <!-- <button md-raised-button class="main-nav-button"> 
+                    <!-- <button mat-raised-button class="main-nav-button"> 
                         <span (click)="toggle(sidenav)" *ngIf="!loggedIn; else logswitch"> Login </span>
                         <ng-template #logswitch> <span (click)="logout()"> Logout </span> </ng-template>
                     </button> -->

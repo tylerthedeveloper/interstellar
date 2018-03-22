@@ -32,7 +32,7 @@ export class CartComponent implements OnInit {
         this.subscription = this._cartService.getCurrentCart().subscribe(cartItems => {
                 this.cartItemsSource = cartItems;
                 this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
-                console.log(this.assetTotals);
+                console.log(this.assetTotals.length);
         });
     }
 
@@ -42,6 +42,13 @@ export class CartComponent implements OnInit {
     // ──────────────────────────────────────────────────────────────────────────
     //
     proceedToCheckout() {
+
+        // UPDATE CART ITEM
+        // ADD IF IS IN CHECKOUT
+        // FOR EACH ... ALLOW CHECKBOXES ... UPDATE
+        // GET ALL FOR EACH ON CHECKOUT IF IN CHECKOIUT
+
+
         this._router.navigate(['/cart/checkout']);
     }
 
@@ -60,10 +67,11 @@ export class CartComponent implements OnInit {
     //   :::::: H E L P E R   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────────
     //
-
     onCartItemAction(data: string) {
         const obj = JSON.parse(data);
-        const action = obj.action, cartItem = obj.payload;
+        const action = obj.action;
+        const cartItem = obj.payload;
+        const cartItemID = cartItem.cartItemID;
         let newCartItemData = '';
         if (obj.newData) {
             newCartItemData = obj.newData;
@@ -71,7 +79,9 @@ export class CartComponent implements OnInit {
 
         switch (action) {
             case 'purchase':
-                console.log('pur');
+                console.log(obj);
+                this.updateAddToCheckout(cartItemID);
+                this.proceedToCheckout();
                 break;
             case 'edit':
                 console.log('ed');
@@ -86,5 +96,9 @@ export class CartComponent implements OnInit {
             default:
                 return;
         }
+    }
+
+    updateAddToCheckout(cartItemID: string) {
+        this._cartService.addToCheckout(cartItemID);
     }
 }

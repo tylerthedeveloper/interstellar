@@ -1,3 +1,45 @@
 <p>
   checkout works!
 </p>
+
+<mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper">
+    <mat-step [stepControl]="firstFormGroup">
+        <ng-template matStepLabel> Review product details </ng-template>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <ng-template matStepLabel> Re-enter seceret key </ng-template>      
+        <mat-form-field>
+            <input matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey required>
+          </mat-form-field>
+          <button mat-button (click)="validateCheckoutSecretKey(checkoutSecretKey.value)"> Validate Key </button>
+          <button *ngIf="isValidSecretKey" mat-button matStepperNext>Next</button>
+        <div>
+      </div>
+    </mat-step>
+    <mat-step [stepControl]="thirdFormGroup">
+        <ng-template matStepLabel> Validate Funds </ng-template>      
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        Asset Totals Before:
+                        <button mat-button (click)="validCheckoutFunds()"> Validate Funds </button>
+                    </div>
+                    <div class="col-md-4">
+                        Asset Totals After
+                    </div>
+              </div>
+          </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel> Confirm </ng-template>
+      You are now done.
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+  

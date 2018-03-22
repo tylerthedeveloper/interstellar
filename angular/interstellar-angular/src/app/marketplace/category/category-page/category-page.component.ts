@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from 'app/core/services/product.service';
 import { PartialProduct } from '../../_market-models/partial-product';
 import { ProductCategoryEnum } from '../../_market-models/product-category';
+import { Asset } from 'app/stellar';
 
 @Component({
   selector: 'category-page',
@@ -24,18 +25,12 @@ export class CategoryPageComponent implements OnInit {
                 private _productService: ProductService,
                 private location: Location,
                 public router: Router) {
-                  // console.log("cat pag  comp")
     }
 
     ngOnInit() {
         const params: any = this.activatedRoute.snapshot.params;
-      // console.log(params);
         this.pageCategory = params.category;
-        this._productService.getProductsByCategory(params.category)
-            .subscribe(products => {
-                // console.log(products);
-                this.categoriedProducts = products;
-            });
+        this._productService.getProductsByCategory(params.category).subscribe(products => this.categoriedProducts = products);
     }
 
     addProduct () {
@@ -57,13 +52,12 @@ export class CategoryPageComponent implements OnInit {
             productShortDescription: 'short des',
             productLongDescription: 'looooooooooooong des',
 
-            price: 10,
+            fixedUSDAmount: 10,
             quantity: 15,
             productCategory: ProductCategoryEnum.Electronics,
             productPrices: [
-                // new Asset ()
-                { asset_type: 'native', amount: 5 },
-                { asset_type: 'tycoin', amount: 7  },
+                <Asset> { asset_type: 'native', amount: '5.00000' },
+                <Asset> { asset_type: 'tycoin', amount: '7.00000'  },
             ],
 
             productThumbnailLink: 'https://images10.newegg.com/productimage/14-487-290-01.jpg',
@@ -73,9 +67,6 @@ export class CategoryPageComponent implements OnInit {
                 productSellerName: sessionStorage.getItem('user_name'),
                 productSellerPublicKey: sessionStorage.getItem('public_key')
             }
-            // productSellerID: "OUvVE6WL3OToob6xRStV",
-            // productSellerName: "tito money",
-            // productSellerPublicKey: "GCEDZY5CHDSTH5GT67DEHORK23ZLJQAVQTHNG7XBK5JWX675JQ4SOMH7"
         };
         this._productService.addProduct(JSON.stringify(productData));
     }
@@ -85,9 +76,7 @@ export class CategoryPageComponent implements OnInit {
     }
 
     onSelectProduct = (product: string) => {
-      // console.log(product["id"])
-      this.router.navigate(['/products', product['id']]);
-
+        this.router.navigate(['/products', product['id']]);
     }
 
 

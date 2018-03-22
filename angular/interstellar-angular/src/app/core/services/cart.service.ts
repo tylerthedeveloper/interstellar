@@ -67,6 +67,10 @@ export class CartService {
         // this.userCartCollection.doc(this._userID).collection('cartItems').doc('cartItemID').update(newCartItemData);
     }
 
+    addToCheckout(cartItemID: string) {
+        this.userCartCollection.doc(cartItemID).update({isInCheckout: true});
+    }
+
     removeCartItem(cartItemID: string) {
         this.userCartCollection.doc(cartItemID).delete();
     }

@@ -5,8 +5,11 @@ import { NgModule } from '@angular/core';  // , Optional, SkipSelf
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MaterialModule } from './material.module';
 import { NavBarComponent } from './components/navbar/navbar.component';
+
 import { AuthGuardService } from './_helpers/auth-guard.service';
 import { EventEmitterService } from './_helpers/event-emitter.service';
 import { ProductService } from './services/product.service';
@@ -16,10 +19,12 @@ import { CartService } from './services/cart.service';
 
 @NgModule({
     imports: [
-        CommonModule, FormsModule, RouterModule, MaterialModule, ReactiveFormsModule
+        CommonModule, FormsModule, RouterModule, MaterialModule,
+        ReactiveFormsModule, NgbModule.forRoot()
     ],
     exports: [
-        CommonModule, FormsModule, RouterModule, MaterialModule, ReactiveFormsModule,
+        CommonModule, FormsModule, RouterModule, MaterialModule,
+        ReactiveFormsModule, NgbModule,
         [NavBarComponent]
     ],
     declarations: [NavBarComponent],

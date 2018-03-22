@@ -1,1 +1,73 @@
 /* You can add global styles to this file, and also import other style files */
+/* @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+*/
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons'; 
+@import url('https://fonts.googleapis.com/css?family=Kanit');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+body {
+    background: rgb(236, 236, 236);
+    transition:all 0.3s ease;
+}
+
+h1, h2, h3 {
+    font-family: 'Kanit', sans-serif;
+}
+
+li, p, label {
+    font-family: 'Roboto', sans-serif;
+}
+
+.row {
+    margin-bottom: 50px;
+}
+
+mat-ink-bar.mat-ink-bar {
+    background-color: #1b3039;
+}
+
+.mat-tab-label {
+    width: 50%;
+    font-size: 16px;
+}
+
+.mat-tab-label:focus {
+    background-color: rgba(40, 112, 49, 0.3);
+}
+
+.form-full-width {
+    width: 100%;
+}
+
+.form-half-width {
+    width: 50%;
+}
+
+mat-card {
+    border-top: 2px solid #445963;
+}
+
+.mat-input-ripple {
+    background-color: #708690;
+}
+
+button {
+    background-color: #60ac5d;
+    font-family: 'Roboto', sans-serif;
+}
+
+.post-top {
+    text-align: center;
+    font-weight: 500;
+    padding-top: 4px;
+    height: 30px;
+    background-color: #445963;
+    width: 175px;
+    font-family: 'Kanit', sans-serif;
+    font-size: 16px;
+    color: white;
+    border-radius: 5px 5px 0 0;
+} 
+

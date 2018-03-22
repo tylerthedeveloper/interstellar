@@ -17,19 +17,35 @@ export class CheckoutComponent implements OnInit {
         // Why does async fetch first item after batch empty delete
         private cartItemsSource: CartItem[];
         private assetTotals: Asset[];
+        private isValidSecretKey: boolean;
         // private cartItemsSource: Observable<CartItem[]>;
 
+        @Input() CartItem: any;
         constructor(private _cartService: CartService,
                     private _router: Router) { }
 
         ngOnInit() {
+            console.log(this.CartItem);
             // this.cartItemsSource = this._cartService.getCurrentCart().map(c => c);
             this.assetTotals = [];
             this._cartService.getCurrentCart().subscribe(cartItems => {
-                    this.cartItemsSource = cartItems;
+                    this.cartItemsSource = cartItems.filter(CIT => CIT.isInCheckout === true);
                     this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
-                    console.log(this.assetTotals);
+                    console.log(this.cartItemsSource);
             });
+        }
+
+        validateCheckoutSecretKey(secretKey: string) {
+            console.log(secretKey);
+
+
+            // chec kfrom stellar. ....
+            // check matcghes current public key ....
+            // check maktches current secret key ....
+
+            if (secretKey) {
+                this.isValidSecretKey = true;
+            }
         }
 
 

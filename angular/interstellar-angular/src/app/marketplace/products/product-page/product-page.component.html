@@ -10,24 +10,25 @@
         <mat-card-header >
             <!-- <div mat-card-avatar class="example-header-image"></div> -->
             <mat-card-title> Item Name: {{ product?.productName }} </mat-card-title>
-            <mat-card-subtitle> Price ... {{ product?.price }}</mat-card-subtitle>
+            <mat-card-subtitle> USD Value: ($) {{ product?.fixedUSDAmount }}</mat-card-subtitle>
             <mat-card-subtitle> Quantity: {{ product?.quantity }}</mat-card-subtitle>
             <mat-card-subtitle> {{ product?.subtitle }}</mat-card-subtitle>
         </mat-card-header>
+        <br/>        
         <mat-card-content>
-          <p> Description: {{ product?.productLongDescription }} </p>
-          <div>
-              <label for="purchaseQuantity"> Select Quantity: </label>
-              <mat-input-container>
-                  <input matInput type="number" id="purchaseQuantity" [(ngModel)]="purchaseQuantity">
+            <p> Description: {{ product?.productLongDescription }} </p>
+            <div *ngIf="!isMyProduct;">
+                <label for="purchaseQuantity"> Select Quantity: </label>
+                <mat-input-container>
+                    <input matInput type="number" id="purchaseQuantity" [(ngModel)]="purchaseQuantity">
                 </mat-input-container> 
+                <br/>
+                <mat-select id="assetSelectionType" class="asset" placeholder="Asset Type" [(ngModel)]="selectedAssetType">
+                    <mat-option *ngFor="let type of product?.productPrices" [value]="type">
+                        Price: {{ type.amount }} {{ type.asset_type }} 's
+                    </mat-option>
+                </mat-select>
             </div>
-            <br/>
-            <mat-select id="assetSelectionType" class="asset" placeholder="Asset Type" [(ngModel)]="selectedAssetType">
-                <mat-option *ngFor="let type of product?.productPrices" [value]="type">
-                    Price: {{ type.amount }} {{ type.asset_type }} 's
-                </mat-option>
-            </mat-select>
         </mat-card-content>
         <mat-card-actions>
             <span *ngIf="!isMyProduct; then notMyProduct; else myProductBlock"> </span>

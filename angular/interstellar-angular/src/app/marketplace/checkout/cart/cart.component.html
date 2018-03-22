@@ -1,31 +1,43 @@
-<h1> My Cart </h1>
 
-<div>
-    <div *ngIf="cartItemsSource?.length > 0">
-        <div *ngFor="let product of cartItemsSource">
-            <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
-        </div>
-    </div>
-    <div id="assetTotals" style="width:100%;">
-        <mat-card class="example-card" style="width:550px;">    
-        <h2> Current Cart Asset Totals </h2>
-            <div *ngFor="let asset of assetTotals">
-                {{ asset?.amount }} {{ asset?.asset_type }}
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-7" *ngIf="cartItemsSource?.length > 0">
+            <h1> My Cart </h1>
+            <div *ngFor="let product of cartItemsSource">
+                <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
             </div>
-        </mat-card> 
-    </div>
-    <div style="width:100%;">
-        <mat-card class="example-card" style="width:550px;">    
-            <span  *ngIf="cartItemsSource?.length > 0; then isCartItems; else emptyCart"> </span>
-            <ng-template #isCartItems>
-                <button mat-button (click)="proceedToCheckout()"> Proceed to Checkout </button>
-                <button mat-button (click)="emptyOutCart()"> Empty Cart </button>
-            </ng-template>
-            <ng-template #emptyCart>
-                <h2> It seems your cart is empty, why not checkout recent products </h2>
-                <button mat-button style="width:550px;" (click)="navigateToAllProducts()"> Products </button>
-            </ng-template>
-        </mat-card> 
+        </div>
+        <div class="col-12 offset-md-2 col-md-2 text-nowrap" id="assetTotals" >
+            <div  *ngIf="cartItemsSource?.length > 0">
+
+                <h2 style="width:400 px; display: flex;"> Cart Asset Totals </h2>
+                <mat-card class="example-card" style="width:550px;">    
+                    <div *ngFor="let asset of assetTotals">
+                        {{ asset?.amount }} {{ asset?.asset_type }}
+                    </div>
+                </mat-card> 
+            </div>
+            
+            <br />
+            <div>
+                <span *ngIf="cartItemsSource?.length > 0; then isCartItems; else emptyCart"> </span>
+                <ng-template #isCartItems>
+                    <h2 class="text-nowrap" style="width:400 px; display: flex;"> Cart Options </h2>
+                    <mat-card class="example-card" style="width:550px;">    
+                        <button mat-button (click)="proceedToCheckout()"> Proceed to Checkout </button>
+                        <button mat-button (click)="emptyOutCart()"> Empty Cart </button>
+                    </mat-card>
+                </ng-template>
+                <ng-template #emptyCart>
+                    <h2 class="text-nowrap" style="width:400 px; display: flex;"> Empty Cart
+                    </h2>
+                    <mat-card class="example-card" style="width:550px;">    
+                            <p> It seems your cart is empty, why not checkout recent products </p>
+                            <button mat-button style="width:550px;" (click)="navigateToAllProducts()"> Products </button>
+                    </mat-card>
+                </ng-template>
+            </div>
+        </div>
     </div>
 </div>  
 
