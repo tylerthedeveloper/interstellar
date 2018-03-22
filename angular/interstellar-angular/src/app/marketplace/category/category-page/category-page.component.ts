@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { ProductCardComponent } from '../../products/product-card/product-card.component';
-import { CommonModule } from '@angular/common';
 import { ProductService } from 'app/core/services/product.service';
 import { PartialProduct } from '../../_market-models/partial-product';
 import { ProductCategoryEnum } from '../../_market-models/product-category';

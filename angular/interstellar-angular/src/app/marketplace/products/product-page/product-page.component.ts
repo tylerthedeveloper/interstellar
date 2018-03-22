@@ -32,7 +32,7 @@ export class ProductPageComponent implements OnInit {
     private assetTypes: any = [];
 
     // TODO: CHANGE THIS TO NULL
-    private selectedAssetType: Asset = <Asset> { asset_type: 'native', amount: '5' };
+    private selectedAssetType: Asset; //  = <Asset> { asset_type: 'native', amount: '5' };
 
     // TODO: CHANGE THIS TO 0
     private purchaseQuantity = 1;
@@ -221,6 +221,8 @@ export class ProductPageComponent implements OnInit {
                 productID: this.product.id,
                 productName: this.product.productName,
                 quantityPurchased: purchaseQuantity,
+                fixedUSDAmount: this.product.fixedUSDAmount,
+                productThumbnailLink: this.product.productThumbnailLink,
                 assetPricePerItem: this.selectedAssetType.amount,
                 assetPurchaseDetails: asset
         };

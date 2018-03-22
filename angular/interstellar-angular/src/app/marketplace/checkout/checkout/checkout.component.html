@@ -1,44 +1,59 @@
-<p>
-  checkout works!
-</p>
+<button (click)="returnToCart()"> Return to Cart </button>
+
 
 <mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper">
-    <mat-step [stepControl]="firstFormGroup">
+    <mat-step [stepControl]="firstFormGroup" #stepOne>
         <ng-template matStepLabel> Review product details </ng-template>
         <div>
-          <button mat-button matStepperNext>Next</button>
+            <mat-card *ngFor="let product of checkoutItemsSource">
+                <img mat-card-image src="{{ cartItem?.productThumbnailLink }}" alt="alt">
+                <mat-card-content>
+                    <p> Product Name: {{ product.productName }} </p>
+                    <p> Fixed USD Amount ($): {{ product.fixedUSDAmount }} </p>
+                    <p> Quantity: {{ product.quantityPurchased }} </p>
+                    <p> Current Asset Value: {{ product.assetPricePerItem }} </p>
+                    <p> Total Asset Value: {{ product.assetPurchaseDetails.amount }} {{ product.assetPurchaseDetails.asset_type }} </p>
+                </mat-card-content>
+            </mat-card> 
+            <button mat-button matStepperNext (click)="updateStep(stepper.selectedIndex)">Next</button>
         </div>
       </mat-step>
-    <mat-step [stepControl]="secondFormGroup">
-        <ng-template matStepLabel> Re-enter seceret key </ng-template>      
-        <mat-form-field>
-            <input matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey required>
-          </mat-form-field>
-          <button mat-button (click)="validateCheckoutSecretKey(checkoutSecretKey.value)"> Validate Key </button>
-          <button *ngIf="isValidSecretKey" mat-button matStepperNext>Next</button>
+    <mat-step [stepControl]="secondFormGroup" #stepTwo editable="false">
         <div>
+            <ng-template matStepLabel> Re-enter seceret key </ng-template>      
+            <mat-error *ngIf="!stepChecker[0]"> please return to step 1  </mat-error>
+            <mat-form-field >
+                <input [disabled]="!stepChecker[0]" matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey required>
+            </mat-form-field>
+            <button mat-button (click)="validateCheckoutSecretKey(checkoutSecretKey.value, stepper.selectedIndex)"> Validate Key </button>
+            <button *ngIf="stepChecker[1]" (click)="updateStep(stepper.selectedIndex)" mat-button matStepperNext>Next</button>
       </div>
     </mat-step>
-    <mat-step [stepControl]="thirdFormGroup">
-        <ng-template matStepLabel> Validate Funds </ng-template>      
+    <mat-step [stepControl]="thirdFormGroup" #stepThree editable="false">
+        <ng-template matStepLabel> Validate Funds </ng-template>
+            <mat-error *ngIf="!stepChecker[1]"> please return to step 2  </mat-error>              
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-4">
                         Asset Totals Before:
-                        <button mat-button (click)="validCheckoutFunds()"> Validate Funds </button>
+                        <button [disabled]="!stepChecker[1]" mat-button (click)="validateFundsForPurchase('', stepper.selectedIndex)"> Validate Funds </button>
                     </div>
                     <div class="col-md-4">
                         Asset Totals After
                     </div>
+                    <div class="col-md-4">
+                            <button *ngIf="stepChecker[2]" (click)="updateStep(stepper.selectedIndex)" mat-button matStepperNext>Finish</button>
+                    </div>
               </div>
           </div>
     </mat-step>
-    <mat-step>
+    <mat-step editable="false" #stepFour>
       <ng-template matStepLabel> Confirm </ng-template>
-      You are now done.
+      <h3  *ngIf="stepChecker[2]"> You are now done. Thanks for shopping!</h3>
+      <p  *ngIf="stepChecker[2]"> Below is your order receipt</p>
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
+        <button mat-button> Return Home </button>
+        <button mat-button> Logout </button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

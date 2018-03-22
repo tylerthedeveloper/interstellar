@@ -11,6 +11,8 @@ export class CartItem {
     sellerUserID: string;
     sellerPublicKey: string;
 
+    productThumbnailLink: string;
+
     productID: string;
     productName: string;
     quantityPurchased: number;
@@ -28,6 +30,8 @@ export class CartItem {
                 // orderType: OrderType,
                 productName: string,
                 quantityPurchased: number,
+                fixedUSDAmount: number,
+                productThumbnailLink: string,
                 assetPricePerItem: string,
                 assetPurchaseDetails: Asset) {
                         this.buyerUserID = buyerUserID,
@@ -37,6 +41,8 @@ export class CartItem {
                         this.productID = productID,
                         this.productName = productName,
                         this.quantityPurchased = quantityPurchased,
+                        this.productThumbnailLink = productThumbnailLink,
+                        this.fixedUSDAmount = fixedUSDAmount,
                         this.assetPricePerItem = assetPricePerItem,
                         this.assetPurchaseDetails = assetPurchaseDetails;
                         this.isInCheckout = false;
