@@ -226,6 +226,7 @@ export class ProductPageComponent implements OnInit {
                 assetPricePerItem: this.selectedAssetType.amount,
                 assetPurchaseDetails: asset
         };
+        console.log(cartItem)
         return cartItem;
     }
     // ────────────────────────────────────────────────────────────────────────────────

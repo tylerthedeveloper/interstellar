@@ -4,7 +4,7 @@ import { Order } from '../../_market-models/order';
 import { CartService } from '../../../core/services/cart.service';
 import { CartItem } from '../../_market-models/cart-item';
 import { Router } from '@angular/router';
-import { Asset } from 'app/stellar';
+import { Asset, isValidSecretKey, AccountBalance } from 'app/stellar';
 import { calcTotalsForMultipleAssets } from '../../../stellar/utils';
 
 @Component({
@@ -20,7 +20,9 @@ export class CheckoutComponent implements OnInit {
         private checkoutItemsSource: CartItem[];
         private assetTotals: Asset[];
         private stepChecker: Array<boolean> = [false, false, false];
-        private isValidSecretKey: boolean;
+        private balances: AccountBalance[];
+        private updatedBalances: AccountBalance[];
+        // private isValidSecretKey: boolean;
 
         constructor(private _cartService: CartService,
                     private location: Location) { }
@@ -34,6 +36,8 @@ export class CheckoutComponent implements OnInit {
                     this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
                     console.log(this.checkoutItemsSource);
             });
+            this.balances = <AccountBalance[]> JSON.parse(sessionStorage.getItem('my_balances') || localStorage.getItem('balances'));
+            console.log(this.balances);
         }
 
         // completePurchase() {
@@ -43,9 +47,6 @@ export class CheckoutComponent implements OnInit {
         // }
 
         validateCheckoutSecretKey(secretKey: string, currentStep: number) {
-            console.log(secretKey);
-            console.log(currentStep);
-
 
             // TODO: check from stellar. ....
             // check matcghes current public key ....
@@ -53,12 +54,10 @@ export class CheckoutComponent implements OnInit {
             const curUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
             const curPubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
             const curSeedKey = sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key');
-            if (!(curUserID && curPubKey && curSeedKey && curSeedKey === secretKey)) {
-                                alert('fals');
+            if (!(curUserID && curPubKey && curSeedKey && curSeedKey === secretKey && isValidSecretKey(curSeedKey) === curPubKey)) {
+                alert('fals');
             } else {
-                // this.isValidSecretKey = true;
                 this.stepChecker[currentStep] = true;
-                // this.updateStep(currentStep);
             }
         }
 
@@ -66,8 +65,6 @@ export class CheckoutComponent implements OnInit {
             console.log(secretKey);
             console.log(currentStep);
             this.stepChecker[currentStep] = true;
-
-            //     this.updateStep(currentStep);
 
             // // chec kfrom stellar. ....
             // // check matcghes current public key ....
@@ -90,7 +87,7 @@ export class CheckoutComponent implements OnInit {
         updateStep(currentStep: number) {
             console.log(currentStep);
             this.stepChecker[currentStep - 1] = true;
-            console.log(this.stepChecker)
+            console.log(this.stepChecker);
         }
 
 

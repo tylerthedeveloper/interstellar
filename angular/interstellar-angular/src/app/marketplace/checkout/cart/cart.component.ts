@@ -8,6 +8,9 @@ import { CartItem } from '../../_market-models/cart-item';
 import { ISubscription } from 'rxjs/Subscription';
 import { Asset } from 'app/stellar';
 import { calcTotalsForMultipleAssets } from '../../../stellar/utils';
+import { filter } from 'rxjs/operators';
+import 'rxjs/add/operator/mergeMap';
+import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 @Component({
   selector: 'cart',
@@ -19,21 +22,47 @@ export class CartComponent implements OnInit {
     // TODO: subscription choice here?
         // Why does async fetch first item after batch empty delete
     private subscription: ISubscription;
-    private cartItemsSource: CartItem[];
+    // private cartItemsSource: CartItem[];
     private assetTotals: Asset[];
-    // private cartItemsSource: Observable<CartItem[]>;
+    
+    private cartItems: any; // Observable<CartItem[]>;
+    private cartItemsSource: Observable<CartItem[]>;
+    cartItemDoc: AngularFirestoreDocument<CartItem>;
+    userCartCollection: AngularFirestoreCollection<CartItem>;
+    prodobs: any;
 
     constructor(private _cartService: CartService,
-                private _router: Router) { }
+        private _router: Router, private afs: AngularFirestore
+    ) { 
+        this.userCartCollection = this.afs.collection('user-cart').doc(this._userID).collection('cartItems');
+        this.userCartCollection.valueChanges().subscribe(items => this.cartItems = items);
+        // this.cartItemsSource = this.userCartCollection.snapshotChanges();
+        this.cartItemsSource = this.userCartCollection.snapshotChanges()
+                    .map(actions => {
+                        return actions.map(a => {
+                            const data = a.payload.doc.data() as CartItem;
+                            const id = a.payload.doc.id;
+                            return  data ;
+                        })
+                    })
+    }
 
+    _userID = sessionStorage.getItem('user_doc_id');
     ngOnInit() {
+        
         // this.cartItemsSource = this._cartService.getCurrentCart().map(c => c);
         this.assetTotals = [];
-        this.subscription = this._cartService.getCurrentCart().subscribe(cartItems => {
-                this.cartItemsSource = cartItems;
-                this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
-                console.log(this.assetTotals.length);
-        });
+        // /this.subscription =
+        // this._cartService.getCurrentCart().subscribe(cartItems => this.cartItemsSource = cartItems);
+        // this.cartItemsSource = this._cartService.getCurrentCart();
+        // this.cartItemsSource.subscribe();
+
+        // this._cartService.getCurrentCart().valueChanges().subscribe(cartItems => {
+        //         this.cartItemsSource = cartItems;
+        //         console.log(cartItems);
+        //         this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
+        //         console.log(this.assetTotals.length);
+        // });
     }
 
     //
@@ -57,9 +86,9 @@ export class CartComponent implements OnInit {
     }
 
     emptyOutCart() {
-        this.cartItemsSource.forEach(item => this._cartService.removeCartItem(item.cartItemID));
-        this.subscription.unsubscribe();
-        this.cartItemsSource = [];
+        // this.cartItemsSource.map(items => items.forEach(item => this._cartService.removeCartItem(item.cartItemID)));
+        // this.subscription.unsubscribe();
+        // this.cartItemsSource;
     }
 
     //
@@ -90,8 +119,18 @@ export class CartComponent implements OnInit {
             case 'remove':
                 console.log('rem');
                 console.log(cartItem);
-                this._cartService.removeCartItem(cartItem.cartItemID);
-                this.cartItemsSource = this.cartItemsSource.filter(item => item.cartItemID !== cartItem.cartItemID);
+                this.cartItemDoc = this.afs.collection<CartItem>('user-cart').doc(this._userID).collection<CartItem>('cartItems').doc(cartItemID);
+                this.cartItemDoc.delete();
+                // this.userCartCollection.doc(cartItemID).delete();
+                // this._cartService.removeCartItem(cartItem.cartItemID);
+                // this._cartService.
+                console.log(this.cartItemsSource);
+                this.cartItems = this.cartItems.filter(item => item.cartItemID !== cartItemID);
+                this.cartItemsSource = this.cartItemsSource.map(items => {
+                    let arr = Array<CartItem>();
+                    arr = items.filter((item: CartItem) => item.cartItemID !== cartItemID )
+                    return arr;
+                });
                 break;
             default:
                 return;

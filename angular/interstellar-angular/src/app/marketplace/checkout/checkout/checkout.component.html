@@ -34,14 +34,24 @@
             <mat-error *ngIf="!stepChecker[1]"> please return to step 2  </mat-error>              
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         Asset Totals Before:
+                        <mat-card *ngFor="let balance of balances; index as i" [attr.data-index]="i">
+                            <mat-card-content>
+                                <p> Asset {{ i + 1 }}:  {{ balance.balance }} {{ balance.asset_type }} </p>
+                            </mat-card-content>
+                        </mat-card> 
                         <button [disabled]="!stepChecker[1]" mat-button (click)="validateFundsForPurchase('', stepper.selectedIndex)"> Validate Funds </button>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         Asset Totals After
+                        <mat-card *ngFor="let balance of updatedBalances; index as i" [attr.data-index]="i">
+                            <mat-card-content>
+                                <p> Asset {{ i + 1 }}:  {{ balance.balance }} {{ balance.asset_type }} </p>
+                            </mat-card-content>
+                        </mat-card> 
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                             <button *ngIf="stepChecker[2]" (click)="updateStep(stepper.selectedIndex)" mat-button matStepperNext>Finish</button>
                     </div>
               </div>

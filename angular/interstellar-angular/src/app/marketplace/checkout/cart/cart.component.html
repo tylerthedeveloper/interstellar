@@ -1,14 +1,14 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-12 col-md-7" *ngIf="cartItemsSource?.length > 0">
+        <div class="col-12 col-md-7" >
             <h1> My Cart </h1>
-            <div *ngFor="let product of cartItemsSource">
+            <div *ngFor="let product of cartItems">
                 <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
             </div>
         </div>
         <div class="col-12 offset-md-2 col-md-2 text-nowrap" id="assetTotals" >
-            <div  *ngIf="cartItemsSource?.length > 0">
+            <div  >
 
                 <h2 style="width:400 px; display: flex;"> Cart Asset Totals </h2>
                 <mat-card class="example-card" style="width:550px;">    
@@ -20,7 +20,7 @@
             
             <br />
             <div>
-                <span *ngIf="cartItemsSource?.length > 0; then isCartItems; else emptyCart"> </span>
+                <!-- <span *ngIf="cartItemsSource; then isCartItems; else emptyCart"> </span>
                 <ng-template #isCartItems>
                     <h2 class="text-nowrap" style="width:400 px; display: flex;"> Cart Options </h2>
                     <mat-card class="example-card" style="width:550px;">    
@@ -35,7 +35,7 @@
                             <p> It seems your cart is empty, why not checkout recent products </p>
                             <button mat-button style="width:550px;" (click)="navigateToAllProducts()"> Products </button>
                     </mat-card>
-                </ng-template>
+                </ng-template> -->
             </div>
         </div>
     </div>

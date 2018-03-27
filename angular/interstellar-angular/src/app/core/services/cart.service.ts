@@ -23,12 +23,16 @@ import { CartItem } from '../../marketplace/_market-models/cart-item';
 export class CartService {
 
     private _userID: string;
-    private userCartCollection: AngularFirestoreCollection<CartItem>;
-    private myCartRef: firebase.firestore.CollectionReference;
+    public userCartCollection: AngularFirestoreCollection<CartItem>;
+    public userCartItems: Observable<CartItem[]>;
+    public myCartRef: firebase.firestore.CollectionReference;
+
+    // https://blog.cloudboost.io/build-simple-shopping-cart-with-angular-4-observables-subject-subscription-part-2-2d3735cde5f
 
     constructor(private afs: AngularFirestore) {
         this._userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         this.userCartCollection = afs.collection<CartItem>('user-cart').doc(this._userID).collection('cartItems');
+        this.userCartItems = this.userCartCollection.valueChanges();
         this.myCartRef = this.userCartCollection.ref;
     }
 
@@ -37,8 +41,10 @@ export class CartService {
     //   :::::: P U B L I C  C R U D   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
+    // getCurrentCart(): AngularFirestoreCollection<CartItem> {
+    //     return this.userCartCollection;
     getCurrentCart(): Observable<CartItem[]> {
-        return this.userCartCollection.valueChanges();
+        return this.userCartItems;
         // return this.userCartCollection.doc(this._userID)
         //                                 .collection('cartItems')
         //                                 .valueChanges();
