@@ -119,13 +119,26 @@ export class CartComponent implements OnInit {
             case 'remove':
                 console.log('rem');
                 console.log(cartItem);
-                this.cartItemDoc = this.afs.collection<CartItem>('user-cart').doc(this._userID).collection<CartItem>('cartItems').doc(cartItemID);
-                this.cartItemDoc.delete();
+                // this.cartItemDoc = this.afs.collection<CartItem>('user-cart').doc(this._userID).collection<CartItem>('cartItems').doc(cartItemID);
+                // this.cartItemDoc.delete();
                 // this.userCartCollection.doc(cartItemID).delete();
                 // this._cartService.removeCartItem(cartItem.cartItemID);
                 // this._cartService.
                 console.log(this.cartItemsSource);
-                this.cartItems = this.cartItems.filter(item => item.cartItemID !== cartItemID);
+                this.cartItemDoc = <AngularFirestoreDocument<CartItem>> this.afs.collection('user-cart').doc(this._userID).collection<CartItem>('cartItems').doc(cartItemID);
+                this.cartItemDoc.delete();
+
+                if (!this.cartItemsSource) {
+                    this.afs.collection('user-cart').doc(this._userID).delete();
+                    console.log(this.cartItemsSource);
+                    console.log("hi");
+                }
+                console.log("bye");
+
+                // this.cartItems = this.cartItems.filter(item => item.cartItemID !== cartItemID);
+
+                // TODO: convert to set
+
                 this.cartItemsSource = this.cartItemsSource.map(items => {
                     let arr = Array<CartItem>();
                     arr = items.filter((item: CartItem) => item.cartItemID !== cartItemID )
