@@ -38,8 +38,7 @@ export class CartService {
                                     .map(changes => {
                                         return changes.map(a => {
                                             const data = a.payload.doc.data() as CartItem;
-                                            const id = a.payload.doc.id;
-                                            this.cartItemIDs.push(id);
+                                            this.cartItemIDs.push(data.cartItemID);
                                             return data;
                                     });
         });
@@ -56,15 +55,20 @@ export class CartService {
         return this.userCartItems;
     }
 
+    get CartItemIDs(): string[] {
+        return this.cartItemIDs
+    }
+
     addToCart(newCartItem: string) {
         const _cartItemData = <CartItem>JSON.parse(newCartItem);
-        this.cartItemIDs.push(_cartItemData.cartItemID);
+
 
         // FOR COMPLETE ORDER
         // order type
 
         const _docID = this.afs.createId();
         _cartItemData.cartItemID = _docID;
+
         this.userCartCollection.doc(_docID).set(_cartItemData);
         // this.userCartCollection.doc(this._userID).collection('cartItems').add(_cartItemData)
         //                                 .catch(this.HandleError);
@@ -87,7 +91,8 @@ export class CartService {
     }
 
     emptyCart() {
-        var batch = this.afs.firestore.batch();
+        console.log(this.cartItemIDs);
+        const batch = this.afs.firestore.batch();
         this.cartItemIDs.forEach(id => batch.delete(this.myCartRef.doc(id)));
         batch.commit();
         this.cartItemIDs = [];

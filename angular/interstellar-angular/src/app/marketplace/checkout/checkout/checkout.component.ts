@@ -31,11 +31,11 @@ export class CheckoutComponent implements OnInit {
         ngOnInit() {
             // this.cartItemsSource = this._cartService.getCurrentCart().map(c => c);
             this.assetTotals = [];
-            this._cartService.getCurrentCart().subscribe(cartItems => {
-                    this.checkoutItemsSource = cartItems.filter(CIT => CIT.isInCheckout === true);
-                    this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
-                    console.log(this.checkoutItemsSource);
-            });
+            // this._cartService.getCurrentCart().subscribe(cartItems => {
+            //         this.checkoutItemsSource = cartItems.filter(CIT => CIT.isInCheckout === true);
+            //         this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
+            //         console.log(this.checkoutItemsSource);
+            // });
             this.balances = <AccountBalance[]> JSON.parse(sessionStorage.getItem('my_balances') || localStorage.getItem('balances'));
             console.log(this.balances);
         }
