@@ -1,12 +1,12 @@
 <div class="container">
     <div class="row" >
-            <div class="col-12 col-md-7">
-                <ng-container *ngIf="cartItems; let cartItemList">
-                    <h1> My Cart </h1>
-                    <div *ngFor="let product of cartItemList">
-                        <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
-                    </div>
-                    <!-- <p> hello {{ cartItemList.length }} </p> -->
+        <div class="col-12 col-md-7">
+            <ng-container *ngIf="cartItemsSource | async; let cartItemList">
+                <h1> My Cart </h1>
+                <p> hello {{ cartItemList.length }} </p>
+                <div *ngFor="let product of cartItemList">
+                    <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
+                </div>
             </ng-container>
         </div>
     </div>

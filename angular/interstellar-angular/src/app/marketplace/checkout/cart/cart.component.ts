@@ -34,6 +34,11 @@ export class CartComponent implements OnInit {
     constructor(private _cartService: CartService,
         private _router: Router, private afs: AngularFirestore
     ) { 
+        
+    }
+
+    _userID = sessionStorage.getItem('user_doc_id');
+    ngOnInit() {
         this.userCartCollection = this.afs.collection('user-cart').doc(this._userID).collection('cartItems');
         this.userCartCollection.valueChanges().subscribe(items => this.cartItems = items);
         // this.cartItemsSource = this.userCartCollection.snapshotChanges();
@@ -45,11 +50,7 @@ export class CartComponent implements OnInit {
                             return  data ;
                         })
                     })
-    }
-
-    _userID = sessionStorage.getItem('user_doc_id');
-    ngOnInit() {
-        
+                    
         // this.cartItemsSource = this._cartService.getCurrentCart().map(c => c);
         this.assetTotals = [];
         // /this.subscription =
@@ -128,22 +129,24 @@ export class CartComponent implements OnInit {
                 this.cartItemDoc = <AngularFirestoreDocument<CartItem>> this.afs.collection('user-cart').doc(this._userID).collection<CartItem>('cartItems').doc(cartItemID);
                 this.cartItemDoc.delete();
 
-                if (!this.cartItemsSource) {
+                this.cartItems = this.cartItems.filter(item => item.cartItemID !== cartItemID);
+
+                if (this.cartItems.length === 0) {
                     this.afs.collection('user-cart').doc(this._userID).delete();
                     console.log(this.cartItemsSource);
                     console.log("hi");
                 }
                 console.log("bye");
 
-                // this.cartItems = this.cartItems.filter(item => item.cartItemID !== cartItemID);
+                
 
                 // TODO: convert to set
 
-                this.cartItemsSource = this.cartItemsSource.map(items => {
-                    let arr = Array<CartItem>();
-                    arr = items.filter((item: CartItem) => item.cartItemID !== cartItemID )
-                    return arr;
-                });
+                // this.cartItemsSource = this.cartItemsSource.map(items => {
+                //     let arr = Array<CartItem>();
+                //     arr = items.filter((item: CartItem) => item.cartItemID !== cartItemID )
+                //     return arr;
+                // });
                 break;
             default:
                 return;
