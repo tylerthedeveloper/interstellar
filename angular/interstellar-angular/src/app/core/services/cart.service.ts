@@ -25,15 +25,26 @@ export class CartService {
     private _userID: string;
     public userCartCollection: AngularFirestoreCollection<CartItem>;
     public userCartItems: Observable<CartItem[]>;
+    private cartItemIDs: string[] = [];
     public myCartRef: firebase.firestore.CollectionReference;
 
     // https://blog.cloudboost.io/build-simple-shopping-cart-with-angular-4-observables-subject-subscription-part-2-2d3735cde5f
 
     constructor(private afs: AngularFirestore) {
         this._userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-        this.userCartCollection = afs.collection<CartItem>('user-cart').doc(this._userID).collection('cartItems');
-        this.userCartItems = this.userCartCollection.valueChanges();
+        this.userCartCollection = afs.collection('user-cart').doc(this._userID).collection('cartItems');
+        this.userCartItems = this.userCartCollection
+                                    .snapshotChanges()
+                                    .map(changes => {
+                                        return changes.map(a => {
+                                            const data = a.payload.doc.data() as CartItem;
+                                            const id = a.payload.doc.id;
+                                            this.cartItemIDs.push(id);
+                                            return data;
+                                    });
+        });
         this.myCartRef = this.userCartCollection.ref;
+
     }
 
     //
@@ -41,20 +52,13 @@ export class CartService {
     //   :::::: P U B L I C  C R U D   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
-    // getCurrentCart(): AngularFirestoreCollection<CartItem> {
-    //     return this.userCartCollection;
-    getCurrentCart(): Observable<CartItem[]> {
+    get Cart(): Observable<CartItem[]> {
         return this.userCartItems;
-        // return this.userCartCollection.doc(this._userID)
-        //                                 .collection('cartItems')
-        //                                 .valueChanges();
-                                        // .map(res => res)
-                                        // .map(cartItems => <Array<CartItem>> cartItems);
     }
 
     addToCart(newCartItem: string) {
-        console.log(newCartItem);
         const _cartItemData = <CartItem>JSON.parse(newCartItem);
+        this.cartItemIDs.push(_cartItemData.cartItemID);
 
         // FOR COMPLETE ORDER
         // order type
@@ -78,14 +82,15 @@ export class CartService {
     }
 
     removeCartItem(cartItemID: string) {
+        this.cartItemIDs.filter(_cartItemID => _cartItemID !== cartItemID);
         this.userCartCollection.doc(cartItemID).delete();
     }
 
-    // TODO: implement batch delete... determine where to pull from ... dont AWAIT subscribe
     emptyCart() {
-        this.userCartCollection
-                .valueChanges()
-                .map(items => items.forEach(item => this.myCartRef.doc(item.cartItemID).delete()));
+        var batch = this.afs.firestore.batch();
+        this.cartItemIDs.forEach(id => batch.delete(this.myCartRef.doc(id)));
+        batch.commit();
+        this.cartItemIDs = [];
     }
     // ────────────────────────────────────────────────────────────────────────────────
 

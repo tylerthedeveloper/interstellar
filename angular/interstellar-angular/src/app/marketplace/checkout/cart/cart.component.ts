@@ -19,50 +19,39 @@ import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument 
 })
 export class CartComponent implements OnInit {
 
-    // TODO: subscription choice here?
-        // Why does async fetch first item after batch empty delete
-    private subscription: ISubscription;
-    // private cartItemsSource: CartItem[];
-    private assetTotals: Asset[];
-    
-    private cartItems: any; // Observable<CartItem[]>;
     private cartItemsSource: Observable<CartItem[]>;
-    cartItemDoc: AngularFirestoreDocument<CartItem>;
-    userCartCollection: AngularFirestoreCollection<CartItem>;
-    prodobs: any;
+    private cartItemIDs: string[];
+    private assetTotals: Asset[];
+    _userID = sessionStorage.getItem('user_doc_id');
 
     constructor(private _cartService: CartService,
-        private _router: Router, private afs: AngularFirestore
-    ) { 
-        
-    }
+                private _router: Router) {}
 
-    _userID = sessionStorage.getItem('user_doc_id');
     ngOnInit() {
-        this.userCartCollection = this.afs.collection('user-cart').doc(this._userID).collection('cartItems');
-        this.userCartCollection.valueChanges().subscribe(items => this.cartItems = items);
-        // this.cartItemsSource = this.userCartCollection.snapshotChanges();
-        this.cartItemsSource = this.userCartCollection.snapshotChanges()
-                    .map(actions => {
-                        return actions.map(a => {
-                            const data = a.payload.doc.data() as CartItem;
-                            const id = a.payload.doc.id;
-                            return  data ;
-                        })
-                    })
-                    
-        // this.cartItemsSource = this._cartService.getCurrentCart().map(c => c);
-        this.assetTotals = [];
-        // /this.subscription =
-        // this._cartService.getCurrentCart().subscribe(cartItems => this.cartItemsSource = cartItems);
-        // this.cartItemsSource = this._cartService.getCurrentCart();
-        // this.cartItemsSource.subscribe();
+        this.cartItemsSource = this._cartService.Cart;
+        
+        this.cartItemIDs = this._cartService.CartItemIDs;
+        // this.cartItemIDs = this.cartItemsSource.map((c: CartItem) => c.cartItemID)
+
+        // TODO: ASSET TOTALS.... HOW AND WHERE???
+
+        // this.cartItemsSource = this.userCartCollection.snapshotChanges()
+        //             .map(actions => {
+                        
+        //                 // this.assetTotals = [];        
+        //                 // this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
+                        
+                        
+        //                 return actions.map(a => {
+        //                     const data = a.payload.doc.data() as CartItem;
+        //                     const id = a.payload.doc.id;
+        //                     return  data ;
+        //                 })
+        //             })
 
         // this._cartService.getCurrentCart().valueChanges().subscribe(cartItems => {
         //         this.cartItemsSource = cartItems;
-        //         console.log(cartItems);
         //         this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
-        //         console.log(this.assetTotals.length);
         // });
     }
 
@@ -72,7 +61,7 @@ export class CartComponent implements OnInit {
     // ──────────────────────────────────────────────────────────────────────────
     //
     proceedToCheckout() {
-
+        // TODO: ....
         // UPDATE CART ITEM
         // ADD IF IS IN CHECKOUT
         // FOR EACH ... ALLOW CHECKBOXES ... UPDATE
@@ -89,7 +78,8 @@ export class CartComponent implements OnInit {
     emptyOutCart() {
         // this.cartItemsSource.map(items => items.forEach(item => this._cartService.removeCartItem(item.cartItemID)));
         // this.subscription.unsubscribe();
-        // this.cartItemsSource;
+        this.cartItemsSource.map(c => console.log(c));
+        this._cartService.emptyCart();
     }
 
     //
@@ -100,8 +90,8 @@ export class CartComponent implements OnInit {
     onCartItemAction(data: string) {
         const obj = JSON.parse(data);
         const action = obj.action;
-        const cartItem = obj.payload;
-        const cartItemID = cartItem.cartItemID;
+        const _cartItem = obj.payload;
+        const _cartItemID = _cartItem.cartItemID;
         let newCartItemData = '';
         if (obj.newData) {
             newCartItemData = obj.newData;
@@ -110,43 +100,30 @@ export class CartComponent implements OnInit {
         switch (action) {
             case 'purchase':
                 console.log(obj);
-                this.updateAddToCheckout(cartItemID);
+                this.updateAddToCheckout(_cartItemID);
                 this.proceedToCheckout();
                 break;
             case 'edit':
                 console.log('ed');
-                this._cartService.updateCartItem(cartItem, newCartItemData);
+                this._cartService.updateCartItem(_cartItem, newCartItemData);
                 break;
             case 'remove':
                 console.log('rem');
-                console.log(cartItem);
                 // this.cartItemDoc = this.afs.collection<CartItem>('user-cart').doc(this._userID).collection<CartItem>('cartItems').doc(cartItemID);
                 // this.cartItemDoc.delete();
                 // this.userCartCollection.doc(cartItemID).delete();
-                // this._cartService.removeCartItem(cartItem.cartItemID);
-                // this._cartService.
-                console.log(this.cartItemsSource);
-                this.cartItemDoc = <AngularFirestoreDocument<CartItem>> this.afs.collection('user-cart').doc(this._userID).collection<CartItem>('cartItems').doc(cartItemID);
-                this.cartItemDoc.delete();
+                this._cartService.removeCartItem(_cartItemID);
+                // this.cartItemDoc = <AngularFirestoreDocument<CartItem>> this.afs.collection('user-cart').doc(this._userID).collection<CartItem>('cartItems').doc(cartItemID);
+                // this.cartItemDoc.delete();
 
-                this.cartItems = this.cartItems.filter(item => item.cartItemID !== cartItemID);
-
-                if (this.cartItems.length === 0) {
-                    this.afs.collection('user-cart').doc(this._userID).delete();
-                    console.log(this.cartItemsSource);
-                    console.log("hi");
-                }
-                console.log("bye");
-
-                
-
-                // TODO: convert to set
-
-                // this.cartItemsSource = this.cartItemsSource.map(items => {
-                //     let arr = Array<CartItem>();
-                //     arr = items.filter((item: CartItem) => item.cartItemID !== cartItemID )
-                //     return arr;
-                // });
+                //
+                // TODO: this if check does not work because cant verify empty observable ... might not nmatter!!!
+                //
+                // if (!this.cartItemsSource) {
+                //     this.afs.collection('user-cart').doc(this._userID).delete();
+                //     console.log(this.cartItemsSource);
+                //     console.log("hi");
+                // }
                 break;
             default:
                 return;
@@ -157,3 +134,12 @@ export class CartComponent implements OnInit {
         this._cartService.addToCheckout(cartItemID);
     }
 }
+
+
+// For example on regular and observable piping + filtering
+// this.cartItems = this.cartItems.filter(item => item.cartItemID !== cartItemID);
+// this.cartItemsSource = this.cartItemsSource.map(items => {
+//     let arr = Array<CartItem>();
+//     arr = items.filter((item: CartItem) => item.cartItemID !== cartItemID )
+//     return arr;
+// });

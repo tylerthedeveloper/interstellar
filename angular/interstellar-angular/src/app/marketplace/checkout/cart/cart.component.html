@@ -2,11 +2,26 @@
     <div class="row" >
         <div class="col-12 col-md-7">
             <ng-container *ngIf="cartItemsSource | async; let cartItemList">
-                <h1> My Cart </h1>
-                <p> hello {{ cartItemList.length }} </p>
-                <div *ngFor="let product of cartItemList">
-                    <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
-                </div>
+                <span *ngIf="cartItemList.length > 0; then isCartItems; else emptyCart"> </span>
+                <ng-template #isCartItems>
+                    <h1> My Cart {{ cartItemList.length }} </h1>
+                    <div *ngFor="let product of cartItemList">
+                        <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
+                    </div>
+                        <h2 class="text-nowrap" style="width:400 px; display: flex;"> Cart Options </h2>
+                        <mat-card class="example-card" style="width:550px;">    
+                            <button mat-button (click)="proceedToCheckout()"> Proceed to Checkout </button>
+                            <button mat-button (click)="emptyOutCart()"> Empty Cart </button>
+                    </mat-card>
+                </ng-template>
+                <ng-template #emptyCart>
+                        <h2 class="text-nowrap" style="width:400 px; display: flex;"> Empty Cart
+                        </h2>
+                        <mat-card class="example-card" style="width:550px;">    
+                                <p> It seems your cart is empty, why not checkout recent products </p>
+                                <button mat-button style="width:550px;" (click)="navigateToAllProducts()"> Products </button>
+                        </mat-card>
+                </ng-template>
             </ng-container>
         </div>
     </div>
