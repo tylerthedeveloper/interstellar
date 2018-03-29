@@ -1,5 +1,5 @@
 import { ProductCategory } from './product-category';
-import { Asset } from '../../stellar';
+import { AssetBalance } from '../../stellar';
 
 // import { currencyAssetsMapper } from '../../stellar/utils';
 
@@ -12,7 +12,7 @@ export class Product {
     productLongDescription: string;
     fixedUSDAmount: number;
     quantity: number;
-    productPrices: Array<Asset>;
+    productPrices: Array<AssetBalance>;
 
     productThumbnailLink: string;
     productImages: string[];

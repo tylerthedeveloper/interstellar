@@ -25,7 +25,7 @@
                 <br/>
                 <mat-select id="assetSelectionType" class="asset" placeholder="Asset Type" [(ngModel)]="selectedAssetType">
                     <mat-option *ngFor="let type of product?.productPrices" [value]="type">
-                        Price: {{ type.amount }} {{ type.asset_type }} 's
+                        Price: {{ type.balance }} {{ type.asset_type }} 's
                     </mat-option>
                 </mat-select>
             </div>

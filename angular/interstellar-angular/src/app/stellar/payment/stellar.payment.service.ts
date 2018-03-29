@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
 import * as StellarSDK from 'stellar-sdk';
-import { AccountBalance } from '../account/account-balance';
+
 import { isValidSecretKey, isValidNewBalance, getBalanceforAsset, StellarLumensMinimum } from '../utils';
 
 // Import RxJs required methods

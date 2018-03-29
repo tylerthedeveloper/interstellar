@@ -12,7 +12,7 @@ import { Product } from 'app/marketplace/_market-models/product';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { User, publicUserData } from 'app/user';
-import { AccountBalance, StellarAccountService } from 'app/stellar';
+import { AssetBalance, StellarAccountService } from 'app/stellar';
 import { UserService } from 'app/user.service';
 
 
@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
     private _userModel: User;
     private user: Observable<User>;
     // private user: User;
-    private balances: AccountBalance[];
+    private balances: AssetBalance[];
     private products: Observable<Product[]>;
 
     public edit = false;
@@ -63,9 +63,9 @@ export class ProfileComponent implements OnInit {
         });
 
         // User balances //
-        this.balances = new Array<AccountBalance>();
+        this.balances = new Array<AssetBalance>();
         const _balances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
-        if (_balances) { this.balances = <AccountBalance[]>JSON.parse(_balances); }
+        if (_balances) { this.balances = <AssetBalance[]>JSON.parse(_balances); }
     }
 
     // public getWalletAndMarketValue() {}

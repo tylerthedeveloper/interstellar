@@ -11,6 +11,7 @@ import { StellarAccountService } from 'app/stellar';
 import { EventEmitterService } from 'app/core/_helpers/event-emitter.service';
 
 import { AuthService } from '../../services/auth.service';
+import { AssetBalance } from '../../../stellar/assets/asset-balance';
 
 @Component({
   selector: 'nav-bar',

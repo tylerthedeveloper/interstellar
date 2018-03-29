@@ -58,12 +58,13 @@ export class ProductService {
 
         // FIXME: CHECK ON METHOD CALL NOT HERE
         const _userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-        if (!_userID) {
-            alert('You must be logged in order to post a new product');
-            return;
-        }
+        // if (!_userID) {
+        //     alert('You must be logged in order to post a new product');
+        //     return;
+        // }
 
         const _productData = <Product>JSON.parse(productData);
+        console.log(_productData);
         const _docID = this.afs.createId();
         const _cat = _productData.productCategory;
         console.log(_cat);

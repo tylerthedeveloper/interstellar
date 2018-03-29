@@ -17,7 +17,7 @@ import 'rxjs/add/observable/of';
 import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
-import { calcTotalsForMultipleAssets, Asset } from 'app/stellar';
+import { calcTotalsForMultipleAssets, AssetBalance } from 'app/stellar';
 
 import { User } from '../../user';
 import { CartItem } from '../../marketplace/_market-models/cart-item';
@@ -34,7 +34,7 @@ export class CartService {
 
     private cartItemIDs: string[] = [];
     // private assetTotals: Observable<Asset[]>; // = [];
-    private assetTotals: Asset[] = [];
+    private assetTotals: AssetBalance[] = [];
 
     // https://blog.cloudboost.io/build-simple-shopping-cart-with-angular-4-observables-subject-subscription-part-2-2d3735cde5f
 
@@ -42,20 +42,16 @@ export class CartService {
         this._userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         this.userCartCollection = afs.collection('user-cart').doc(this._userID).collection('cartItems');
         this.cartItemIDs = [];
+        // this.userCartItems = this.userCartCollection.valueChanges();
         this.userCartItems = this.userCartCollection
-                                    .snapshotChanges()
+                                    .valueChanges()
                                     .map(changes => {
-                                        const _totals = new Array<Asset>();
-                                        const _ids = new Array<string>();
-                                        const _arr = changes.map(a => {
-                                            const data = a.payload.doc.data() as CartItem;
-                                            _ids.push(data.cartItemID);
-                                            _totals.push(data.assetPurchaseDetails);
-                                            return data;
-                                        });
+                                        // const _totals = new Array<Asset>();
+                                        //     _ids.push(data.cartItemID);
+                                        const _ids = changes.map(a => a.cartItemID);
                                         this.cartItemIDs = _ids;
-                                        this.assetTotals = _totals;
-                                        return _arr;
+                                        // this.assetTotals = _totals;
+                                        return changes;
 
         });
         this.myCartRef = this.userCartCollection.ref;
@@ -110,13 +106,17 @@ export class CartService {
         // this.userCartCollection.doc(this._userID).collection('cartItems').doc('cartItemID').update(newCartItemData);
     }
 
-    addToCheckout(cartItemID: string) {
-        this.userCartCollection.doc(cartItemID).update({isInCheckout: true});
+    addToCheckout(cartItemIDs: string[]) {
+        console.log(cartItemIDs);
+        const batch = this.afs.firestore.batch();
+        cartItemIDs.forEach(id => batch.update(this.myCartRef.doc(id), {isInCheckout: true}));
+        return batch.commit();
+        // this.userCartCollection.doc(cartItemID).update({isInCheckout: true});
     }
 
     removeCartItem(cartItemID: string) {
-        this.cartItemIDs.filter(_cartItemID => _cartItemID !== cartItemID);
         this.userCartCollection.doc(cartItemID).delete();
+        this.cartItemIDs.filter(_cartItemID => _cartItemID !== cartItemID);
     }
 
     emptyCart() {

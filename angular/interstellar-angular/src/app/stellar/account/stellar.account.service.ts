@@ -13,17 +13,17 @@
 
 import { Injectable } from '@angular/core';
 import {Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
-import * as StellarSDK from 'stellar-sdk';
-import { AccountBalance } from './account-balance';
-import { isValidSecretKey, isValidNewBalance, getBalanceforAsset, StellarLumensMinimum } from '../utils';
 
 // Import RxJs required methods
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/fromPromise';
+
+import * as StellarSDK from 'stellar-sdk';
+import { isValidSecretKey, isValidNewBalance, getBalanceforAsset, StellarLumensMinimum } from '../utils';
+import { AssetBalance } from 'app/stellar';
 
 declare var StellarSdk: any;
 
@@ -62,7 +62,7 @@ export class StellarAccountService {
           // .subscribe(() => { return this.authenticate(pair.secret() }));
     }
 
-    authenticate = (secretKey: string): Observable<Array<AccountBalance>> => {
+    authenticate = (secretKey: string): Observable<Array<AssetBalance>> => {
         const pubkey = isValidSecretKey(secretKey);
         if (pubkey) {
             sessionStorage.setItem('public_key', pubkey);
@@ -72,7 +72,10 @@ export class StellarAccountService {
                     throw new Error('The destination account does not exist!');
                 })
                 .then(account => account))
-                .map((r: any) => <Array<AccountBalance>> r.balances)
+                .map((r: any) => { 
+                        console.log(r.balances);
+                        return <Array<AssetBalance>> r.balances;
+                })
                 .catch(this.HandleError);
                 // .catch(e => Observable.throw(e));
         } else {

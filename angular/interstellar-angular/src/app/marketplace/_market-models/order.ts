@@ -1,4 +1,4 @@
-import { Asset } from 'app/stellar';
+import { AssetBalance } from 'app/stellar';
 
 export class Order {
 
@@ -12,7 +12,7 @@ export class Order {
     productID: string;
     productName: string;
     quantityPurchased: number;
-    assetPurchaseDetails: Asset;
+    assetPurchaseDetails: AssetBalance;
 
 
     constructor(buyerUserID: string,
@@ -21,7 +21,7 @@ export class Order {
                 // orderType: OrderType,
                 productName: string,
                 quantityPurchased: number,
-                assetPurchaseDetails: Asset) {
+                assetPurchaseDetails: AssetBalance) {
                         this.buyerUserID = buyerUserID,
                         this.sellerUserID = sellerUserID,
                         this.productID = productID,

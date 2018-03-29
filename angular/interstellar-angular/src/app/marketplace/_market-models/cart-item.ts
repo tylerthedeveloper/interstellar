@@ -1,4 +1,4 @@
-import { Asset } from 'app/stellar';
+import { AssetBalance } from 'app/stellar';
 
 export class CartItem {
 
@@ -17,7 +17,7 @@ export class CartItem {
     productName: string;
     quantityPurchased: number;
     assetPricePerItem: string;
-    assetPurchaseDetails: Asset;
+    assetPurchaseDetails: AssetBalance;
 
     fixedUSDAmount: number;
     isInCheckout: boolean;
@@ -33,7 +33,7 @@ export class CartItem {
                 fixedUSDAmount: number,
                 productThumbnailLink: string,
                 assetPricePerItem: string,
-                assetPurchaseDetails: Asset) {
+                assetPurchaseDetails: AssetBalance) {
                         this.buyerUserID = buyerUserID,
                         this.buyerPublicKey = buyerPublicKey,
                         this.sellerUserID = sellerUserID,

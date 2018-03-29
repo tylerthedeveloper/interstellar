@@ -1,6 +1,5 @@
-import { AccountBalance } from './account/account-balance';
 import { StellarLumensMinimum, TyCoinMinimum } from 'app/core/_constants/quantities';
-import { Asset } from 'app/stellar';
+import { AssetBalance } from 'app/stellar';
 
 const currencyAssetsMapper = {
     'native' : 'Lumens',
@@ -27,17 +26,28 @@ const calcTotalPurchaseAmount = (assetAmount: string, purchaseQuantity: number):
     return (parseInt(assetAmount, 10) * purchaseQuantity);
 };
 
-const calcTotalsForMultipleAssets = (assets: Asset[]): Asset[] => {
-    const updatedAssets = new Array<Asset>();
+const calcTotalsForMultipleAssets = (assets: AssetBalance[]): AssetBalance[] => {
+    const updatedAssets = new Array<AssetBalance>();
     assets.forEach(asset => {
         if (!updatedAssets.find(CIT => CIT.asset_type === asset.asset_type)) {
             updatedAssets.push(asset);
         } else {
             const idx = updatedAssets.findIndex(CIT => CIT.asset_type === asset.asset_type);
-            const curAssAmount = updatedAssets[idx].amount;
-            const newAssAmount = (Number(curAssAmount) + Number(asset.amount));
-            updatedAssets[idx] = {  asset_type: asset.asset_type, amount: String(newAssAmount)};
+            const curAssAmount = updatedAssets[idx].balance;
+            const newAssAmount = (Number(curAssAmount) + Number(asset.balance));
+            updatedAssets[idx] = {  asset_type: asset.asset_type, balance: String(newAssAmount)};
         }
+    });
+    return updatedAssets;
+};
+
+const calcDifferenceForMultipleAssets = (balances: AssetBalance[], assetPriceTotals: AssetBalance[]): AssetBalance[] => {
+    const updatedAssets = new Array<AssetBalance>();
+    assetPriceTotals.forEach(asset => {
+        const idx = updatedAssets.findIndex(CIT => CIT.asset_type === asset.asset_type);
+        const curAssAmount = updatedAssets[idx].balance;
+        const newAssAmount = (Number(curAssAmount) - Number(asset.balance));
+        updatedAssets[idx] = {  asset_type: asset.asset_type, balance: String(newAssAmount)};
     });
     return updatedAssets;
 };
@@ -55,18 +65,19 @@ const isValidNewBalance = (assetType: string, currentBalance: number, totalAsset
     return false;
 };
 
-const updateBalance = (balanceArray: Array<AccountBalance>, asset: Asset): void => {
+const updateBalance = (balanceArray: Array<AssetBalance>, asset: AssetBalance): void => {
     const index = balanceArray.findIndex(bal => bal.asset_type === asset.asset_type);
-    const newbal = parseInt(balanceArray[index].balance, 10) - parseInt(asset.amount, 10);
+    const newbal = parseInt(balanceArray[index].balance, 10) - parseInt(asset.balance, 10);
     balanceArray[index].balance = String(newbal);
 };
 
-const getBalanceforAsset = (balanceArray: Array<AccountBalance>, assetType: string): number => {
+const getBalanceforAsset = (balanceArray: Array<AssetBalance>, assetType: string): number => {
     const index = balanceArray.findIndex(bal => bal.asset_type === assetType);
     return parseInt(balanceArray[index].balance, 10);
 };
 
 export { isValidSecretKey, currencyAssetsMapper, getBalanceforAsset,
         calcTotalPurchaseAmount, updateBalance, isValidNewBalance,
-        StellarLumensMinimum, TyCoinMinimum, calcTotalsForMultipleAssets
+        StellarLumensMinimum, TyCoinMinimum, calcTotalsForMultipleAssets,
+        calcDifferenceForMultipleAssets
 };

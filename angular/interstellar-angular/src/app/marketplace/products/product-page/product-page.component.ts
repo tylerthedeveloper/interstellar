@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 
-import { Asset, currencyAssetsMapper, getBalanceforAsset, isValidNewBalance, AccountBalance } from '../../../stellar';
+import { AssetBalance, currencyAssetsMapper, getBalanceforAsset, isValidNewBalance } from '../../../stellar';
 import { ProductService } from 'app/core/services/product.service';
 
 import { validateNewQuantity } from '../product.utils';
@@ -27,12 +27,12 @@ export class ProductPageComponent implements OnInit {
     private myPubKeyId: string;
     private myUserId: string;
     private isMyProduct: boolean;
-    private balances: AccountBalance[];
+    private balances: AssetBalance[];
 
     private assetTypes: any = [];
 
     // TODO: CHANGE THIS TO NULL
-    private selectedAssetType: Asset; //  = <Asset> { asset_type: 'native', amount: '5' };
+    private selectedAssetType: AssetBalance; //  = <Asset> { asset_type: 'native', amount: '5' };
 
     // TODO: CHANGE THIS TO 0
     private purchaseQuantity = 1;
@@ -51,10 +51,10 @@ export class ProductPageComponent implements OnInit {
         // check again user ID to show or not show add to cart
           this.assetTypes = Object.keys(currencyAssetsMapper).map((type: any) => {
             // console.log(<Array<Asset>> type);
-            return <Array<Asset>> type;
+            return <Array<AssetBalance>> type;
           });
           const curBalances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
-          this.balances = <Array<AccountBalance>> JSON.parse(curBalances);
+          this.balances = <Array<AssetBalance>> JSON.parse(curBalances);
           this.myUserId = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
           this.myPubKeyId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
           this._productService
@@ -95,8 +95,8 @@ export class ProductPageComponent implements OnInit {
             productCategory: ProductCategoryEnum.Electronics,
             productPrices: [
                 // new Asset ()
-                { asset_type: 'native', amount: 5 },
-                { asset_type: 'tycoin', amount: 7  },
+                { asset_type: 'native', balance: 5 },
+                { asset_type: 'tycoin', balance: 7  },
             ],
 
             productSellerData: {
@@ -120,7 +120,7 @@ export class ProductPageComponent implements OnInit {
         // validate action
         if (this.onValidateProductAction()) {
             // validate purchase credentials //
-            const totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.amount, purchaseQuantity);
+            const totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.balance, purchaseQuantity);
             // const order = this.createOrder(purchaseQuantity);
             if (this.validateTransaction(this.product.quantity, purchaseQuantity, totalPurchaseAmount)) {
                 this.conductTransaction(this.product.id, purchaseQuantity, totalPurchaseAmount);
@@ -209,8 +209,8 @@ export class ProductPageComponent implements OnInit {
     // }
 
     private createCartItem(purchaseQuantity: number, totalPurchaseAmount: number = 0): CartItem {
-        totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.amount, purchaseQuantity);
-        const asset = new Asset(this.selectedAssetType.asset_type, String(totalPurchaseAmount));
+        totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.balance, purchaseQuantity);
+        const asset = new AssetBalance(String(totalPurchaseAmount), this.selectedAssetType.asset_type,);
         const cartItem: CartItem = <CartItem> {
                 buyerUserID: this.myUserId,
                 buyerPublicKey: this.myPubKeyId,
@@ -223,7 +223,7 @@ export class ProductPageComponent implements OnInit {
                 quantityPurchased: purchaseQuantity,
                 fixedUSDAmount: this.product.fixedUSDAmount,
                 productThumbnailLink: this.product.productThumbnailLink,
-                assetPricePerItem: this.selectedAssetType.amount,
+                assetPricePerItem: this.selectedAssetType.balance,
                 assetPurchaseDetails: asset
         };
         return cartItem;

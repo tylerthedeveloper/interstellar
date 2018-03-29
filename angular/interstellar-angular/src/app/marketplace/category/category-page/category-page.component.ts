@@ -7,7 +7,7 @@ import { ProductCardComponent } from '../../products/product-card/product-card.c
 import { ProductService } from 'app/core/services/product.service';
 import { PartialProduct } from '../../_market-models/partial-product';
 import { ProductCategoryEnum } from '../../_market-models/product-category';
-import { Asset } from 'app/stellar';
+import { AssetBalance } from 'app/stellar';
 
 @Component({
   selector: 'category-page',
@@ -55,8 +55,8 @@ export class CategoryPageComponent implements OnInit {
             quantity: 15,
             productCategory: ProductCategoryEnum.Electronics,
             productPrices: [
-                <Asset> { asset_type: 'native', amount: '5.00000' },
-                <Asset> { asset_type: 'tycoin', amount: '7.00000'  },
+                <AssetBalance> { asset_type: 'native', balance: '5.00000' },
+                <AssetBalance> { asset_type: 'tycoin', balance: '7.00000'  },
             ],
 
             productThumbnailLink: 'https://images10.newegg.com/productimage/14-487-290-01.jpg',

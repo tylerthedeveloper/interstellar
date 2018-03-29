@@ -5,14 +5,14 @@
     <mat-step [stepControl]="firstFormGroup" #stepOne>
         <ng-template matStepLabel> Review product details </ng-template>
         <div>
-            <mat-card *ngFor="let product of checkoutItemsSource">
+            <mat-card *ngFor="let product of checkoutItemsSource | async">
                 <img mat-card-image src="{{ cartItem?.productThumbnailLink }}" alt="alt">
                 <mat-card-content>
                     <p> Product Name: {{ product.productName }} </p>
                     <p> Fixed USD Amount ($): {{ product.fixedUSDAmount }} </p>
                     <p> Quantity: {{ product.quantityPurchased }} </p>
                     <p> Current Asset Value: {{ product.assetPricePerItem }} </p>
-                    <p> Total Asset Value: {{ product.assetPurchaseDetails.amount }} {{ product.assetPurchaseDetails.asset_type }} </p>
+                    <p> Total Asset Value: {{ product.assetPurchaseDetails.balance }} {{ product.assetPurchaseDetails.asset_type }} </p>
                 </mat-card-content>
             </mat-card> 
             <button mat-button matStepperNext (click)="updateStep(stepper.selectedIndex)">Next</button>
@@ -35,7 +35,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-5">
-                        Asset Totals Before:
+                        Your Asset Totals Before:
                         <mat-card *ngFor="let balance of balances; index as i" [attr.data-index]="i">
                             <mat-card-content>
                                 <p> Asset {{ i + 1 }}:  {{ balance.balance }} {{ balance.asset_type }} </p>
@@ -44,7 +44,7 @@
                         <button [disabled]="!stepChecker[1]" mat-button (click)="validateFundsForPurchase('', stepper.selectedIndex)"> Validate Funds </button>
                     </div>
                     <div class="col-md-5">
-                        Asset Totals After
+                        Your Asset Totals After
                         <mat-card *ngFor="let balance of updatedBalances; index as i" [attr.data-index]="i">
                             <mat-card-content>
                                 <p> Asset {{ i + 1 }}:  {{ balance.balance }} {{ balance.asset_type }} </p>
