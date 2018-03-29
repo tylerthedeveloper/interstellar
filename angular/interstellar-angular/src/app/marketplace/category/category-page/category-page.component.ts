@@ -55,8 +55,10 @@ export class CategoryPageComponent implements OnInit {
             quantity: 15,
             productCategory: ProductCategoryEnum.Electronics,
             productPrices: [
-                <AssetBalance> { asset_type: 'native', balance: '5.00000' },
-                <AssetBalance> { asset_type: 'tycoin', balance: '7.00000'  },
+                new AssetBalance ('5.00000', 'native'),
+                new AssetBalance ('7.00000', 'tycoin')
+                // <AssetBalance> { balance: '5.00000', asset_type: 'native', },
+                // <AssetBalance> { balance: '7.00000', asset_type: 'tycoin',   },
             ],
 
             productThumbnailLink: 'https://images10.newegg.com/productimage/14-487-290-01.jpg',

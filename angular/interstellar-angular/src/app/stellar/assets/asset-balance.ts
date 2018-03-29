@@ -1,11 +1,11 @@
 export class AssetBalance {
-    asset_type: string;
     balance: string;
+    asset_type: string;
 
-    constructor(asset_type: string,
-                balance: string) {
-                this.asset_type = asset_type;
-                this.balance = balance;
+    constructor(balance: string,
+                asset_type: string) {
+                    this.balance = balance;
+                    this.asset_type = asset_type;
     }
 
 }

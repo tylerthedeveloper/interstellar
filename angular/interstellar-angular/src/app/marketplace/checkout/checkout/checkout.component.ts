@@ -21,6 +21,7 @@ export class CheckoutComponent implements OnInit {
         private checkoutItemsSource: Observable<CartItem[]>;
         private assetTotals: AssetBalance[];
         private cartItemIDs: string[];    
+
         private balances: AssetBalance[];
         private updatedBalances: AssetBalance[];
 
@@ -74,33 +75,24 @@ export class CheckoutComponent implements OnInit {
             }
         }
 
-        validateFundsForPurchase(currentStep: number) {
-            // console.log(secretKey);
+        calculateFundsForPurchase(currentStep: number) {
+            // console.log(this.balances);
             // console.log(currentStep);
-
-            // TODO: Get rid of ACcount Balance --> use Asset or Account Balance
-            
-            // const tempArrDoChange = this.balances.map(bal => new Asset(bal.asset_type, bal.balance));
-            console.log(this.balances);
-            console.log(this.assetTotals);
+            // console.log(this.assetTotals);
             
             const _updatedBalances = calcDifferenceForMultipleAssets(this.balances, this.assetTotals);
-            console.log(_updatedBalances);
-            this.stepChecker[currentStep] = true;
+            if (this.validateFundsForPurchase(_updatedBalances)) {
+                console.log(_updatedBalances);
+                this.updatedBalances = _updatedBalances;
+                console.log(this.stepChecker);            
+                this.stepChecker[currentStep] = true;
+                console.log(this.stepChecker);
+            }
+        }
 
-
-            // // chec kfrom stellar. ....
-            // // check matcghes current public key ....
-            // // check maktches current secret key ....
-            // const curUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-            // const curPubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
-            // const curSeedKey = sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key');
-            // if (!(curUserID && curPubKey && curSeedKey && curSeedKey === secretKey)) {
-            //                     alert('fals');
-            // } else {
-            //     // this.isValidSecretKey = true;
-            //     this.updateStep(currentStep);
-            // }
+        validateFundsForPurchase(newBalances: AssetBalance[]): boolean {
+            // calculate valid new balances...
+            return true;
         }
 
         returnToCart() {

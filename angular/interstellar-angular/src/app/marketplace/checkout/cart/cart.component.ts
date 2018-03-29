@@ -37,6 +37,8 @@ export class CartComponent implements OnInit {
             // console.log(cartItems);
         this.cartItemsSource = this._cartService.Cart.map(cartItems => {
             this.cartItemIDs = cartItems.map((c: CartItem) => c.cartItemID);
+            // console.log(cartItems.map(CIT => CIT.assetPurchaseDetails));
+            // console.log(calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails)));
             this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
             return cartItems;
         });
@@ -103,7 +105,7 @@ export class CartComponent implements OnInit {
 
         switch (action) {
             case 'purchase':
-                console.log(obj);
+                // console.log(obj);
                 this.updateAddToCheckout(new Array<string>(_cartItemID));
                 break;
             case 'edit':

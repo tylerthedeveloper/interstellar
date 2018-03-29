@@ -41,7 +41,7 @@
                                 <p> Asset {{ i + 1 }}:  {{ balance.balance }} {{ balance.asset_type }} </p>
                             </mat-card-content>
                         </mat-card> 
-                        <button [disabled]="!stepChecker[1]" mat-button (click)="validateFundsForPurchase('', stepper.selectedIndex)"> Validate Funds </button>
+                        <button [disabled]="!stepChecker[1]" mat-button (click)="calculateFundsForPurchase(stepper.selectedIndex)"> Validate Funds </button>
                     </div>
                     <div class="col-md-5">
                         Your Asset Totals After

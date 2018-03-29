@@ -13,7 +13,7 @@
                     <h2 style="width:400 px; display: flex;"> Cart Asset Totals </h2>
                     <mat-card class="example-card" style="width:550px;">
                         <div *ngFor="let asset of assetTotals ">
-                            Total of {{ asset?.balance }} for: {{ asset?.asset_type }}
+                            Total for <strong>{{ asset?.asset_type }}:</strong> {{ asset?.balance }}
                             <br />
                         </div>
                         <button mat-button (click)="recalculateTotals()"> Recalculate </button>                        

@@ -72,10 +72,7 @@ export class StellarAccountService {
                     throw new Error('The destination account does not exist!');
                 })
                 .then(account => account))
-                .map((r: any) => { 
-                        console.log(r.balances);
-                        return <Array<AssetBalance>> r.balances;
-                })
+                .map((r: any) => <Array<AssetBalance>> r.balances)
                 .catch(this.HandleError);
                 // .catch(e => Observable.throw(e));
         } else {

@@ -42,12 +42,17 @@ const calcTotalsForMultipleAssets = (assets: AssetBalance[]): AssetBalance[] => 
 };
 
 const calcDifferenceForMultipleAssets = (balances: AssetBalance[], assetPriceTotals: AssetBalance[]): AssetBalance[] => {
-    const updatedAssets = new Array<AssetBalance>();
-    assetPriceTotals.forEach(asset => {
-        const idx = updatedAssets.findIndex(CIT => CIT.asset_type === asset.asset_type);
-        const curAssAmount = updatedAssets[idx].balance;
-        const newAssAmount = (Number(curAssAmount) - Number(asset.balance));
-        updatedAssets[idx] = {  asset_type: asset.asset_type, balance: String(newAssAmount)};
+    // const _balances = balances.map(bal => new AssetBalance(bal.balance, bal.asset_type));
+    const updatedAssets: AssetBalance[] = new Array<AssetBalance>();
+    // console.log(_balances);
+    // console.log(assetPriceTotals);
+    balances.forEach(asset => {
+        // console.log(asset)
+        // console.log(assetPriceTotals.findIndex(CIT => CIT.asset_type === asset.asset_type));
+        const idx = assetPriceTotals.findIndex(CIT => CIT.asset_type === asset.asset_type);
+        const assetPriceOutlay = assetPriceTotals[idx].balance;
+        const newAssAmount = (Number(asset.balance) - Number(assetPriceOutlay));
+        updatedAssets.push({ balance: String(newAssAmount), asset_type: asset.asset_type, });
     });
     return updatedAssets;
 };
