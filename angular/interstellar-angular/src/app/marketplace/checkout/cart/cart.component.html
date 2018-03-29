@@ -1,34 +1,45 @@
 <div class="container">
-    <div class="row" >
-        <div class="col-12 col-md-7">
-            <ng-container *ngIf="cartItemsSource | async; let cartItemList">
-                <span *ngIf="cartItemList.length > 0; then isCartItems; else emptyCart"> </span>
-                <ng-template #isCartItems>
+    <div class="row">
+        <ng-container *ngIf="cartItemsSource | async; let cartItemList">
+            <span *ngIf="cartItemList.length > 0; then isCartItems; else emptyCart"> </span>
+            <ng-template #isCartItems>
+                <div class="col-12 col-md-7">
                     <h1> My Cart {{ cartItemList.length }} </h1>
                     <div *ngFor="let product of cartItemList">
                         <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
                     </div>
-                        <h2 class="text-nowrap" style="width:400 px; display: flex;"> Cart Options </h2>
-                        <mat-card class="example-card" style="width:550px;">    
-                            <button mat-button (click)="proceedToCheckout()"> Proceed to Checkout </button>
-                            <button mat-button (click)="emptyOutCart()"> Empty Cart </button>
+                </div>
+                <div class="col-12 offset-md-2 col-md-2 text-nowrap" id="assetTotals">
+                    <h2 style="width:400 px; display: flex;"> Cart Asset Totals </h2>
+                    <mat-card class="example-card" style="width:550px;">
+                        <div *ngFor="let asset of assetTotals | async">
+                            Total of {{ asset?.amount }} for: {{ asset?.asset_type }}
+                            <br />
+                        </div>
+                        <button mat-button (click)="recalculateTotals()"> Recalculate </button>                        
                     </mat-card>
-                </ng-template>
-                <ng-template #emptyCart>
-                        <h2 class="text-nowrap" style="width:400 px; display: flex;"> Empty Cart
-                        </h2>
-                        <mat-card class="example-card" style="width:550px;">    
-                                <p> It seems your cart is empty, why not checkout recent products </p>
-                                <button mat-button style="width:550px;" (click)="navigateToAllProducts()"> Products </button>
-                        </mat-card>
-                </ng-template>
-            </ng-container>
-        </div>
+                    <h2 class="text-nowrap" style="width:400 px; display: flex;"> Cart Options </h2>
+                    <mat-card class="example-card" style="width:550px;">
+                        <button mat-button (click)="proceedToCheckout()"> Proceed to Checkout </button>
+                        <button mat-button (click)="emptyOutCart()"> Empty Cart </button>
+                    </mat-card>
+                </div>
+            </ng-template>
+        </ng-container>
+        <ng-template #emptyCart>
+            <div class="col-12 offset-md-4 col-md-12">
+                <h2 class="text-nowrap" style="width:400 px; display: flex;"> Empty Cart </h2>
+                <mat-card class="example-card" style="width:550px;">
+                    <p> It seems your cart is empty, why not checkout recent products </p>
+                    <button mat-button style="width:550px;" (click)="navigateToAllProducts()"> Products </button>
+                </mat-card>
+            </div>
+        </ng-template>
     </div>
 </div>
-        
-      
-      
+
+
+
 <!-- <div class="container">
     <div class="row" >
         <ng-container *ngIf="cartItemsSource | async; let cartItemList">
@@ -56,8 +67,8 @@
 </div>  
  -->
 
-                 <!-- <span *ngIf="cartItemsSource; then isCartItems; else emptyCart"> </span> -->
-                <!-- <ng-template *ngIf="cartItemList.length > 0" #isCartItems>
+<!-- <span *ngIf="cartItemsSource; then isCartItems; else emptyCart"> </span> -->
+<!-- <ng-template *ngIf="cartItemList.length > 0" #isCartItems>
                     <h2 class="text-nowrap" style="width:400 px; display: flex;"> Cart Options </h2>
                     <mat-card class="example-card" style="width:550px;">    
                         <button mat-button (click)="proceedToCheckout()"> Proceed to Checkout </button>

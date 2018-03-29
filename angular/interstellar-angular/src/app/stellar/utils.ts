@@ -34,9 +34,9 @@ const calcTotalsForMultipleAssets = (assets: Asset[]): Asset[] => {
             updatedAssets.push(asset);
         } else {
             const idx = updatedAssets.findIndex(CIT => CIT.asset_type === asset.asset_type);
-            const curAssAmount = updatedAssets[0].amount;
+            const curAssAmount = updatedAssets[idx].amount;
             const newAssAmount = (Number(curAssAmount) + Number(asset.amount));
-            updatedAssets[0].amount = String(newAssAmount);
+            updatedAssets[idx] = {  asset_type: asset.asset_type, amount: String(newAssAmount)};
         }
     });
     return updatedAssets;

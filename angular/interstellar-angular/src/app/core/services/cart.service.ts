@@ -9,12 +9,16 @@
 
 
 import { Injectable  } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/observable/of';
 
 import * as firebase from 'firebase/app';
-import { Subject } from 'rxjs/Subject';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+
+import { calcTotalsForMultipleAssets, Asset } from 'app/stellar';
+
 import { User } from '../../user';
 import { CartItem } from '../../marketplace/_market-models/cart-item';
 
@@ -23,24 +27,36 @@ import { CartItem } from '../../marketplace/_market-models/cart-item';
 export class CartService {
 
     private _userID: string;
+
     public userCartCollection: AngularFirestoreCollection<CartItem>;
     public userCartItems: Observable<CartItem[]>;
-    private cartItemIDs: string[] = [];
     public myCartRef: firebase.firestore.CollectionReference;
+
+    private cartItemIDs: string[] = [];
+    // private assetTotals: Observable<Asset[]>; // = [];
+    private assetTotals: Asset[] = [];
 
     // https://blog.cloudboost.io/build-simple-shopping-cart-with-angular-4-observables-subject-subscription-part-2-2d3735cde5f
 
     constructor(private afs: AngularFirestore) {
         this._userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         this.userCartCollection = afs.collection('user-cart').doc(this._userID).collection('cartItems');
+        this.cartItemIDs = [];
         this.userCartItems = this.userCartCollection
                                     .snapshotChanges()
                                     .map(changes => {
-                                        return changes.map(a => {
+                                        const _totals = new Array<Asset>();
+                                        const _ids = new Array<string>();
+                                        const _arr = changes.map(a => {
                                             const data = a.payload.doc.data() as CartItem;
-                                            this.cartItemIDs.push(data.cartItemID);
+                                            _ids.push(data.cartItemID);
+                                            _totals.push(data.assetPurchaseDetails);
                                             return data;
-                                    });
+                                        });
+                                        this.cartItemIDs = _ids;
+                                        this.assetTotals = _totals;
+                                        return _arr;
+
         });
         this.myCartRef = this.userCartCollection.ref;
 
@@ -51,12 +67,24 @@ export class CartService {
     //   :::::: P U B L I C  C R U D   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
+    // return Observable.of({ items: this.userCartItems, totals: this.assetTotals});
+    // get Cart(): Observable<any> {
     get Cart(): Observable<CartItem[]> {
         return this.userCartItems;
     }
 
     get CartItemIDs(): string[] {
-        return this.cartItemIDs
+        return this.cartItemIDs;
+    }
+
+    getCartAssetTotals() {
+        return Observable.of(calcTotalsForMultipleAssets(this.assetTotals));
+        // return Observable.of(this.assetTotals);
+    }
+
+    getCartAssetTotals2() {
+        return this.assetTotals;
+        // return Observable.of(this.assetTotals);
     }
 
     addToCart(newCartItem: string) {
@@ -70,6 +98,7 @@ export class CartService {
         _cartItemData.cartItemID = _docID;
 
         this.userCartCollection.doc(_docID).set(_cartItemData);
+
         // this.userCartCollection.doc(this._userID).collection('cartItems').add(_cartItemData)
         //                                 .catch(this.HandleError);
                                         // .then(res => res)
