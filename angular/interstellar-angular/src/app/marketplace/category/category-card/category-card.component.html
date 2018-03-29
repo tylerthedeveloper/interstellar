@@ -2,7 +2,24 @@
         {{category.timestamp | date: 'EEEE M/d HH:mm'}}
     </div> -->
 
-<div style="width:100%;">
+<div class="card" style="display: inline-block;">
+
+    <!--Card image-->
+    <img class="img-fluid" src="{{ category.thumbnailLink }}" alt="Card image cap" style="height: 300px; width: 300px;">
+
+    <!--Card content-->
+    <div class="card-body">
+        <!--Title-->
+        <h4 class="card-title">{{ category.category }}</h4>
+        <!--Text-->
+        <p class="card-text">{{ category.description }}</p>
+        <a (click)="selectCategory(category.category)" class="btn btn-primary waves-light" mdbRippleRadius>Button</a>
+    </div>
+
+</div>
+
+
+<!-- <div style="width:100%;">
   <mat-card class="example-card" (click)="selectCategory(category.category)">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
@@ -20,4 +37,4 @@
       <button mat-button>SHARE</button>
     </mat-card-actions>
   </mat-card>
-</div>
+</div> -->

@@ -1,8 +1,8 @@
-<h1 style="text-align:center;"> productfeed works! </h1>
+<h1 style="text-align:center;"> Category Feed </h1>
 
 <!-- | async -->
-<div style="width:70%; margin: auto; text-align:center;">
-    <div *ngFor="let category of _categories">
+<div>
+    <div *ngFor="let category of _categories" style="display: inline-block;">
         <category-card [category]="category" (notify)="onSelectCategory($event)"></category-card>
     </div>
 </div>
