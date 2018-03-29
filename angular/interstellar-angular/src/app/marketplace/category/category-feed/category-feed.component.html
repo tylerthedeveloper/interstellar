@@ -1,7 +1,7 @@
-<h1> productfeed works! </h1>
+<h1 style="text-align:center;"> productfeed works! </h1>
 
 <!-- | async -->
-<div style="width:300px;">
+<div style="width:70%; margin: auto; text-align:center;">
     <div *ngFor="let category of _categories">
         <category-card [category]="category" (notify)="onSelectCategory($event)"></category-card>
     </div>
