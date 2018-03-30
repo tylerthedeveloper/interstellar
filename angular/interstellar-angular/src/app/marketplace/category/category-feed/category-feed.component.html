@@ -1,7 +1,7 @@
 <h1 style="text-align:center;"> Category Feed </h1>
 
 <!-- | async -->
-<div>
+<div style="text-align:center;">
     <div *ngFor="let category of _categories" style="display: inline-block;">
         <category-card [category]="category" (notify)="onSelectCategory($event)"></category-card>
     </div>
