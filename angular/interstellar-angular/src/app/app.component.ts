@@ -1,10 +1,4 @@
 import { Component } from '@angular/core';
-// import request from 'request';
-
-// import StellarSdk from 'stellar-sdk';
-// import { StellarService } from './stellar/stellar.service';
-// import { isValidSecretKey, isValidNewBalance, updateBalance, StellarLumensMinimum } from './stellar/utils';
-// import { AccountBalance } from './stellar/account/account-balance';
 
 //selector: 'my-app',
 

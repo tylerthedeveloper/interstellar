@@ -41,7 +41,7 @@
                                 <p> Asset {{ i + 1 }}:  {{ balance.balance }} {{ balance.asset_type }} </p>
                             </mat-card-content>
                         </mat-card> 
-                        <button [disabled]="!stepChecker[1]" mat-button (click)="calculateFundsForPurchase(stepper.selectedIndex)"> Validate Funds </button>
+                        <button [disabled]="!stepChecker[1]" mat-button (click)="calculateFundsForPurchase(stepper.selectedIndex)"> Calculate balance </button>
                     </div>
                     <div class="col-md-5">
                         Your Asset Totals After
@@ -49,21 +49,22 @@
                             <mat-card-content>
                                 <p> Asset {{ i + 1 }}:  {{ balance.balance }} {{ balance.asset_type }} </p>
                             </mat-card-content>
-                        </mat-card> 
+                        </mat-card>
+                        <button [disabled]="!stepChecker[2]" mat-button (click)="validateFundsForPurchase(stepper.selectedIndex)"> Validate Funds </button> 
                     </div>
-                    <div class="col-md-2">
-                            <button *ngIf="stepChecker[2]" (click)="updateStep(stepper.selectedIndex)" mat-button matStepperNext>Finish</button>
+                    <div class="col-md-2" style="display:flex">
+                            <button class="primary" *ngIf="stepChecker[3]" (click)="completePurchase(stepper.selectedIndex)" mat-button matStepperNext> Confirm Purchase</button>
                     </div>
               </div>
           </div>
     </mat-step>
     <mat-step editable="false" #stepFour>
       <ng-template matStepLabel> Confirm </ng-template>
-      <h3  *ngIf="stepChecker[2]"> You are now done. Thanks for shopping!</h3>
-      <p  *ngIf="stepChecker[2]"> Below is your order receipt</p>
+      <h3  *ngIf="stepChecker[3]"> You are now done. Thanks for shopping!</h3>
+      <p  *ngIf="stepChecker[3]"> Below is your order receipt</p>
       <div>
-        <button mat-button> Return Home </button>
-        <button mat-button> Logout </button>
+        <button mat-button (click)="returnHome()"> Return Home </button>
+        <button mat-button (click)="checkoutLogout()"> Logout </button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

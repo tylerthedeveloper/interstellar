@@ -3,14 +3,15 @@
         <ng-container *ngIf="cartItemsSource | async; let cartItemList">
             <span *ngIf="cartItemList.length > 0; then isCartItems; else emptyCart"> </span>
             <ng-template #isCartItems>
-                <div class="col-12 col-md-7">
+                <div class="col-12 col-md-5">
                     <h1> My Cart <small> ({{ cartItemList.length }} item{{ cartItemList.length > 0 ? 's' : '' }})</small> </h1>
                     <div *ngFor="let product of cartItemList">
                         <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
                     </div>
                 </div>
-                <div class="col-12 offset-md-2 col-md-2 text-nowrap" id="assetTotals">
-                    <h2 style="width:400 px; display: flex;"> Cart Asset Totals </h2>
+                <div class="col-12 offset-md-3 col-md-1 text-nowrap" id="assetTotals">
+                    <h2 style="display: flex;"> Cart Asset Totals </h2> 
+                    <!-- width:400 px;  -->
                     <mat-card class="example-card" style="width:550px;">
                         <div *ngFor="let asset of assetTotals ">
                             Total for <strong>{{ asset?.asset_type }}:</strong> {{ asset?.balance }}
@@ -18,7 +19,8 @@
                         </div>
                         <button mat-button (click)="recalculateTotals()"> Recalculate </button>                        
                     </mat-card>
-                    <h1 class="text-nowrap" style="width:400 px; display: flex;"> Cart Options </h1>
+                    <h1 class="text-nowrap" style="display: flex;"> Cart Options </h1> 
+                    <!-- width:400 px;  -->
                     <mat-card class="example-card" style="width:550px;">
                         <button mat-button (click)="proceedToCheckout()"> Proceed to Checkout </button>
                         <button mat-button (click)="emptyOutCart()"> Empty Cart </button>

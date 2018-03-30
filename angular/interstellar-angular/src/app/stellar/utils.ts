@@ -70,6 +70,31 @@ const isValidNewBalance = (assetType: string, currentBalance: number, totalAsset
     return false;
 };
 
+const areValidNewBalances = (newBalances: Array<AssetBalance>): boolean => {
+    if (!newBalances || newBalances.length === 0) { 
+        console.log('false');
+        return false;
+    } else {
+        newBalances.forEach(newBalance => {
+            const _balance: number = Number(newBalance.balance);
+            const _asset: string = newBalance.asset_type;
+            console.log('false');
+            if (_balance >= 0) {
+                if (_asset === 'native' && !(_balance >= StellarLumensMinimum)) {
+                    console.log(_asset);
+                    return false;
+                } else if (_asset === 'tycoin' && !(_balance >= TyCoinMinimum)) {
+                    console.log(_asset);                    
+                    return false;
+                }
+            }
+        });
+    } 
+    return true;        
+};
+
+
+
 const updateBalance = (balanceArray: Array<AssetBalance>, asset: AssetBalance): void => {
     const index = balanceArray.findIndex(bal => bal.asset_type === asset.asset_type);
     const newbal = parseInt(balanceArray[index].balance, 10) - parseInt(asset.balance, 10);
@@ -81,8 +106,8 @@ const getBalanceforAsset = (balanceArray: Array<AssetBalance>, assetType: string
     return parseInt(balanceArray[index].balance, 10);
 };
 
-export { isValidSecretKey, currencyAssetsMapper, getBalanceforAsset,
-        calcTotalPurchaseAmount, updateBalance, isValidNewBalance,
-        StellarLumensMinimum, TyCoinMinimum, calcTotalsForMultipleAssets,
-        calcDifferenceForMultipleAssets
+export { isValidSecretKey, currencyAssetsMapper, 
+        getBalanceforAsset, updateBalance, isValidNewBalance, areValidNewBalances,
+        calcTotalPurchaseAmount, calcTotalsForMultipleAssets, calcDifferenceForMultipleAssets, 
+        StellarLumensMinimum, TyCoinMinimum
 };
