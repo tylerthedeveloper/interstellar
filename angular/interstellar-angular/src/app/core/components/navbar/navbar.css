@@ -22,40 +22,39 @@
 }
 
 .main-nav {
-    /*
-    background-color: #60ac5d;
-    border-top: 8px solid #005005;
+
+    background-color: #ECECEC;
+    border-bottom: .08em solid #cCcCcC;
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around; 
-    */
-    /* fxLayoutAlign="space-around center"> */
+    justify-content: space-around;
+    /* fxLayoutAlign="space-around center" */
 }
 
 .main-nav-button {
-    background-color: #004704;
-    padding: 0 4 0 4px;
-    margin: 0 4 0 4px;
+    background-color: #146eb4;
+    padding: 0 4 0 4em;
+    margin: 0 4 0 4em;
 }
 
 .example-fill-remaining-space {
     /*
-        This fills the remaining space, by using flexbox. 
+        This fills the remaining space, by using flexbox.
         Every toolbar row uses a flexbox row layout.
     */
     flex: 1 1 auto;
 }
-  
+
 .nav-spacing {
-    margin-bottom: 50px;
+    margin-bottom: 3em;
 }
 
 button {
     color: white;
-    height: 60px;
+    height: 2.5em;
     font-family: 'Kanit', sans-serif;
-    font-size: 16px;
+    font-size: .8em;
 }
 
 .bottom-nav {
@@ -63,7 +62,7 @@ button {
     bottom: 0;
     z-index: 2;
     width: 100%;
-    background-color: #2e7c31;
+    background-color: #146eb4;
     font-family: 'Roboto', sans-serif;
     border-top: 8px solid #004f04;
     color: white;

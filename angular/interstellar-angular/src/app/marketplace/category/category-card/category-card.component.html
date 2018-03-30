@@ -5,17 +5,21 @@
 <div class="card" style="display: inline-block;">
 
     <!--Card image-->
-    <img class="img-fluid" src="{{ category.thumbnailLink }}" alt="Card image cap" style="height: 300px; width: 300px;">
+    <!-- <img class="img-fluid" src="{{ category.thumbnailLink }}" alt="Card image cap" style="height: 300px; width: 300px;"> -->
+    <div class="view hm-white-slight waves-light" mdbRippleRadius>
+        <img (click)="selectCategory(category.category)" src="{{ category.thumbnailLink }}" class="img-fluid" alt="Card image with a tree in a middle of a lake." style="height: 20em; width: 20em;">
+        <a>
+            <div class="mask"></div>
+        </a>
+    </div>
 
     <!--Card content-->
     <div class="card-body">
         <!--Title-->
-        <h4 class="card-title">{{ category.category }}</h4>
+        <h4 class="card-title"><a (click)="selectCategory(category.category)" class="btn btn-light-blue waves-light" mdbRippleRadius>{{ category.category }}</a></h4>
         <!--Text-->
         <p class="card-text">{{ category.description }}</p>
-        <a (click)="selectCategory(category.category)" class="btn btn-primary waves-light" mdbRippleRadius>Button</a>
     </div>
-
 </div>
 
 
