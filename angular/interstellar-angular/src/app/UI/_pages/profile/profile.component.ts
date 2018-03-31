@@ -24,6 +24,9 @@ import { UserService } from 'app/user.service';
 export class ProfileComponent implements OnInit {
     // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
     // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
+    // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
+    // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
+    // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
     // public wallet: any;
     // private stellarServer: any;
 
@@ -64,7 +67,8 @@ export class ProfileComponent implements OnInit {
 
         // User balances //
         this.balances = new Array<AssetBalance>();
-        const _balances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
+        const _balances = sessionStorage.getItem('my_balances'); // || localStorage.getItem('my_balances');
+        console.log(_balances);
         if (_balances) { this.balances = <AssetBalance[]>JSON.parse(_balances); }
     }
 

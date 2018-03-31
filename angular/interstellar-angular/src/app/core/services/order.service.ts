@@ -1,141 +1,163 @@
-import { Injectable  } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+//
+// ──────────────────────────────────────────────── I ──────────
+//   :::::: T O D O : :  :   :    :     :        :          :
+// ─────────────────────────────────────────────────────────
+/**
+ *  RETURN RESPONSES FROM ACTIONS ... PROMISE OR OBSERVABLE DOESNT MATTER - NEED CONFRIMATION OF SUCCESS
+ */
+//
 
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+
+import { Injectable  } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/observable/of';
 
 import * as firebase from 'firebase/app';
-import { Subject } from 'rxjs/Subject';
-import { User } from 'app/user';
-import { Order } from 'app/marketplace/_market-models/order';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+
+import { calcTotalsForMultipleAssets, AssetBalance } from 'app/stellar';
+
+import { User } from '../../user';
+import { Order } from '../../marketplace/_market-models/order';
 
 
 @Injectable()
 export class OrderService {
 
-    private ordersCollection: AngularFirestoreCollection<Order>;
-    private userOrdersCollection: AngularFirestoreCollection<User>;
+    private _userID: string;
+
+    public userOrderCollection: AngularFirestoreCollection<Order>;
+    public userOrderItems: Observable<Order[]>;
+    public myOrderRef: firebase.firestore.CollectionReference;
+
+    private orderItemIDs: string[] = [];
+    // private assetTotals: Observable<Asset[]>; // = [];
+    private assetTotals: AssetBalance[] = [];
+
+    // https://blog.cloudboost.io/build-simple-shopping-order-with-angular-4-observables-subject-subscription-part-2-2d3735cde5f
 
     constructor(private afs: AngularFirestore) {
-        this.ordersCollection = afs.collection<Order>('orders');
-        this.userOrdersCollection = afs.collection<User>('users-orders');
-    }
+        this._userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
+        this.userOrderCollection = afs.collection('user-order').doc(this._userID).collection('orderItems');
+        this.orderItemIDs = [];
+        // this.userOrderItems = this.userOrderCollection.valueChanges();
+        this.userOrderItems = this.userOrderCollection
+                                    .valueChanges()
+                                    .map(changes => {
+                                        // const _totals = new Array<Asset>();
+                                        //     _ids.push(data.orderItemID);
+                                        const _ids = changes.map(a => a.orderItemID);
+                                        this.orderItemIDs = _ids;
+                                        // this.assetTotals = _totals;
+                                        return changes;
 
-    getAllOrders(): Observable<Order[]> {
-        return this.ordersCollection.valueChanges();
-    }
-
-    addOrder(orderData: string): void {
-        const _userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-        if (!_userID) {
-            alert('You must be logged in order to post a new order');
-            return;
-        }
-
-        const _orderData = <Order>JSON.parse(orderData);
-
-        // const _docID = this.afs.createId();
-        // const _cat = _orderData.orderCategory;
-        // console.log(_cat);
-        // _orderData.id = _docID;
-        // this.ordersCollection.doc(_docID).set(_orderData);
-        // this.orderCategoriesCollection.doc(`${_cat}/orders/${_docID}`).set(_orderData);
-        // this.userOrdersCollection.doc(`${_userID}/orders/${_docID}`).set(_orderData);
-
-        // this.ordersCollection.add(_orderData);
-        // this.orderCategoriesCollection.doc(_cat).set(_orderData);
-        // this.userOrdersCollection.doc(`${_userID}/orders/${_docID}`).set(_orderData);
-
-    }
-
-    updateOrder(key: string, newOrderData: {}) {
-        this.ordersCollection.doc(key).update(newOrderData);
-        // this.orders.update(key, { text: newText });
-    }
-
-    deleteOrder(orderID: string) {
-        // this.orders.remove(key);
-    }
-
-    getOrderByOrderId(orderID: string): Observable<any> {
-        // console.log(this.ordersCollection.doc(orderID).valueChanges());
-        // return this.afs.collection('orders', ref => ref.where('id', '==', orderID)).valueChanges();
-        // return this.ordersCollection.doc(orderID).valueChanges();
-        return Observable.create((observer: any) => {
-            this.afs.collection('orders', ref => ref.where('id', '==', orderID))
-                .valueChanges()
-                // .first()
-                .subscribe(prod =>  {
-                    observer.next(prod[0]);
-                    // console.log(prod[0]);
-                });
         });
-    }
-
-    getOrdersByUserID(userID: string): Observable<any> {
-        // `${_userID}/orders/${_docID}`
-        // if (!userID) userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-        return this.userOrdersCollection.doc(userID).collection('orders').valueChanges();
-    }
-
-    getOrdersByUserName(name: string): Observable<any> {
-        /*
-        Observable.create((observer : any) => {
-            this.userService.getUserByName(name).first().subscribe(user => {
-                //console.log(user[0].uid);
-                observer.next(new Array(this.afs.list(`/user-orders/${user[0].uid}`)));
-            });
-        });
-        */
-        // return this.afs.list(`/user-orders/names/${name}`);
-        return;
+        this.myOrderRef = this.userOrderCollection.ref;
 
     }
 
-    getOrdersByUserTitle(title: string): Observable<any> {
-        // if(title !== "") {
-        //     return Observable.create((observer : any) => {
-        //         var self = this.afs;
-        //         this.afs.list('/orders', {
-        //             query: {
-        //                 orderByChild: 'title',
-        //                 equalTo: title
-        //             }
-        //         }).subscribe(order => {
-        //             //console.log(order);
-        //             observer.next(order);
-        //         });
-        //     });
-        // }
-        return;
+    //
+    // ──────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: P U B L I C  C R U D   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────
+    //
+    // return Observable.of({ items: this.userOrderItems, totals: this.assetTotals});
+    // get Order(): Observable<any> {
+    get Order(): Observable<Order[]> {
+        return this.userOrderItems;
     }
 
-    private getKeyByCategoryId(_category: string) {
-        // var cat = "";
-        // return Object.keys(PostCategory).find(key => PostCategory[key] === _category)
-        return;
+    get OrderItemIDs(): string[] {
+        return this.orderItemIDs;
     }
 
-//     private getCategoryString(category: any): string {
-//         switch(category) {
-//             case OrderCategory.Apparel:
-//                 return "Idea";
-//             case OrderCategory.Meetup:
-//                 return "Meetup";
-//             case OrderCategory.Social:
-//                 return "Social";
-//             case OrderCategory.Question:
-//                 OrderCategory "Question";
-//             case Category.Other:
-//                 return "Other";
-//         }
-//         return "";
-//     }
+    getOrderAssetTotals() {
+        return Observable.of(calcTotalsForMultipleAssets(this.assetTotals));
+        // return Observable.of(this.assetTotals);
+    }
+
+    getOrderAssetTotals2() {
+        return this.assetTotals;
+        // return Observable.of(this.assetTotals);
+    }
+
+    addToOrder(newOrderItem: string) {
+        const _orderItemData = <Order>JSON.parse(newOrderItem);
+
+
+        // FOR COMPLETE ORDER
+        // order type
+
+        const _docID = this.afs.createId();
+        _orderItemData.orderItemID = _docID;
+
+        this.userOrderCollection.doc(_docID).set(_orderItemData);
+
+        // this.userOrderCollection.doc(this._userID).collection('orderItems').add(_orderItemData)
+        //                                 .catch(this.HandleError);
+                                        // .then(res => res)
+                                        // .map()
+    }
+
+    updateOrderItem(key: string, newOrderItemData: {}) {
+        this.userOrderCollection.doc(key).update(newOrderItemData);
+        // this.userOrderCollection.doc(this._userID).collection('orderItems').doc('orderItemID').update(newOrderItemData);
+    }
+
+    addToCheckout(orderItemIDs: string[]) {
+        console.log(orderItemIDs);
+        const batch = this.afs.firestore.batch();
+        orderItemIDs.forEach(id => batch.update(this.myOrderRef.doc(id), {isInCheckout: true}));
+        return batch.commit();
+        // this.userOrderCollection.doc(orderItemID).update({isInCheckout: true});
+    }
+
+    removeOrderItem(orderItemID: string) {
+        this.userOrderCollection.doc(orderItemID).delete();
+        this.orderItemIDs.filter(_orderItemID => _orderItemID !== orderItemID);
+    }
+
+    batchRemoveOrderItems(orderItemIdArray: string[]) {
+        console.log(this.orderItemIDs);
+        const batch = this.afs.firestore.batch();
+        orderItemIdArray.forEach(id => batch.delete(this.myOrderRef.doc(id)));
+        console.log(this.orderItemIDs);
+        return batch.commit()
+            .catch(error => console.log(error))
+            .then(res => this.orderItemIDs.filter(_orderItemID => orderItemIdArray.find(c => c === _orderItemID)));
+        // console.log(this.orderItemIDs);
+    }
+
+    emptyOrder() {
+        // console.log(this.orderItemIDs);
+        // const batch = this.afs.firestore.batch();
+        // this.orderItemIDs.forEach(id => batch.delete(this.myOrderRef.doc(id)));
+        // batch.commit();
+        // this.orderItemIDs = [];
+        console.log(this.orderItemIDs);
+        const batch = this.afs.firestore.batch();
+        this.orderItemIDs.forEach(id => batch.delete(this.myOrderRef.doc(id)));
+        console.log(this.orderItemIDs);
+        batch.commit()
+            .catch(error => console.log(error))
+            .then(res => this.orderItemIDs = []);
+        console.log(this.orderItemIDs);
+    }
+    // ────────────────────────────────────────────────────────────────────────────────
+
+
+    // TODO: implement error handling
+    //
+    // ────────────────────────────────────────────────────── I ──────────
+    //   :::::: H E L P E R S : :  :   :    :     :        :          :
+    // ────────────────────────────────────────────────────────────────
+    //
+    HandleError(error: Response) {
+        // alert(error);
+        return Observable.throw(error || 'Server error');
+    }
+    // ────────────────────────────────────────────────────────────────────────────────
+
 }
-
-// Apparel,
-// Electronics,
-// Food,
-// Houseware,
-// Software,
-
-// Other

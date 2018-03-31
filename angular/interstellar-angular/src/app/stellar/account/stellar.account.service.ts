@@ -62,7 +62,7 @@ export class StellarAccountService {
           // .subscribe(() => { return this.authenticate(pair.secret() }));
     }
 
-    authenticate = (secretKey: string): Observable<Array<AssetBalance>> => {
+    authenticate (secretKey: string): Observable<Array<AssetBalance>> {
         const pubkey = isValidSecretKey(secretKey);
         if (pubkey) {
             sessionStorage.setItem('public_key', pubkey);

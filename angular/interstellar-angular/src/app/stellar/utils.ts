@@ -15,6 +15,18 @@ const isValidSecretKey = (secretKey: string): string => {
     }
 };
 
+const updateBalance = (balanceArray: Array<AssetBalance>, asset: AssetBalance): void => {
+    const index = balanceArray.findIndex(bal => bal.asset_type === asset.asset_type);
+    const newbal = parseInt(balanceArray[index].balance, 10) - parseInt(asset.balance, 10);
+    // FIXME: THIS SHOULD NOT BE A MUTATION
+    balanceArray[index].balance = String(newbal);
+};
+
+const getBalanceforAsset = (balanceArray: Array<AssetBalance>, assetType: string): number => {
+    const index = balanceArray.findIndex(bal => bal.asset_type === assetType);
+    return parseInt(balanceArray[index].balance, 10);
+};
+
 // const isValidNewBalance = (currentBalance: number, outlay: string): boolean => {
 //     // tslint:disable-next-line:radix
 //     const _outlay = parseInt(outlay);
@@ -42,13 +54,8 @@ const calcTotalsForMultipleAssets = (assets: AssetBalance[]): AssetBalance[] => 
 };
 
 const calcDifferenceForMultipleAssets = (balances: AssetBalance[], assetPriceTotals: AssetBalance[]): AssetBalance[] => {
-    // const _balances = balances.map(bal => new AssetBalance(bal.balance, bal.asset_type));
     const updatedAssets: AssetBalance[] = new Array<AssetBalance>();
-    // console.log(_balances);
-    // console.log(assetPriceTotals);
     balances.forEach(asset => {
-        // console.log(asset)
-        // console.log(assetPriceTotals.findIndex(CIT => CIT.asset_type === asset.asset_type));
         const idx = assetPriceTotals.findIndex(CIT => CIT.asset_type === asset.asset_type);
         const assetPriceOutlay = assetPriceTotals[idx].balance;
         const newAssAmount = (Number(asset.balance) - Number(assetPriceOutlay));
@@ -70,44 +77,56 @@ const isValidNewBalance = (assetType: string, currentBalance: number, totalAsset
     return false;
 };
 
+const isValidNewBalance2 = (asset: AssetBalance): boolean => {
+    const _balance: number = Number(asset.balance);
+    const _asset_type: string = asset.asset_type;
+    if (_balance >= 0) {
+        if (_asset_type === 'native') {
+            return (_balance > StellarLumensMinimum);
+        } else if (_asset_type === 'tycoin') {
+            return (_balance > TyCoinMinimum);
+        }
+        return true;
+    }
+    return false;
+};
+
 const areValidNewBalances = (newBalances: Array<AssetBalance>): boolean => {
-    if (!newBalances || newBalances.length === 0) { 
-        console.log('false');
-        return false;
-    } else {
-        newBalances.forEach(newBalance => {
-            const _balance: number = Number(newBalance.balance);
-            const _asset: string = newBalance.asset_type;
-            console.log('false');
-            if (_balance >= 0) {
-                if (_asset === 'native' && !(_balance >= StellarLumensMinimum)) {
-                    console.log(_asset);
-                    return false;
-                } else if (_asset === 'tycoin' && !(_balance >= TyCoinMinimum)) {
-                    console.log(_asset);                    
-                    return false;
-                }
-            }
-        });
-    } 
-    return true;        
+    // if (!newBalances || newBalances.length === 0) {
+    //     console.log('false');
+    //     return false;
+    // } else {
+    //     newBalances.forEach(newBalance => {
+    //         const _balance: number = Number(newBalance.balance);
+    //         const _asset_type: string = newBalance.asset_type;
+    //         console.log('false');
+    //         if (_balance >= 0) {
+    //             if (_asset_type === 'native' && !(_balance >= StellarLumensMinimum)) {
+    //                 console.log(_asset_type);
+    //                 return false;
+    //             } else if (_asset_type === 'tycoin' && !(_balance >= TyCoinMinimum)) {
+    //                 console.log(_asset_type);
+    //                 return false;
+    //             }
+    //         }
+    //     });
+    // }
+    // return true;
+
+    // TODO: TEST MEEEE
+    let bool = true;
+    newBalances.forEach(balance => {
+        if (!isValidNewBalance2(balance)) {
+            bool = false;
+            // break;
+        }
+    });
+    return bool;
 };
 
 
-
-const updateBalance = (balanceArray: Array<AssetBalance>, asset: AssetBalance): void => {
-    const index = balanceArray.findIndex(bal => bal.asset_type === asset.asset_type);
-    const newbal = parseInt(balanceArray[index].balance, 10) - parseInt(asset.balance, 10);
-    balanceArray[index].balance = String(newbal);
-};
-
-const getBalanceforAsset = (balanceArray: Array<AssetBalance>, assetType: string): number => {
-    const index = balanceArray.findIndex(bal => bal.asset_type === assetType);
-    return parseInt(balanceArray[index].balance, 10);
-};
-
-export { isValidSecretKey, currencyAssetsMapper, 
+export { isValidSecretKey, currencyAssetsMapper,
         getBalanceforAsset, updateBalance, isValidNewBalance, areValidNewBalances,
-        calcTotalPurchaseAmount, calcTotalsForMultipleAssets, calcDifferenceForMultipleAssets, 
+        calcTotalPurchaseAmount, calcTotalsForMultipleAssets, calcDifferenceForMultipleAssets,
         StellarLumensMinimum, TyCoinMinimum
 };

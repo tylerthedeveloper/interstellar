@@ -22,12 +22,12 @@ $(document).ready(function(){
                 </button>
                 <button mat-raised-button id="categories" (click)="changePage('categories')"
                         [routerLink]="['/categories']" routerLinkActive="active"
-                    class="main-nav-button">
+                        class="main-nav-button">
                     Categories
                 </button>
                 <button mat-raised-button id="products" (click)="changePage('products')"
                         [routerLink]="['/products']" routerLinkActive="active"
-                    class="main-nav-button">
+                        class="main-nav-button">
                     Products
                 </button>
                 <span class="example-fill-remaining-space"></span>
@@ -61,21 +61,29 @@ $(document).ready(function(){
                 </div>
             </mat-toolbar>
         </div>
+        <!-- <md-sidenav-layout> -->
+            <!-- </md-sidenav-layout> -->
+            
+        </div>
+                <mat-sidenav #sidenav style="float: right" mode="over" align="end" posiiton="end"  class="app-sidenav" >
+                    <!-- <mat-sidenav-content> -->
+                            <mat-card>
+                                <button type="button" mat-button (click)="toggle(sidenav)">
+                                    Hide
+                                </button>
+                                <h1> login with secret key </h1>
+                                    <input matInput #secretKeyLogin type="text" required/>
+                                    <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">login now</button>
+                                    <br />
+                            </mat-card>
+                        <!-- <h2> Sign up or merge your existing stellar account </h2>
+                        <button (click)="signUp()"> Signup now </button> -->
+                    <!-- </mat-sidenav-content> -->
+                </mat-sidenav>
     </div>
     <!-- <mat-sidenav-container> -->
-        <mat-sidenav #sidenav style="float: right;" align="end" position="end" class="app-sidenav" >
-                <button type="button" mat-button (click)="toggle(sidenav)">
-                        Hide
-                </button>
-                <h1> login with secret key </h1>
-                <input #secretKeyLogin type="text" required/>
-                <br />
-                <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">login now</button>
-                <!-- <h2> Sign up or merge your existing stellar account </h2>
-                <button (click)="signUp()"> Signup now </button> -->
-        </mat-sidenav>
     <!-- </mat-sidenav-container> -->
     <!-- <mat-sidenav-layout mode="over">  -->
 <!-- right: 10%; -->
     <!-- </mat-sidenav-layout> -->
-</div>
+

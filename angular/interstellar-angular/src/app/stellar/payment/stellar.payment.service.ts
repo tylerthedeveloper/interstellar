@@ -11,6 +11,7 @@ import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/fromPromise';
+import { AssetBalance, TransactionRecord } from 'app/stellar';
 
 
 @Injectable()
@@ -29,9 +30,13 @@ export class StellarPaymentService {
         THROW REAL ERROR
 
     */
-    sendPayment = (destinationKey: string, assetType: string, amount: string, memo: string): Observable<Response> => {
+    // sendPayment (destinationKey: string, assetType: string, amount: string, memo: string): Observable<Response> {
+    sendPayment (transactionRecord: TransactionRecord): Observable<Response> {
         const secretKey = sessionStorage.getItem('seed_key');
         const pubKey = sessionStorage.getItem('public_key');
+        const destinationKey = transactionRecord.receiverPublicKey;
+        const amount = transactionRecord.assetBalance.balance;
+        const memo = transactionRecord.memo;
         if (!secretKey) { return; }
         const sourceKeys = StellarSdk.Keypair.fromSecret(secretKey);
         const server = this._server;
@@ -43,16 +48,17 @@ export class StellarPaymentService {
             })
             .then(() => server.loadAccount(pubKey))
             .then(function(sourceAccount) {
-                const curBal = getBalanceforAsset(sourceAccount.balances, assetType);
+                // const curBal = getBalanceforAsset(sourceAccount.balances, assetType);
                 // if (!(curBal !== -1 && isValidNewBalance(curBal, amount))) { throw new InsufficientFundsException(); }
-                transaction = new StellarSdk.TransactionBuilder(sourceAccount) // Start building the transaction.
+                // * Start building the transaction * //
+                transaction = new StellarSdk.TransactionBuilder(sourceAccount)
                     .addOperation(StellarSdk.Operation.payment({
                         destination: destinationKey,
                         asset: StellarSdk.Asset.native(),
                         /*
 
 
-                            map to right asset
+                            map to CORRECT asset
 
 
                         */
@@ -72,6 +78,7 @@ export class StellarPaymentService {
             // server.submitTransaction(transaction);
             })
             .then(result => result)
+            // .then(result => { throw Error; } )
             // .catch(handleError));
             .catch(function(error) {
                 // handleError(error);

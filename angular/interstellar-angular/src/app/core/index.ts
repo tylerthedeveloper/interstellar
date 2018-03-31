@@ -15,6 +15,7 @@ import { EventEmitterService } from './_helpers/event-emitter.service';
 import { ProductService } from './services/product.service';
 import { AuthService } from './services/auth.service';
 import { CartService } from './services/cart.service';
+import { OrderService } from 'app/core/services/order.service';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { CartService } from './services/cart.service';
     ],
     declarations: [NavBarComponent],
     providers: [
-        AuthGuardService, AuthService, EventEmitterService, ProductService, CartService
+        AuthGuardService, AuthService, EventEmitterService, 
+        ProductService, CartService, OrderService
     ]
 })
 export class CoreModule {

@@ -3,7 +3,7 @@ import request from 'request';
 
 import StellarSdk from 'stellar-sdk';
 
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material'; 
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { StellarAccountService } from 'app/stellar';
 import { UserService } from 'app/user.service';
 import { ConfirmDialogComponent } from 'app/UI/_components/dialog/confirm.dialog.component';
@@ -28,8 +28,7 @@ export class RegisterComponent {
                 private _eventEmiter: EventEmitterService,
                 public dialog: MatDialog) {
 
-      console.log("creating register page")        
-                    
+      console.log('creating register page');
 
                     // if (sessionStorage.getItem("seed_key"))
                     //     alert("already logged in ... need to router redirect!")
@@ -50,7 +49,7 @@ export class RegisterComponent {
     public createAccount() {
         this._stellarService.createAccount().subscribe(
                 resp => {
-                    let _ = sessionStorage.getItem('seed_key');
+                    const _ = sessionStorage.getItem('seed_key');
                     alert('You are about to see your private key. \n ' +
                           'Please write it down and do not show anyone');
                     alert('Here is your private key: \n' + _);
@@ -71,12 +70,12 @@ export class RegisterComponent {
     }
 
 
-    private handleAuthRegistration = (res: string) : void => {
-        let data = { message: 'login' }
+    private handleAuthRegistration = (res: string): void => {
+        const data = { message: 'login' };
         // console.log(res);
-        let _pubKey = sessionStorage.getItem('public_key');
-        let _privKey = sessionStorage.getItem('seed_key');
-        let _user = { publicKey : _pubKey };
+        const _pubKey = sessionStorage.getItem('public_key');
+        const _privKey = sessionStorage.getItem('seed_key');
+        const _user = { publicKey : _pubKey };
         let _localStore = false;
         let dialogRef: MatDialogRef<ConfirmDialogComponent>;
           dialogRef = this.dialog.open(ConfirmDialogComponent);
@@ -89,8 +88,8 @@ export class RegisterComponent {
                     localStorage.setItem('seed_key', _privKey);
                     localStorage.setItem('my_balances', res);
                 }
-                console.log(result)
-                console.log(_localStore)
+                console.log(result);
+                console.log(_localStore);
                 sessionStorage.setItem('my_balances', res);
                 this._userService.addUser(_user, _localStore);
                 this._eventEmiter.sendMessage(data);

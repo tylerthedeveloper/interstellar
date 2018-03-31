@@ -14,7 +14,6 @@ export class Order {
     quantityPurchased: number;
     assetPurchaseDetails: AssetBalance;
 
-
     constructor(buyerUserID: string,
                 sellerUserID: string,
                 productID: string,
