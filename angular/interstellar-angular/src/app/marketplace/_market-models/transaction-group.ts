@@ -7,7 +7,7 @@ export class TransactionGroup {
     timestamp: string;
 
     transactionRecords: Array<TransactionRecord>;
-    transactionPaymentDetails: TransactionPaymentDetails;
+    transactionPaymentDetails: Array<TransactionPaymentDetails>;
 
 
     constructor(transactionRecords: Array<TransactionRecord>) {
@@ -19,7 +19,7 @@ export class TransactionGroup {
 export class TransactionRecord {
 
     // TODO: below 2.....
-    transactionID: string;
+    // transactionID: string;
     timestamp: string;
 
     buyerUserID: string;
@@ -74,13 +74,16 @@ export const enum OrderType {
 }
 
 export class TransactionPaymentDetails {
+    senderPublicKey: string;
     receiverPublicKey: string;
     assetBalance: AssetBalance;
     memo: string;
 
-    constructor(receiverPublicKey: string,
+    constructor(senderPublicKey: string,
+                receiverPublicKey: string,
                 assetBalance: AssetBalance,
                 memo: string) {
+                    this.senderPublicKey = senderPublicKey;
                     this.receiverPublicKey = receiverPublicKey;
                     this.assetBalance = assetBalance;
                     this.memo = memo;

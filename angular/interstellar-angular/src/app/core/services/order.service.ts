@@ -74,13 +74,18 @@ export class OrderService {
         return _newOrderID;
     }
 
+    getOrderByID(orderItemID: string) {
+        return this.ordersCollection.doc(orderItemID);
+    }
+
     addNewOrder(orderData: string) {
         const _orderData = <Order>JSON.parse(orderData);
         const _docID = _orderData.orderID;
         console.log(_orderData);
         const batch = this.afs.firestore.batch();
-        this.ordersCollection.doc(_docID).set(_orderData);
-        this.userOrderCollection.doc(this._userID).set(_orderData);
+        batch.set(this.ordersCollection.doc(_docID).ref, _orderData);
+        batch.set(this.userOrderCollection.doc(_docID).ref, _orderData);
+        batch.commit();
     }
 
     removeOrderItem(orderItemID: string) {

@@ -2,10 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms'; //ReactiveFormsModule
-import { HttpModule } from "@angular/http";
+import { FormsModule } from '@angular/forms'; // ReactiveFormsModule
+import { HttpModule } from '@angular/http';
 
-//fire base
+// fire-base
 import { AngularFireModule } from 'angularfire2';
 // import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database-deprecated';
@@ -14,7 +14,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module'
+import { AppRoutingModule } from './app-routing.module';
 
 
 import { UIModule } from './UI/ui.app.module';
@@ -29,27 +29,27 @@ import { CoreModule } from 'app/core';
     AppComponent,
   ],
   imports: [
-      //angular
+      // angular
       BrowserModule, HttpModule, FormsModule, BrowserAnimationsModule,
 
-      //firebase
+      // firebase
       AngularFireModule.initializeApp(environment.firebase),
       AngularFirestoreModule.enablePersistence(),
-      AngularFireDatabaseModule, //AngularFireAuthModule, 
+      AngularFireDatabaseModule, // AngularFireAuthModule,
 
-      //Other
+      // Other
       UIModule, AppRoutingModule, CoreModule, MaterialModule
   ],
   exports: [
-    //NavBarComponent
-    //ConfirmDialogComponent
+    // NavBarComponent
+    // ConfirmDialogComponent
   ],
   providers: [
               StellarAccountService,
               StellarPaymentService,
 
               UserService,
-              //ConfirmDialogComponent
+              // ConfirmDialogComponent
 
   ],
   bootstrap: [AppComponent],

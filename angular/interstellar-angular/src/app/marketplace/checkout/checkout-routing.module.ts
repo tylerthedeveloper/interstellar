@@ -12,6 +12,7 @@ const routes: Routes = [
     children: [
       { path: '', component: CartComponent},
       { path: 'checkout', component: CheckoutComponent },
+      // TODO: MAKE A CHILD...
       { path: 'checkout/order-confirmation/:id', component: OrderConfirmationComponent },
       // { path: '/**', redirectTo: 'home' },
       // { path: '404', redirectTo: 'home' },
