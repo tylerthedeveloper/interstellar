@@ -42,9 +42,9 @@ export class CartComponent implements OnInit {
             this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
             return cartItems;
         });
-  
+
         // this.cartItemIDs = this.cartItemsSource.map((c: CartItem) => c.cartItemID)
-        // this.recalculateTotals();  
+        // this.recalculateTotals();
         // this.assetTotals = this._cartService.getCartAssetTotals();
 
         // TODO: ASSET TOTALS.... HOW AND WHERE???
@@ -115,8 +115,6 @@ export class CartComponent implements OnInit {
             case 'remove':
                 console.log('rem');
                 this._cartService.removeCartItem(_cartItemID);
-                
-                
                 // this.recalculateTotals();
                 // TODO: this if check does not work because cant verify empty observable ... might not nmatter!!!
                 //

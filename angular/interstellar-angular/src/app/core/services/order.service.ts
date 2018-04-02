@@ -28,29 +28,27 @@ export class OrderService {
 
     private _userID: string;
 
+    public ordersCollection: AngularFirestoreCollection<Order>;
     public userOrderCollection: AngularFirestoreCollection<Order>;
     public userOrderItems: Observable<Order[]>;
     public myOrderRef: firebase.firestore.CollectionReference;
 
     private orderItemIDs: string[] = [];
-    // private assetTotals: Observable<Asset[]>; // = [];
     private assetTotals: AssetBalance[] = [];
 
     // https://blog.cloudboost.io/build-simple-shopping-order-with-angular-4-observables-subject-subscription-part-2-2d3735cde5f
 
     constructor(private afs: AngularFirestore) {
         this._userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-        this.userOrderCollection = afs.collection('user-order').doc(this._userID).collection('orderItems');
+
+        this.ordersCollection = afs.collection('orders');
+        this.userOrderCollection = afs.collection('user-orders').doc(this._userID).collection('orderHistory');
         this.orderItemIDs = [];
-        // this.userOrderItems = this.userOrderCollection.valueChanges();
         this.userOrderItems = this.userOrderCollection
                                     .valueChanges()
                                     .map(changes => {
-                                        // const _totals = new Array<Asset>();
-                                        //     _ids.push(data.orderItemID);
-                                        const _ids = changes.map(a => a.orderItemID);
+                                        const _ids = changes.map(a => a.orderID);
                                         this.orderItemIDs = _ids;
-                                        // this.assetTotals = _totals;
                                         return changes;
 
         });
@@ -63,8 +61,6 @@ export class OrderService {
     //   :::::: P U B L I C  C R U D   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
-    // return Observable.of({ items: this.userOrderItems, totals: this.assetTotals});
-    // get Order(): Observable<any> {
     get Order(): Observable<Order[]> {
         return this.userOrderItems;
     }
@@ -73,45 +69,18 @@ export class OrderService {
         return this.orderItemIDs;
     }
 
-    getOrderAssetTotals() {
-        return Observable.of(calcTotalsForMultipleAssets(this.assetTotals));
-        // return Observable.of(this.assetTotals);
+    getNewOrderID(): string {
+        const _newOrderID = this.afs.createId();
+        return _newOrderID;
     }
 
-    getOrderAssetTotals2() {
-        return this.assetTotals;
-        // return Observable.of(this.assetTotals);
-    }
-
-    addToOrder(newOrderItem: string) {
-        const _orderItemData = <Order>JSON.parse(newOrderItem);
-
-
-        // FOR COMPLETE ORDER
-        // order type
-
-        const _docID = this.afs.createId();
-        _orderItemData.orderItemID = _docID;
-
-        this.userOrderCollection.doc(_docID).set(_orderItemData);
-
-        // this.userOrderCollection.doc(this._userID).collection('orderItems').add(_orderItemData)
-        //                                 .catch(this.HandleError);
-                                        // .then(res => res)
-                                        // .map()
-    }
-
-    updateOrderItem(key: string, newOrderItemData: {}) {
-        this.userOrderCollection.doc(key).update(newOrderItemData);
-        // this.userOrderCollection.doc(this._userID).collection('orderItems').doc('orderItemID').update(newOrderItemData);
-    }
-
-    addToCheckout(orderItemIDs: string[]) {
-        console.log(orderItemIDs);
+    addNewOrder(orderData: string) {
+        const _orderData = <Order>JSON.parse(orderData);
+        const _docID = _orderData.orderID;
+        console.log(_orderData);
         const batch = this.afs.firestore.batch();
-        orderItemIDs.forEach(id => batch.update(this.myOrderRef.doc(id), {isInCheckout: true}));
-        return batch.commit();
-        // this.userOrderCollection.doc(orderItemID).update({isInCheckout: true});
+        this.ordersCollection.doc(_docID).set(_orderData);
+        this.userOrderCollection.doc(this._userID).set(_orderData);
     }
 
     removeOrderItem(orderItemID: string) {
@@ -130,21 +99,6 @@ export class OrderService {
         // console.log(this.orderItemIDs);
     }
 
-    emptyOrder() {
-        // console.log(this.orderItemIDs);
-        // const batch = this.afs.firestore.batch();
-        // this.orderItemIDs.forEach(id => batch.delete(this.myOrderRef.doc(id)));
-        // batch.commit();
-        // this.orderItemIDs = [];
-        console.log(this.orderItemIDs);
-        const batch = this.afs.firestore.batch();
-        this.orderItemIDs.forEach(id => batch.delete(this.myOrderRef.doc(id)));
-        console.log(this.orderItemIDs);
-        batch.commit()
-            .catch(error => console.log(error))
-            .then(res => this.orderItemIDs = []);
-        console.log(this.orderItemIDs);
-    }
     // ────────────────────────────────────────────────────────────────────────────────
 
 

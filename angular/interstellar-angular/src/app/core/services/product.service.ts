@@ -63,6 +63,7 @@ export class ProductService {
         //     return;
         // }
 
+        // TODO: CONVERT TO BATCH
         const _productData = <Product>JSON.parse(productData);
         console.log(_productData);
         const _docID = this.afs.createId();

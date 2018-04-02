@@ -9,15 +9,6 @@ add ratings
 
 add shipping -> API
 
-
-purchase item... stepper
-	validate item quantity / amount
-	re-enter and confirm private key...
-	purchase confirmation
-		return to cart
-		return to home
-
-
 anchor to USD ....
 	pull from live feed...
 

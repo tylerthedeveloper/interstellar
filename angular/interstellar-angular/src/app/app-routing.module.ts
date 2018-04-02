@@ -14,6 +14,7 @@ const appRoutes: Routes = [
     { path: 'categories', loadChildren: 'app/marketplace/category/index#CategoryModule'},
     { path: 'cart', loadChildren: 'app/marketplace/checkout/index#CheckoutModule'},
     { path: 'register', component: RegisterComponent, pathMatch: 'full' },
+    { path: '**', redirectTo: '/home', pathMatch: 'full' },
     { path: '*', redirectTo: '/home', pathMatch: 'full' },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     // { path: '**', redirectTo: 'home' }

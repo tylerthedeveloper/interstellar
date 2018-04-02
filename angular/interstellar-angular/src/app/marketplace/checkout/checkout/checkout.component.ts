@@ -1,3 +1,5 @@
+// TODO: CLLEAN UP UNUSED CODE
+
 import { Component, OnInit,  } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
@@ -7,12 +9,15 @@ import 'rxjs/add/observable/forkJoin';
 
 import { isValidSecretKey, AssetBalance, calcTotalsForMultipleAssets,
         calcDifferenceForMultipleAssets, areValidNewBalances,
-        StellarPaymentService, TransactionRecord, StellarAccountService } from 'app/stellar';
+        StellarPaymentService, StellarAccountService } from 'app/stellar';
 
-import { Order } from '../../_market-models/order';
-import { CartService } from '../../../core/services/cart.service';
-import { CartItem } from '../../_market-models/cart-item';
-import { OrderService } from '../../../core/services/order.service';
+import { OrderService } from 'app/core/services/order.service';
+import { CartItem } from 'app/marketplace/_market-models/cart-item';
+import { CartService } from 'app/core/services/cart.service';
+import { Order } from 'app/marketplace/_market-models/order';
+import { concat } from 'rxjs/operators';
+import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from 'app/marketplace/_market-models/transaction-group';
+
 
 
 @Component({
@@ -38,9 +43,9 @@ export class CheckoutComponent implements OnInit {
 
         private hasItems = false;
         private stepChecker: Array<boolean> = [false, false, false, false, false]; // page nav step checking
-        // private isValidSecretKey: boolean;
 
         private curSeedKey: string;
+
         constructor(private _cartService: CartService,
                     private _stellarAccountService: StellarAccountService,
                     private _stellarPaymentService: StellarPaymentService,
@@ -57,7 +62,6 @@ export class CheckoutComponent implements OnInit {
                 if (!arr || arr.length === 0) {
                     const alertMessage = 'It seems your currently don\'t have items to checkout, returning to cart';
                     if (!this.stepChecker[4]) {
-                        // setTimeout(() => {}, 5000);
                         alert(alertMessage);
                         this._router.navigate(['../cart']);
                     }
@@ -65,14 +69,14 @@ export class CheckoutComponent implements OnInit {
                     this.hasItems = true;
                 }
                 const cartPurchaseDetailsArray = new Array<AssetBalance>();
-                this.checkoutItems = cartItems;
+                this.checkoutItems = arr;
                 arr.map(CIT => {
                     this.cartItemIDs.push(CIT.cartItemID);
                     this.sellerIDs.push(CIT.sellerUserID);
                     this.sellerPublicKeys.push(CIT.sellerPublicKey);
                     cartPurchaseDetailsArray.push(CIT.assetPurchaseDetails);
                 });
-                // console.log(this.cartItemIDs);
+                console.log(this.checkoutItems);
                 // console.log(this.sellerIDs);
                 // console.log(this.sellerPublicKeys);
                 // this.cartItemIDs = arr.map(CIT => CIT.cartItemID);
@@ -133,30 +137,133 @@ export class CheckoutComponent implements OnInit {
             }
         }
 
-        completePurchase() {
-            // console.log(this.assetTotals);
-            // console.log(this.cartItemIDs);
-            // console.log(this.sellerIDs);
-            // console.log(this.sellerPublicKeys);
 
+        completePurchase() {
             // const sellerKeys = this.
             // get user secret key
             // get seller public keys
             // TODO: ITERATE OVER ALL ITEMS ...
-            const checkoutItem = this.checkoutItems[0];
+            // this.checkoutItems
 
             // TODO: 'create a memo thingy somewhere... some how...'
             // const memo = `Order #: ${checkoutItem.}`;
             const memo = 'create a memo thingy...';
 
-            const transactionRecord = new TransactionRecord (checkoutItem.buyerPublicKey,
-                                                             checkoutItem.sellerPublicKey,
-                                                             checkoutItem.assetPurchaseDetails,
-                                                             memo);
+            // TURN ITEMS INTO TRANSACTIONS
+            const transactions = this.checkoutItems.map(item => {
+                return new TransactionRecord(
+                    item.buyerUserID,
+                    item.buyerPublicKey,
+                    item.sellerUserID,
+                    item.sellerPublicKey,
+                    item.assetPurchaseDetails,
+                    this.makeTransactionMemo(item.buyerPublicKey, item.sellerPublicKey),
+                    item.productID,
+                    item.productName,
+                    'TODO ADD DESCRIPTION', // TODO: ....
+                    item.quantityPurchased,
+                    item.fixedUSDAmount);
+                });
+
+            // TODO: --> COMBINE PAYMENTS .... INTO TRANS GROUPS
+            const transactionGroups = new Array<TransactionGroup>();
+            let transactionGroups2 = new Array<TransactionGroup>();
+            const firstTransaction = new Array(transactions.pop());
+            const firstGroup = new TransactionGroup(firstTransaction);
+            transactionGroups2.push(firstGroup);
+            console.log(transactionGroups2);            
+            transactions.forEach(transaction => {
+                const sellerKey = transaction.receiverPublicKey;
+                // if (transactionGroups2.length === 0) {
+                //     transactionGroups2 = transactionGroups2.concat(transactionGroups2,
+                //                                                     new TransactionGroup(new Array<TransactionRecord>(transaction)));
+                //     console.log(transactionGroups2);
+                // } else {
+                    const transGroupIds = transactionGroups2.map(TG => TG.transactionRecords[0].receiverPublicKey);
+                    const idx = transGroupIds.findIndex(ID => ID === sellerKey);
+                    if (idx) {
+                        transactionGroups2 = transactionGroups2.concat(new TransactionGroup(new Array<TransactionRecord>(transaction)));
+                    } else {
+                        let newListAtIndex = new Array<TransactionRecord>();
+                        newListAtIndex = transactionGroups2[idx].transactionRecords;
+                        newListAtIndex = newListAtIndex.concat(transaction);
+                        transactionGroups2[idx].transactionRecords = newListAtIndex;
+                        console.log(transactionGroups2);
+                    }
+                    // transactionGroups2.map((TG, index) => {
+                    //     const isThisGroup = TG.transactionRecords[0].receiverPublicKey === sellerKey;
+                    //     const isNotThisItem = TG.transactionRecords.findIndex(trans => trans.productID === transaction.productID);
+                    //     console.log(isThisGroup)
+                    //     console.log(isNotThisItem)
+                    //     if (isThisGroup && (isNotThisItem === -1)) {
+                    //         console.log(isThisGroup)
+                    //         console.log(isNotThisItem)
+                            // let newListAtIndex = new Array<TransactionRecord>();
+                            // newListAtIndex = transactionGroups2[index].transactionRecords;
+                            // newListAtIndex = newListAtIndex.concat(transaction);
+                            // transactionGroups2[index].transactionRecords = newListAtIndex;
+                            // console.log(transactionGroups2);
+                    //     } else if (isNotThisItem === -1) {
+                    //         console.log('else ');
+                    //         transactionGroups2 = transactionGroups2.concat(new TransactionGroup(new Array<TransactionRecord>(transaction)));
+                    //         console.log(transactionGroups2);                            
+                    //     }
+                    // });
+                // }
+                });
+            console.log(transactionGroups2);
+
+            /*
+             transactions.forEach(transaction => {
+                const sellerKey = transaction.receiverPublicKey;
+                if (transactionGroups2.length === 0) {
+                    transactionGroups2 = new Array(new TransactionGroup(new Array<TransactionRecord>(transaction)));
+                    console.log(transactionGroups2);
+                } else {
+                    transactionGroups2.map((TG, index) => {
+                        const idx = TG.transactionRecords.findIndex(TR => TR.receiverPublicKey === sellerKey);
+                        if (idx) {
+                            let newListAtIndex = new Array<TransactionRecord>();
+                            newListAtIndex = transactionGroups2[index].transactionRecords;
+                            newListAtIndex.push(transaction);
+                            transactionGroups2[index].transactionRecords = newListAtIndex;
+                            console.log(idx)
+                            console.log(transactionGroups2);
+                        } else {
+                            transactionGroups2 = transactionGroups2.concat(new TransactionGroup(new Array<TransactionRecord>(transaction)));
+                            console.log(transactionGroups2);
+                        }
+                    });
+                }
+                });
+            */
+
+
+            const transactionPaymentDetails = this.checkoutItems.map(item => {
+                return new TransactionPaymentDetails(item.sellerPublicKey,
+                                                     item.assetPurchaseDetails,
+                                                     this.makeTransactionMemo(item.buyerPublicKey, item.sellerPublicKey));
+            });
 
 
 
-            // NEED TO UPDATE BALANCES
+            // FIXME: TEST THE BELOW
+            // NEED TO BE CAREFUL WITH ASYNC CALL BACKS AND ERROR HANDLING ...
+            // nEED TO CONFIRM COMPLETION BEFORE MUTATION OF SUBSEQUENT STEPS
+            this.stepChecker[2] = false;
+            this.stepChecker[3] = false;
+
+            let result = Promise.resolve();
+            transactionPaymentDetails.forEach(task => {
+                result = result.then(() => this._stellarPaymentService.sendPayment(task));
+            });
+
+            this.stepChecker[4] = true;
+
+            this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal =>
+                sessionStorage.setItem('my_balances', JSON.stringify(bal)));
+
+                       // NEED TO UPDATE BALANCES
             // or just pull from stellar ...
             // const newStellarBalances = this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal => {
             //         console.log(bal);
@@ -164,20 +271,38 @@ export class CheckoutComponent implements OnInit {
             //     }
             // )
 
-            // FIXME: TEST THE BELOW
-            // NEED TO BE CAREFUL WITH ASYNC CALL BACKS AND ERROR HANDLING ...
-            // nEED TO CONFIRM COMPLETION BEFORE MUTATION OF SUBSEQUENT STEPS
-            this._stellarPaymentService.sendPayment(transactionRecord).subscribe(
-                res => {
-                    // or can try ... EMPTY CART FOR THOSE WHERE CHECKOUT === TRUE
-                    this.stepChecker[3] = false;
-                    this.stepChecker[4] = true;
-                    this._cartService.batchRemoveCartItems(this.cartItemIDs);
-                    this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal =>
-                                    sessionStorage.setItem('my_balances', JSON.stringify(bal)));
-                },
-                err => console.log(err)
-            );
+            // const combined = Observable.forkJoin(
+
+            // const combined = Observable.of([]);
+            // transactionRecords.map(trans => {
+            //     setTimeout(combined.pipe(concat(this._stellarPaymentService.sendPayment2(trans))), 5000);
+            // });
+            // const subscribe = combined.subscribe(val =>
+            //     console.log('Example: Basic concat:', val)
+            // );
+
+
+            // Promise.all(transactionRecords.map(trans => this._stellarPaymentService.sendPayment2(trans)));
+            // setTimeout(() => this._stellarPaymentService.sendPayment2(transactionRecords[1]), 10000);
+
+
+            // transactionRecords.forEach(trans => {
+            //     this._stellarPaymentService.sendPayment2(trans).subscribe(
+            //         res => {
+            //             // or can try ... EMPTY CART FOR THOSE WHERE CHECKOUT === TRUE
+            //             this.stepChecker[4] = true;
+            //         },
+            //         err => console.log(err)
+            //     );
+            // });
+
+            // this._stellarPaymentService.sendPayment(transactionRecords).subscribe(
+            //         res => {
+            //             // or can try ... EMPTY CART FOR THOSE WHERE CHECKOUT === TRUE
+            //             this.stepChecker[4] = true;
+            //         },
+            //         err => console.log(err)
+            //     );
 
             // TODO: testing above fix request
             // SUBSEQUENT HANDLING... should this be async???
@@ -202,8 +327,27 @@ export class CheckoutComponent implements OnInit {
             // TODO: PREVENT GOIONG BACK ....
             // TODO: PREVENT FORM RESUBMISSION
 
-            const id = 'NEWID247894765';
-            setTimeout(this._router.navigate(['../cart/checkout/order-confirmation', id]), 1000);
+            // FOR ALL ITEMS...
+            const TEMPITEM = this.checkoutItems[0];
+
+            // const _order = new Order(this._transactionRecord,
+            //                          TEMPITEM.productID,
+            //                          TEMPITEM.productName,
+            //                          TEMPITEM.quantityPurchased,
+            //                          TEMPITEM.assetPurchaseDetails);
+
+            // const _orderID = this._orderService.getNewOrderID();
+            // _order.orderID = _orderID;
+            // this._orderService.addNewOrder(JSON.stringify(_order));
+            // this._cartService.batchRemoveCartItems(this.cartItemIDs);
+            // setTimeout(() => this._router.navigate(['../cart/checkout/order-confirmation', _orderID]), 2000);
+        }
+
+          // TODO: TOO LONG... WHAT SHOULD GO HERE ... ONLY 28 CHARACTERS
+        makeTransactionMemo(buyerPublicKey: string, sellerPublicKey: string) {
+            const buyerKey = buyerPublicKey.substr(0, 5);
+            const sellerKey = sellerPublicKey.substr(0, 5);
+            return `From ${buyerKey}... to ${sellerKey}...`;
         }
 
         returnHome(): void {
@@ -219,9 +363,9 @@ export class CheckoutComponent implements OnInit {
         }
 
         updateStep(currentStep: number) {
-            console.log(currentStep);
+            // console.log(currentStep);
             this.stepChecker[currentStep - 1] = true;
-            console.log(this.stepChecker);
+            // console.log(this.stepChecker);
         }
 
 

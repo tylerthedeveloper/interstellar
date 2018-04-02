@@ -104,7 +104,7 @@ export class NavBarComponent implements OnInit {
         this.changePage('profile');
     }
 
-    toggle = (): void => { // sideNav: any
+    toggle (): void { // sideNav: any
         this.sideNav.toggle();
     }
 

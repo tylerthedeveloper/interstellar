@@ -1,3 +1,24 @@
 
 Todo:
-  ☐ Item
+  ☐ ROUTING
+    ☐ ALL CHILD ROUTING REVIEW
+    ☐ HANDLE ALL 404'S AND REDIRECTS
+
+  ☐ UI ...
+    ☐ THEME DECISION ... ANGULAR / MD BOOTRSTRAP --> HOW AND WHY?
+    ☐ DECICDE HOW TO PROCEED / WITH WHICH REGARDING CARDS / MAJOR PAGES
+  
+  ☐ MODULES
+    ☐ CREATE USER-ESQUE MODULE... PROFILE... USER LIST... 
+    ☐ HOME MODULE... MAIN PAGES
+
+  ☐ FEATURES
+    ☐ add reviews ...
+    ☐ add ratings
+    ☐ add shipping -> API
+    ☐ anchor to USD ....
+      ☐ pull from live feed...
+      
+
+     
+
