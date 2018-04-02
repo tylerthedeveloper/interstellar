@@ -1,15 +1,19 @@
-<h1> {{ pageCategory }} </h1>
+<div style="width: 90%; margin: auto;">
+  <h1 style="text-align: center;"> {{ pageCategory }} </h1>
 
-<p>
-  category-page works!
-</p>
+  <p style="text-align: center;">
+    Description!
+  </p>
 
-<button (click)="addProduct2()"> add product </button>
+  <div align="right">
+    <button (click)="addProduct2()"> add product </button>
 
-<button (click)="allCategories()"> Return to Categories </button>
+    <button (click)="allCategories()"> Return to Categories </button>
+  </div>
 
-<div style="width:300px;">
-    <div *ngFor="let product of categoriedProducts">
-        <category-product-card [product]="product" (notify)="onSelectProduct($event)"></category-product-card>
-    </div>
+  <div style="width:100%;">
+      <div *ngFor="let product of categoriedProducts" style="display: inline-block;">
+          <category-product-card [product]="product" (notify)="onSelectProduct($event)"></category-product-card>
+      </div>
+  </div>
 </div>
