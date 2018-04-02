@@ -1,40 +1,41 @@
-<h1> hello friend </h1>
+<h1> Account Details </h1>
 
 <!-- <label> Publlic key {{ pubKey }}</label> -->
-<div>
-  <h4>Pkey: {{ (user)?.publicKey }}</h4>  
+<div style="background-color: white;">
+  <h4>Pkey: {{ (user)?.publicKey }}</h4>
   <h4>My Balances</h4>
   <ul>
     <li *ngFor="let bal of balances">
-      {{ bal?.balance }} {{ bal?.asset_type }} 
+      {{ bal?.balance }} {{ bal?.asset_type }}
     </li>
   </ul>
 </div>
 
+<div style="text-align: center;">
 <h4>My Profile</h4>
-<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" (click)="editProfile()">Edit profile</i>
+<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" (click)="editProfile()">Edit</i>
+</div>
 
-<div>
+<div style="background-color: white;">
     <div class="container">
-        <div class="row profile-top">
-        </div>
         <div class="row">
             <div class="col-12 col-mat-4">
                 <mat-card>
-                    <div class="profile-image">
+                    <div class="profile-image" style="background-color: grey; width: 8em; height: 8em; margin: auto;">
+                      Image Here (placeholder)
                         <img class="main-profile-pic" src="{{_userModel?.photoUrl}}" />
                     </div>
                     <div class="profile-image-two">
-    
+
                     </div>
                     <mat-card-content *ngIf="!edit">
-                        <h2>Name: {{_userModel?.fullName}}</h2>
+                        <h2>Username: {{_userModel?.userName}}</h2>
                         <ul>
                             <li>
                                 <i class="fa fa-envelope" aria-hidden="true"></i> Public Key: {{_userModel?.publicKey}}
                             </li>
                             <li>
-                                <i class="fa fa-github" aria-hidden="true"></i> Username: {{_userModel?.userName}}
+                                <i class="fa fa-github" aria-hidden="true"></i> Name: {{_userModel?.fullName}}
                             </li>
                         </ul>
                     </mat-card-content>
@@ -44,17 +45,17 @@
                                     <p>aaaa</p>
                             </div> -->
                             <div class="form-group">
-                                <label for="name">Name</label>
-                                <mat-input-container>
-                                    <input matInput type="text" id="fullName" formControlName="fullName"
-                                    [(ngModel)]="_userModel.fullName" name="fullName">
-                                </mat-input-container>
-                            </div>
-                            <div class="form-group">
                                 <label for="userName">Username</label>
                                 <mat-input-container>
                                     <input matInput type="text" id="userName" formControlName="userName"
                                     [(ngModel)]="_userModel.userName">
+                                </mat-input-container>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <mat-input-container>
+                                    <input matInput type="text" id="fullName" formControlName="fullName"
+                                    [(ngModel)]="_userModel.fullName" name="fullName">
                                 </mat-input-container>
                             </div>
                             <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" mat-raised-button >Submit</button>
@@ -70,7 +71,7 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 
 <!-- <br />
@@ -101,12 +102,12 @@
       </label>
     </div>
   </form>
-  
+
   <p>Form value: {{ profileForm.value | json }}</p>
    -->
 
-  
-<!-- 
+
+<!--
 <form class="form-horizontal" [formGroup]="form">
 
         <div class="form-group">
@@ -115,23 +116,23 @@
             <input type="text" id="email" class="form-control" formControlName="email">
           </div>
         </div>
-      
+
         <div class="form-group">
           <div class="col-sm-12">
             <label for="password" class="control-label">Password</label>
             <input type="password" id="password" class="form-control" formControlName="password">
           </div>
         </div>
-      
+
         <button class="btn btn-primary" (click)="$event.preventDefault(); updateProfile(form.value)">Submit</button>
       </form>
    -->
 
-<div>
-  <h2>MyProducts</h2>
-  <ul>
+<div style="text-align: center;">
+  <h2>My Products</h2>
+  <ul style="background-color: white; width: 90%; margin: auto;">
     <li *ngFor="let prod of products">
-      {{ prod?.productName }} 
+      {{ prod?.productName }}
     </li>
   </ul>
 </div>

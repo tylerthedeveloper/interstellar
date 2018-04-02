@@ -1,5 +1,5 @@
-.profile-image {
-    height: 150px;
+/* .profile-image {
+    height: 2em;
     background-color: #60ad5e;
     text-align: center;
 }
@@ -60,7 +60,7 @@ md-card {
 }
 
 .post-top {
-    /*padding-left: 20px;*/
+    padding-left: 20px;
     text-align: center;
     font-weight: 500;
     padding-top: 4px;
@@ -71,4 +71,4 @@ md-card {
     font-size: 16px;
     color: white;
     border-radius: 5px 5px 0 0;
-}
+} */
