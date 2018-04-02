@@ -160,16 +160,21 @@ export class CheckoutComponent implements OnInit {
 
             // TODO: --> put into helper 
             // COMBINE PAYMENTS .... INTO TRANS GROUPS
-            const firstTransaction = new Array(transactions.pop());
-            const firstGroup = new TransactionGroup(firstTransaction);
             let transactionGroups = new Array<TransactionGroup>();
+            const firstTransaction = new Array(transactions.pop());
+            console.log(firstTransaction);
+            const firstGroup = new TransactionGroup(firstTransaction);
+            console.log(firstGroup);
             transactionGroups.push(firstGroup);
+            //  /// his.makeTransactionGroups(transactionGroups, transactions);
             console.log(transactionGroups);
-            transactions.forEach(transaction => {
+            for (let transaction of transactions) {
+
+            // transactions.forEach(transaction => {
                 const sellerKey = transaction.receiverPublicKey;
                     const transGroupIds = transactionGroups.map(TG => TG.transactionRecords[0].receiverPublicKey);
                     const idx = transGroupIds.findIndex(ID => ID === sellerKey);
-                    if (idx) {
+                    if (idx === -1) {
                         transactionGroups = transactionGroups.concat(new TransactionGroup(new Array<TransactionRecord>(transaction)));
                     } else {
                         let newListAtIndex = new Array<TransactionRecord>();
@@ -178,7 +183,7 @@ export class CheckoutComponent implements OnInit {
                         transactionGroups[idx].transactionRecords = newListAtIndex;
                         console.log(transactionGroups);
                 }
-            });
+            }
             console.log(transactionGroups);
 
             /*
@@ -226,7 +231,7 @@ export class CheckoutComponent implements OnInit {
                 result = result.then(() => this._stellarPaymentService.sendPayment(task));
             }));
 
-            // wait for the above
+            // TODO: wait for the above
             this.stepChecker[4] = true;
 
             this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal =>
@@ -301,14 +306,6 @@ export class CheckoutComponent implements OnInit {
             // TODO: PREVENT FORM RESUBMISSION
 
             // FOR ALL ITEMS...
-            const TEMPITEM = this.checkoutItems[0];
-
-            // const _order = new Order(this._transactionRecord,
-            //                          TEMPITEM.productID,
-            //                          TEMPITEM.productName,
-            //                          TEMPITEM.quantityPurchased,
-            //                          TEMPITEM.assetPurchaseDetails);
-
             const _orderID = this._orderService.getNewOrderID();
             const _order = new Order(this.curUserID, _orderID, this._transactionGroups);
             this._orderService.addNewOrder(JSON.stringify(_order));
@@ -326,8 +323,30 @@ export class CheckoutComponent implements OnInit {
                     });
         }
 
+        makeTransactionGroups(transactionGroups: TransactionGroup[], transactionRecords: TransactionRecord[]) {
+            // console.log(transactionGroups);
+            transactionRecords.forEach(transaction => {
+                const sellerKey = transaction.receiverPublicKey;
+                    const transGroupIds = transactionGroups.map(TG => TG.transactionRecords[0].receiverPublicKey);
+                    const idx = transGroupIds.findIndex(ID => ID === sellerKey);
+                    if (idx === -1) {
+                        console.log(transactionGroups);
+                        transactionGroups = transactionGroups.concat(new TransactionGroup(new Array<TransactionRecord>(transaction)));
+                        console.log(transactionGroups);
+                    } else {
+                        console.log(transactionGroups);
+                        let newListAtIndex = new Array<TransactionRecord>();
+                        newListAtIndex = transactionGroups[idx].transactionRecords;
+                        newListAtIndex = newListAtIndex.concat(transaction);
+                        transactionGroups[idx].transactionRecords = newListAtIndex;
+                        console.log(transactionGroups);
+                }
+            });
+        }
+
         fillTransactionGroups(transactionGroups: TransactionGroup[]) {
-            transactionGroups.map(transGroup => {
+            for (let transGroup of transactionGroups) {
+            // transactionGroups.map(transGroup => {
                 const groupAssetPurchaseDetails = transGroup.transactionRecords.map(trans => trans.assetPurchaseDetails);
                 const totalAssetPurchaseDetails = calcTotalsForMultipleAssets(groupAssetPurchaseDetails);
                 transGroup.transactionID = this._orderService.getNewOrderID();
@@ -340,7 +359,7 @@ export class CheckoutComponent implements OnInit {
                                                           purchaseDetails,
                                                           this.makeTransactionMemo(this.curPubKey, sellerPublicKey)));
                 });
-            });
+            }
         }
 
         // TODO: TOO LONG... WHAT SHOULD GO HERE ... ONLY 28 CHARACTERS

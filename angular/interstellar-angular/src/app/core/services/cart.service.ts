@@ -107,7 +107,7 @@ export class CartService {
     }
 
     addToCheckout(cartItemIDs: string[]) {
-        console.log(cartItemIDs);
+        // console.log(cartItemIDs);
         const batch = this.afs.firestore.batch();
         cartItemIDs.forEach(id => batch.update(this.myCartRef.doc(id), {isInCheckout: true}));
         return batch.commit();
@@ -120,10 +120,10 @@ export class CartService {
     }
 
     batchRemoveCartItems(cartItemIdArray: string[]) {
-        console.log(this.cartItemIDs);
+        // console.log(this.cartItemIDs);
         const batch = this.afs.firestore.batch();
         cartItemIdArray.forEach(id => batch.delete(this.myCartRef.doc(id)));
-        console.log(this.cartItemIDs);
+        // console.log(this.cartItemIDs);
         return batch.commit()
             .catch(error => console.log(error))
             .then(res => this.cartItemIDs.filter(_cartItemID => cartItemIdArray.find(c => c === _cartItemID)));
@@ -136,10 +136,10 @@ export class CartService {
         // this.cartItemIDs.forEach(id => batch.delete(this.myCartRef.doc(id)));
         // batch.commit();
         // this.cartItemIDs = [];
-        console.log(this.cartItemIDs);
+        // console.log(this.cartItemIDs);
         const batch = this.afs.firestore.batch();
         this.cartItemIDs.forEach(id => batch.delete(this.myCartRef.doc(id)));
-        console.log(this.cartItemIDs);
+        // console.log(this.cartItemIDs);
         batch.commit()
             .catch(error => console.log(error))
             .then(res => this.cartItemIDs = []);

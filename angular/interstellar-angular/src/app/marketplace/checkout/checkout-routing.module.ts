@@ -13,7 +13,8 @@ const routes: Routes = [
       { path: '', component: CartComponent},
       { path: 'checkout', component: CheckoutComponent },
       // TODO: MAKE A CHILD...
-      { path: 'checkout/order-confirmation/:id', component: OrderConfirmationComponent },
+      // { path: 'checkout/order-confirmation/:id', component: OrderConfirmationComponent },
+      { path: 'order-history/:id', component: OrderConfirmationComponent },
       // { path: '/**', redirectTo: 'home' },
       // { path: '404', redirectTo: 'home' },
       { path: '**', redirectTo: 'home' },
