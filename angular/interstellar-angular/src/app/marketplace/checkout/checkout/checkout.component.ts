@@ -36,7 +36,7 @@ export class CheckoutComponent implements OnInit {
 
         private cartItemIDs: string[] = [];
         private sellerIDs: string[] = [];
-        private sellerPublicKeys: string[] = [];
+        private sellerPublicKeys; // = new Set();
 
         private balances: AssetBalance[] = [];
         private updatedBalances: AssetBalance[] = [];
@@ -76,15 +76,17 @@ export class CheckoutComponent implements OnInit {
                 }
                 const cartPurchaseDetailsArray = new Array<AssetBalance>();
                 this.checkoutItems = arr;
+                const _sellerPublicKeys = new Array();
                 arr.map(CIT => {
                     this.cartItemIDs.push(CIT.cartItemID);
                     this.sellerIDs.push(CIT.sellerUserID);
-                    this.sellerPublicKeys.push(CIT.sellerPublicKey);
+                    _sellerPublicKeys.push(CIT.sellerPublicKey);
                     cartPurchaseDetailsArray.push(CIT.assetPurchaseDetails);
                 });
+                this.sellerPublicKeys = new Set(_sellerPublicKeys);
                 console.log(this.checkoutItems);
                 // console.log(this.sellerIDs);
-                // console.log(this.sellerPublicKeys);
+                console.log(this.sellerPublicKeys);
                 // this.cartItemIDs = arr.map(CIT => CIT.cartItemID);
                 // this.sellerPublicKeys = arr.map(CIT => CIT.sellerPublicKey);
                 // this.sellerIDs = arr.map(CIT => CIT.sellerPublicKey);
@@ -160,29 +162,28 @@ export class CheckoutComponent implements OnInit {
 
             // TODO: --> put into helper 
             // COMBINE PAYMENTS .... INTO TRANS GROUPS
-            let transactionGroups = new Array<TransactionGroup>();
-            const firstTransaction = new Array(transactions.pop());
-            console.log(firstTransaction);
-            const firstGroup = new TransactionGroup(firstTransaction);
-            console.log(firstGroup);
-            transactionGroups.push(firstGroup);
+            const transactionGroups = new Array<TransactionGroup>();
+            this.sellerPublicKeys.forEach(key => {
+                console.log(key);
+                const newGroup = new TransactionGroup(key);
+                newGroup.transactionID = this._orderService.getNewOrderID();
+                transactionGroups.push(newGroup);
+            });
+            // const firstTransaction = new Array(transactions.pop());
+            // console.log(firstTransaction);
+            // const firstGroup = new TransactionGroup(firstTransaction);
+            // console.log(firstGroup);
+            // transactionGroups.push(firstGroup);
             //  /// his.makeTransactionGroups(transactionGroups, transactions);
             console.log(transactionGroups);
             for (let transaction of transactions) {
-
-            // transactions.forEach(transaction => {
                 const sellerKey = transaction.receiverPublicKey;
-                    const transGroupIds = transactionGroups.map(TG => TG.transactionRecords[0].receiverPublicKey);
-                    const idx = transGroupIds.findIndex(ID => ID === sellerKey);
-                    if (idx === -1) {
-                        transactionGroups = transactionGroups.concat(new TransactionGroup(new Array<TransactionRecord>(transaction)));
-                    } else {
-                        let newListAtIndex = new Array<TransactionRecord>();
-                        newListAtIndex = transactionGroups[idx].transactionRecords;
-                        newListAtIndex = newListAtIndex.concat(transaction);
-                        transactionGroups[idx].transactionRecords = newListAtIndex;
-                        console.log(transactionGroups);
+                const idx = transactionGroups.findIndex(group => group.sellerPublicKey === sellerKey);
+                if (!transactionGroups[idx].transactionRecords) {
+                    transactionGroups[idx].transactionRecords = new Array<TransactionRecord>();
                 }
+                const newListAtIndex = transactionGroups[idx].transactionRecords.concat(transaction)
+                transactionGroups[idx].transactionRecords = newListAtIndex;
             }
             console.log(transactionGroups);
 
@@ -212,7 +213,19 @@ export class CheckoutComponent implements OnInit {
             */
 
 
-            this.fillTransactionGroups(transactionGroups);
+            // this.fillTransactionGroups(transactionGroups);
+            for (let transGroup of transactionGroups) {
+            // transactionGroups.map(transGroup => {
+                const groupAssetPurchaseDetails = transGroup.transactionRecords.map(trans => trans.assetPurchaseDetails);
+                const totalAssetPurchaseDetails = calcTotalsForMultipleAssets(groupAssetPurchaseDetails);
+                // transGroup.transactionID = this._orderService.getNewOrderID();
+                // transGroup.transactionPaymentDetails = new Array<TransactionPaymentDetails>();
+                transGroup.transactionPaymentDetails = 
+                        new TransactionPaymentDetails(this.curPubKey,
+                                                      transGroup.sellerPublicKey,
+                                                      totalAssetPurchaseDetails,
+                                                      this.makeTransactionMemo(this.curPubKey, transGroup.sellerPublicKey,));
+            }
             this._transactionGroups = transactionGroups;
 
             // FIXME: TEST THE BELOW
@@ -227,9 +240,9 @@ export class CheckoutComponent implements OnInit {
             // });
 
             let result = Promise.resolve();
-            transactionGroups.forEach(transGroup => transGroup.transactionPaymentDetails.forEach(task => {
-                result = result.then(() => this._stellarPaymentService.sendPayment(task));
-            }));
+            transactionGroups.map(transGroup =>
+                result = result.then(() => this._stellarPaymentService.sendPayment(transGroup.transactionPaymentDetails))
+            );
 
             // TODO: wait for the above
             this.stepChecker[4] = true;
@@ -310,7 +323,7 @@ export class CheckoutComponent implements OnInit {
             const _order = new Order(this.curUserID, _orderID, this._transactionGroups);
             this._orderService.addNewOrder(JSON.stringify(_order));
             this._cartService.batchRemoveCartItems(this.cartItemIDs);
-            setTimeout(() => this._router.navigate(['../cart/checkout/order-confirmation', _orderID]), 2000);
+            setTimeout(() => this._router.navigate(['../cart/order-history', _orderID]), 2000);
         }
 
         makeTransactionRecords() {
@@ -323,44 +336,44 @@ export class CheckoutComponent implements OnInit {
                     });
         }
 
-        makeTransactionGroups(transactionGroups: TransactionGroup[], transactionRecords: TransactionRecord[]) {
-            // console.log(transactionGroups);
-            transactionRecords.forEach(transaction => {
-                const sellerKey = transaction.receiverPublicKey;
-                    const transGroupIds = transactionGroups.map(TG => TG.transactionRecords[0].receiverPublicKey);
-                    const idx = transGroupIds.findIndex(ID => ID === sellerKey);
-                    if (idx === -1) {
-                        console.log(transactionGroups);
-                        transactionGroups = transactionGroups.concat(new TransactionGroup(new Array<TransactionRecord>(transaction)));
-                        console.log(transactionGroups);
-                    } else {
-                        console.log(transactionGroups);
-                        let newListAtIndex = new Array<TransactionRecord>();
-                        newListAtIndex = transactionGroups[idx].transactionRecords;
-                        newListAtIndex = newListAtIndex.concat(transaction);
-                        transactionGroups[idx].transactionRecords = newListAtIndex;
-                        console.log(transactionGroups);
-                }
-            });
-        }
+        // makeTransactionGroups(transactionGroups: TransactionGroup[], transactionRecords: TransactionRecord[]) {
+        //     // console.log(transactionGroups);
+        //     transactionRecords.forEach(transaction => {
+        //         const sellerKey = transaction.receiverPublicKey;
+        //             const transGroupIds = transactionGroups.map(TG => TG.transactionRecords[0].receiverPublicKey);
+        //             const idx = transGroupIds.findIndex(ID => ID === sellerKey);
+        //             if (idx === -1) {
+        //                 console.log(transactionGroups);
+        //                 transactionGroups = transactionGroups.concat(new TransactionGroup(new Array<TransactionRecord>(transaction)));
+        //                 console.log(transactionGroups);
+        //             } else {
+        //                 console.log(transactionGroups);
+        //                 let newListAtIndex = new Array<TransactionRecord>();
+        //                 newListAtIndex = transactionGroups[idx].transactionRecords;
+        //                 newListAtIndex = newListAtIndex.concat(transaction);
+        //                 transactionGroups[idx].transactionRecords = newListAtIndex;
+        //                 console.log(transactionGroups);
+        //         }
+        //     });
+        // }
 
-        fillTransactionGroups(transactionGroups: TransactionGroup[]) {
-            for (let transGroup of transactionGroups) {
-            // transactionGroups.map(transGroup => {
-                const groupAssetPurchaseDetails = transGroup.transactionRecords.map(trans => trans.assetPurchaseDetails);
-                const totalAssetPurchaseDetails = calcTotalsForMultipleAssets(groupAssetPurchaseDetails);
-                transGroup.transactionID = this._orderService.getNewOrderID();
-                transGroup.transactionPaymentDetails = new Array<TransactionPaymentDetails>();
-                totalAssetPurchaseDetails.map(purchaseDetails => {
-                    const sellerPublicKey = transGroup.transactionRecords[0].receiverPublicKey;
-                    transGroup.transactionPaymentDetails.push(
-                            new TransactionPaymentDetails(this.curPubKey,
-                                                          sellerPublicKey,
-                                                          purchaseDetails,
-                                                          this.makeTransactionMemo(this.curPubKey, sellerPublicKey)));
-                });
-            }
-        }
+        // fillTransactionGroups(transactionGroups: TransactionGroup[]) {
+        //     for (let transGroup of transactionGroups) {
+        //     // transactionGroups.map(transGroup => {
+        //         const groupAssetPurchaseDetails = transGroup.transactionRecords.map(trans => trans.assetPurchaseDetails);
+        //         const totalAssetPurchaseDetails = calcTotalsForMultipleAssets(groupAssetPurchaseDetails);
+        //         transGroup.transactionID = this._orderService.getNewOrderID();
+        //         transGroup.transactionPaymentDetails = new Array<TransactionPaymentDetails>();
+        //         totalAssetPurchaseDetails.map(purchaseDetails => {
+        //             const sellerPublicKey = transGroup.transactionRecords[0].receiverPublicKey;
+        //             transGroup.transactionPaymentDetails.push(
+        //                     new TransactionPaymentDetails(this.curPubKey,
+        //                                                   sellerPublicKey,
+        //                                                   purchaseDetails,
+        //                                                   this.makeTransactionMemo(this.curPubKey, sellerPublicKey)));
+        //         });
+        //     }
+        // }
 
         // TODO: TOO LONG... WHAT SHOULD GO HERE ... ONLY 28 CHARACTERS
         makeTransactionMemo(buyerPublicKey: string, sellerPublicKey: string) {

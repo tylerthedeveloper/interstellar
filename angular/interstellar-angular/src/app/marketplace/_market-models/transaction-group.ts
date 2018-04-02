@@ -4,14 +4,17 @@ import { Product } from 'app/marketplace/_market-models/product';
 export class TransactionGroup {
 
     transactionID: string;
+    sellerPublicKey: string;
     timestamp: string;
 
     transactionRecords: Array<TransactionRecord>;
-    transactionPaymentDetails: Array<TransactionPaymentDetails>;
+    transactionPaymentDetails: TransactionPaymentDetails;
 
 
-    constructor(transactionRecords: Array<TransactionRecord>) {
-                this.transactionRecords = transactionRecords;
+    constructor(//transactionRecords: Array<TransactionRecord>,
+                sellerPublicKey: string) {
+                // this.transactionRecords = transactionRecords;
+                this.sellerPublicKey = sellerPublicKey;
     }
 }
 
@@ -76,12 +79,12 @@ export const enum OrderType {
 export class TransactionPaymentDetails {
     senderPublicKey: string;
     receiverPublicKey: string;
-    assetBalance: AssetBalance;
+    assetBalance: AssetBalance[];
     memo: string;
 
     constructor(senderPublicKey: string,
                 receiverPublicKey: string,
-                assetBalance: AssetBalance,
+                assetBalance: AssetBalance[],
                 memo: string) {
                     this.senderPublicKey = senderPublicKey;
                     this.receiverPublicKey = receiverPublicKey;

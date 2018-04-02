@@ -35,13 +35,17 @@ export class StellarPaymentService {
         const secretKey = sessionStorage.getItem('seed_key');
         const pubKey = sessionStorage.getItem('public_key');
         const destinationKey: string = transactionRecord.receiverPublicKey;
-        const asset_type: string = transactionRecord.assetBalance.asset_type;
-        const amount: string = transactionRecord.assetBalance.balance;
+
+        const assets = transactionRecord.assetBalance;
+
+        // const asset_type: string = transactionRecord.assetBalance.asset_type;
+        // const amount: string = transactionRecord.assetBalance.balance;
+
         const memo: string = transactionRecord.memo;
         if (!secretKey) { return; }
         const sourceKeys = StellarSdk.Keypair.fromSecret(secretKey);
         const server = this._server;
-        let transaction: any;
+        // let transaction: any;
         const handleError = this.HandleError;
         return server.loadAccount(destinationKey)
             .catch(StellarSdk.NotFoundError, function (error) {
@@ -51,23 +55,53 @@ export class StellarPaymentService {
             .then(function(sourceAccount) {
                 // const curBal = getBalanceforAsset(sourceAccount.balances, assetType);
                 // if (!(curBal !== -1 && isValidNewBalance(curBal, amount))) { throw new InsufficientFundsException(); }
-                transaction = new StellarSdk.TransactionBuilder(sourceAccount)
-                    .addOperation(StellarSdk.Operation.payment({
-                        destination: destinationKey,
-                        asset: StellarSdk.Asset.native(),
-                          /*
+                
+                var paymentOps = assets.map(asset => {
+                        return {
+                            destination: destinationKey,
+                            asset: StellarSdk.Asset.native(), // TODO: ASSET.ASSET_TYPE
+                            amount: asset.balance
+                        }
+                });
+                const _asset = paymentOps[0];
+                // const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
+                paymentOps.map(payOP => {
+                    const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
+                            .addOperation(StellarSdk.Operation.payment(payOP))
+                            .build();
+                            transaction.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
+
+                });
 
 
-                                    map to CORRECT asset
+                // assets.map(asset => 
+                    // transaction.addOperation(StellarSdk.Operation.payment({
+                    // .addOperation(StellarSdk.Operation.payment({
+                    //     destination: destinationKey,
+                    //     asset: StellarSdk.Asset.native(), // TODO: ASSET.ASSET_TYPE
+                    //       /*
 
 
-                                */
-                       amount: amount
-                    }))
-                    .addMemo(StellarSdk.Memo.text(memo))
-                    .build();
-                transaction.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
-                return server.submitTransaction(transaction); // And finally, send it off to Stellar!
+                    //                 map to CORRECT asset
+
+
+                    //             */
+                    //    amount: _asset.amount
+                    // }))
+                    // transaction.addOperation(StellarSdk.Operation.setOptions({
+                    //     // Reset account back to what it was before this transaction
+                    //     // lowThreshold: 1,
+                    //     // medThreshold: 1,
+                    //     // highThreshold: 1,
+                    //     signer: {
+                    //       ed25519PublicKey: pubKey,
+                    //       weight: 1,
+                    //     },
+                    //   }))
+                    // transaction.addMemo(StellarSdk.Memo.text(memo))
+                // .build(); //.sign(sourceKeys);
+                // transaction.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
+                // return server.submitTransaction(transaction); // And finally, send it off to Stellar!
             })
             .catch(function(error) {
             // handleError(error);

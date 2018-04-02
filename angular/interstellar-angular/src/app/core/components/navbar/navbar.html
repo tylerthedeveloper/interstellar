@@ -64,23 +64,24 @@ $(document).ready(function(){
         <!-- <md-sidenav-layout> -->
             <!-- </md-sidenav-layout> -->
             
-        </div>
-        <mat-sidenav #sidenav mode="over"  align="end" posiiton="end"  class="app-sidenav" >
-            <!-- <mat-sidenav-content> -->
-                <mat-card style="float: right; width: 200 px;">
-                    <!-- <button matButton (click)="toggle(sidenav)">
-                        Close
-                    </button> -->
-                        <h1> login with secret key </h1>
-                            <input #secretKeyLogin matInput type="text" placeholder="secret key" autofocus/>
-                            <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">login now</button>
-                            <br />
-                    </mat-card>
-                <!-- <h2> Sign up or merge your existing stellar account </h2>
-                <button (click)="signUp()"> Signup now </button> -->
-            <!-- </mat-sidenav-content> -->
-        </mat-sidenav>
     </div>
+</div>
+<mat-sidenav #sidenav mode="over"  align="end" posiiton="end"  class="app-sidenav" >
+        <!-- <mat-sidenav-content> -->
+            <mat-card>
+            <!-- style="float: right; width: 200 px;" -->
+                <!-- <button matButton (click)="toggle(sidenav)">
+                    Close
+                </button> -->
+                    <h1> login with secret key </h1>
+                        <input #secretKeyLogin matInput type="text" placeholder="secret key" autofocus/>
+                        <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">login now</button>
+                        <br />
+                </mat-card>
+            <!-- <h2> Sign up or merge your existing stellar account </h2>
+            <button (click)="signUp()"> Signup now </button> -->
+        <!-- </mat-sidenav-content> -->
+    </mat-sidenav>
     <!-- <mat-sidenav-container> -->
     <!-- </mat-sidenav-container> -->
     <!-- <mat-sidenav-layout mode="over">  -->
