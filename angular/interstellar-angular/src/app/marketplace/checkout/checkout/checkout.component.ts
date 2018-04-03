@@ -160,71 +160,42 @@ export class CheckoutComponent implements OnInit {
             // TURN ITEMS INTO TRANSACTIONS
             const transactions = this.makeTransactionRecords();
 
-            // TODO: --> put into helper 
+            // TODO: --> put into helper
             // COMBINE PAYMENTS .... INTO TRANS GROUPS
             const transactionGroups = new Array<TransactionGroup>();
-            this.sellerPublicKeys.forEach(key => {
+            Array.from(this.sellerPublicKeys).map((key: string) => {
                 console.log(key);
                 const newGroup = new TransactionGroup(key);
                 newGroup.transactionID = this._orderService.getNewOrderID();
                 transactionGroups.push(newGroup);
             });
-            // const firstTransaction = new Array(transactions.pop());
-            // console.log(firstTransaction);
-            // const firstGroup = new TransactionGroup(firstTransaction);
-            // console.log(firstGroup);
-            // transactionGroups.push(firstGroup);
-            //  /// his.makeTransactionGroups(transactionGroups, transactions);
-            console.log(transactionGroups);
-            for (let transaction of transactions) {
+
+            //  /// this.makeTransactionGroups(transactionGroups, transactions);
+            console.log(JSON.stringify(transactionGroups));
+            // for (const transaction of transactions) {
+            for (let i = 0; i < transactions.length; i++) {
+                const transaction = transactions[i];
                 const sellerKey = transaction.receiverPublicKey;
                 const idx = transactionGroups.findIndex(group => group.sellerPublicKey === sellerKey);
                 if (!transactionGroups[idx].transactionRecords) {
                     transactionGroups[idx].transactionRecords = new Array<TransactionRecord>();
                 }
-                const newListAtIndex = transactionGroups[idx].transactionRecords.concat(transaction)
+                const newListAtIndex = transactionGroups[idx].transactionRecords.concat(transaction);
                 transactionGroups[idx].transactionRecords = newListAtIndex;
             }
-            console.log(transactionGroups);
-
-            /*
-             transactions.forEach(transaction => {
-                const sellerKey = transaction.receiverPublicKey;
-                if (transactionGroups2.length === 0) {
-                    transactionGroups2 = new Array(new TransactionGroup(new Array<TransactionRecord>(transaction)));
-                    console.log(transactionGroups2);
-                } else {
-                    transactionGroups2.map((TG, index) => {
-                        const idx = TG.transactionRecords.findIndex(TR => TR.receiverPublicKey === sellerKey);
-                        if (idx) {
-                            let newListAtIndex = new Array<TransactionRecord>();
-                            newListAtIndex = transactionGroups2[index].transactionRecords;
-                            newListAtIndex.push(transaction);
-                            transactionGroups2[index].transactionRecords = newListAtIndex;
-                            console.log(idx)
-                            console.log(transactionGroups2);
-                        } else {
-                            transactionGroups2 = transactionGroups2.concat(new TransactionGroup(new Array<TransactionRecord>(transaction)));
-                            console.log(transactionGroups2);
-                        }
-                    });
-                }
-                });
-            */
-
+            console.log(JSON.stringify(transactionGroups));
 
             // this.fillTransactionGroups(transactionGroups);
-            for (let transGroup of transactionGroups) {
-            // transactionGroups.map(transGroup => {
+            // for (const transGroup of transactionGroups) {
+            for (let i = 0; i < transactionGroups.length; i++) {
+                const transGroup = transactionGroups[i];
                 const groupAssetPurchaseDetails = transGroup.transactionRecords.map(trans => trans.assetPurchaseDetails);
                 const totalAssetPurchaseDetails = calcTotalsForMultipleAssets(groupAssetPurchaseDetails);
-                // transGroup.transactionID = this._orderService.getNewOrderID();
-                // transGroup.transactionPaymentDetails = new Array<TransactionPaymentDetails>();
-                transGroup.transactionPaymentDetails = 
+                transGroup.transactionPaymentDetails =
                         new TransactionPaymentDetails(this.curPubKey,
                                                       transGroup.sellerPublicKey,
                                                       totalAssetPurchaseDetails,
-                                                      this.makeTransactionMemo(this.curPubKey, transGroup.sellerPublicKey,));
+                                                      this.makeTransactionMemo(this.curPubKey, transGroup.sellerPublicKey));
             }
             this._transactionGroups = transactionGroups;
 
