@@ -8,6 +8,20 @@ $(document).ready(function(){
 <div class="nav-spacing"> <!-- style="position: fixed;"" -->
     <div class="navbar">
         <div class="container">
+            <mat-sidenav-container #sidenav style="height:100%;width:100%;">
+            
+                <mat-sidenav #sidenav mode="over"  align="end" class="app-sidenav" style="align-items: center; justify-content: center; overflow: hidden; position: fixed !important;">
+                    <mat-card style="min-width: 60%; display:inline-flex;">
+                            <h3 style="margin-right: 10 px; margin-bottom: 10 px; padding-right: 10 px; padding-bottom: 10 px;"> Login with secret key </h3>
+                            <input #secretKeyLogin matInput type="text" placeholder="secret key" autofocus 
+                            style="margin-left: 10 px; margin-bottom: 10 px; padding-left: 10 px; padding-bottom: 10 px;"/>
+                            <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">Login</button>
+                            <button (click)="sidenav.toggle(); secretKeyLogin.value = null;" style="color:black">Close</button>
+                            <br />
+                        </mat-card>
+                </mat-sidenav>
+                <mat-sidenav-content>
+
             <mat-toolbar class="main-nav">
                 <button mat-raised-button id="home" [routerLink]="['/home']"
                     (click)="changePage('home')" routerLinkActive="active"
@@ -50,7 +64,7 @@ $(document).ready(function(){
                             Signup or Register
                         </button>
                     <!-- BETTER TEMPLATING!!!! -->
-                        <button mat-raised-button *ngIf="!loggedIn" (click)="toggle(sidenav)" class="main-nav-button">
+                        <button mat-raised-button *ngIf="!loggedIn" (click)="sidenav.toggle()" class="main-nav-button">
                             Login
                         </button>
                     </div>
@@ -60,30 +74,16 @@ $(document).ready(function(){
                     </button> -->
                 </div>
             </mat-toolbar>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+            
         </div>
         <!-- <md-sidenav-layout> -->
             <!-- </md-sidenav-layout> -->
             
     </div>
 </div>
-<mat-sidenav #sidenav mode="over"  align="end" posiiton="end"  class="app-sidenav" >
-        <!-- <mat-sidenav-content> -->
-            <mat-card>
-            <!-- style="float: right; width: 200 px;" -->
-                <!-- <button matButton (click)="toggle(sidenav)">
-                    Close
-                </button> -->
-                    <h1> login with secret key </h1>
-                        <input #secretKeyLogin matInput type="text" placeholder="secret key" autofocus/>
-                        <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">login now</button>
-                        <br />
-                </mat-card>
-            <!-- <h2> Sign up or merge your existing stellar account </h2>
-            <button (click)="signUp()"> Signup now </button> -->
-        <!-- </mat-sidenav-content> -->
-    </mat-sidenav>
-    <!-- <mat-sidenav-container> -->
-    <!-- </mat-sidenav-container> -->
+
     <!-- <mat-sidenav-layout mode="over">  -->
 <!-- right: 10%; -->
     <!-- </mat-sidenav-layout> -->
