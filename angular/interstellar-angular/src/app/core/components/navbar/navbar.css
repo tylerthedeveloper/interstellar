@@ -12,23 +12,23 @@
     align-items: flex-end;
 }
 
-.navbar {
-    /* background-color: #005005; */
-    /* border-top: 8px solid #005005;  */
-}
 
 .mat-toolbar {
     /* background: #004f04; */
 }
 
 .main-nav {
-
     background-color: #ECECEC;
     border-bottom: .08em solid #cCcCcC;
-    display:flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    /* display:flex;
+    flex-direction: row; */
+    /* flex-wrap: wrap; */
+    /* justify-content: space-around; */
+    position: fixed;
+    top: 0;
+    left: 10%;
+    z-index: 1;
+    width: 80%  !important;
     /* fxLayoutAlign="space-around center" */
 }
 

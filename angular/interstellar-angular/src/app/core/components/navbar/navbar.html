@@ -27,8 +27,8 @@ $(document).ready(function(){
                         <br />
                     </mat-card>
                 </mat-sidenav>
-                <mat-sidenav-content>
-                    <mat-toolbar class="main-nav">
+                <mat-sidenav-content flex>        
+                    <mat-toolbar class="main-nav" flex>
                         <button mat-raised-button id="home" [routerLink]="['/home']" (click)="changePage('home')" routerLinkActive="active" class="main-nav-button">
                             Home
                         </button>
