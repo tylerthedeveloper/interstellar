@@ -40,22 +40,23 @@ export class CartService {
 
     constructor(private afs: AngularFirestore) {
         this._userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-        this.userCartCollection = afs.collection('user-cart').doc(this._userID).collection('cartItems');
-        this.cartItemIDs = [];
-        // this.userCartItems = this.userCartCollection.valueChanges();
-        this.userCartItems = this.userCartCollection
-                                    .valueChanges()
-                                    .map(changes => {
-                                        // const _totals = new Array<Asset>();
-                                        //     _ids.push(data.cartItemID);
-                                        const _ids = changes.map(a => a.cartItemID);
-                                        this.cartItemIDs = _ids;
-                                        // this.assetTotals = _totals;
-                                        return changes;
-
-        });
-        this.myCartRef = this.userCartCollection.ref;
-
+        if (this._userID) {
+            this.userCartCollection = afs.collection('user-cart').doc(this._userID).collection('cartItems');
+            this.cartItemIDs = [];
+            // this.userCartItems = this.userCartCollection.valueChanges();
+            this.userCartItems = this.userCartCollection
+                                        .valueChanges()
+                                        .map(changes => {
+                                            // const _totals = new Array<Asset>();
+                                            //     _ids.push(data.cartItemID);
+                                            const _ids = changes.map(a => a.cartItemID);
+                                            this.cartItemIDs = _ids;
+                                            // this.assetTotals = _totals;
+                                            return changes;
+    
+            });
+            this.myCartRef = this.userCartCollection.ref;
+        }
     }
 
     //
