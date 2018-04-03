@@ -1,27 +1,28 @@
-    <!-- <div class="post-top">
+<!-- <div class="post-top">
         {{category.timestamp | date: 'EEEE M/d HH:mm'}}
     </div> -->
 
-    <!-- style="display: inline-block;" -->
-<div class="card" >
+<!-- style="display: inline-block;" -->
+<mat-card class="card" (click)="selectCategory(category.category)">
 
-    <!--Card image-->
-    <!-- <img class="img-fluid" src="{{ category.thumbnailLink }}" alt="Card image cap" style="height: 300px; width: 300px;"> -->
-    <div class="view hm-white-slight waves-light" mdbRippleRadius>
-        <img (click)="selectCategory(category.category)" src="{{ category.thumbnailLink }}" class="img-fluid" alt="Card image with a tree in a middle of a lake." style="height: 20em; width: 20em;">
-        <a>
-            <div class="mask"></div>
-        </a>
-    </div>
+  <!--Card image-->
+  <!-- <img class="img-fluid" src="{{ category.thumbnailLink }}" alt="Card image cap" style="height: 300px; width: 300px;"> -->
+  <div>
+    <img src="{{ category.thumbnailLink }}" class="img-fluid" alt="Image Missing." style="height: 20em; width: 20em;">
+  </div>
 
-    <!--Card content-->
-    <div class="card-body">
-        <!--Title-->
-        <h4 class="card-title"><a (click)="selectCategory(category.category)" class="btn btn-light-blue waves-light" mdbRippleRadius>{{ category.category }}</a></h4>
-        <!--Text-->
-        <p class="card-text">{{ category.description }}</p>
-    </div>
-</div>
+  <!--Card content-->
+  <mat-card-header>
+    <!--Title-->
+    <a (click)="selectCategory(category.category)" class="btn btn-light-blue waves-light" mdbRippleRadius>{{ category.category }}</a>
+    <!--Text-->
+  </mat-card-header>
+  <mat-card-content>
+    <p class="card-text">{{ category.description }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+  </mat-card-actions>
+</mat-card>
 
 
 <!-- <div style="width:100%;">

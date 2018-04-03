@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
-import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // ReactiveFormsModule
 import { HttpModule } from '@angular/http';
 
@@ -37,9 +38,12 @@ import { CoreModule } from 'app/core';
       AngularFirestoreModule.enablePersistence(),
       AngularFireDatabaseModule, // AngularFireAuthModule,
 
+      MDBBootstrapModule.forRoot(),
+
       // Other
       UIModule, AppRoutingModule, CoreModule, MaterialModule
   ],
+  schemas: [ NO_ERRORS_SCHEMA ],
   exports: [
     // NavBarComponent
     // ConfirmDialogComponent

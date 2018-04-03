@@ -1,22 +1,50 @@
-<div>
-  <mat-card (click)="selectProduct(product)">
-    <mat-card-header>
-      <!-- TODO: THIS IS NOT BEING USED -->
-      <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title> Product name: {{ product.productName }} </mat-card-title>
-      <mat-card-subtitle> Price ${{ product.fixedUSDAmount }} </mat-card-subtitle>
-      <mat-card-subtitle> Quantity: {{ product.quantity }} </mat-card-subtitle>
-    </mat-card-header>
-    <div>
-      <img mat-card-image src="{{ product.productThumbnailLink }}" style="width:10em; height: 10em; margin: auto; display: block;"
-        alt="alt">
+
+<!-- <mat-card (click)="selectProduct(product)">
+  <div>
+    <img mat-card-image src="{{ product.productThumbnailLink }}" style="width:10em; height: 10em; margin: auto; display: block;"
+      alt="alt">
+  </div>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title> Product name: {{ product.productName }} </mat-card-title>
+    <mat-card-subtitle> Price ${{ product.fixedUSDAmount }} </mat-card-subtitle>
+    <mat-card-subtitle> Quantity: {{ product.quantity }} </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p> Short Desctipton: {{ product.productShortDescription }} </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>LIKE</button>
+    <button mat-button>SHARE</button>
+  </mat-card-actions>
+</mat-card> -->
+
+<!--Card-->
+<div class="card card-ecommerce" (click)="selectProduct(product)">
+
+    <!--Card image-->
+    <div class="view overlay z-depth-1">
+        <img src="{{ product.productThumbnailLink }}" class="img-fluid" alt="" style="width:10em; height: 10em; margin: auto; display: block;">
+        <a>
+            <div class="mask rgba-white-slight"></div>
+        </a>
     </div>
-    <mat-card-content>
-      <p> Short Desctipton: {{ product.productShortDescription }} </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <!-- <button mat-button>LIKE</button>
-            <button mat-button>SHARE</button> -->
-    </mat-card-actions>
-  </mat-card>
+    <!--/.Card image-->
+
+    <!--Card content-->
+    <div class="card-body text-center">
+        <!--Category & Title-->
+        <h4 class="card-title"><strong>{{ product.productName }}</strong></h4>
+
+        <!--Description-->
+        <p class="card-text">{{ product.productShortDescription }}</p>
+
+        <!--Card footer-->
+        <div class="card-footer">
+            <span class="float-left">Price ${{ product.fixedUSDAmount }} <span class="discount">Quantity: {{ product.quantity }}</span></span>
+        </div>
+    </div>
+    <!--/.Card content-->
+
 </div>
+<!--/.Card-->
