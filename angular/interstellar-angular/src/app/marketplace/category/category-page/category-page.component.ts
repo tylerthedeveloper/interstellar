@@ -17,6 +17,9 @@ import { AssetBalance } from 'app/stellar';
 export class CategoryPageComponent implements OnInit {
 
 
+    // TODO: GET CATEGORY NOT JUST PARAM STRING ...
+
+    
     private pageCategory: string;
     private categoriedProducts: Observable<PartialProduct[]>;
 

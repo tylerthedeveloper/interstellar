@@ -1,32 +1,22 @@
 <div>
-
-  <mat-card class="example-card" (click)="selectProduct(product)">
-
+  <mat-card (click)="selectProduct(product)">
     <mat-card-header>
-
+      <!-- TODO: THIS IS NOT BEING USED -->
       <div mat-card-avatar class="example-header-image"></div>
-
-      <mat-card-title> {{ product.title }} Product title not showing</mat-card-title>
-      <mat-card-subtitle> {{ product.price }} Product price not showing</mat-card-subtitle>
-      <mat-card-subtitle> {{ product.subtitle }} Product subtitle not showing (qty?)</mat-card-subtitle>
-
+      <mat-card-title> Product name: {{ product.productName }} </mat-card-title>
+      <mat-card-subtitle> Price ${{ product.fixedUSDAmount }} </mat-card-subtitle>
+      <mat-card-subtitle> Quantity: {{ product.quantity }} </mat-card-subtitle>
     </mat-card-header>
-
     <div>
-    <img mat-card-image src="{{ product.productThumbnailLink }}" style="width:10em; height: 10em; margin: auto; display: block;" alt="alt">
+      <img mat-card-image src="{{ product.productThumbnailLink }}" style="width:10em; height: 10em; margin: auto; display: block;"
+        alt="alt">
     </div>
-
     <mat-card-content>
-      <p>
-        {{ product.shortDescription }} Product short description not showing
-      </p>
+      <p> Short Desctipton: {{ product.productShortDescription }} </p>
     </mat-card-content>
-
     <mat-card-actions>
       <!-- <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button> -->
+            <button mat-button>SHARE</button> -->
     </mat-card-actions>
-
   </mat-card>
-
 </div>

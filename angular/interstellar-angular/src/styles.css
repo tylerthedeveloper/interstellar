@@ -3,9 +3,16 @@
 */
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import '~bootstrap/dist/css/bootstrap.min.css';
-@import 'https://fonts.googleapis.com/icon?family=Material+Icons'; 
-@import url('https://fonts.googleapis.com/css?family=Kanit');
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+/* @import '~https://fonts.googleapis.com/icon?family=Material+Icons'; */
+
+
+ /* TODO: what are these */
+@import 'https://fonts.googleapis.com/css?family=Kanit';
+@import 'https://fonts.googleapis.com/css?family=Roboto';
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+/* @import url('https://fonts.googleapis.com/css?family=Kanit'); */
+/* @import url('https://fonts.googleapis.com/css?family=Roboto'); */
 
 body {
     background: rgb(236, 236, 236);
