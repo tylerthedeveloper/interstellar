@@ -20,7 +20,9 @@
 </mat-card> -->
 
 <!--Card-->
-<div class="card card-ecommerce" (click)="selectProduct(product)">
+<div class="card card-ecommerce example hoverable" (click)="selectProduct(product)">
+
+
 
     <!--Card image-->
     <div class="view overlay z-depth-1">
@@ -37,10 +39,11 @@
         <h4 class="card-title"><strong>{{ product.productName }}</strong></h4>
 
         <!--Description-->
-        <p class="card-text">{{ product.productShortDescription }}</p>
+        <p class="card-text">{{ product.productShortDescription }}
+        </p>
 
         <!--Card footer-->
-        <div class="card-footer">
+        <div class="card-footer" style="height: 3em; width: 100%;">
             <span class="float-left">Price ${{ product.fixedUSDAmount }} <span class="discount">Quantity: {{ product.quantity }}</span></span>
         </div>
     </div>

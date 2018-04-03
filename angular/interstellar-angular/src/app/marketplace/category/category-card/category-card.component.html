@@ -3,26 +3,51 @@
     </div> -->
 
 <!-- style="display: inline-block;" -->
-<mat-card class="card" (click)="selectCategory(category.category)">
+<!-- <mat-card class="card" (click)="selectCategory(category.category)">
 
-  <!--Card image-->
-  <!-- <img class="img-fluid" src="{{ category.thumbnailLink }}" alt="Card image cap" style="height: 300px; width: 300px;"> -->
+  Card image
+  <img class="img-fluid" src="{{ category.thumbnailLink }}" alt="Card image cap" style="height: 300px; width: 300px;">
   <div>
     <img src="{{ category.thumbnailLink }}" class="img-fluid" alt="Image Missing." style="height: 20em; width: 20em;">
   </div>
 
-  <!--Card content-->
+  Card content
   <mat-card-header>
-    <!--Title-->
-    <a (click)="selectCategory(category.category)" class="btn btn-light-blue waves-light" mdbRippleRadius>{{ category.category }}</a>
-    <!--Text-->
+    Title
+    <a (click)="selectCategory(category.category)" class="btn btn-light-blue" style="margin: auto;">{{ category.category }}</a>
+    Text
   </mat-card-header>
   <mat-card-content>
     <p class="card-text">{{ category.description }}</p>
   </mat-card-content>
   <mat-card-actions>
   </mat-card-actions>
-</mat-card>
+</mat-card> -->
+
+<!--Card-->
+<div class="card example hoverable" (click)="selectCategory(category.category)">
+
+    <!--Card image-->
+    <div class="view overlay">
+        <img class="img-fluid" src="{{ category.thumbnailLink }}" alt="Card image cap" style="height: 20em; width: 20em;">
+    </div>
+    <!--Card image-->
+
+    <!--Card content-->
+    <div class="card-body">
+
+        <!--Title-->
+        <button class="card-title" class="btn btn-primary btn-block" disabled>{{ category.category }}</button>
+
+        <!--Text-->
+        <p class="card-text">{{ category.description }}</p>
+
+        <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+    </div>
+    <!--Card content-->
+
+</div>
+<!--Card-->
 
 
 <!-- <div style="width:100%;">
