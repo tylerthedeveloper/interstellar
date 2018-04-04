@@ -3,7 +3,7 @@
     <h1 class="h1-responsive">{{ product?.productName }}</h1>
     <p class="lead">{{ product?.productLongDescription }}</p>
     <hr class="my-2">
-    <p>Price: ${{ product?.fixedUSDAmount }} 
+    <p>Price: ${{ product?.fixedUSDAmount }}
     </p>
     <div *ngIf="!isMyProduct;" style="margin: 0em 0em 2em 0em;">
         <div>
@@ -24,8 +24,8 @@
         <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn" role="button" (click)="addProductAndGoToCart()">Add-and-Go-to-Cart</button>
       </ng-template>
       <ng-template #myProductBlock>
-          <button mat-button (click)="editProduct()"> edit product </button>
-          <button mat-button (click)="deleteProduct()"> delete product </button>
+          <button (click)="editProduct()" class="btn btn-mdb-color btn-lg"> Edit </button>
+          <button (click)="deleteProduct()" class="btn btn-mdb-color btn-lg"> Delete </button>
       </ng-template>
     </div>
 </div>

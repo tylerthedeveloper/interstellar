@@ -1,3 +1,9 @@
+// TODO: add to asset balance
+// const currencyAssetsMapper = {
+//     'native' : 'Lumens',
+//     'tycoin' : 'TyCoins'
+// };
+
 export class AssetBalance {
     balance: string;
     asset_type: string;

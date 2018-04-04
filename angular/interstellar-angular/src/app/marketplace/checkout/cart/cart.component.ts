@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { CartService } from '../../../core/services/cart.service';
 import { Router } from '@angular/router';
 import { CartItem } from '../../_market-models/cart-item';
-import { AssetBalance, calcTotalsForMultipleAssets } from 'app/stellar';
+import { AssetBalance, calcTotalsForMultipleAssets, currencyAssetsMapper } from 'app/stellar';
 
 
 @Component({
@@ -25,6 +25,9 @@ export class CartComponent implements OnInit {
         this.cartItemsSource = this._cartService.Cart.map(cartItems => {
             this.cartItemIDs = cartItems.map((c: CartItem) => c.cartItemID);
             this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
+
+            // TODO: add to asset balance
+            // this.assetTotals.forEach(ass => console.log(currencyAssetsMapper[ass.asset_type]));
             return cartItems;
         });
     }
