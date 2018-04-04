@@ -5,15 +5,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
+
 import { CartService } from '../../../core/services/cart.service';
 import { Router } from '@angular/router';
 import { CartItem } from '../../_market-models/cart-item';
 import { AssetBalance, calcTotalsForMultipleAssets } from 'app/stellar';
 
-// import { calcTotalsForMultipleAssets } from '../../../stellar/utils';
-
-
-import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 @Component({
   selector: 'cart',
@@ -22,7 +19,7 @@ import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument 
 })
 export class CartComponent implements OnInit {
 
-    // private cartItemsSource: CartItem[];
+    private cartItemsSource2: CartItem[];
     private cartItemsSource: Observable<CartItem[]>;
     private cartItemIDs: string[];
     private assetTotals: AssetBalance[];
@@ -32,26 +29,11 @@ export class CartComponent implements OnInit {
                 private _router: Router) {}
 
     ngOnInit() {
-        // this._cartService.Cart.subscribe(cartItems => {
-            // this.cartItemsSource = cartItems;
-            // console.log(cartItems);
         this.cartItemsSource = this._cartService.Cart.map(cartItems => {
             this.cartItemIDs = cartItems.map((c: CartItem) => c.cartItemID);
-            // console.log(cartItems.map(CIT => CIT.assetPurchaseDetails));
-            // console.log(calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails)));
             this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
             return cartItems;
         });
-
-        // this.cartItemIDs = this.cartItemsSource.map((c: CartItem) => c.cartItemID)
-        // this.recalculateTotals();
-        // this.assetTotals = this._cartService.getCartAssetTotals();
-
-        // TODO: ASSET TOTALS.... HOW AND WHERE???
-        // this._cartService.getCurrentCart().valueChanges().subscribe(cartItems => {
-        //         this.cartItemsSource = cartItems;
-        //         this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
-        // });
     }
 
     //
@@ -59,25 +41,11 @@ export class CartComponent implements OnInit {
     //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
-    // recalculateTotals() {
-    //     // this.assetTotals = this._cartService.getCartAssetTotals()
-    //     // const currentAssets: Asset[] = this._cartService.getCartAssetTotals();
-    //     // const updatedAssets = calcTotalsForMultipleAssets(currentAssets);
-    //     this._cartService.getCartAssetTotals()
-    //                      .subscribe(curAssets => this.assetTotals = Observable.of(calcTotalsForMultipleAssets(curAssets)));
-    //     // this.assetTotals = updatedAssets;
-    // }
-
     proceedToCheckout() {
         // TODO: ....
-        // UPDATE CART ITEM
-        // ADD IF IS IN CHECKOUT
         // FOR EACH ... ALLOW CHECKBOXES ... UPDATE
         // GET ALL FOR EACH ON CHECKOUT IF IN CHECKOIUT
-        // this.assetTotals = Observable.of(this._cartService.getCartAssetTotals2());
-        // console.log(this.cartItemIDs);
         this.updateAddToCheckout(this.cartItemIDs);
-        // this._router.navigate(['/cart/checkout']);
     }
 
     navigateToAllProducts() {
@@ -87,6 +55,9 @@ export class CartComponent implements OnInit {
     emptyOutCart() {
         this._cartService.emptyCart();
     }
+    // ────────────────────────────────────────────────────────────────────────────────
+
+
 
     //
     // ──────────────────────────────────────────────────────────────────── I ──────────
@@ -103,26 +74,17 @@ export class CartComponent implements OnInit {
             newCartItemData = obj.newData;
         }
 
+        console.log(obj);
+
         switch (action) {
             case 'purchase':
-                // console.log(obj);
                 this.updateAddToCheckout(new Array<string>(_cartItemID));
                 break;
             case 'edit':
-                console.log('ed');
                 this._cartService.updateCartItem(_cartItem, newCartItemData);
                 break;
             case 'remove':
-                console.log('rem');
                 this._cartService.removeCartItem(_cartItemID);
-                // this.recalculateTotals();
-                // TODO: this if check does not work because cant verify empty observable ... might not nmatter!!!
-                //
-                // if (!this.cartItemsSource) {
-                //     this.afs.collection('user-cart').doc(this._userID).delete();
-                //     console.log(this.cartItemsSource);
-                //     console.log("hi");
-                // }
                 break;
             default:
                 return;
@@ -135,6 +97,18 @@ export class CartComponent implements OnInit {
                         .catch(err => console.log(err))
                         .then(res => this._router.navigate(['/cart/checkout']));
     }
+
+     // recalculateTotals() {
+    //     // this.assetTotals = this._cartService.getCartAssetTotals()
+    //     // const currentAssets: Asset[] = this._cartService.getCartAssetTotals();
+    //     // const updatedAssets = calcTotalsForMultipleAssets(currentAssets);
+    //     this._cartService.getCartAssetTotals()
+    //                      .subscribe(curAssets => this.assetTotals = Observable.of(calcTotalsForMultipleAssets(curAssets)));
+    //     // this.assetTotals = updatedAssets;
+    // }
+
+    // ────────────────────────────────────────────────────────────────────────────────
+
 }
 
 
