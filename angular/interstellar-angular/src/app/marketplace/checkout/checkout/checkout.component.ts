@@ -15,7 +15,6 @@ import { OrderService } from 'app/core/services/order.service';
 import { CartItem } from 'app/marketplace/_market-models/cart-item';
 import { CartService } from 'app/core/services/cart.service';
 import { Order } from 'app/marketplace/_market-models/order';
-import { concat } from 'rxjs/operators';
 import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from 'app/marketplace/_market-models/transaction-group';
 
 
@@ -84,24 +83,10 @@ export class CheckoutComponent implements OnInit {
                     cartPurchaseDetailsArray.push(CIT.assetPurchaseDetails);
                 });
                 this.sellerPublicKeys = new Set(_sellerPublicKeys);
-                console.log(this.checkoutItems);
-                // console.log(this.sellerIDs);
-                console.log(this.sellerPublicKeys);
-                // this.cartItemIDs = arr.map(CIT => CIT.cartItemID);
-                // this.sellerPublicKeys = arr.map(CIT => CIT.sellerPublicKey);
-                // this.sellerIDs = arr.map(CIT => CIT.sellerPublicKey);
                 this.assetTotals = calcTotalsForMultipleAssets(cartPurchaseDetailsArray);
-                // this.assetTotals = calcTotalsForMultipleAssets(arr.map(CIT => CIT.assetPurchaseDetails));
                 return arr;
             });
 
-            // this.assetTotals = [];
-            // this.cartItemsSource = this._cartService.getCurrentCart().map(c => c);
-            // this._cartService.getCurrentCart().subscribe(cartItems => {
-            //         this.checkoutItemsSource = cartItems.filter(CIT => CIT.isInCheckout === true);
-            //         this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
-            //         console.log(this.checkoutItemsSource);
-            // });
             this.balances = <AssetBalance[]> JSON.parse(sessionStorage.getItem('my_balances') || localStorage.getItem('balances'));
             console.log(this.balances);
         }
@@ -112,13 +97,10 @@ export class CheckoutComponent implements OnInit {
                 alert('Please enter a secret key');
                 return;
             }
-            const curUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-            const curPubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
-            // const curSeedKey = sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key');
 
-            if (!(curUserID && curPubKey && this.curSeedKey &&
+            if (!(this.curUserID && this.curPubKey && this.curSeedKey &&
                   this.curSeedKey === secretKey &&
-                  isValidSecretKey(this.curSeedKey) === curPubKey)) {
+                  isValidSecretKey(this.curSeedKey) === this.curPubKey)) {
                     alert('there is missing information or that key is not valid or does not match');
             } else {
                 this.stepChecker[currentStep] = true;
@@ -130,11 +112,8 @@ export class CheckoutComponent implements OnInit {
             if (!_updatedBalances) {
                 return;
             } else {
-                // console.log(_updatedBalances);
                 this.updatedBalances = _updatedBalances;
-                // console.log(this.stepChecker);
                 this.stepChecker[currentStep] = true;
-                // console.log(this.stepChecker);
             }
         }
 
@@ -147,9 +126,6 @@ export class CheckoutComponent implements OnInit {
 
 
         completePurchase() {
-            // const sellerKeys = this.
-            // get user secret key
-            // get seller public keys
             // TODO: ITERATE OVER ALL ITEMS ...
             // this.checkoutItems
 
