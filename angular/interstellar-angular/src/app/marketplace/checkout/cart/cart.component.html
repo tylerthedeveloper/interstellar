@@ -5,7 +5,12 @@
             <ng-template #isCartItems>
                 <div class="col-12 col-md-8">
                     <h2> My Cart <small> ({{ cartItemList.length }} item{{ cartItemList.length > 0 ? 's' : '' }})</small> </h2>
-                    <div *ngFor="let product of cartItemList">
+                    <div class="card" style="height: 3em; margin: .5em; display: flex; flex-direction: row; align-items: center;">
+                      <p class="offset-3">Product</p>
+                      <p class="offset-1">Quantity</p>
+                      <p class="offset-1">Price</p>
+                    </div>
+                    <div *ngFor="let product of cartItemList" style="margin: 0em 0em .2em 0em;">
                         <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
                     </div>
                 </div>
@@ -17,13 +22,13 @@
                             Total for <strong>{{ asset?.asset_type }}:</strong> {{ asset?.balance }}
                             <br />
                         </div>
-                        <button mat-button (click)="recalculateTotals()"> Recalculate </button>
+                        <button type="button" mat-button (click)="recalculateTotals()" class="btn btn-primary btn-sm"> Recalculate </button>
                     </mat-card>
                     <h2 class="text-nowrap" style="display: flex;"> Cart Options </h2>
                     <!-- width:400 px;  -->
                     <mat-card class="example-card">
-                        <button mat-button (click)="proceedToCheckout()"> Proceed to Checkout </button>
-                        <button mat-button (click)="emptyOutCart()"> Empty Cart </button>
+                        <button mat-button (click)="proceedToCheckout()" class="btn btn-primary btn-sm"> Proceed to Checkout </button>
+                        <button mat-button (click)="emptyOutCart()" class="btn btn-primary btn-sm"> Empty Cart </button>
                     </mat-card>
                 </div>
             </ng-template>
