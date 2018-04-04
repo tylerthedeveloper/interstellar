@@ -1,6 +1,7 @@
 import { StellarLumensMinimum, TyCoinMinimum } from 'app/core/_constants/quantities';
 import { AssetBalance } from 'app/stellar';
 
+// TODO: add to asset balance
 const currencyAssetsMapper = {
     'native' : 'Lumens',
     'tycoin' : 'TyCoins'

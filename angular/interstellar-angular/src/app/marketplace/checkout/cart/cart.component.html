@@ -30,20 +30,20 @@
                     </div>
                 </div>
                 <div class="col-md-2 text-nowrap" id="assetTotals">
-                    <h4 style="display: flex;"> Cart Asset Totals </h4>
                     <!-- width:400 px;  -->
+                    <h6 style="display: flex; margin: 1em 0em 0em 0em;"> Cart Asset Totals </h6>
                     <div class="card">
                         <div *ngFor="let asset of assetTotals ">
-                            Total for <strong>{{ asset?.asset_type }}:</strong> {{ asset?.balance }}
+                            <strong>{{ asset?.asset_type }}:</strong> {{ asset?.balance }}
                             <br />
                         </div>
-                        <button type="button" (click)="recalculateTotals()" class="btn btn-default btn-md"> Recalculate </button>
+                        <button type="button" (click)="recalculateTotals()" class="btn btn-default btn-sm"> Recalculate </button>
                     </div>
-                    <h4 class="text-nowrap" style="display: flex;"> Cart Options </h4>
                     <!-- width:400 px;  -->
+                    <h6 class="text-nowrap" style="display: flex; margin: 1em 0em 0em 0em;"> Cart Options </h6>
                     <div class="card">
-                        <button (click)="proceedToCheckout()" class="btn btn-primary btn-md"> Proceed to Checkout </button>
-                        <button (click)="emptyOutCart()" class="btn btn-blue-grey btn-md"> Empty Cart </button>
+                        <button (click)="proceedToCheckout()" class="btn btn-primary btn-sm"> Proceed to Checkout </button>
+                        <button (click)="emptyOutCart()" class="btn btn-blue-grey btn-sm"> Empty Cart </button>
                     </div>
                 </div>
             </ng-template>
