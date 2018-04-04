@@ -15,12 +15,12 @@
     <div class="col-md-2">
       <div class="card card-ecommerce example hoverable" (click)="selectProduct(product)">
           <!--Card image-->
-          <div class="view overlay z-depth-1">
+          <!-- <div class="view overlay z-depth-1">
               <img src="{{ product.productThumbnailLink }}" class="img-fluid" alt="" style="width:10em; height: 10em; margin: auto; display: block;">
               <a>
                   <div class="mask rgba-white-slight"></div>
               </a>
-          </div>
+          </div> -->
           <!--/.Card image-->
 
           <!--Card content-->
@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="col-md-10">
-      <div *ngFor="let product of categoriedProducts" style="display: inline-block; margin: 0em .5em .5em 0em">
+      <div *ngFor="let product of categoriedProducts | async" style="display: inline-block; margin: 0em .5em .5em 0em">
         <category-product-card [product]="product" (notify)="onSelectProduct($event)"></category-product-card>
       </div>
     </div>

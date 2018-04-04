@@ -3,7 +3,7 @@
         <ng-container *ngIf="cartItemsSource | async; let cartItemList">
             <span *ngIf="cartItemList.length > 0; then isCartItems; else emptyCart"> </span>
             <ng-template #isCartItems>
-                <div class="col-12 col-md-9">
+                <div class="col-12 col-md-10">
                     <h2> My Cart <small> ({{ cartItemList.length }} item{{ cartItemList.length > 0 ? 's' : '' }})</small> </h2>
 
                     <div class="card" style="display: flex; flex-direction: row; margin: 0em 0em .1em 0em;">
@@ -29,8 +29,8 @@
                         <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
                     </div>
                 </div>
-                <div class="col-md-3 text-nowrap" id="assetTotals">
-                    <h2 style="display: flex;"> Cart Asset Totals </h2>
+                <div class="col-md-2 text-nowrap" id="assetTotals">
+                    <h4 style="display: flex;"> Cart Asset Totals </h4>
                     <!-- width:400 px;  -->
                     <div class="card">
                         <div *ngFor="let asset of assetTotals ">
@@ -39,7 +39,7 @@
                         </div>
                         <button type="button" (click)="recalculateTotals()" class="btn btn-default btn-md"> Recalculate </button>
                     </div>
-                    <h2 class="text-nowrap" style="display: flex;"> Cart Options </h2>
+                    <h4 class="text-nowrap" style="display: flex;"> Cart Options </h4>
                     <!-- width:400 px;  -->
                     <div class="card">
                         <button (click)="proceedToCheckout()" class="btn btn-primary btn-md"> Proceed to Checkout </button>

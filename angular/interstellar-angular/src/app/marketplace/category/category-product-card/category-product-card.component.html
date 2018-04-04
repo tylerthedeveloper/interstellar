@@ -36,15 +36,15 @@
     <!--Card content-->
     <div class="card-body text-center">
         <!--Category & Title-->
-        <h4 class="card-title"><strong>{{ product.productName }}</strong></h4>
+        <h4 class="card-title"><strong>{{ product?.productName }}</strong></h4>
 
         <!--Description-->
-        <p class="card-text">{{ product.productShortDescription }}
+        <p class="card-text">{{ product?.productShortDescription }}
         </p>
 
         <!--Card footer-->
         <div class="card-footer" style="height: 3em; width: 100%;">
-            <span class="float-left">Price ${{ product.fixedUSDAmount }} <span class="discount">Quantity: {{ product.quantity }}</span></span>
+            <span class="float-left">Price ${{ product?.fixedUSDAmount }} <span class="discount">Quantity: {{ product?.quantity }}</span></span>
         </div>
     </div>
     <!--/.Card content-->

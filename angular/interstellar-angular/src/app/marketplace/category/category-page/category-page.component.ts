@@ -19,8 +19,9 @@ export class CategoryPageComponent implements OnInit {
 
     // TODO: GET CATEGORY NOT JUST PARAM STRING ...
 
-    
+
     private pageCategory: string;
+    // TODO: decide on partial for pre-optimal-loading
     private categoriedProducts: Observable<PartialProduct[]>;
 
     constructor(private activatedRoute: ActivatedRoute,
@@ -32,7 +33,8 @@ export class CategoryPageComponent implements OnInit {
     ngOnInit() {
         const params: any = this.activatedRoute.snapshot.params;
         this.pageCategory = params.category;
-        this._productService.getProductsByCategory(params.category).subscribe(products => this.categoriedProducts = products);
+        // this._productService.getProductsByCategory(params.category).subscribe(products => this.categoriedProducts = products);
+        this.categoriedProducts = this._productService.getProductsByCategory(params.category);
     }
 
     addProduct () {
