@@ -27,20 +27,17 @@ import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from '
 export class CheckoutComponent implements OnInit {
 
         // TODO: subscription choice here?
-        // Why does async fetch first item after batch empty delete
-        // private checkoutItemsSource: CartItem[];
         private checkoutItemsSource: Observable<CartItem[]>;
         private checkoutItems: CartItem[];
         private assetTotals: AssetBalance[];
 
         private cartItemIDs: string[] = [];
         private sellerIDs: string[] = [];
-        private sellerPublicKeys; // = new Set();
+        private sellerPublicKeys;
 
         private balances: AssetBalance[] = [];
         private updatedBalances: AssetBalance[] = [];
 
-        private hasItems = false;
         private stepChecker: Array<boolean> = [false, false, false, false, false]; // page nav step checking
 
         private curUserID: string;
@@ -70,8 +67,6 @@ export class CheckoutComponent implements OnInit {
                         alert(alertMessage);
                         this._router.navigate(['../cart']);
                     }
-                } else {
-                    this.hasItems = true;
                 }
                 const cartPurchaseDetailsArray = new Array<AssetBalance>();
                 this.checkoutItems = arr;
@@ -113,12 +108,15 @@ export class CheckoutComponent implements OnInit {
                 return;
             } else {
                 this.updatedBalances = _updatedBalances;
+                // console.log(_updatedBalances);
                 this.stepChecker[currentStep] = true;
             }
         }
 
         // verify valid new balances...
         validateFundsForPurchase(currentStep: number) {
+            // TODO: is step == 3
+            console.log(currentStep);
             if (areValidNewBalances(this.updatedBalances)) {
                 this.stepChecker[3] = true;
             }
@@ -126,6 +124,9 @@ export class CheckoutComponent implements OnInit {
 
 
         completePurchase() {
+            // const sellerKeys = this.
+            // get user secret key
+            // get seller public keys
             // TODO: ITERATE OVER ALL ITEMS ...
             // this.checkoutItems
 
@@ -137,6 +138,7 @@ export class CheckoutComponent implements OnInit {
             const transactions = this.makeTransactionRecords();
 
             // TODO: --> put into helper
+            // TODO: test for each by index error
             // COMBINE PAYMENTS .... INTO TRANS GROUPS
             const transactionGroups = new Array<TransactionGroup>();
             Array.from(this.sellerPublicKeys).map((key: string) => {
@@ -146,9 +148,9 @@ export class CheckoutComponent implements OnInit {
                 transactionGroups.push(newGroup);
             });
 
+            // TODO: --> put into helper            
             //  /// this.makeTransactionGroups(transactionGroups, transactions);
             console.log(JSON.stringify(transactionGroups));
-            // for (const transaction of transactions) {
             for (let i = 0; i < transactions.length; i++) {
                 const transaction = transactions[i];
                 const sellerKey = transaction.receiverPublicKey;
@@ -160,9 +162,10 @@ export class CheckoutComponent implements OnInit {
                 transactionGroups[idx].transactionRecords = newListAtIndex;
             }
             console.log(JSON.stringify(transactionGroups));
-
+            
+            
+            // TODO: --> put into helper
             // this.fillTransactionGroups(transactionGroups);
-            // for (const transGroup of transactionGroups) {
             for (let i = 0; i < transactionGroups.length; i++) {
                 const transGroup = transactionGroups[i];
                 const groupAssetPurchaseDetails = transGroup.transactionRecords.map(trans => trans.assetPurchaseDetails);
@@ -177,14 +180,9 @@ export class CheckoutComponent implements OnInit {
 
             // FIXME: TEST THE BELOW
             // NEED TO BE CAREFUL WITH ASYNC CALL BACKS AND ERROR HANDLING ...
-            // nEED TO CONFIRM COMPLETION BEFORE MUTATION OF SUBSEQUENT STEPS
+            // NEED TO CONFIRM COMPLETION BEFORE MUTATION OF SUBSEQUENT STEPS
             this.stepChecker[2] = false;
             this.stepChecker[3] = false;
-
-            // let result = Promise.resolve();
-            // transactionPaymentDetails.forEach(task => {
-            //     result = result.then(() => this._stellarPaymentService.sendPayment(task));
-            // });
 
             let result = Promise.resolve();
             transactionGroups.map(transGroup =>
@@ -261,11 +259,9 @@ export class CheckoutComponent implements OnInit {
         }
 
         proceedToOrderConfirmation() {
-            // TODO: CREATE NEW ID FROM ORDER SERICE MAYBE????
             // TODO: PREVENT GOIONG BACK ....
             // TODO: PREVENT FORM RESUBMISSION
 
-            // FOR ALL ITEMS...
             const _orderID = this._orderService.getNewOrderID();
             const _order = new Order(this.curUserID, _orderID, this._transactionGroups);
             this._orderService.addNewOrder(JSON.stringify(_order));

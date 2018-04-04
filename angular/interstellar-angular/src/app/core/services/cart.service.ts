@@ -9,19 +9,16 @@
 
 
 import { Injectable  } from '@angular/core';
-
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/observable/of';
 
 import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import { calcTotalsForMultipleAssets, AssetBalance } from 'app/stellar';
 
-import { User } from '../../user';
 import { CartItem } from '../../marketplace/_market-models/cart-item';
 
+import 'rxjs/add/observable/of';
 
 @Injectable()
 export class CartService {
@@ -64,8 +61,8 @@ export class CartService {
     //   :::::: P U B L I C  C R U D   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
-    // return Observable.of({ items: this.userCartItems, totals: this.assetTotals});
     // get Cart(): Observable<any> {
+    // return Observable.of({ items: this.userCartItems, totals: this.assetTotals});
     get Cart(): Observable<CartItem[]> {
         return this.userCartItems;
     }
@@ -108,11 +105,10 @@ export class CartService {
     }
 
     addToCheckout(cartItemIDs: string[]) {
-        // console.log(cartItemIDs);
+        console.log(cartItemIDs);
         const batch = this.afs.firestore.batch();
         cartItemIDs.forEach(id => batch.update(this.myCartRef.doc(id), {isInCheckout: true}));
         return batch.commit();
-        // this.userCartCollection.doc(cartItemID).update({isInCheckout: true});
     }
 
     removeCartItem(cartItemID: string) {
@@ -121,29 +117,21 @@ export class CartService {
     }
 
     batchRemoveCartItems(cartItemIdArray: string[]) {
-        // console.log(this.cartItemIDs);
         const batch = this.afs.firestore.batch();
         cartItemIdArray.forEach(id => batch.delete(this.myCartRef.doc(id)));
         // console.log(this.cartItemIDs);
         return batch.commit()
             .catch(error => console.log(error))
-            .then(res => this.cartItemIDs.filter(_cartItemID => cartItemIdArray.find(c => c === _cartItemID)));
+            .then(() => this.cartItemIDs.filter(_cartItemID => cartItemIdArray.find(c => c === _cartItemID)));
         // console.log(this.cartItemIDs);
     }
 
     emptyCart() {
-        // console.log(this.cartItemIDs);
-        // const batch = this.afs.firestore.batch();
-        // this.cartItemIDs.forEach(id => batch.delete(this.myCartRef.doc(id)));
-        // batch.commit();
-        // this.cartItemIDs = [];
-        // console.log(this.cartItemIDs);
         const batch = this.afs.firestore.batch();
         this.cartItemIDs.forEach(id => batch.delete(this.myCartRef.doc(id)));
-        // console.log(this.cartItemIDs);
         batch.commit()
             .catch(error => console.log(error))
-            .then(res => this.cartItemIDs = []);
+            .then(() => this.cartItemIDs = []);
         console.log(this.cartItemIDs);
     }
     // ────────────────────────────────────────────────────────────────────────────────

@@ -15,10 +15,10 @@ export class CartItemCardComponent implements OnInit {
     ngOnInit() {
     }
 
-    purchaseItem (cartItem: CartItem) {
+    purchaseItem (cartItemID: string) {
         const data = {
             action: 'purchase',
-            payload: cartItem
+            payload: cartItemID
         };
         this.notify.emit(JSON.stringify(data));
     }
@@ -32,11 +32,19 @@ export class CartItemCardComponent implements OnInit {
       this.notify.emit(JSON.stringify(data));
     }
 
-    removeItem (cartItem: CartItem)  {
+    removeItem (cartItemID: string)  {
         const data = {
           action: 'remove',
-          payload: cartItem
+          payload: cartItemID
         };
         this.notify.emit(JSON.stringify(data));
+    }
+
+    test(cartItemID: string)  {
+        const data = {
+            action: 'checkItem',
+            payload: cartItemID
+          };
+          this.notify.emit(JSON.stringify(data));
     }
 }

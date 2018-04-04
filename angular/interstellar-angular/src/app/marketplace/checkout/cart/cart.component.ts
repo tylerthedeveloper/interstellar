@@ -1,10 +1,5 @@
-// TODO: do we need to display totals...
-    // if so --> do we need to subscribe to cart?
-
-
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 
 import { CartService } from '../../../core/services/cart.service';
 import { Router } from '@angular/router';
@@ -19,11 +14,9 @@ import { AssetBalance, calcTotalsForMultipleAssets } from 'app/stellar';
 })
 export class CartComponent implements OnInit {
 
-    private cartItemsSource2: CartItem[];
     private cartItemsSource: Observable<CartItem[]>;
     private cartItemIDs: string[];
     private assetTotals: AssetBalance[];
-    _userID = sessionStorage.getItem('user_doc_id');
 
     constructor(private _cartService: CartService,
                 private _router: Router) {}
@@ -66,9 +59,9 @@ export class CartComponent implements OnInit {
     //
     onCartItemAction(data: string) {
         const obj = JSON.parse(data);
-        const action = obj.action;
-        const _cartItem = obj.payload;
-        const _cartItemID = _cartItem.cartItemID;
+        const _action = obj.action;
+        // const _cartItem = obj.payload;
+        const _cartItemID =  obj.payload;
         let newCartItemData = '';
         if (obj.newData) {
             newCartItemData = obj.newData;
@@ -76,15 +69,19 @@ export class CartComponent implements OnInit {
 
         console.log(obj);
 
-        switch (action) {
+        switch (_action) {
             case 'purchase':
                 this.updateAddToCheckout(new Array<string>(_cartItemID));
                 break;
             case 'edit':
-                this._cartService.updateCartItem(_cartItem, newCartItemData);
+                this._cartService.updateCartItem(_cartItemID, newCartItemData);
                 break;
             case 'remove':
                 this._cartService.removeCartItem(_cartItemID);
+                break;
+            case 'checkItem':
+                // TODO:
+                console.log(_cartItemID);
                 break;
             default:
                 return;
@@ -95,7 +92,7 @@ export class CartComponent implements OnInit {
         console.log(cartItemIDs);
         this._cartService.addToCheckout(cartItemIDs)
                         .catch(err => console.log(err))
-                        .then(res => this._router.navigate(['/cart/checkout']));
+                        .then(() => this._router.navigate(['/cart/checkout']));
     }
 
      // recalculateTotals() {

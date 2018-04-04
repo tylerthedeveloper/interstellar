@@ -19,9 +19,9 @@
     <div>
       <span *ngIf="!isMyProduct; then notMyProduct; else myProductBlock"> </span>
       <ng-template #notMyProduct>
-        <a class="btn btn-primary btn-lg" role="button" (click)="onBuyProduct()">Buy Product</a>
-        <a class="btn btn-primary btn-lg" role="button" (click)="addProductToCart()">Add-to-Cart</a>
-        <a class="btn btn-primary btn-lg" role="button" (click)="addProductAndGoToCart()">Add-and-Go-to-Cart</a>
+        <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn" role="button" (click)="onBuyProduct()">Buy Product</button>
+        <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn" role="button" (click)="addProductToCart()">Add-to-Cart</button>
+        <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn" role="button" (click)="addProductAndGoToCart()">Add-and-Go-to-Cart</button>
       </ng-template>
       <ng-template #myProductBlock>
           <button mat-button (click)="editProduct()"> edit product </button>

@@ -37,9 +37,9 @@ export class ProductPageComponent implements OnInit {
     // TODO: CHANGE THIS TO 0
     private purchaseQuantity = 1;
 
-    // private totalPurchaseAmount: number;
-
     private _sellerShortData: {productSellerID: string, productSellerName: string, productSellerPublicKey: string};
+
+    private isLoggedIn = false;
 
     constructor(private _productService: ProductService,
                 private _cartService: CartService,
@@ -49,25 +49,24 @@ export class ProductPageComponent implements OnInit {
     ngOnInit() {
         // let prod = this.product.map(prod => <Product>prod);
         // check again user ID to show or not show add to cart
-          this.assetTypes = Object.keys(currencyAssetsMapper).map((type: any) => {
-            // console.log(<Array<Asset>> type);
-            return <Array<AssetBalance>> type;
-          });
-          const curBalances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
-          this.balances = <Array<AssetBalance>> JSON.parse(curBalances);
-          this.myUserId = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-          this.myPubKeyId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
-          this._productService
-                .getProductByProductId(this.route.snapshot.params['id'])
-                .map(product => <Product>product)
-                .subscribe((product: Product) => {
-                    this.product = product;
-                    this._sellerShortData = product.productSellerData;
-                    this.isMyProduct = (product.productSellerData.productSellerID === this.myUserId);
-                    // product.productPrices.forEach((price: ProductPrice) => {
-                    //   console.log(price);
-                    // });
-            });
+        this.myUserId = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
+        this.myPubKeyId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
+        const curBalances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
+        this.isLoggedIn = (this.myUserId != null && this.myPubKeyId != null);
+        this.balances = <Array<AssetBalance>> JSON.parse(curBalances);
+        this.assetTypes = Object.keys(currencyAssetsMapper).map((type: any) => <Array<AssetBalance>> type);
+
+        this._productService
+            .getProductByProductId(this.route.snapshot.params['id'])
+            .map(product => <Product>product)
+            .subscribe((product: Product) => {
+                this.product = product;
+                this._sellerShortData = product.productSellerData;
+                this.isMyProduct = (product.productSellerData.productSellerID === this.myUserId);
+                // product.productPrices.forEach((price: ProductPrice) => {
+                //   console.log(price);
+                // });
+        });
     }
 
     addProduct () {
@@ -122,7 +121,7 @@ export class ProductPageComponent implements OnInit {
             // validate purchase credentials //
             const totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.balance, purchaseQuantity);
             // const order = this.createOrder(purchaseQuantity);
-            if (this.validateTransaction(this.product.quantity, purchaseQuantity, totalPurchaseAmount)) {
+            if (this.validateTransaction(purchaseQuantity, totalPurchaseAmount)) {
                 this.conductTransaction(this.product.id, purchaseQuantity, totalPurchaseAmount);
             }
         }
@@ -133,9 +132,9 @@ export class ProductPageComponent implements OnInit {
         if (this.addProductToCart()) {
             this._router.navigate(['/cart']);
         }
-        // else {
-        //     alert('couldnt be completed');
-        // }
+        else {
+            alert('couldnt be completed');
+        }
     }
 
     public addProductToCart(): boolean {
@@ -156,7 +155,7 @@ export class ProductPageComponent implements OnInit {
     //   :::::: M E T H O D   H E L P E R S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────────
     //
-    private validateTransaction(prodQuantity: number, purchaseQuantity: number, totalPurchaseAmount: number): boolean {
+    private validateTransaction(purchaseQuantity: number, totalPurchaseAmount: number): boolean {
         if (this.balances) { console.log(this.balances); }
         if (!this.balances) {
             return this.errorAndAlert('You dont seem to have any active balances, please check your account');

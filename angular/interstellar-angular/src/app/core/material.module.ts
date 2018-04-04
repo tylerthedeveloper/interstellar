@@ -7,13 +7,14 @@ import { CommonModule } from '@angular/common';
 import {
     MatButtonModule,  MatTabsModule, MatMenuModule, MatCardModule, MatInputModule,
     MatGridListModule, MatTableModule, MatSidenavModule, MatSelectModule,
-    MatDialogModule, MatToolbarModule, MatStepperModule
+    MatDialogModule, MatToolbarModule, MatStepperModule, MatCheckboxModule
 } from '@angular/material';
 
 const materialModules = [ MatButtonModule, MatTabsModule, MatMenuModule,
                           MatCardModule, MatInputModule, MatGridListModule,
                           MatTableModule, MatSidenavModule, MatSelectModule,
-                          MatDialogModule, MatToolbarModule, MatStepperModule
+                          MatDialogModule, MatToolbarModule, MatStepperModule,
+                          MatCheckboxModule
 ];
 
 @NgModule({
