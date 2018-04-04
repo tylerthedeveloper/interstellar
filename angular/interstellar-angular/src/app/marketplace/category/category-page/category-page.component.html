@@ -4,37 +4,44 @@
 <!-- {{ category.description }} -->
 <p style="text-align: center;"> Description: </p>
 
-<div align="right">
-  <button (click)="addProduct2()"> Add Product </button>
-  <button (click)="allCategories()"> Return to Categories </button>
-</div>
-
 <div class="container">
   <div class="row">
-    <div class="col-md-1 col-lg-1">
-        <div style="width:200 px;">
-            <mat-card class="example-card" (click)="selectProduct(product)">
-              <mat-card-header>
-                <div mat-card-avatar class="example-header-image"></div>
-                <mat-card-title> {{ product.title }} </mat-card-title>
-                <mat-card-subtitle> {{ product.price }}</mat-card-subtitle>
-                <mat-card-subtitle> {{ product.subtitle }}</mat-card-subtitle>
-              </mat-card-header>
-              <img mat-card-image src="{{ product.thumbnailLink }}" style="width:150px; height: 150px;" alt="alt">
-              <mat-card-content>
-                <p>
-                  {{ product.description }}
-                </p>
-              </mat-card-content>
-              <mat-card-actions>
-                <button mat-button>LIKE</button>
-                <button mat-button>SHARE</button>
-              </mat-card-actions>
-            </mat-card>
-          </div>
+    <div class="offset-md-9">
+      <button (click)="addProduct2()" class="btn btn-default btn-sm"> Add Product </button>
+      <button (click)="allCategories()" class="btn btn-default btn-sm"> Return to Categories </button>
     </div>
-    <div class="col-12 offset-md-2 col-lg-10">
-      <div *ngFor="let product of categoriedProducts" style="display: inline-block; margin: 0em .25em .25em 0em">
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <div class="card card-ecommerce example hoverable" (click)="selectProduct(product)">
+          <!--Card image-->
+          <div class="view overlay z-depth-1">
+              <img src="{{ product.productThumbnailLink }}" class="img-fluid" alt="" style="width:10em; height: 10em; margin: auto; display: block;">
+              <a>
+                  <div class="mask rgba-white-slight"></div>
+              </a>
+          </div>
+          <!--/.Card image-->
+
+          <!--Card content-->
+          <div class="card-body text-center">
+              <!--Category & Title-->
+              <h4 class="card-title"><strong></strong></h4>
+
+              <!--Description-->
+              <p class="card-text">
+              </p>
+
+              <!--Card footer-->
+              <div class="card-footer" style="height: 3em; width: 100%;">
+                  <span class="float-left"> <span class="discount"></span></span>
+              </div>
+          </div>
+          <!--/.Card content-->
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div *ngFor="let product of categoriedProducts" style="display: inline-block; margin: 0em .5em .5em 0em">
         <category-product-card [product]="product" (notify)="onSelectProduct($event)"></category-product-card>
       </div>
     </div>
