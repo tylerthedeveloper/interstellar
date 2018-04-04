@@ -50,7 +50,6 @@ export class CartService {
                                             this.cartItemIDs = _ids;
                                             // this.assetTotals = _totals;
                                             return changes;
-    
             });
             this.myCartRef = this.userCartCollection.ref;
         }

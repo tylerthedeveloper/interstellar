@@ -48,7 +48,7 @@ const calcTotalsForMultipleAssets = (assets: AssetBalance[]): AssetBalance[] => 
             const idx = updatedAssets.findIndex(CIT => CIT.asset_type === asset.asset_type);
             const curAssAmount = updatedAssets[idx].balance;
             const newAssAmount = (Number(curAssAmount) + Number(asset.balance));
-            updatedAssets[idx] = {  asset_type: asset.asset_type, balance: String(newAssAmount)};
+            updatedAssets[idx] = {  asset_type: asset.asset_type, balance: String(newAssAmount), coin_name: asset.coin_name};
         }
     });
     return updatedAssets;
@@ -60,7 +60,7 @@ const calcDifferenceForMultipleAssets = (balances: AssetBalance[], assetPriceTot
         const idx = assetPriceTotals.findIndex(CIT => CIT.asset_type === asset.asset_type);
         const assetPriceOutlay = assetPriceTotals[idx].balance;
         const newAssAmount = (Number(asset.balance) - Number(assetPriceOutlay));
-        updatedAssets.push({ balance: String(newAssAmount), asset_type: asset.asset_type, });
+        updatedAssets.push({ balance: String(newAssAmount), asset_type: asset.asset_type, coin_name: asset.coin_name });
     });
     return updatedAssets;
 };
@@ -116,12 +116,12 @@ const areValidNewBalances = (newBalances: Array<AssetBalance>): boolean => {
 
     // TODO: TEST MEEEE
     let bool = true;
-    newBalances.forEach(balance => {
+    for (const balance of newBalances) {
         if (!isValidNewBalance2(balance)) {
             bool = false;
-            // break;
+            break;
         }
-    });
+    }
     return bool;
 };
 

@@ -1,4 +1,4 @@
-// import { ProductCategory } from "./product-category";
+// TODO: using this or not .......
 
 export class PartialProduct {
 

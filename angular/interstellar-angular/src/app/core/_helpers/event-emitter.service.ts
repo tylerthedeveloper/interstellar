@@ -1,14 +1,13 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import {Injectable} from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class EventEmitterService {
 
-    // dataStr = new EventEmitter();
     dataStr = new Subject();
 
     constructor() {
-        console.log('creating ervent emitter')
+        console.log('creating event emitter');
     }
 
     sendMessage = (data: {}) => {
@@ -20,5 +19,5 @@ export class EventEmitterService {
             message: 'category',
             category: category
         });
-    } 
+    }
 }

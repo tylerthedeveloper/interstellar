@@ -3,11 +3,11 @@
     <h1 class="h1-responsive">{{ product?.productName }}</h1>
     <p class="lead">{{ product?.productLongDescription }}</p>
     <hr class="my-2">
-    <p>Price: ${{ product?.fixedUSDAmount }}
-    </p>
+    <p>Price: ${{ product?.fixedUSDAmount }} </p> <p> Quantity {{ product?.quantity }} </p>
     <div *ngIf="!isMyProduct;" style="margin: 0em 0em 2em 0em;">
         <div>
-            <input matInput type="number" id="purchaseQuantity" placeholder="Quantity" style="width: 20%;" [(ngModel)]="purchaseQuantity">
+            <input matInput type="number" id="purchaseQuantity" placeholder="Quantity" style="width: 20%;" 
+                    [(ngModel)]="purchaseQuantity"  min="1" [max]="product?.quantity">
         </div>
         <br/>
         <mat-select id="assetSelectionType" class="asset" placeholder="Asset Type" style="width: 20%;" [(ngModel)]="selectedAssetType">
@@ -19,9 +19,9 @@
     <div>
       <span *ngIf="!isMyProduct; then notMyProduct; else myProductBlock"> </span>
       <ng-template #notMyProduct>
-        <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn" role="button" (click)="onBuyProduct()">Buy Product</button>
-        <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn" role="button" (click)="addProductToCart()">Add-to-Cart</button>
-        <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn" role="button" (click)="addProductAndGoToCart()">Add-and-Go-to-Cart</button>
+        <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn && isInStock" role="button" (click)="onBuyProduct()">Buy Product</button>
+        <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn && isInStock" role="button" (click)="addProductToCart()">Add-to-Cart</button>
+        <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn && isInStock" role="button" (click)="addProductAndGoToCart()">Add-and-Go-to-Cart</button>
       </ng-template>
       <ng-template #myProductBlock>
           <button (click)="editProduct()" class="btn btn-mdb-color btn-lg"> Edit </button>

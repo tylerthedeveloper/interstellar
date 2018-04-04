@@ -1,11 +1,8 @@
 export class MarketItem {
-    
     productName: string;
-    productPrices: Array<ProductPrice>; 
+    productPrices: Array<ProductPrice>;
     productSellerName: string;
     productSellerPublicKey: string;
-    
-    
 }
 
 class ProductPrice {

@@ -1,19 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { RouterModule, Routes, Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-
-import * as firebase from 'firebase/app';
 
 import { MatSidenav } from '@angular/material';
-import { MaterialModule } from '../../material.module';
 
 import { StellarAccountService } from 'app/stellar';
 import { EventEmitterService } from 'app/core/_helpers/event-emitter.service';
+import { Router } from '@angular/router';
 
-import { AuthService } from '../../services/auth.service';
-import { AssetBalance } from '../../../stellar/assets/asset-balance';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'nav-bar',
   styleUrls: ['./navbar.css'],
   templateUrl: './navbar.html',
@@ -24,12 +19,9 @@ export class NavBarComponent implements OnInit {
 
     public currentPage: string;
     private loggedIn: boolean;
-    private user: firebase.User;
-    public sideNav2: any;
 
     @ViewChild('sidenav') public sideNav: MatSidenav;
     constructor(public router: Router,
-                // private _authService: AuthService,
                 private _stellarAccountService: StellarAccountService,
                 private _eventEmiter: EventEmitterService) {
 
@@ -47,9 +39,6 @@ export class NavBarComponent implements OnInit {
 
         document.getElementById(this.currentPage).style.textDecoration = 'underline';
         this._eventEmiter.dataStr.subscribe((data: any) => {
-                // if (data.message === 'category') {
-                //     this.selectCategory(data.category);
-                // } else
                 if (data.message === 'logout') {
                     this.loggedIn = false;
                 } else if (data.message === 'login') {
@@ -63,8 +52,6 @@ export class NavBarComponent implements OnInit {
         });
     }
 
-    // SCTV5MXK6GSZQFKHSU52IQI7V332QOA6GICBWHOC2IHGMA5WU3OMEPUD
-    // SCYQVVSG2G4LUOQX4LQ2EF4DKWOZ6E5YEKC6USNUWKN55337RNUYSCGI
     login = (secretKey: string) => {
         if (secretKey) {
             this._stellarAccountService.authenticate(secretKey).subscribe(
@@ -75,9 +62,6 @@ export class NavBarComponent implements OnInit {
         }
     }
 
-    // signUp = (): void => {
-    //     this.changePage('register');
-    // }
 
     logout = (): void => {
         sessionStorage.clear();
@@ -104,22 +88,10 @@ export class NavBarComponent implements OnInit {
         this.changePage('profile');
     }
 
-    toggle (): void { // sideNav: any
-        this.sideNav.toggle();
-    }
-
-    toggle2 = (sideNav: any): void => { // sideNav: any
-        sideNav.toggle();
-    }
-
-    // selectCategory(category: string): any {
-    //     this.router.navigate(['/categories', category]);
-    // }
-
     // handle AuthGuard
     changePage(nextPage: string) {
-        // console.log(this.activatedRoute.snapshot)
         // console.log(this.router.url)
+        // console.log(this.router.routerState)
 
         if (nextPage === 'profile' && !this.loggedIn) { return; }
         if (document.getElementById(this.currentPage)) {

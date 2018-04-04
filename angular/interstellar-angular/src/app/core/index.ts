@@ -13,10 +13,8 @@ import { NavBarComponent } from './components/navbar/navbar.component';
 import { AuthGuardService } from './_helpers/auth-guard.service';
 import { EventEmitterService } from './_helpers/event-emitter.service';
 import { ProductService } from './services/product.service';
-import { AuthService } from './services/auth.service';
 import { CartService } from './services/cart.service';
 import { OrderService } from 'app/core/services/order.service';
-
 
 @NgModule({
     imports: [
@@ -30,7 +28,7 @@ import { OrderService } from 'app/core/services/order.service';
     ],
     declarations: [NavBarComponent],
     providers: [
-        AuthGuardService, AuthService, EventEmitterService, 
+        AuthGuardService, EventEmitterService,
         ProductService, CartService, OrderService
     ]
 })

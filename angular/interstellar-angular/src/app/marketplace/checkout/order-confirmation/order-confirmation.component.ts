@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from 'app/core/services/order.service';
 import { ActivatedRoute } from '@angular/router';
 import { Order } from 'app/marketplace/_market-models/order';
+import { TransactionGroup } from 'app/marketplace/_market-models/transaction-group';
 
 @Component({
   selector: 'app-order-confirmation',
@@ -11,13 +12,18 @@ import { Order } from 'app/marketplace/_market-models/order';
 export class OrderConfirmationComponent implements OnInit {
 
   private _order: Order;
+  private transactionGroups: Array<TransactionGroup>;
   constructor(private _orderService: OrderService,
               private route: ActivatedRoute) {}
 
   ngOnInit() {
       this._orderService.getOrderByID(this.route.snapshot.params['id'])
               .valueChanges()
-              .subscribe(order => this._order = <Order> order);
+              .subscribe((order: Order) => {
+                  this._order = order;
+                  this.transactionGroups = order.transactionsGroups;
+              });
   }
 
 }
+

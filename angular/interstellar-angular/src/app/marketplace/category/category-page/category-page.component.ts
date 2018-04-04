@@ -10,6 +10,7 @@ import { ProductCategoryEnum } from '../../_market-models/product-category';
 import { AssetBalance } from 'app/stellar';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'category-page',
   templateUrl: './category-page.component.html',
   styleUrls: ['./category-page.component.css']
@@ -21,6 +22,7 @@ export class CategoryPageComponent implements OnInit {
 
 
     private pageCategory: string;
+
     // TODO: decide on partial for pre-optimal-loading
     private categoriedProducts: Observable<PartialProduct[]>;
 
@@ -33,7 +35,6 @@ export class CategoryPageComponent implements OnInit {
     ngOnInit() {
         const params: any = this.activatedRoute.snapshot.params;
         this.pageCategory = params.category;
-        // this._productService.getProductsByCategory(params.category).subscribe(products => this.categoriedProducts = products);
         this.categoriedProducts = this._productService.getProductsByCategory(params.category);
     }
 
@@ -60,8 +61,8 @@ export class CategoryPageComponent implements OnInit {
             quantity: 15,
             productCategory: ProductCategoryEnum.Electronics,
             productPrices: [
-                new AssetBalance ('5.00000', 'native'),
-                new AssetBalance ('7.00000', 'tycoin')
+                new AssetBalance ('5.00000', 'native', 'Lumens'),
+                new AssetBalance ('7.00000', 'tycoin', 'Tycoins')
                 // <AssetBalance> { balance: '5.00000', asset_type: 'native', },
                 // <AssetBalance> { balance: '7.00000', asset_type: 'tycoin',   },
             ],

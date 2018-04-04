@@ -1,4 +1,11 @@
-<p>
-  order-confirmation works!
-</p>
-{{ _order | json }}
+
+<mat-card *ngFor="let transGroup of transactionGroups; index as i" [attr.data-index]="i">
+  <mat-card-content>
+      <p> Transaction Group {{ i + 1 }} </p>  
+        {{ transGroup | json }} 
+        <p *ngFor="let transRecord of transactionGroups[transactionRecords]; index as i" [attr.data-index]="i">
+            {{ transRecord | json }} 
+        </p>
+  </mat-card-content>
+  <br />
+</mat-card>

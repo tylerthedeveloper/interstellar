@@ -151,7 +151,7 @@ export class CheckoutComponent implements OnInit {
                 transactionGroups.push(newGroup);
             });
 
-            // TODO: --> put into helper            
+            // TODO: --> put into helper
             //  /// this.makeTransactionGroups(transactionGroups, transactions);
             console.log(JSON.stringify(transactionGroups));
             for (let i = 0; i < transactions.length; i++) {
@@ -165,8 +165,8 @@ export class CheckoutComponent implements OnInit {
                 transactionGroups[idx].transactionRecords = newListAtIndex;
             }
             console.log(JSON.stringify(transactionGroups));
-            
-            
+
+
             // TODO: --> put into helper
             // this.fillTransactionGroups(transactionGroups);
             for (let i = 0; i < transactionGroups.length; i++) {

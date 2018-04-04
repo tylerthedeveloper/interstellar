@@ -1,5 +1,4 @@
 import { AssetBalance } from 'app/stellar';
-import { Product } from 'app/marketplace/_market-models/product';
 
 export class TransactionGroup {
 
@@ -10,10 +9,7 @@ export class TransactionGroup {
     transactionRecords: Array<TransactionRecord>;
     transactionPaymentDetails: TransactionPaymentDetails;
 
-
-    constructor(//transactionRecords: Array<TransactionRecord>,
-                sellerPublicKey: string) {
-                // this.transactionRecords = transactionRecords;
+    constructor(sellerPublicKey: string) {
                 this.sellerPublicKey = sellerPublicKey;
     }
 }

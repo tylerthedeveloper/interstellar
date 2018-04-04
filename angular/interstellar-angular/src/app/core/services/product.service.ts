@@ -12,16 +12,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-// -- import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
-import * as firebase from 'firebase/app';
-import { Subject } from 'rxjs/Subject';
 import { User } from 'app/user';
 import { ProductCategory } from 'app/marketplace/_market-models/product-category';
 import { Product } from 'app/marketplace/_market-models/product';
 
-// import { StateStore } from "../_stores/state.store";
 
 @Injectable()
 export class ProductService {
@@ -92,16 +88,14 @@ export class ProductService {
     // TODO: TEST THESE!!!
     // TODO: IMPLEMENT ALGOLIA!!!
     getProductByProductId(productID: string): Observable<any> {
-        // console.log(this.productsCollection.doc(productID).valueChanges());
         // return this.afs.collection('products', ref => ref.where('id', '==', productID)).valueChanges();
         // return this.productsCollection.doc(productID).valueChanges();
         return Observable.create((observer: any) => {
             this.afs.collection('products', ref => ref.where('id', '==', productID))
                 .valueChanges()
-                // .first()
                 .subscribe(prod => {
-                    observer.next(prod[0]);
                     // console.log(prod[0]);
+                    observer.next(prod[0]);
                 });
         });
     }
@@ -113,15 +107,6 @@ export class ProductService {
     }
 
     getProductsByUserName(name: string): Observable<any> {
-        /*
-        Observable.create((observer : any) => {
-            this.userService.getUserByName(name).first().subscribe(user => {
-                //console.log(user[0].uid);
-                observer.next(new Array(this.afs.list(`/user-products/${user[0].uid}`)));
-            });
-        });
-        */
-        // return this.afs.list(`/user-products/names/${name}`);
         return;
 
     }
@@ -132,20 +117,6 @@ export class ProductService {
     }
 
     getProductsByUserTitle(title: string): Observable<any> {
-        // if(title !== "") {
-        //     return Observable.create((observer : any) => {
-        //         var self = this.afs;
-        //         this.afs.list('/products', {
-        //             query: {
-        //                 orderByChild: 'title',
-        //                 equalTo: title
-        //             }
-        //         }).subscribe(product => {
-        //             //console.log(product);
-        //             observer.next(product);
-        //         });
-        //     });
-        // }
         return;
     }
     // ────────────────────────────────────────────────────────────────────────────────

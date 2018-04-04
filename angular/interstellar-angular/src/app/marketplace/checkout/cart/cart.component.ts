@@ -8,6 +8,7 @@ import { AssetBalance, calcTotalsForMultipleAssets } from 'app/stellar';
 
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
@@ -43,9 +44,6 @@ export class CartComponent implements OnInit {
     }
 
     proceedToCheckout() {
-        // TODO: ....
-        // FOR EACH ... ALLOW CHECKBOXES ... UPDATE
-        // GET ALL FOR EACH ON CHECKOUT IF IN CHECKOIUT
         this.updateAddToCheckout(this.cartItemIDs);
     }
 
