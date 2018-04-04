@@ -19,10 +19,10 @@
     <!-- <p> {{ cartItem?.description }} </p> -->
   </div>
 
-  <div class="col-md-6" style="margin: 0em -2.5em 0em 0em;">
-    <button mat-button (click)="purchaseItem(cartItem)" class="btn btn-primary"> Purchase </button>
-    <button mat-button (click)="editItem(cartItem)" class="btn btn-primary"> Edit </button>
-    <button mat-button (click)="removeItem(cartItem)" class="btn btn-primary"> Remove </button>
+  <div class="offset-1 col-md-5" style="margin: 0em -2.5em 0em 0em;">
+    <button (click)="purchaseItem(cartItem)" class="btn btn-primary btn-sm"> Purchase </button>
+    <button (click)="editItem(cartItem)" class="btn btn-blue-grey btn-sm"> Edit </button>
+    <button (click)="removeItem(cartItem)" class="btn btn-mdb-color btn-sm"> Remove </button>
   </div>
 
 </div>

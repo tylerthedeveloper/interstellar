@@ -3,7 +3,7 @@
         <ng-container *ngIf="cartItemsSource | async; let cartItemList">
             <span *ngIf="cartItemList.length > 0; then isCartItems; else emptyCart"> </span>
             <ng-template #isCartItems>
-                <div class="col-12 col-md-8">
+                <div class="col-12 col-md-9">
                     <h2> My Cart <small> ({{ cartItemList.length }} item{{ cartItemList.length > 0 ? 's' : '' }})</small> </h2>
 
                     <div class="card" style="display: flex; flex-direction: row; margin: 0em 0em .1em 0em;">
@@ -29,22 +29,22 @@
                         <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
                     </div>
                 </div>
-                <div class="col-md-4 text-nowrap" id="assetTotals">
+                <div class="col-md-3 text-nowrap" id="assetTotals">
                     <h2 style="display: flex;"> Cart Asset Totals </h2>
                     <!-- width:400 px;  -->
-                    <mat-card class="example-card">
+                    <div class="card">
                         <div *ngFor="let asset of assetTotals ">
                             Total for <strong>{{ asset?.asset_type }}:</strong> {{ asset?.balance }}
                             <br />
                         </div>
-                        <button type="button" mat-button (click)="recalculateTotals()" class="btn btn-primary btn-sm"> Recalculate </button>
-                    </mat-card>
+                        <button type="button" (click)="recalculateTotals()" class="btn btn-default btn-md"> Recalculate </button>
+                    </div>
                     <h2 class="text-nowrap" style="display: flex;"> Cart Options </h2>
                     <!-- width:400 px;  -->
-                    <mat-card class="example-card">
-                        <button mat-button (click)="proceedToCheckout()" class="btn btn-primary btn-sm"> Proceed to Checkout </button>
-                        <button mat-button (click)="emptyOutCart()" class="btn btn-primary btn-sm"> Empty Cart </button>
-                    </mat-card>
+                    <div class="card">
+                        <button (click)="proceedToCheckout()" class="btn btn-primary btn-md"> Proceed to Checkout </button>
+                        <button (click)="emptyOutCart()" class="btn btn-blue-grey btn-md"> Empty Cart </button>
+                    </div>
                 </div>
             </ng-template>
         </ng-container>
