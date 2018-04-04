@@ -1,27 +1,50 @@
-<p>
+<div class="jumbotron col-12 offset-2 col-md-8 white">
+    <img src="{{ product?.productThumbnailLink }}" style="width: 10em; height: 10em" alt="alt">
+    <h1 class="h1-responsive">{{ product?.productName }}</h1>
+    <p class="lead">{{ product?.productLongDescription }}</p>
+    <hr class="my-2">
+    <p>Price: {{ type.balance }} {{ type.asset_type }} 's
+    </p>
+    <div *ngIf="!isMyProduct;" style="margin: 0em 0em 2em 0em;">
+        <div>
+            <input matInput type="number" id="purchaseQuantity" placeholder="Quantity" style="width: 20%;" [(ngModel)]="purchaseQuantity">
+        </div>
+        <br/>
+        <mat-select id="assetSelectionType" class="asset" placeholder="Asset Type" style="width: 20%;" [(ngModel)]="selectedAssetType">
+            <mat-option *ngFor="let type of product?.productPrices" [value]="type">
+                Price: {{ type.balance }} {{ type.asset_type }} 's
+            </mat-option>
+        </mat-select>
+    </div>
+    <div>
+      <a class="btn btn-primary btn-lg" role="button" (click)="onBuyProduct()">Buy Product</a>
+      <a class="btn btn-primary btn-lg" role="button" (click)="addProductToCart()">Add-to-Cart</a>
+      <a class="btn btn-primary btn-lg" role="button" (click)="addProductAndGoToCart()">Add-and-Go-to-Cart</a>
+    </div>
+</div>
+
+<!-- <p>
   welcome to {{ product?.productName }}
-</p>
+</p> -->
 
-<button (click)="addProduct2()"> add product </button>
-
-<div style="width:200 px;">
+<!-- <div style="width:200 px;">
     <mat-card class="example-card">
             <img mat-card-image src="{{ product?.productThumbnailLink }}" style="width:150px; height: 150px" alt="alt">
         <mat-card-header >
-            <!-- <div mat-card-avatar class="example-header-image"></div> -->
+            <div mat-card-avatar class="example-header-image"></div>
             <mat-card-title> Item Name: {{ product?.productName }} </mat-card-title>
             <mat-card-subtitle> USD Value: ($) {{ product?.fixedUSDAmount }}</mat-card-subtitle>
             <mat-card-subtitle> Quantity: {{ product?.quantity }}</mat-card-subtitle>
             <mat-card-subtitle> {{ product?.subtitle }}</mat-card-subtitle>
         </mat-card-header>
-        <br/>        
+        <br/>
         <mat-card-content>
             <p> Description: {{ product?.productLongDescription }} </p>
             <div *ngIf="!isMyProduct;">
                 <label for="purchaseQuantity"> Select Quantity: </label>
                 <mat-input-container>
                     <input matInput type="number" id="purchaseQuantity" [(ngModel)]="purchaseQuantity">
-                </mat-input-container> 
+                </mat-input-container>
                 <br/>
                 <mat-select id="assetSelectionType" class="asset" placeholder="Asset Type" [(ngModel)]="selectedAssetType">
                     <mat-option *ngFor="let type of product?.productPrices" [value]="type">
@@ -36,12 +59,11 @@
                 <button mat-button (click)="onBuyProduct()"> Buy Product </button>
                 <button mat-button (click)="addProductToCart()"> Add-to-Cart </button>
                 <button mat-button (click)="addProductAndGoToCart()"> Add-and-Go-to-Cart </button>
-            </ng-template>  
+            </ng-template>
             <ng-template #myProductBlock>
                 <button mat-button (click)="editProduct()"> edit product </button>
                 <button mat-button (click)="deleteProduct()"> delete product </button>
             </ng-template>
-          <button mat-button>SHARE</button>
         </mat-card-actions>
     </mat-card>
-</div>
+</div> -->
