@@ -44,6 +44,7 @@ export class CheckoutComponent implements OnInit {
         private curPubKey: string;
         private curSeedKey: string;
 
+        private hasItems = false;
         private _transactionGroups: TransactionGroup[];
 
         constructor(private _cartService: CartService,
@@ -67,6 +68,8 @@ export class CheckoutComponent implements OnInit {
                         alert(alertMessage);
                         this._router.navigate(['../cart']);
                     }
+                } else {
+                    this.hasItems = true;
                 }
                 const cartPurchaseDetailsArray = new Array<AssetBalance>();
                 this.checkoutItems = arr;

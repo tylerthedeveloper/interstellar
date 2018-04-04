@@ -1,9 +1,4 @@
-
-
-
-
-  <!-- <div mat-card-avatar class="example-header-image"></div> -->
-
+<!-- <div mat-card-avatar class="example-header-image"></div> -->
 <div class="card" style="display: flex; flex-direction: row; align-items: center;">
 
   <div class="col-12 col-md-2" style="display: block; margin: auto;">
@@ -14,7 +9,7 @@
     <p style="text-align: left;"> {{ cartItem?.productName }} </p>
     <!-- <p> {{ cartItem?.productID }} </p>
     <p> {{ cartItem?.cartItemID }} </p> -->
-    <p class="offset-1" style="text-align: center;">{{ cartItem?.quantityPurchased  }}</p>
+    <p class="offset-1" style="text-align: center;">{{ cartItem?.quantityPurchased }}</p>
     <p class="offset-3" style="text-align: right;">{{ cartItem?.assetPurchaseDetails.balance }} {{ cartItem?.assetPurchaseDetails.asset_type }}</p>
     <!-- <p> {{ cartItem?.description }} </p> -->
   </div>
@@ -25,5 +20,5 @@
     <button (click)="removeItem(cartItem.cartItemID)" class="btn btn-mdb-color btn-sm"> Remove </button>
     <mat-checkbox (change)="test(cartItem.cartItemID)">Checked</mat-checkbox>
   </div>
-
+  
 </div>

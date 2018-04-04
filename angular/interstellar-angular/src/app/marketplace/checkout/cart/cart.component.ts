@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { CartService } from '../../../core/services/cart.service';
 import { Router } from '@angular/router';
 import { CartItem } from '../../_market-models/cart-item';
-import { AssetBalance, calcTotalsForMultipleAssets, currencyAssetsMapper } from 'app/stellar';
+import { AssetBalance, calcTotalsForMultipleAssets } from 'app/stellar';
 
 
 @Component({
@@ -15,7 +15,8 @@ import { AssetBalance, calcTotalsForMultipleAssets, currencyAssetsMapper } from 
 export class CartComponent implements OnInit {
 
     private cartItemsSource: Observable<CartItem[]>;
-    private cartItemIDs: string[];
+    private cartItemIDs: string[] = [];
+    private _checkedCartItemIDs: string[] = [];
     private assetTotals: AssetBalance[];
 
     constructor(private _cartService: CartService,
@@ -37,6 +38,10 @@ export class CartComponent implements OnInit {
     //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
+    checkoutSelectedItems() {
+        this._cartService.batchRemoveCartItems(this._checkedCartItemIDs);
+    }
+
     proceedToCheckout() {
         // TODO: ....
         // FOR EACH ... ALLOW CHECKBOXES ... UPDATE
@@ -44,8 +49,8 @@ export class CartComponent implements OnInit {
         this.updateAddToCheckout(this.cartItemIDs);
     }
 
-    navigateToAllProducts() {
-        this._router.navigate(['/products']);
+    removeSelectedItems() {
+        this._cartService.batchRemoveCartItems(this._checkedCartItemIDs);
     }
 
     emptyOutCart() {
@@ -63,7 +68,6 @@ export class CartComponent implements OnInit {
     onCartItemAction(data: string) {
         const obj = JSON.parse(data);
         const _action = obj.action;
-        // const _cartItem = obj.payload;
         const _cartItemID =  obj.payload;
         let newCartItemData = '';
         if (obj.newData) {
@@ -85,6 +89,7 @@ export class CartComponent implements OnInit {
             case 'checkItem':
                 // TODO:
                 console.log(_cartItemID);
+                this._checkedCartItemIDs.push(_cartItemID);
                 break;
             default:
                 return;
@@ -97,6 +102,11 @@ export class CartComponent implements OnInit {
                         .catch(err => console.log(err))
                         .then(() => this._router.navigate(['/cart/checkout']));
     }
+
+    navigateToAllProducts() {
+        this._router.navigate(['/products']);
+    }
+
 
      // recalculateTotals() {
     //     // this.assetTotals = this._cartService.getCartAssetTotals()
