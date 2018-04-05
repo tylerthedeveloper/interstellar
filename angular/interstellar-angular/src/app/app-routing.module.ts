@@ -2,8 +2,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
-// import { UIModule } from './UI/ui.app.module';
-// import { AppComponent } from './app.component';
 import { RegisterComponent, ProfileComponent, WelcomeComponent } from './UI/_pages/index';
 import { AuthGuardService as AuthGuard } from './core/_helpers/auth-guard.service';
 
@@ -17,7 +15,6 @@ const appRoutes: Routes = [
     { path: '**', redirectTo: '/home', pathMatch: 'full' },
     { path: '*', redirectTo: '/home', pathMatch: 'full' },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
-    // { path: '**', redirectTo: 'home' }
 ];
 
 // TODO: Test pre-load
@@ -27,5 +24,3 @@ const appRoutes: Routes = [
 })
 
 export class AppRoutingModule {}
-
-// export const routing = RouterModule.forRoot(appRoutes);

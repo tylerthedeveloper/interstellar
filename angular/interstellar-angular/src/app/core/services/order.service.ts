@@ -7,7 +7,6 @@
  */
 //
 
-
 import { Injectable  } from '@angular/core';
 
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
@@ -54,23 +53,35 @@ export class OrderService {
     //   :::::: P U B L I C  C R U D   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
+    /**
+     * @returns Observable
+     */
     get Orders(): Observable<Order[]> {
         return this.userOrderItems;
     }
-
+    /**
+     * @returns string
+     */
     get OrderItemIDs(): string[] {
         return this.orderItemIDs;
     }
-
+    /**
+     * @returns string
+     */
     getNewOrderID(): string {
         const _newOrderID = this.afs.createId();
         return _newOrderID;
     }
-
+    /**
+     * @param  {string} orderItemID
+     * @returns Observable
+     */
     getOrderByID(orderItemID: string): Observable<Order> {
         return this.ordersCollection.doc(orderItemID).valueChanges().map(o => <Order> o);
     }
-
+    /**
+     * @param  {string} orderData
+     */
     addNewOrder(orderData: string) {
         const _orderData = <Order>JSON.parse(orderData);
         const _docID = _orderData.orderID;

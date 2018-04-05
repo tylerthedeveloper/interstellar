@@ -18,13 +18,21 @@ import { OrderService } from 'app/core/services/order.service';
 
 @NgModule({
     imports: [
-        CommonModule, FormsModule, RouterModule, MaterialModule,
-        ReactiveFormsModule, NgbModule.forRoot()
+        CommonModule, 
+        FormsModule, 
+        RouterModule, 
+        MaterialModule,
+        ReactiveFormsModule, 
+        NgbModule.forRoot()
     ],
     exports: [
-        CommonModule, FormsModule, RouterModule, MaterialModule,
-        ReactiveFormsModule, NgbModule,
-        [NavBarComponent]
+        CommonModule, 
+        FormsModule, 
+        RouterModule, 
+        MaterialModule,
+        ReactiveFormsModule, 
+        NgbModule,
+        NavBarComponent // TODO: Why??? [NavBarComponent]
     ],
     declarations: [NavBarComponent],
     providers: [

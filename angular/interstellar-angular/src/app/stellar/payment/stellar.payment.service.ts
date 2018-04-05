@@ -1,17 +1,12 @@
 import { Injectable } from '@angular/core';
-import {Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
-import * as StellarSDK from 'stellar-sdk';
-
-import { isValidSecretKey, isValidNewBalance, getBalanceforAsset, StellarLumensMinimum } from '../utils';
+import { Response } from '@angular/http';
 
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/observable/fromPromise';
-import { AssetBalance } from 'app/stellar';
+
 import { TransactionPaymentDetails } from 'app/marketplace/_market-models/transaction-group';
 
 @Injectable()
@@ -19,7 +14,7 @@ export class StellarPaymentService {
 
     public _server: any;
 
-    constructor(private _http: Http) {
+    constructor() {
         this._server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
         StellarSdk.Network.useTestNetwork();
     }
@@ -30,6 +25,15 @@ export class StellarPaymentService {
         THROW REAL ERROR
 
     */
+
+    //
+    // ──────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────
+    //
+    /**
+     * @param  {TransactionPaymentDetails} transactionRecord
+     */
     sendPayment (transactionRecord: TransactionPaymentDetails) {
         console.log(transactionRecord);
         const secretKey = sessionStorage.getItem('seed_key');
@@ -107,20 +111,32 @@ export class StellarPaymentService {
             // server.submitTransaction(transaction);
             });
     }
+    // ────────────────────────────────────────────────────────────────────────────────
+
     
+    //
+    // ──────────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: H E L P E R   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────────
+    //
+    /**
+     * @param  {Response} error
+     */
     HandleError(error: Response) {
         // alert(error);
         return Observable.throw(error || 'Server error');
     }
+    // ────────────────────────────────────────────────────────────────────────────────
+
 
 
 }
 
-function InsufficientFundsException() {
-    alert('Insufficient funds for that asset.\n' +
-          'Either you don\'t have enough to complete the transaction \n' +
-          'or you will end up below the minimum balance');
-}
+// function InsufficientFundsException() {
+//     alert('Insufficient funds for that asset.\n' +
+//           'Either you don\'t have enough to complete the transaction \n' +
+//           'or you will end up below the minimum balance');
+// }
 
 
 

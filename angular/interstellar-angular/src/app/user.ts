@@ -2,7 +2,6 @@ export class User {
 
     // FB
     id: string;
-    // ...
 
     userName: string;
     fullName: string;
@@ -15,14 +14,21 @@ export class User {
     isValidBuyer: boolean;
     isValidSeller: boolean;
 
-    // constructor() {}
-    constructor(id: string = '',
-                publicKey: string = '',
+    constructor(id: string,
+                publicKey: string,
                 userName: string = '',
                 fullName: string = '',
                 email: string = '',
                 birthdate: string = '',
-                age: number = -1) {}
+                age: number = -1) {
+                    this.id = id,
+                    this.publicKey = publicKey,
+                    this.userName = userName,
+                    this.fullName = fullName,
+                    this.email = email,
+                    this.birthdate = birthdate,
+                    this.age = age;
+                }
 }
 
 export const publicUserData = [

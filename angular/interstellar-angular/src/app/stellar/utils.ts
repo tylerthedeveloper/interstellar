@@ -19,7 +19,7 @@ const isValidSecretKey = (secretKey: string): string => {
 const updateBalance = (balanceArray: Array<AssetBalance>, asset: AssetBalance): void => {
     const index = balanceArray.findIndex(bal => bal.asset_type === asset.asset_type);
     const newbal = parseInt(balanceArray[index].balance, 10) - parseInt(asset.balance, 10);
-    // FIXME: THIS SHOULD NOT BE A MUTATION
+    // FIXME: TEST IF THIS IS A MUTATION
     balanceArray[index].balance = String(newbal);
 };
 
@@ -29,7 +29,7 @@ const getBalanceforAsset = (balanceArray: Array<AssetBalance>, assetType: string
 };
 
 // const isValidNewBalance = (currentBalance: number, outlay: string): boolean => {
-//     // tslint:disable-next-line:radix
+//     tslint:disable-next-line:radix
 //     const _outlay = parseInt(outlay);
 //     const newBalance = (currentBalance - _outlay);
 //     return newBalance > 0 && newBalance > StellarLumensMinimum;
@@ -92,6 +92,7 @@ const isValidNewBalance2 = (asset: AssetBalance): boolean => {
     return false;
 };
 
+// FIXME: CONFIRM VALID METHOD
 const areValidNewBalances = (newBalances: Array<AssetBalance>): boolean => {
     // if (!newBalances || newBalances.length === 0) {
     //     console.log('false');

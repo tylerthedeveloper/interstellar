@@ -2,8 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PartialProduct } from 'app/marketplace/_market-models/partial-product';
 
 @Component({
-  // tslint:disable-next-line:component-selector
-  selector: 'category-product-card',
+  selector: 'app-category-product-card',
   templateUrl: './category-product-card.component.html',
   styleUrls: ['./category-product-card.component.css']
 })
@@ -15,7 +14,9 @@ export class CategoryProductCardComponent implements OnInit {
 
     ngOnInit() {
     }
-
+    /**
+     * @param  {string} product
+     */
     selectProduct = (product: string) => {
       this.notify.emit(product);
     }

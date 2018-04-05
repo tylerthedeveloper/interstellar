@@ -8,8 +8,7 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  // tslint:disable-next-line:component-selector
-  selector: 'nav-bar',
+  selector: 'app-nav-bar',
   styleUrls: ['./navbar.css'],
   templateUrl: './navbar.html',
   providers: [ ]
@@ -52,6 +51,10 @@ export class NavBarComponent implements OnInit {
     //   :::::: A U T H E N T I C A T I O N   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────────────────────────
     //
+
+    /**
+     * @param  {string} secretKey
+     */
     login = (secretKey: string) => {
         if (secretKey) {
             this._stellarAccountService.authenticate(secretKey).subscribe(
@@ -61,14 +64,21 @@ export class NavBarComponent implements OnInit {
             alert('Please enter a key');
         }
     }
-
+    
+    /**
+     * @returns void
+     */
     logout = (): void => {
         sessionStorage.clear();
         localStorage.clear();
         this.changePage('home');
         this.loggedIn = false;
     }
-
+    
+    /**
+     * @param  {string=''} payload
+     * @returns void
+     */
     handleLogin = (payload: string = ''): void => {
         this.loggedIn = true;
         if (payload) {
@@ -84,7 +94,12 @@ export class NavBarComponent implements OnInit {
     //   :::::: N A V   P A G E   H E L P E R S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────────────
     //
-    changePage(nextPage: string) {
+    
+    /**
+     * @param  {string} nextPage
+     * @returns void
+     */
+    changePage(nextPage: string): void {
         // console.log(this.router.url)
         // console.log(this.router.routerState)
 

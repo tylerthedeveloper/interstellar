@@ -1,10 +1,9 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { CartComponent } from './cart/cart.component';
-import { CheckoutComponent } from './checkout/checkout.component';
-import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
+import { Routes } from '@angular/router';
+import { CartComponent } from 'app/marketplace/checkout/components/cart/cart.component';
+import { CheckoutComponent } from 'app/marketplace/checkout/components/checkout/checkout.component';
+import { OrderConfirmationComponent } from 'app/marketplace/checkout/components/order-confirmation/order-confirmation.component';
 
-const routes: Routes = [
+export const CheckoutRoutes: Routes = [
   {
     path: '',
     // pathMatch: full',
@@ -23,10 +22,3 @@ const routes: Routes = [
   },
   { path: '**', redirectTo: 'home' },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: []
-})
-export class CheckoutRoutingModule { }

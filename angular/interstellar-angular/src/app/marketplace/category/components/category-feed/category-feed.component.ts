@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductCategory } from '../../_market-models/product-category';
-import { CommonModule } from '@angular/common';
+// TODO: import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
-
 
 // TODO: Get from somewhere static...
 import { categories } from 'app/marketplace/category/categories';
-
-
+import { ProductCategory } from 'app/marketplace/_market-models/product-category';
 
 @Component({
   selector: 'app-category',
@@ -24,7 +21,10 @@ export class CategoryFeedComponent implements OnInit {
     }
 
     ngOnInit() {}
-
+    
+    /**
+     * @param  {string} category
+     */
     onSelectCategory = (category: string) => {
         this.router.navigate(['/categories/' + category]);
     }

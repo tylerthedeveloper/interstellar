@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+// TODO: import { CommonModule, Location } from '@angular/common';
+import {  Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { ProductService } from 'app/core/services/product.service';
-import { PartialProduct } from '../../_market-models/partial-product';
-import { ProductCategoryEnum } from '../../_market-models/product-category';
 import { AssetBalance } from 'app/stellar';
+import { PartialProduct } from 'app/marketplace/_market-models/partial-product';
+import { ProductCategoryEnum } from 'app/marketplace/_market-models/product-category';
 
 @Component({
     selector: 'app-category-page',
@@ -15,6 +16,7 @@ import { AssetBalance } from 'app/stellar';
 export class CategoryPageComponent implements OnInit {
 
 
+    /** Page information */
     // TODO: GET CATEGORY NOT JUST PARAM STRING ... DOES THIS MATTER?
     private pageCategory: string;
     // TODO: decide on partial for pre-optimal-loading

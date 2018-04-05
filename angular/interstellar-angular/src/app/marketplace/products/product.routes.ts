@@ -5,11 +5,9 @@ import { ProductsHomePageComponent } from 'app/marketplace/products/components/p
 export const ProductRoutes: Routes = [
   {
     path: '',
-    // component: CategoryFeedComponent,
     children: [
       { path: '', component: ProductsHomePageComponent },
       { path: ':id', component: ProductPageComponent },
     ]
   },
-  // { path: ':category', component: CategoryPageComponent },
 ];

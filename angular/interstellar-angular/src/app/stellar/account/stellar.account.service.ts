@@ -21,9 +21,9 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/fromPromise';
 
+import { AssetBalance, isValidSecretKey } from 'app/stellar';
+
 import * as StellarSDK from 'stellar-sdk';
-import { isValidSecretKey, isValidNewBalance, getBalanceforAsset, StellarLumensMinimum } from '../utils';
-import { AssetBalance } from 'app/stellar';
 
 declare var StellarSdk: any;
 
@@ -38,6 +38,7 @@ export class StellarAccountService {
         this._server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
     }
 
+    // TODO: DO we need this?
     getAccountKeys() {
       // let pair: any = StellarSdk.Keypair.random();
       // let stellarKeys: IStellarKeyPair = new IStellarKeyPair();
@@ -46,6 +47,14 @@ export class StellarAccountService {
       // return stellarKeys;
     }
 
+    //
+    // ──────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────
+    //
+    /**
+     * @returns Observable
+     */
     createAccount(): Observable<Response> {
         const apiUrl = 'https://horizon-testnet.stellar.org/friendbot';
         const pair = StellarSdk.Keypair.random();
@@ -62,6 +71,10 @@ export class StellarAccountService {
           // .subscribe(() => { return this.authenticate(pair.secret() }));
     }
 
+    /**
+     * @param  {string} secretKey
+     * @returns Observable
+     */
     authenticate (secretKey: string): Observable<Array<AssetBalance>> {
         const pubkey = isValidSecretKey(secretKey);
         if (pubkey) {
@@ -80,7 +93,10 @@ export class StellarAccountService {
         }
     }
 
-    mergeAccountWithKey = (secretKey: string) => {
+    /**
+     * @param  {string} secretKey
+     */
+    mergeAccountWithKey (secretKey: string) {
         const pubkey = isValidSecretKey(secretKey);
         if (pubkey) {
             return this.authenticate(secretKey);
@@ -88,9 +104,18 @@ export class StellarAccountService {
             alert('That doesn\'t seem to be a valid stellar key');
         }
     }
+    // ────────────────────────────────────────────────────────────────────────────────
 
+
+    //
+    // ────────────────────────────────────────────────────── I ──────────
+    //   :::::: H E L P E R S : :  :   :    :     :        :          :
+    // ────────────────────────────────────────────────────────────────
+    //
     HandleError(error: Response) {
         // alert(error);
         return Observable.throw(error || 'Server error');
     }
+    // ────────────────────────────────────────────────────────────────────────────────
+
 }

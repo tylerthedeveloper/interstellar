@@ -1,23 +1,27 @@
+/** Angular */
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+// import { ReactiveFormsModule } from '@angular/forms';
 
-import StellarSdk from 'stellar-sdk';
+/** Stellar */
+// import StellarSdk from 'stellar-sdk';
+import { AssetBalance } from 'app/stellar';
 
+/** Observable */
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
 
-
+/** Services */
 import { ProductService } from 'app/core/services/product.service';
-import { Product } from 'app/marketplace/_market-models/product';
-import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import { User, publicUserData } from 'app/user';
-import { AssetBalance } from 'app/stellar';
 import { UserService } from 'app/user.service';
+
+/** Models */
+import { Product } from 'app/marketplace/_market-models/product';
+import { User, publicUserData } from 'app/user';
 
 
 @Component({
-  // tslint:disable-next-line:component-selector
-  selector: 'profile',
+  selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
@@ -26,12 +30,9 @@ export class ProfileComponent implements OnInit {
     // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
     // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
     // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
-    // public wallet: any;
-    // private stellarServer: any;
 
     private _userModel: User;
     private user: Observable<User>;
-    // private user: User;
     private balances: AssetBalance[];
     private products: Observable<Product[]>;
 
@@ -65,12 +66,41 @@ export class ProfileComponent implements OnInit {
 
         // User balances //
         this.balances = new Array<AssetBalance>();
-        const _balances = sessionStorage.getItem('my_balances'); // || localStorage.getItem('my_balances');
+        const _balances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
         console.log(_balances);
         if (_balances) { this.balances = <AssetBalance[]>JSON.parse(_balances); }
     }
 
-    createFormGroup() {
+
+    //
+    // ──────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────
+    //
+    /**
+     * @returns Observable
+     */
+    updateProfile(): Observable<any> {
+        const data = {
+            id: this._userModel.id,
+            data: this.profileForm.value
+        };
+        this.editProfile();
+        return this._userService.updateProfile(data);
+    }
+    // ────────────────────────────────────────────────────────────────────────────────
+
+    
+    //
+    // ──────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: P A G E   H E L P E R S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────
+    //
+    
+    /**
+     * @returns FormGroup
+     */
+    createFormGroup(): FormGroup {
         const group = this.formBuilder.group({});
         this.profileFormMapper = {};
         publicUserData.forEach(attr => {
@@ -95,18 +125,12 @@ export class ProfileComponent implements OnInit {
                     // this.profileForm = new FormGroup(group);
     }
 
-    updateProfile(f: FormGroup) {
-        const data = {
-            id: this._userModel.id,
-            data: this.profileForm.value
-        };
-        this._userService.updateProfile(data);
-        this.editProfile();
-    }
-
+    /**
+     * @returns void
+     */
     editProfile(): void {
         this.edit = !this.edit;
     }
-
+    // ────────────────────────────────────────────────────────────────────────────────
 }
 

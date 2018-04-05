@@ -15,7 +15,10 @@ export class AuthGuardService implements CanActivate {
     constructor(private _eventEmitter: EventEmitterService) {
         console.log('creating auth guard');
     }
-
+    
+    /**
+     * @returns boolean
+     */
     canActivate(): boolean {
         if (!this.isAuthenticated()) {
             this._eventEmitter.sendMessage({message: 'unauthenticated'});
@@ -24,6 +27,9 @@ export class AuthGuardService implements CanActivate {
         return true;
     }
 
+    /**
+     * @returns boolean
+     */
     private isAuthenticated = (): boolean => {
         // const token = localStorage.getItem('token');
         // return !this.jwtHelper.isTokenExpired(token);
