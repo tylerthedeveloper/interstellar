@@ -29,15 +29,10 @@ export class NavBarComponent implements OnInit {
                                      localStorage.getItem('seed_key'))
                                      ? true : false;
                     this.currentPage = (this.currentPage) ? this.currentPage : 'home';
-                    // console.log(router.routerState)
                 }
 
     ngOnInit(): void {
-
-        // let curPage = window.location.pathname.substr(1);
-        // this.currentPage = curPage;
-
-        document.getElementById(this.currentPage).style.textDecoration = 'underline';
+        document.getElementById(this.currentPage || 'home').style.textDecoration = 'underline';
         this._eventEmiter.dataStr.subscribe((data: any) => {
                 if (data.message === 'logout') {
                     this.loggedIn = false;
@@ -52,6 +47,11 @@ export class NavBarComponent implements OnInit {
         });
     }
 
+    //
+    // ──────────────────────────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: A U T H E N T I C A T I O N   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────────────────────────
+    //
     login = (secretKey: string) => {
         if (secretKey) {
             this._stellarAccountService.authenticate(secretKey).subscribe(
@@ -61,7 +61,6 @@ export class NavBarComponent implements OnInit {
             alert('Please enter a key');
         }
     }
-
 
     logout = (): void => {
         sessionStorage.clear();
@@ -76,19 +75,15 @@ export class NavBarComponent implements OnInit {
             console.log(payload);
             sessionStorage.setItem('my_balances', payload);
         }
-        /*
-        this._userService
-                .getCurrentUser()
-                .first()
-                .subscribe(user => {
-                    this.user = user;
-                    console.log(user);
-                    const userID = user.id;
-                    */
         this.changePage('profile');
     }
+    // ────────────────────────────────────────────────────────────────────────────────
 
-    // handle AuthGuard
+    //
+    // ──────────────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: N A V   P A G E   H E L P E R S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────────────
+    //
     changePage(nextPage: string) {
         // console.log(this.router.url)
         // console.log(this.router.routerState)
@@ -102,4 +97,5 @@ export class NavBarComponent implements OnInit {
         if (this.sideNav.opened) { this.sideNav.close(); }
         this.router.navigate(['/' + nextPage]);
     }
+    // ────────────────────────────────────────────────────────────────────────────────
 }

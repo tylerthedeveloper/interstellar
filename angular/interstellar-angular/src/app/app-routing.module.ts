@@ -2,8 +2,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
-import { UIModule } from './UI/ui.app.module';
-import { AppComponent } from './app.component';
+// import { UIModule } from './UI/ui.app.module';
+// import { AppComponent } from './app.component';
 import { RegisterComponent, ProfileComponent, WelcomeComponent } from './UI/_pages/index';
 import { AuthGuardService as AuthGuard } from './core/_helpers/auth-guard.service';
 

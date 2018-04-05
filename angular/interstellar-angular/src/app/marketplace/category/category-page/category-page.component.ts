@@ -8,26 +8,22 @@ import { ProductCategoryEnum } from '../../_market-models/product-category';
 import { AssetBalance } from 'app/stellar';
 
 @Component({
-  // tslint:disable-next-line:component-selector
-  selector: 'category-page',
-  templateUrl: './category-page.component.html',
-  styleUrls: ['./category-page.component.css']
+    selector: 'app-category-page',
+    templateUrl: './category-page.component.html',
+    styleUrls: ['./category-page.component.css']
 })
 export class CategoryPageComponent implements OnInit {
 
 
-    // TODO: GET CATEGORY NOT JUST PARAM STRING ...
-
-
+    // TODO: GET CATEGORY NOT JUST PARAM STRING ... DOES THIS MATTER?
     private pageCategory: string;
-
     // TODO: decide on partial for pre-optimal-loading
     private categoriedProducts: Observable<PartialProduct[]>;
 
     constructor(private activatedRoute: ActivatedRoute,
-                private _productService: ProductService,
-                private location: Location,
-                public router: Router) {
+        private _productService: ProductService,
+        private location: Location,
+        public router: Router) {
     }
 
     ngOnInit() {
@@ -36,8 +32,15 @@ export class CategoryPageComponent implements OnInit {
         this.categoriedProducts = this._productService.getProductsByCategory(params.category);
     }
 
-    addProduct () {
-      const productData = {
+    // TODO: Remove
+    addProduct() {
+        if (!(sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id')) &&
+            (sessionStorage.getItem('public_key') || localStorage.getItem('public_key')) &&
+            (sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key'))) {
+                alert('You must be logged in order to post a new product');
+                return;
+        }
+        const productData = {
             productName: 'super fast GPU',
             productShortDescription: 'short des',
             productLongDescription: 'looooooooooooong des',
@@ -46,10 +49,8 @@ export class CategoryPageComponent implements OnInit {
             quantity: 15,
             productCategory: ProductCategoryEnum.Electronics,
             productPrices: [
-                new AssetBalance ('5.00000', 'native', 'Lumens'),
-                new AssetBalance ('7.00000', 'tycoin', 'Tycoins')
-                // <AssetBalance> { balance: '5.00000', asset_type: 'native', },
-                // <AssetBalance> { balance: '7.00000', asset_type: 'tycoin',   },
+                new AssetBalance('5.00000', 'native', 'Lumens'),
+                new AssetBalance('7.00000', 'tycoin', 'Tycoins')
             ],
 
             productThumbnailLink: 'https://images10.newegg.com/productimage/14-487-290-01.jpg',
@@ -63,13 +64,25 @@ export class CategoryPageComponent implements OnInit {
         this._productService.addProduct(JSON.stringify(productData));
     }
 
-    allCategories() {
+    //
+    // ──────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────
+    //
+
+    /**
+     * @returns void
+     */
+    allCategories(): void {
         this.location.back();
     }
 
-    onSelectProduct = (product: string) => {
+    /**
+     * @param  {string} product
+     * @returns void
+     */
+    onSelectProduct(product: string): void {
         this.router.navigate(['/products', product['id']]);
     }
-
-
+    // ────────────────────────────────────────────────────────────────────────────────
 }

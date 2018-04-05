@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
-//selector: 'my-app',
 
 //   templateUrl: './app.component.html',
 @Component({
+  // selector: 'my-app',
   selector: 'app-root',
-  templateUrl: './spa.mainpage.html',   
+  templateUrl: './spa.mainpage.html',
 })
 
 export class AppComponent {
@@ -44,7 +44,7 @@ export class AppComponent {
     //                 updateBalance(this.balances, assetType, amount);
     //             },
     //             err => {
-    //                 console.log(err);              
+    //                 console.log(err);
     //             });
     //         } else {
     //             alert("Please login in order to send money");
@@ -64,10 +64,10 @@ export class AppComponent {
     //     alert(sessionStorage.getItem("seed_key"));
     // }
   }
-  
-  
+
+
   //   private updateBalance = (balanceArray: Array<AccountBalance>, assetType: string, amount: string): void => {
-  //       //balanceArray = this.balances || balanceArray;   
+  //       //balanceArray = this.balances || balanceArray;
   //       let index = balanceArray.findIndex(bal => bal.asset_type === assetType);
   //       let newbal = parseInt(balanceArray[index].balance) - parseInt(amount);
   //       balanceArray[index].balance = String(newbal);

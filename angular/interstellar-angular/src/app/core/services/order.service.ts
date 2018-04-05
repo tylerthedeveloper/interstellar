@@ -10,11 +10,10 @@
 
 import { Injectable  } from '@angular/core';
 
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-
-import * as firebase from 'firebase/app';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import { Order } from '../../marketplace/_market-models/order';
 
@@ -24,10 +23,10 @@ export class OrderService {
 
     private _userID: string;
 
+    /** AFS Collections */
     public ordersCollection: AngularFirestoreCollection<Order>;
     public userOrderCollection: AngularFirestoreCollection<Order>;
     public userOrderItems: Observable<Order[]>;
-    public myOrderRef: firebase.firestore.CollectionReference;
 
     private orderItemIDs: string[] = [];
 
@@ -47,7 +46,6 @@ export class OrderService {
                                         return changes;
 
         });
-        this.myOrderRef = this.userOrderCollection.ref;
 
     }
 

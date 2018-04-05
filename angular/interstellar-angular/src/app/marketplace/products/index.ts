@@ -1,20 +1,39 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SellerPageComponent } from '../_pages/seller-page/seller-page.component';
-import { ProductCardComponent } from './product-card/product-card.component';
-import { ProductRoutingModule } from './product-routing.module';
+
+/** Routes */
+import { ProductRoutes as routes } from './product.routes';
+
+/**  UI and components */
 import { MaterialModule } from '../../core/material.module';
-import { ProductsHomePageComponent } from './products-home-page/products-home-page.component';
 import { ProductService } from 'app/core/services/product.service';
-import { ProductPageComponent } from './product-page/product-page.component';
+import { RouterModule } from '@angular/router';
+import { ProductCardComponent } from 'app/marketplace/products/components/product-card/product-card.component';
+import { SellerPageComponent } from 'app/marketplace/_pages/seller-page/seller-page.component';
+import { ProductsHomePageComponent } from 'app/marketplace/products/components/products-home-page/products-home-page.component';
+import { ProductPageComponent } from 'app/marketplace/products/components/product-page/product-page.component';
 
 @NgModule({
     imports: [
-        ProductRoutingModule, MaterialModule, CommonModule, FormsModule, ReactiveFormsModule
+        MaterialModule,
+        CommonModule,
+        RouterModule.forChild(routes),
+        FormsModule,
+        ReactiveFormsModule
     ],
-    declarations: [ ProductCardComponent, SellerPageComponent, ProductsHomePageComponent, ProductPageComponent],
-    exports: [ ProductCardComponent, SellerPageComponent, ProductsHomePageComponent, ProductPageComponent ],
+    declarations: [
+        ProductCardComponent,
+        SellerPageComponent,
+        ProductsHomePageComponent,
+        ProductPageComponent
+    ],
+    exports: [
+        ProductCardComponent,
+        SellerPageComponent,
+        ProductsHomePageComponent,
+        ProductPageComponent
+    ],
     providers: [ ProductService  ]
   })
 export class ProductModule {}
