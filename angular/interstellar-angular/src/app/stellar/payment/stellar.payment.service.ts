@@ -99,6 +99,9 @@ export class StellarPaymentService {
                 throw error;
                 // return error;
             })
+            // .then(result => {
+            //     throw Error;
+            // })
             .then(result => result)
             // .catch(handleError));
             .catch(function(error) {

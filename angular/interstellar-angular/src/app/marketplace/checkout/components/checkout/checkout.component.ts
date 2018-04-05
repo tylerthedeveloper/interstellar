@@ -47,6 +47,8 @@ export class CheckoutComponent implements OnInit {
         private hasItems = false;
         private _transactionGroups: TransactionGroup[];
 
+        private _pageError = false;
+
         constructor(private _cartService: CartService,
                     private _stellarAccountService: StellarAccountService,
                     private _stellarPaymentService: StellarPaymentService,
@@ -122,6 +124,11 @@ export class CheckoutComponent implements OnInit {
             console.log(currentStep);
             if (areValidNewBalances(this.updatedBalances)) {
                 this.stepChecker[3] = true;
+            } else {
+                alert('You don\'t seem to have sufficient funds or \n ' +
+                'the purchase amount goes below the minimum required holding threshold');
+                return;
+
             }
         }
 
@@ -188,15 +195,28 @@ export class CheckoutComponent implements OnInit {
             this.stepChecker[3] = false;
 
             let result = Promise.resolve();
-            transactionGroups.map(transGroup =>
-                result = result.then(() => this._stellarPaymentService.sendPayment(transGroup.transactionPaymentDetails))
-            );
+            // let _error = false;
+            for (const transGroup of transactionGroups) {
+                if (this._pageError) { break; }
+                // TODO: onrejceted
+                result = result.then(() => this._stellarPaymentService.sendPayment(transGroup.transactionPaymentDetails)
+                                .catch(e => {
+                                    alert('tere has been an error');
+                                    this._pageError = true;
+                                    console.log(this._pageError);
+                                }));
+            }
 
-            // TODO: wait for the above
-            this.stepChecker[4] = true;
+            console.log(this._pageError);
+            if (!this._pageError) {
+                // TODO: wait for the above
+                this.stepChecker[4] = true;
+                console.log('no erorr');
+                this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal =>
+                        sessionStorage.setItem('my_balances', JSON.stringify(bal)));
+                return;
+            }
 
-            this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal =>
-                sessionStorage.setItem('my_balances', JSON.stringify(bal)));
 
 
             // TODO: Review trials below - ssave what is needed
@@ -323,6 +343,8 @@ export class CheckoutComponent implements OnInit {
 
         // TODO: TOO LONG... WHAT SHOULD GO HERE ... ONLY 28 CHARACTERS
         makeTransactionMemo(buyerPublicKey: string, sellerPublicKey: string) {
+            console.log(buyerPublicKey);
+            console.log(buyerPublicKey);
             const buyerKey = buyerPublicKey.substr(0, 5);
             const sellerKey = sellerPublicKey.substr(0, 5);
             return `From ${buyerKey}... to ${sellerKey}...`;

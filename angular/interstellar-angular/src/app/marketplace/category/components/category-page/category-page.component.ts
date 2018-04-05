@@ -36,9 +36,9 @@ export class CategoryPageComponent implements OnInit {
 
     // TODO: Remove
     addProduct() {
-        if (!(sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id')) &&
-            (sessionStorage.getItem('public_key') || localStorage.getItem('public_key')) &&
-            (sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key'))) {
+        if (!((sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id')) &&
+             (sessionStorage.getItem('public_key') || localStorage.getItem('public_key')) &&
+             (sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key')))) {
                 alert('You must be logged in order to post a new product');
                 return;
         }
