@@ -1,43 +1,53 @@
 <!-- {{ category.category }} -->
-<h1 style="text-align: center;"> {{ pageCategory }} </h1>
 
 <!-- {{ category.description }} -->
-<p style="text-align: center;"> Description: </p>
+<!-- <p style="text-align: center;"> Description: </p> -->
 
 <div class="container">
+  <h1 style="text-align: center;"> {{ pageCategory }} </h1>
   <div class="row">
-    <div class="offset-md-9">
-      <button (click)="addProduct2()" class="btn btn-default btn-sm"> Add Product </button>
-      <button (click)="allCategories()" class="btn btn-default btn-sm"> Return to Categories </button>
+    <div class="offset-md-4">
+      <mat-input-container>
+        <input matInput type="text" id="productSearchFilter" placeholder="search for items">
+      </mat-input-container>
+      <button (click)="addProduct()" class="btn btn-default btn-sm"> Add Product </button>
+        <button (click)="allCategories()" class="btn btn-default btn-sm"> Return to Categories </button>
     </div>
   </div>
   <div class="row">
     <div class="col-md-2">
-      <div class="card card-ecommerce example hoverable" (click)="selectProduct(product)">
-          <!--Card image-->
-          <!-- <div class="view overlay z-depth-1">
-              <img src="{{ product.productThumbnailLink }}" class="img-fluid" alt="" style="width:10em; height: 10em; margin: auto; display: block;">
-              <a>
-                  <div class="mask rgba-white-slight"></div>
-              </a>
-          </div> -->
-          <!--/.Card image-->
-
-          <!--Card content-->
-          <div class="card-body text-center">
-              <!--Category & Title-->
-              <h4 class="card-title"><strong></strong></h4>
-
-              <!--Description-->
-              <p class="card-text">
-              </p>
-
-              <!--Card footer-->
-              <div class="card-footer" style="height: 3em; width: 100%;">
-                  <span class="float-left"> <span class="discount"></span></span>
-              </div>
+      <div class="card card-ecommerce example hoverable">
+        <div class="card-body text-center">
+          <h4 class="card-title">
+            <strong> Filters </strong>
+          </h4>
+          <!-- <mat-list dense>
+            <h3 mat-subheader> Price </h3>
+            <mat-list-item>
+              <h4 mat-line> Price Range </h4>
+                <mat-slider
+                  class="example-margin"
+                  [max]="max"
+                  [min]="min"
+                  [step]="step"
+                  [thumb-label]="thumbLabel"
+                  [tick-interval]="tickInterval"
+                  [(ngModel)]="value"
+                  [vertical]="vertical">
+              </mat-slider>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line> Rating </h4>
+              <p mat-line> 1...2... </p>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+          </mat-list> -->
+          <div class="card-footer" style="height: 3em; width: 100%;">
+            <span class="float-left">
+              <span class="discount"></span>
+            </span>
           </div>
-          <!--/.Card content-->
+        </div>
       </div>
     </div>
     <div class="col-md-10">
@@ -47,3 +57,25 @@
     </div>
   </div>
 </div>
+
+
+<!-- 
+  <div class="card card-ecommerce example hoverable" (click)="selectProduct(product)">
+          <!--Card image
+          <div class="view overlay z-depth-1">
+              <img src="{{ product.productThumbnailLink }}" class="img-fluid" alt="" style="width:10em; height: 10em; margin: auto; display: block;">
+              <a>
+                  <div class="mask rgba-white-slight"></div>
+              </a>
+          </div>
+          <div class="card-body text-center">
+              <h4 class="card-title"><strong></strong></h4>
+              <!--Description
+              <p class="card-text">
+              </p>
+              <div class="card-footer" style="height: 3em; width: 100%;">
+                  <span class="float-left"> <span class="discount"></span></span>
+              </div>
+          </div>
+      </div>
+ -->

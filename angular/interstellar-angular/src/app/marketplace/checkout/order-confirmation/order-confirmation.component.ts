@@ -11,19 +11,21 @@ import { TransactionGroup } from 'app/marketplace/_market-models/transaction-gro
 })
 export class OrderConfirmationComponent implements OnInit {
 
-  private _order: Order;
-  private transactionGroups: Array<TransactionGroup>;
-  constructor(private _orderService: OrderService,
-              private route: ActivatedRoute) {}
+    private _order: Order;
+    private transactionGroups: Array<TransactionGroup>;
+    constructor(private _orderService: OrderService,
+                private route: ActivatedRoute) {}
 
-  ngOnInit() {
-      this._orderService.getOrderByID(this.route.snapshot.params['id'])
-              .valueChanges()
-              .subscribe((order: Order) => {
-                  this._order = order;
-                  this.transactionGroups = order.transactionsGroups;
-              });
-  }
-
+    ngOnInit() {
+        this._orderService.getOrderByID(this.route.snapshot.params['id'])
+                          .subscribe((order: Order) => {
+                              this._order = order;
+                              this.transactionGroups = order.transactionsGroups;
+                          });
+      }
+      // this._order = this._orderService.getOrderByID(this.route.snapshot.params['id']).map(order => {
+      //     this.transactionGroups = order.transactionsGroups;
+      //     return order;
+      // })
 }
 

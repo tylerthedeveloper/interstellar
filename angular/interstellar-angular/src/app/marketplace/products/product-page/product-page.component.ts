@@ -60,9 +60,9 @@ export class ProductPageComponent implements OnInit {
             .map(product => <Product> product)
             .subscribe(product => {
                 this.product = product;
-                this._sellerShortData = product.productSellerData;
-                this.isInStock = (product.quantity > 0);
-                this.isMyProduct = (product.productSellerData.productSellerID === this.myUserId);
+                this._sellerShortData = (product) ? product.productSellerData : null ;
+                this.isInStock = (product) ? (product.quantity > 0) : false;
+                this.isMyProduct = (product) ? (product.productSellerData.productSellerID === this.myUserId) : false;
                 // product.productPrices.forEach((price: ProductPrice) => {
                 //   console.log(price);
                 // });
@@ -143,10 +143,18 @@ export class ProductPageComponent implements OnInit {
 
     public editProduct() {
         // TODO: ....
+        this._productService.updateProduct(this.product.id, this.product);
     }
 
     public deleteProduct() {
         // TODO: ....
+        alert('are you sure you want to delete --> CHANGE TO MODAL ...');
+
+        this._sellerShortData = null;
+        this.isInStock = false;
+        this.isMyProduct = false;
+        this._router.navigate(['../profile']);
+        this._productService.deleteProduct(this.product.id, this.product.productCategory);
     }
 
     // ────────────────────────────────────────────────────────────────────────────────

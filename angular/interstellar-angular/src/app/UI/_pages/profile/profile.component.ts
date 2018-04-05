@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import request from 'request';
 
 import StellarSdk from 'stellar-sdk';
 
@@ -12,11 +11,12 @@ import { Product } from 'app/marketplace/_market-models/product';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { User, publicUserData } from 'app/user';
-import { AssetBalance, StellarAccountService } from 'app/stellar';
+import { AssetBalance } from 'app/stellar';
 import { UserService } from 'app/user.service';
 
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
@@ -24,9 +24,6 @@ import { UserService } from 'app/user.service';
 export class ProfileComponent implements OnInit {
     // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
     // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
-    // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
-    // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
-    // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
     // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
     // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
     // public wallet: any;
@@ -43,7 +40,6 @@ export class ProfileComponent implements OnInit {
     private profileFormMapper: any = {};
 
     constructor(private _userService: UserService,
-                private _stellarService: StellarAccountService,
                 private _productService: ProductService,
                 private formBuilder: FormBuilder) {}
 
@@ -74,10 +70,6 @@ export class ProfileComponent implements OnInit {
         if (_balances) { this.balances = <AssetBalance[]>JSON.parse(_balances); }
     }
 
-    // public getWalletAndMarketValue() {}
-    // public getWalletValue(address: string) {}
-    // public getMarketValue() {}
-    // public createTransaction() {}
     createFormGroup() {
         const group = this.formBuilder.group({});
         this.profileFormMapper = {};
@@ -116,10 +108,5 @@ export class ProfileComponent implements OnInit {
         this.edit = !this.edit;
     }
 
-    sessionstorage = () => {
-        // console.log(this.userModel);
-        // alert(sessionStorage.getItem('public_key'));
-        // alert(sessionStorage.getItem('seed_key'));
-    }
-  }
+}
 

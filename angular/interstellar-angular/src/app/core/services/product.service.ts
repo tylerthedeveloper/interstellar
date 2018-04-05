@@ -26,6 +26,8 @@ export class ProductService {
     private productCategoriesCollection: AngularFirestoreCollection<ProductCategory>;
     private userProductsCollection: AngularFirestoreCollection<User>;
 
+    private _userID: string;
+
     constructor(private afs: AngularFirestore) {
 
 
@@ -35,6 +37,7 @@ export class ProductService {
         // let _user = ...
         // sesh storage... service:
         // CREATE PARENT COMPONENT
+        this._userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
 
         this.productsCollection = afs.collection<Product>('products');
         this.productCategoriesCollection = afs.collection<ProductCategory>('products-categories');
@@ -53,7 +56,6 @@ export class ProductService {
     addProduct(productData: string): void {
 
         // FIXME: CHECK ON METHOD CALL NOT HERE
-        const _userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         // if (!_userID) {
         //     alert('You must be logged in order to post a new product');
         //     return;
@@ -68,7 +70,7 @@ export class ProductService {
         _productData.id = _docID;
         this.productsCollection.doc(_docID).set(_productData);
         this.productCategoriesCollection.doc(`${_cat}/products/${_docID}`).set(_productData);
-        this.userProductsCollection.doc(`${_userID}/products/${_docID}`).set(_productData);
+        this.userProductsCollection.doc(`${this._userID}/products/${_docID}`).set(_productData);
 
     }
 
@@ -77,8 +79,11 @@ export class ProductService {
         // this.products.update(key, { text: newText });
     }
 
-    deleteProduct(productID: string) {
-        // this.products.remove(key);
+    deleteProduct(productID: string, category: string) {
+        // TODO: bATCH
+        this.productsCollection.doc(productID).delete();
+        this.productCategoriesCollection.doc(`${category}/products/${productID}`).delete();
+        this.userProductsCollection.doc(`${this._userID}/products/${productID}`).delete();
     }
 
 

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
-import { ProductCardComponent } from '../../products/product-card/product-card.component';
 import { ProductService } from 'app/core/services/product.service';
 import { PartialProduct } from '../../_market-models/partial-product';
 import { ProductCategoryEnum } from '../../_market-models/product-category';
@@ -39,19 +37,6 @@ export class CategoryPageComponent implements OnInit {
     }
 
     addProduct () {
-        const _pubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
-        const productData = {
-              itemName: 'hot dog',
-              description: 'cha already know',
-              publicKey: _pubKey,
-              price: 10,
-              quantity: 10,
-              productCategory: 'food'
-          };
-        this._productService.addProduct(JSON.stringify(productData));
-    }
-
-    addProduct2 () {
       const productData = {
             productName: 'super fast GPU',
             productShortDescription: 'short des',
