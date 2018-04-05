@@ -3,6 +3,6 @@
 <!-- | async -->
 <div style="text-align:center; width: 80%; margin: auto;">
     <div *ngFor="let category of _categories" style="display: inline-block;" id="indCategory">
-        <category-card [category]="category" (notify)="onSelectCategory($event)"></category-card>
+        <app-category-card [category]="category" (notify)="onSelectCategory($event)"></app-category-card>
     </div>
 </div>

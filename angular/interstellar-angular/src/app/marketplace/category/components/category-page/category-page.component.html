@@ -52,7 +52,7 @@
     </div>
     <div class="col-md-10">
       <div *ngFor="let product of categoriedProducts | async" style="display: inline-block; margin: 0em .5em .5em 0em">
-        <category-product-card [product]="product" (notify)="onSelectProduct($event)"></category-product-card>
+        <app-category-product-card [product]="product" (notify)="onSelectProduct($event)"></app-category-product-card>
       </div>
     </div>
   </div>

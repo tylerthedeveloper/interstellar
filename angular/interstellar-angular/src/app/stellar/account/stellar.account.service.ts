@@ -21,9 +21,10 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/fromPromise';
 
-import { AssetBalance, isValidSecretKey } from 'app/stellar';
 
 import * as StellarSDK from 'stellar-sdk';
+import { AssetBalance } from '..';
+import { isValidSecretKey } from 'app/stellar/utils';
 
 declare var StellarSdk: any;
 

@@ -51,12 +51,12 @@ export class StellarPaymentService {
             })
             .then(() => server.loadAccount(pubKey))
             .then(function(sourceAccount) {
-                var paymentOps = assets.map(asset => {
+                const paymentOps = assets.map(asset => {
                         return {
                             destination: destinationKey,
                             asset: StellarSdk.Asset.native(), // TODO: ASSET.ASSET_TYPE
                             amount: asset.balance
-                        }
+                        };
                 });
                 // const _asset = paymentOps[0];
                 // const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
@@ -69,7 +69,7 @@ export class StellarPaymentService {
                 });
 
 
-                // assets.map(asset => 
+                // assets.map(asset =>
                     // transaction.addOperation(StellarSdk.Operation.payment({
                     // .addOperation(StellarSdk.Operation.payment({
                     //     destination: destinationKey,
@@ -88,7 +88,7 @@ export class StellarPaymentService {
                 // transaction.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
                 // return server.submitTransaction(transaction); // And finally, send it off to Stellar!
             })
-            // .catch(handleError));            
+            // .catch(handleError));
             .catch(function(error) {
                 console.log(error);
                 // TODO: test below...
@@ -113,7 +113,7 @@ export class StellarPaymentService {
     }
     // ────────────────────────────────────────────────────────────────────────────────
 
-    
+
     //
     // ──────────────────────────────────────────────────────────────────── I ──────────
     //   :::::: H E L P E R   M E T H O D S : :  :   :    :     :        :          :

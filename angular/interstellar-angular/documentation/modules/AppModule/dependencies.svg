@@ -70,29 +70,29 @@
 <path fill="none" stroke="#000000" stroke-dasharray="1,5" d="M704,-187.1061C704,-187.1061 704,-205.991 704,-205.991"/>
 <polygon fill="#000000" stroke="#000000" points="700.5001,-205.9909 704,-215.991 707.5001,-205.991 700.5001,-205.9909"/>
 </g>
-<!-- UIModule -->
-<g id="node3" class="node">
-<title>UIModule</title>
-<polygon fill="#8dd3c7" stroke="#000000" points="1045.3177,-122 1042.3177,-126 1021.3177,-126 1018.3177,-122 970.6823,-122 970.6823,-86 1045.3177,-86 1045.3177,-122"/>
-<text text-anchor="middle" x="1008" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">UIModule</text>
-</g>
-<!-- UIModule&#45;&gt;AppModule -->
-<g id="edge2" class="edge">
-<title>UIModule&#45;&gt;AppModule</title>
-<path fill="none" stroke="#000000" d="M1008,-122.1061C1008,-141.3391 1008,-169 1008,-169 1008,-169 755.9507,-169 755.9507,-169"/>
-<polygon fill="#000000" stroke="#000000" points="755.9508,-165.5001 745.9507,-169 755.9507,-172.5001 755.9508,-165.5001"/>
-</g>
 <!-- AppRoutingModule -->
-<g id="node4" class="node">
+<g id="node3" class="node">
 <title>AppRoutingModule</title>
-<polygon fill="#8dd3c7" stroke="#000000" points="952.2744,-122 949.2744,-126 928.2744,-126 925.2744,-122 823.7256,-122 823.7256,-86 952.2744,-86 952.2744,-122"/>
-<text text-anchor="middle" x="888" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">AppRoutingModule</text>
+<polygon fill="#8dd3c7" stroke="#000000" points="1045.2744,-122 1042.2744,-126 1021.2744,-126 1018.2744,-122 916.7256,-122 916.7256,-86 1045.2744,-86 1045.2744,-122"/>
+<text text-anchor="middle" x="981" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">AppRoutingModule</text>
 </g>
 <!-- AppRoutingModule&#45;&gt;AppModule -->
-<g id="edge3" class="edge">
+<g id="edge2" class="edge">
 <title>AppRoutingModule&#45;&gt;AppModule</title>
-<path fill="none" stroke="#000000" d="M888,-122.027C888,-138.3976 888,-160 888,-160 888,-160 755.7524,-160 755.7524,-160"/>
-<polygon fill="#000000" stroke="#000000" points="755.7525,-156.5001 745.7524,-160 755.7524,-163.5001 755.7525,-156.5001"/>
+<path fill="none" stroke="#000000" d="M981,-122.1061C981,-141.3391 981,-169 981,-169 981,-169 755.7696,-169 755.7696,-169"/>
+<polygon fill="#000000" stroke="#000000" points="755.7696,-165.5001 745.7696,-169 755.7696,-172.5001 755.7696,-165.5001"/>
+</g>
+<!-- UIModule -->
+<g id="node4" class="node">
+<title>UIModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="898.3177,-122 895.3177,-126 874.3177,-126 871.3177,-122 823.6823,-122 823.6823,-86 898.3177,-86 898.3177,-122"/>
+<text text-anchor="middle" x="861" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">UIModule</text>
+</g>
+<!-- UIModule&#45;&gt;AppModule -->
+<g id="edge3" class="edge">
+<title>UIModule&#45;&gt;AppModule</title>
+<path fill="none" stroke="#000000" d="M861,-122.027C861,-138.3976 861,-160 861,-160 861,-160 755.6609,-160 755.6609,-160"/>
+<polygon fill="#000000" stroke="#000000" points="755.661,-156.5001 745.6609,-160 755.6609,-163.5001 755.661,-156.5001"/>
 </g>
 <!-- CoreModule -->
 <g id="node5" class="node">

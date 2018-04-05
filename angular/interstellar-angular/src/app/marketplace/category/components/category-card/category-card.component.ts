@@ -13,7 +13,7 @@ export class CategoryCardComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {}
-    
+
     /**
      * @param  {string} category
      */

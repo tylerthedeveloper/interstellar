@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { CartService } from '../../../core/services/cart.service';
 import { Router } from '@angular/router';
-import { CartItem } from '../../_market-models/cart-item';
 import { AssetBalance, calcTotalsForMultipleAssets } from 'app/stellar';
+import { CartService } from 'app/core/services/cart.service';
+import { CartItem } from 'app/marketplace/_market-models/cart-item';
 
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CartItem } from '../../_market-models/cart-item';
+import { CartItem } from 'app/marketplace/_market-models/cart-item';
 
 @Component({
   // tslint:disable-next-line:component-selector

@@ -2,43 +2,41 @@ import { NgModule } from '@angular/core';
 
 // NoConflictStyleCompatibilityMode, MaterialModule
 
-const materialModules = [ 
-    MatButtonModule,  
-    MatTabsModule, 
-    MatMenuModule, 
-    MatCardModule, 
-    MatInputModule,
-    MatGridListModule, 
-    MatTableModule, 
-    MatSidenavModule, 
-    MatSelectModule,
-    MatDialogModule, 
-    MatToolbarModule, 
-    MatStepperModule, 
-    MatCheckboxModule,
-    MatListModule, 
-    MatSliderModule
-];
-
-
 import {
-    MatButtonModule,  
-    MatTabsModule, 
-    MatMenuModule, 
-    MatCardModule, 
+    MatButtonModule,
+    MatTabsModule,
+    MatMenuModule,
+    MatCardModule,
     MatInputModule,
-    MatGridListModule, 
-    MatTableModule, 
-    MatSidenavModule, 
+    MatGridListModule,
+    MatTableModule,
+    MatSidenavModule,
     MatSelectModule,
-    MatDialogModule, 
-    MatToolbarModule, 
-    MatStepperModule, 
+    MatDialogModule,
+    MatToolbarModule,
+    MatStepperModule,
     MatCheckboxModule,
-    MatListModule, 
+    MatListModule,
     MatSliderModule
 } from '@angular/material';
 
+const materialModules = [
+    MatButtonModule,
+    MatTabsModule,
+    MatMenuModule,
+    MatCardModule,
+    MatInputModule,
+    MatGridListModule,
+    MatTableModule,
+    MatSidenavModule,
+    MatSelectModule,
+    MatDialogModule,
+    MatToolbarModule,
+    MatStepperModule,
+    MatCheckboxModule,
+    MatListModule,
+    MatSliderModule
+];
 
 @NgModule({
   imports: [

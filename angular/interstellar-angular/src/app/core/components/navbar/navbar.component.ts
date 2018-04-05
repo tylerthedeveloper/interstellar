@@ -64,7 +64,7 @@ export class NavBarComponent implements OnInit {
             alert('Please enter a key');
         }
     }
-    
+
     /**
      * @returns void
      */
@@ -74,7 +74,7 @@ export class NavBarComponent implements OnInit {
         this.changePage('home');
         this.loggedIn = false;
     }
-    
+
     /**
      * @param  {string=''} payload
      * @returns void
@@ -94,7 +94,7 @@ export class NavBarComponent implements OnInit {
     //   :::::: N A V   P A G E   H E L P E R S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────────────
     //
-    
+
     /**
      * @param  {string} nextPage
      * @returns void
