@@ -1,22 +1,138 @@
-<h1> Account Details </h1>
 
 <!-- <label> Publlic key {{ pubKey }}</label> -->
-<div style="background-color: white;">
-  <h4>Pkey: {{ (user)?.publicKey }}</h4>
-  <h4>My Balances</h4>
-  <ul>
-    <li *ngFor="let bal of balances">
-      {{ bal?.balance }} {{ bal?.asset_type }}
-    </li>
-  </ul>
+
+<!--Section: Testimonials v.1-->
+
+<!--Grid column-->
+
+<div class="col-12 col-md-9" style="margin: auto;">
+
+    <!--Card-->
+    <div class="card testimonial-card">
+
+
+        <!--Background color-->
+        <div class="card-up info-color"></div>
+
+        <!--Avatar-->
+        <!-- <div class="avatar mx-auto white">
+            <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(9).jpg" class="rounded-circle img-fluid">
+        </div> -->
+
+    <div class="card-body">
+
+      <h1 class="font-weight-bold h1 py-5" style="text-align: center;">Profile</h1>
+
+        <div style="background-color: white;">
+
+            <div class="container">
+
+                <div class="row">
+
+                        <div style="margin: auto;">
+                            <div class="profile-image" style="background-color: grey; width: 8em; height: 8em; margin: 0em 0em 3em 0em;">
+                                <img class="main-profile-pic" src="{{_userModel?.photoUrl}}" alt="Image Here (placeholder)" />
+                            </div>
+                            <div class="profile-image-two">
+
+                            </div>
+                            <div *ngIf="!edit">
+                                <h2>{{_userModel?.userName}}</h2>
+
+                                <p class="" aria-hidden="true"> {{_userModel?.fullName}}</p>
+
+                            </div>
+                            <div *ngIf="edit">
+                                <form [formGroup]="profileForm" >
+                                    <!-- <div *ngFor="let prop of Object.keys(profileForm)" class="form-group">
+                                            <p>aaaa</p>
+                                    </div> -->
+                                    <div class="form-group">
+                                        <label for="userName">Username</label>
+                                        <mat-input-container>
+                                            <input matInput type="text" id="userName" formControlName="userName"
+                                            [(ngModel)]="_userModel.userName">
+                                        </mat-input-container>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <mat-input-container>
+                                            <input matInput type="text" id="fullName" formControlName="fullName"
+                                            [(ngModel)]="_userModel.fullName" name="fullName">
+                                        </mat-input-container>
+                                    </div>
+                                    <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" mat-raised-button >Submit</button>
+                                    <!-- <input type="submit" class="button expanded" value="Update Profile"> -->
+                                    <!--   -->
+                                </form>
+                                <!-- <a href="https://github.com/{{userModel.gitUsername}}"> git link </a> -->
+                            </div>
+                            <div *ngIf="!edit">
+                                <button class="btn btn-default" aria-hidden="true" (click)="editProfile()">Edit</button>
+                            </div>
+                        </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <hr>
+            <!--Quotation-->
+        <p class="dark-grey-text">Public Key: {{_userModel?.publicKey}}</p>
+        <h4>My Balances</h4>
+        <ul>
+          <li *ngFor="let bal of balances">
+            {{ bal?.balance }} {{ bal?.asset_type }}
+          </li>
+        </ul>
+    </div>
+
 </div>
 
-<div style="text-align: center;">
-<h4>My Profile</h4>
-<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" (click)="editProfile()">Edit</i>
+    <!--Card-->
+
+<div style="margin: auto;">
+
+  <div class="card" style="text-align: center; margin: 1em 0em 0em 0em;">
+    <h2>My Products</h2>
+  </div>
+
+  <div style="display: inline-block; width: 33.33%; margin: auto;" *ngFor="let prod of products">
+    <div class="card card-ecommerce" style="margin: .5em .2em 0em 0em;">
+
+        <!--Card image-->
+        <div class="view overlay z-depth-1">
+            <img src="{{ product.productThumbnailLink }}" class="img-fluid" alt="" style="width:100%; height: 20em; margin: auto; display: block;">
+            <div class="mask rgba-white-slight"></div>
+        </div>
+        <!--/.Card image-->
+
+        <!--Card content-->
+        <div class="card-body text-center">
+            <!--Category & Title-->
+            <h4 class="card-title"><strong>{{ prod?.productName }}</strong></h4>
+
+            <!--Description-->
+            <p class="card-text">{{ prod?.productShortDescription }}
+            </p>
+
+            <!--Card footer-->
+            <div class="card-footer" style="height: 3em; width: 100%;">
+                <span class="float-left">Price ${{ product?.fixedUSDAmount }} <span class="discount">Quantity: {{ product?.quantity }}</span></span>
+            </div>
+        </div>
+        <!--/.Card content-->
+
+    </div>
+
 </div>
 
-<div style="background-color: white;">
+    <!--Grid column-->
+
+<!-- <div style="background-color: white;">
     <div class="container">
         <div class="row">
             <div class="col-12 col-mat-4">
@@ -41,9 +157,9 @@
                     </mat-card-content>
                     <mat-card-content *ngIf="edit">
                         <form [formGroup]="profileForm" >
-                            <!-- <div *ngFor="let prop of Object.keys(profileForm)" class="form-group">
+                            <div *ngFor="let prop of Object.keys(profileForm)" class="form-group">
                                     <p>aaaa</p>
-                            </div> -->
+                            </div>
                             <div class="form-group">
                                 <label for="userName">Username</label>
                                 <mat-input-container>
@@ -59,10 +175,10 @@
                                 </mat-input-container>
                             </div>
                             <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" mat-raised-button >Submit</button>
-                            <!-- <input type="submit" class="button expanded" value="Update Profile"> -->
-                            <!--   -->
+                            <input type="submit" class="button expanded" value="Update Profile">
+
                         </form>
-                        <!-- <a href="https://github.com/{{userModel.gitUsername}}"> git link </a> -->
+                        <a href="https://github.com/{{userModel.gitUsername}}"> git link </a>
                     </mat-card-content>
                     <mat-card-footer *ngIf="!edit">
                         <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" (click)="editProfile()"></i>
@@ -72,12 +188,10 @@
         </div>
     </div>
 
-</div>
+</div> -->
 
 <!-- <br />
 <button mat-raised-button (click)="sessionstorage()">temp </button> -->
-<br />
-<br />
 
 <!-- <div class="well well-lg">
     <div *ngFor="let addr of profileForm">
@@ -91,9 +205,6 @@
         Location: <input type="text" formControlName="location">
         <button  (click)="updateProfile(myGroup); $event.preventDefault(); " class="btn btn-primary"> Submit</button>
       </form> -->
-
-
-<br />
 
 <!-- <form [formGroup]="profileForm">
     <div class="form-group">
@@ -127,12 +238,3 @@
         <button class="btn btn-primary" (click)="$event.preventDefault(); updateProfile(form.value)">Submit</button>
       </form>
    -->
-
-<div style="text-align: center;">
-  <h2>My Products</h2>
-  <ul style="background-color: white; width: 90%; margin: auto;">
-    <li *ngFor="let prod of products">
-      {{ prod?.productName }}
-    </li>
-  </ul>
-</div>
