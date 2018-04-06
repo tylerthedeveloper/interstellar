@@ -21,9 +21,9 @@
 
     <div class="card-body">
 
-      <h1 class="font-weight-bold h1 py-5" style="text-align: center;">Profile</h1>
+        <div style="background-color: white;" class="card">
 
-        <div style="background-color: white;">
+          <h1 class="font-weight-bold h1 py-5" style="text-align: center;">Profile</h1>
 
             <div class="container">
 
@@ -61,7 +61,7 @@
                                             [(ngModel)]="_userModel.fullName" name="fullName">
                                         </mat-input-container>
                                     </div>
-                                    <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" mat-raised-button >Submit</button>
+                                    <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" class="btn btn-default" >Submit</button>
                                     <!-- <input type="submit" class="button expanded" value="Update Profile"> -->
                                     <!--   -->
                                 </form>
