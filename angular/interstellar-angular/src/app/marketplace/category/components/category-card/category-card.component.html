@@ -25,19 +25,19 @@
 </mat-card> -->
 
 <!--Card-->
-<div class="card example hoverable" (click)="selectCategory(category.category)">
+<div class="card hoverable" (click)="selectCategory(category.category)">
 
     <!--Card image-->
     <div class="view overlay">
         <img class="img-fluid" src="{{ category.thumbnailLink }}" alt="Card image cap" style="height: 20em; width: 20em;">
     </div>
     <!--Card image-->
-
     <!--Card content-->
     <div class="card-body">
+      <hr color="light-blue lighten-2;">
 
         <!--Title-->
-        <button class="card-title" class="btn btn-primary btn-block" disabled>{{ category.category }}</button>
+        <button class="btn btn-primary btn-block" disabled>{{ category.category }}</button>
 
         <!--Text-->
         <p class="card-text">{{ category.description }}</p>

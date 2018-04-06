@@ -4,82 +4,79 @@ $(document).ready(function(){
 });
 </script> -->
 
-<div class="nav-spacing">
     <!-- style="position: fixed;"" -->
-    <div class="navbar">
-        <div class="container">
-            <mat-sidenav-container style="height:100%;width:100%;">
-                <mat-sidenav #sidenav mode="over" align="end" class="app-sidenav" style="align-items: center; justify-content: center; overflow: hidden; position: fixed !important;">
-                    <!-- <mat-card style="min-width: 60%; display:inline-flex;">
-                        <h3 style="margin-right: 10 px; margin-bottom: 10 px; padding-right: 10 px; padding-bottom: 10 px;"> Login with secret key </h3>
-                        <input #secretKeyLogin matInput type="text" placeholder="secret key" autofocus style="margin-left: 10 px; margin-bottom: 10 px; padding-left: 10 px; padding-bottom: 10 px;"
-                        />
-                        <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">Login</button>
-                        <button (click)="sidenav.toggle(); secretKeyLogin.value = null;" style="color:black">Close</button>
-                        <br />
-                    </mat-card> -->
-                    <mat-card >
-                        <h3> Login with secret key </h3>
-                        <input #secretKeyLogin matInput type="text" placeholder="secret key" autofocus />
-                        <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">Login</button>
-                        <button (click)="sidenav.toggle(); secretKeyLogin.value = null;" style="color:black">Close</button>
-                        <br />
-                    </mat-card>
-                </mat-sidenav>
-                <mat-sidenav-content flex>        
-                    <mat-toolbar class="main-nav" flex>
-                        <button mat-raised-button id="home" [routerLink]="['/home']" (click)="changePage('home')" routerLinkActive="active" class="main-nav-button">
-                            Home
+<div style="margin: 5em 0em 0em 0em;">
+<div class="container">
+    <mat-sidenav-container style="height:100%;width:100%;">
+        <mat-sidenav #sidenav mode="over" align="end" class="app-sidenav" style="align-items: center; justify-content: center; overflow: hidden; position: fixed !important;">
+            <!-- <mat-card style="min-width: 60%; display:inline-flex;">
+                <h3 style="margin-right: 10 px; margin-bottom: 10 px; padding-right: 10 px; padding-bottom: 10 px;"> Login with secret key </h3>
+                <input #secretKeyLogin matInput type="text" placeholder="secret key" autofocus style="margin-left: 10 px; margin-bottom: 10 px; padding-left: 10 px; padding-bottom: 10 px;"
+                />
+                <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">Login</button>
+                <button (click)="sidenav.toggle(); secretKeyLogin.value = null;" style="color:black">Close</button>
+                <br />
+            </mat-card> -->
+            <mat-card >
+                <h3> Login with secret key </h3>
+                <input #secretKeyLogin matInput type="text" placeholder="secret key" autofocus />
+                <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">Login</button>
+                <button (click)="sidenav.toggle(); secretKeyLogin.value = null;" style="color:black">Close</button>
+                <br />
+            </mat-card>
+        </mat-sidenav>
+        <mat-sidenav-content flex>
+            <mat-toolbar class="main-nav" flex>
+                <button mat-button id="home" [routerLink]="['/home']" (click)="changePage('home')" routerLinkActive="active" class="main-nav-button">
+                    Home
+                </button>
+                <!-- *ngIf="loggedIn"   [routerLink]="['/profile', user.uid]"   -->
+                <button [style.display]="!loggedIn?'none':'inherit'" mat-button id="profile" [routerLink]="['/profile']" (click)="changePage('profile')"
+                    routerLinkActive="active" class="main-nav-button">
+                    Profile
+                </button>
+                <button mat-button id="categories" (click)="changePage('categories')" [routerLink]="['/categories']" routerLinkActive="active"
+                    class="main-nav-button">
+                    Categories
+                </button>
+                <button mat-button id="products" (click)="changePage('products')" [routerLink]="['/products']" routerLinkActive="active"
+                    class="main-nav-button">
+                    Products
+                </button>
+                <span class="example-fill-remaining-space"></span>
+                <div style="float:right;">
+                    <!-- (click)="toggle(sidenav)" -->
+                    <div *ngIf="loggedIn">
+                        <button mat-button id="cart" [routerLink]="['/cart']" (click)="changePage('cart')" routerLinkActive="active" class="main-nav-button">
+                            Cart {{ cartItemCount }}
                         </button>
-                        <!-- *ngIf="loggedIn"   [routerLink]="['/profile', user.uid]"   -->
-                        <button [style.display]="!loggedIn?'none':'inherit'" mat-raised-button id="profile" [routerLink]="['/profile']" (click)="changePage('profile')"
-                            routerLinkActive="active" class="main-nav-button">
-                            Profile
+                        <button mat-button class="main-nav-button" (click)="logout()">
+                            Logout
                         </button>
-                        <button mat-raised-button id="categories" (click)="changePage('categories')" [routerLink]="['/categories']" routerLinkActive="active"
+                    </div>
+                    <div *ngIf="!loggedIn">
+                        <button mat-raised-button id="register" [routerLink]="['/register']" (click)="changePage('register')" routerLinkActive="active"
                             class="main-nav-button">
-                            Categories
+                            Signup or Register
                         </button>
-                        <button mat-raised-button id="products" (click)="changePage('products')" [routerLink]="['/products']" routerLinkActive="active"
-                            class="main-nav-button">
-                            Products
+                        <!-- BETTER TEMPLATING!!!! -->
+                        <button mat-raised-button *ngIf="!loggedIn" (click)="sidenav.toggle()" class="main-nav-button">
+                            Login
                         </button>
-                        <span class="example-fill-remaining-space"></span>
-                        <div style="float:right;">
-                            <!-- (click)="toggle(sidenav)" -->
-                            <div *ngIf="loggedIn">
-                                <button mat-raised-button id="cart" [routerLink]="['/cart']" (click)="changePage('cart')" routerLinkActive="active" class="main-nav-button">
-                                    Cart {{ cartItemCount }}
-                                </button>
-                                <button mat-raised-button class="main-nav-button" (click)="logout()">
-                                    Logout
-                                </button>
-                            </div>
-                            <div *ngIf="!loggedIn">
-                                <button mat-raised-button id="register" [routerLink]="['/register']" (click)="changePage('register')" routerLinkActive="active"
-                                    class="main-nav-button">
-                                    Signup or Register
-                                </button>
-                                <!-- BETTER TEMPLATING!!!! -->
-                                <button mat-raised-button *ngIf="!loggedIn" (click)="sidenav.toggle()" class="main-nav-button">
-                                    Login
-                                </button>
-                            </div>
-                            <!-- <button mat-raised-button class="main-nav-button">
-                        <span (click)="toggle(sidenav)" *ngIf="!loggedIn; else logswitch"> Login </span>
-                        <ng-template #logswitch> <span (click)="logout()"> Logout </span> </ng-template>
-                    </button> -->
-                        </div>
-                    </mat-toolbar>
-                </mat-sidenav-content>
-            </mat-sidenav-container>
+                    </div>
+                    <!-- <button mat-raised-button class="main-nav-button">
+                <span (click)="toggle(sidenav)" *ngIf="!loggedIn; else logswitch"> Login </span>
+                <ng-template #logswitch> <span (click)="logout()"> Logout </span> </ng-template>
+            </button> -->
+                </div>
+            </mat-toolbar>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
 
-        </div>
+</div>
+</div>
         <!-- <md-sidenav-layout> -->
         <!-- </md-sidenav-layout> -->
-
-    </div>
-</div>
 
 <!-- <mat-sidenav-layout mode="over">  -->
 <!-- right: 10%; -->
