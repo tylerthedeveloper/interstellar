@@ -1,22 +1,22 @@
 
-<mat-card *ngFor="let group of transactionGroups; index as i" [attr.data-index]="i">
-  <mat-card-content>
+<div class="card" *ngFor="let group of transactionGroups; index as i" [attr.data-index]="i" style="margin: auto; width: 80%;">
+    <div>
       <div>
-          <p> Transaction Group: {{ i + 1 }}  </p> 
-          <p> Transaction ID: {{ group?.transactionID }}  </p> 
-          <p> Seller Public Key: {{ group?.sellerPublicKey }}  </p> 
+          <p> Transaction Group: {{ i + 1 }}  </p>
+          <p> Transaction ID: {{ group?.transactionID }}  </p>
+          <p> Seller Public Key: {{ group?.sellerPublicKey }}  </p>
       </div>
       <div *ngFor="let transRecord of group.transactionRecords">
           <!-- TODO: image??? -->
           <!-- <img [src]="transRecord?.productName" /> -->
-          <p> Product Name: {{ transRecord?.productName }}  </p> 
-          <p> Product Description: {{ transRecord?.productShortDescription }}  </p> 
-          <p> Product ID: {{ transRecord?.productID }}  </p> 
-          <p> Quantity: {{ transRecord?.quantityPurchased }}  </p> 
-          <p> Memo:  {{ transRecord?.memo  }}  </p> 
-          <p> USD Amount:  ${{ transRecord?.fixedUSDAmount | json }}  </p> 
-          <p> Assets Transferred: {{ transRecord?.assetPurchaseDetails | json }}  </p> 
+          <p> Product Name: {{ transRecord?.productName }}  </p>
+          <p> Product Description: {{ transRecord?.productShortDescription }}  </p>
+          <p> Product ID: {{ transRecord?.productID }}  </p>
+          <p> Quantity: {{ transRecord?.quantityPurchased }}  </p>
+          <p> Memo:  {{ transRecord?.memo  }}  </p>
+          <p> USD Amount:  ${{ transRecord?.fixedUSDAmount | json }}  </p>
+          <p> Assets Transferred: {{ transRecord?.assetPurchaseDetails | json }}  </p>
       </div>
-  </mat-card-content>
+    </div>
   <br />
-</mat-card>
+</div>
