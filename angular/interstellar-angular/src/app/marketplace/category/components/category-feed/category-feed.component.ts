@@ -21,7 +21,7 @@ export class CategoryFeedComponent implements OnInit {
     }
 
     ngOnInit() {}
-    
+
     /**
      * @param  {string} category
      */

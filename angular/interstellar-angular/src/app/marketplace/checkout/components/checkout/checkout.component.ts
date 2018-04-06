@@ -16,7 +16,10 @@ import { CartItem } from 'app/marketplace/_market-models/cart-item';
 import { CartService } from 'app/core/services/cart.service';
 import { Order } from 'app/marketplace/_market-models/order';
 import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from 'app/marketplace/_market-models/transaction-group';
+import { MatHorizontalStepper } from '@angular/material';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({
@@ -52,10 +55,12 @@ export class CheckoutComponent implements OnInit {
         constructor(private _cartService: CartService,
                     private _stellarAccountService: StellarAccountService,
                     private _stellarPaymentService: StellarPaymentService,
+                    private _formBuilder: FormBuilder,
                     private _orderService: OrderService,
                     private _router: Router,
                     private location: Location) { }
 
+        private secondFormGroup: FormGroup;
 
         ngOnInit() {
             this.curUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
@@ -89,9 +94,21 @@ export class CheckoutComponent implements OnInit {
 
             this.balances = <AssetBalance[]> JSON.parse(sessionStorage.getItem('my_balances') || localStorage.getItem('balances'));
             console.log(this.balances);
+
+            // https://stackoverflow.com/questions/46710178/material-design-stepper-how-to-remove-disable-steps?rq=1
+            // https://stackoverflow.com/questions/47314219/using-separate-components-in-a-linear-mat-horizontal-stepper?rq=1
+            // this.secondFormGroup = this._formBuilder.group({
+            //     secondCtrl: ['', Validators.required]
+            //   });
         }
 
-        validateCheckoutSecretKey(secretKey: string, currentStep: number) {
+        /**
+         * @param  {string} secretKey
+         * @param  {MatHorizontalStepper} stepper
+         */
+        validateCheckoutSecretKey(secretKey: string, stepper: MatHorizontalStepper) {
+
+            const currentStep: number = stepper.selectedIndex;
 
             if (!secretKey) {
                 alert('Please enter a secret key');
@@ -104,21 +121,26 @@ export class CheckoutComponent implements OnInit {
                     alert('there is missing information or that key is not valid or does not match');
             } else {
                 this.stepChecker[currentStep] = true;
+                stepper.next();
             }
         }
 
+        /**
+         * @param  {number} currentStep
+         */
         calculateFundsForPurchase(currentStep: number) {
             const _updatedBalances = calcDifferenceForMultipleAssets(this.balances, this.assetTotals);
             if (!_updatedBalances) {
                 return;
             } else {
                 this.updatedBalances = _updatedBalances;
-                // console.log(_updatedBalances);
                 this.stepChecker[currentStep] = true;
             }
         }
 
-        // verify valid new balances...
+        /**
+         * @param  {number} currentStep
+         */
         validateFundsForPurchase(currentStep: number) {
             // TODO: is step == 3
             console.log(currentStep);
@@ -132,8 +154,10 @@ export class CheckoutComponent implements OnInit {
             }
         }
 
-
-        completePurchase() {
+        /**
+         * @param  {MatHorizontalStepper} matStepper
+         */
+        completePurchase(matStepper: MatHorizontalStepper) {
             // const sellerKeys = this.
             // get user secret key
             // get seller public keys
@@ -214,7 +238,9 @@ export class CheckoutComponent implements OnInit {
                 console.log('no erorr');
                 this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal =>
                         sessionStorage.setItem('my_balances', JSON.stringify(bal)));
-                return;
+                        matStepper.next();
+                        this.proceedToOrderConfirmation();
+                        return;
             }
 
 
@@ -281,7 +307,10 @@ export class CheckoutComponent implements OnInit {
 
         }
 
-        proceedToOrderConfirmation() {
+        /**
+         * @returns void
+         */
+        proceedToOrderConfirmation(): void {
             // TODO: PREVENT GOIONG BACK ....
             // TODO: PREVENT FORM RESUBMISSION
 
@@ -292,7 +321,10 @@ export class CheckoutComponent implements OnInit {
             setTimeout(() => this._router.navigate(['../cart/order-history', _orderID]), 2000);
         }
 
-        makeTransactionRecords() {
+        /**
+         * @returns TransactionRecord[]
+         */
+        makeTransactionRecords(): TransactionRecord[] {
             return this.checkoutItems.map(item => {
                     return new TransactionRecord(item.buyerUserID, item.buyerPublicKey, item.sellerUserID,
                         item.sellerPublicKey, item.assetPurchaseDetails,
@@ -341,8 +373,14 @@ export class CheckoutComponent implements OnInit {
         //     }
         // }
 
-        // TODO: TOO LONG... WHAT SHOULD GO HERE ... ONLY 28 CHARACTERS
-        makeTransactionMemo(buyerPublicKey: string, sellerPublicKey: string) {
+
+        /**
+         // TODO: TOO LONG... WHAT SHOULD GO HERE ... ONLY 28 CHARACTERS
+         * @param  {string} buyerPublicKey
+         * @param  {string} sellerPublicKey
+         * @returns string
+         */
+        makeTransactionMemo(buyerPublicKey: string, sellerPublicKey: string): string {
             console.log(buyerPublicKey);
             console.log(buyerPublicKey);
             const buyerKey = buyerPublicKey.substr(0, 5);
@@ -351,19 +389,24 @@ export class CheckoutComponent implements OnInit {
         }
 
         returnHome(): void {
-
         }
 
         logout(): void {
-
         }
 
-        returnToCart() {
+        /**
+         * @returns void
+         */
+        returnToCart(): void {
             this.location.back();
         }
 
-        updateStep(currentStep: number) {
-            // console.log(currentStep);
+        /**
+         * @param  {number} currentStep
+         * @returns void
+         */
+        updateStep(currentStep: number): void {
+            console.log(currentStep);
             this.stepChecker[currentStep - 1] = true;
             // console.log(this.stepChecker);
         }

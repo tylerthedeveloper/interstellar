@@ -13,6 +13,7 @@ export class OrderConfirmationComponent implements OnInit {
 
     private _order: Order;
     private transactionGroups: Array<TransactionGroup>;
+
     constructor(private _orderService: OrderService,
                 private route: ActivatedRoute) {}
 

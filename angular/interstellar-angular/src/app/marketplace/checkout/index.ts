@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 /** Routing */
 import { RouterModule } from '@angular/router';
 import { CheckoutRoutes as routes } from './checkout.routes';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /**  UI and components */
 import { MaterialModule } from 'app/core/material.module';
@@ -14,15 +15,16 @@ import { OrderConfirmationComponent } from 'app/marketplace/checkout/components/
 
 @NgModule({
   imports: [
-    CommonModule, 
-    MaterialModule, 
+    CommonModule,
+    MaterialModule,
     RouterModule.forChild(routes),
+    ReactiveFormsModule
   ],
-  declarations: [ 
-    CartComponent, 
-    CartItemCardComponent, 
-    CheckoutComponent, 
-    OrderConfirmationComponent 
+  declarations: [
+    CartComponent,
+    CartItemCardComponent,
+    CheckoutComponent,
+    OrderConfirmationComponent
   ]
 })
 export class CheckoutModule { }
