@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Product } from '../../../_market-models/product';
-import { FormGroup, FormControl } from '@angular/forms';
-import { productFormGroup, MyFormElement, publicProductData, toFormGroup } from 'app/marketplace/_forms/product.form';
+import { FormGroup } from '@angular/forms';
+import { MyFormElement, publicProductData } from 'app/marketplace/_forms/product.form';
 
 @Component({
   selector: 'app-product-form',
@@ -36,8 +36,8 @@ export class ProductFormComponent implements OnInit {
               }
           };
       }
-      this.productForm = toFormGroup(this.product); // this.product
-      // this.formQuestions = Object.keys(this.productForm.controls).map(element => { 
+      // this.productForm = createFormGroup(this.product); // this.product
+      // this.formQuestions = Object.keys(this.productForm.controls).map(element => {
       //   console.log(element)
       //   console.log(this.productForm.get(element))
       //   return <any>this.productForm.get(element)

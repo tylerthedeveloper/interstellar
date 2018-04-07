@@ -6,9 +6,10 @@
     (click)="dialogRef.close()">Cancel</button> -->
 
 <h1 md-dialog-title class="primary-color"> {{ title }}</h1>
-<md-dialog-content class="accent-color">
+<mat-dialog-content class="accent-color">
     {{ content }}
-</md-dialog-content>
+    <ng-template [cdkPortalOutlet]="portal"></ng-template>
+</mat-dialog-content>
 <button type="button" md-raised-button 
     (click)="dialogRef.close(true)">OK
 </button>

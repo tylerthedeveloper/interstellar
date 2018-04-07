@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormElement } from '../form-element';
+import { MyFormElement } from '../../../shared/forms/form-element';
 
 @Component({
   selector: 'app-abstract-form',
@@ -10,7 +10,7 @@ import { FormElement } from '../form-element';
 
 export class AbstractFormComponent implements OnInit {
 
-    @Input() formControls: FormElement<any>[] = [];
+    @Input() formControls: MyFormElement<any>[] = [];
     form: FormGroup;
     payLoad = '';
 

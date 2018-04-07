@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 // NoConflictStyleCompatibilityMode, MaterialModule
+import { PortalModule } from '@angular/cdk/portal'
 
 import {
     MatButtonModule,
@@ -35,7 +36,8 @@ const materialModules = [
     MatStepperModule,
     MatCheckboxModule,
     MatListModule,
-    MatSliderModule
+    MatSliderModule,
+    PortalModule
 ];
 
 @NgModule({

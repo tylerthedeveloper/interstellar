@@ -1,5 +1,5 @@
 /** Angular */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentFactory, ViewChild, Type } from '@angular/core';
 
 import { FormGroup } from '@angular/forms';
 // import { ReactiveFormsModule } from '@angular/forms';
@@ -26,6 +26,9 @@ import { ProductFormComponent } from 'app/marketplace/products/components/produc
 
 /** Utils */
 import { createFormGroup } from 'app/UI/utils';
+import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
+import { publicProductData } from '../../../marketplace/_forms/product.form';
+import { DialogComponent } from '../../_components/dialog/dialog.component';
 
 
 @Component({
@@ -48,9 +51,12 @@ export class ProfileComponent implements OnInit {
     private profileForm: FormGroup;
     private profileFormMapper: any = {};
 
+
     constructor(private _userService: UserService,
                 private _productService: ProductService,
-                private dialog: MatDialog) {}
+                private dialog: MatDialog,
+                private viewContainerRef: ViewContainerRef,
+                private componentFactoryResolver: ComponentFactoryResolver) {}
 
     ngOnInit(): void {
 
@@ -105,16 +111,72 @@ export class ProfileComponent implements OnInit {
      * @returns void
      */
     addProduct(): void {
-        let dialogRef: MatDialogRef<ProductFormComponent>;
-        dialogRef = this.dialog.open(ProductFormComponent);
-        // dialogRef.componentInstance.title = 'Do you want to save your private key in the browser?';
-        // dialogRef.componentInstance.content = 'Private Key';
+        const product = <Product> {
+            productName: 'super fast GPU22222222',
+            productShortDescription: '',
+            productLongDescription: 'looooooooooooong des',
+            fixedUSDAmount: 10,
+            quantity: 15,
+            productCategory: 'Electronics',
+            productPrices: [
+            ],
+            productThumbnailLink: 'https://images10.newegg.com/productimage/14-487-290-01.jpg',
+            productSellerData: {
+                productSellerID: sessionStorage.getItem('user_doc_id'),
+                productSellerName: sessionStorage.getItem('user_name'),
+                productSellerPublicKey: sessionStorage.getItem('public_key')
+            }
+        };
+
+        /*
+        // const dialogRef2 = new DynamicFormComponent();
+                    // dialogRef2.questions2 = publicProductData;
+                    // dialogRef2.objectMapper2 = product;
+            // const dialogRef: MatDialogRef<DynamicFormComponent> = this.dialog.open(DynamicFormComponent, {
+            //     // width: '250px',
+            //     data: { mapper: publicProductData, data: product }
+            //   });
+                    // let cmpRef = this.viewContainerRef.createComponent(this.componentFactory, 0);
+
+                    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DynamicFormComponent);
+                    const componentRef = this.viewContainerRef.createComponent(componentFactory);
+                    // this.viewContainerRef.clear();
+                    componentRef.instance.objectMapper2 = publicProductData;
+                    // componentRef.instance.questions = product;
+
+                    const dialogRef = this.dialog.open(DialogComponent, {
+                        width: '250px',
+                        data: { component: componentRef, mapper: publicProductData, data: product }
+             });
+        */
+       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DynamicFormComponent);
+       const componentRef = this.viewContainerRef.createComponent(componentFactory);
+       componentRef.instance.objectMapper = product;
+       componentRef.instance.questions = publicProductData;
+
+       let dialogRef = this.dialog.open(DialogComponent, {
+            width: '250px',
+            data: { component: componentRef }
+        });
+        // let dialogRef: MatDialogRef<DialogComponent>;
+        // this.dialog.invoke(DialogComponent, {
+        // // let dialogRef2: MatDialogRef<DialogComponent>;
+        //     width: '250px',
+        //     data: { component: componentRef, mapper: publicProductData, data: product }
+        // });
+
         dialogRef.afterClosed().subscribe((result: string) => {
             if (result) {
                 console.log('resultttttt');
-              }
-              console.log(result);
-          });
+            }
+            console.log(result);
+            });
+    }
+
+    loadComponent(viewContainerRef: ViewContainerRef, postItem: Product) {
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DynamicFormComponent);
+        const componentRef = this.viewContainerRef.createComponent(componentFactory);
+        viewContainerRef.clear();
     }
     // ────────────────────────────────────────────────────────────────────────────────
 

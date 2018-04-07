@@ -83,22 +83,22 @@ export class RegisterComponent {
         const _user = { publicKey : _pubKey };
         let _localStore = false;
         let dialogRef: MatDialogRef<ConfirmDialogComponent>;
-          dialogRef = this.dialog.open(ConfirmDialogComponent);
-          dialogRef.componentInstance.title = 'Do you want to save your private key in the browser?';
-          dialogRef.componentInstance.content = 'Private Key';
-          dialogRef.afterClosed().subscribe((result: string) => {
-              if (result) {
-                    _localStore = true;
-                    localStorage.setItem('public_key', _pubKey);
-                    localStorage.setItem('seed_key', _privKey);
-                    localStorage.setItem('my_balances', res);
-                }
-                console.log(result);
-                console.log(_localStore);
-                sessionStorage.setItem('my_balances', res);
-                this._userService.addUser(_user, _localStore);
-                this._eventEmiter.sendMessage(data);
-            });
+        dialogRef = this.dialog.open(ConfirmDialogComponent);
+        dialogRef.componentInstance.title = 'Do you want to save your private key in the browser?';
+        dialogRef.componentInstance.content = 'Private Key';
+        dialogRef.afterClosed().subscribe((result: string) => {
+            if (result) {
+                _localStore = true;
+                localStorage.setItem('public_key', _pubKey);
+                localStorage.setItem('seed_key', _privKey);
+                localStorage.setItem('my_balances', res);
+            }
+            console.log(result);
+            console.log(_localStore);
+            sessionStorage.setItem('my_balances', res);
+            this._userService.addUser(_user, _localStore);
+            this._eventEmiter.sendMessage(data);
+        });
     }
     // ────────────────────────────────────────────────────────────────────────────────
 
