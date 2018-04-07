@@ -1,11 +1,11 @@
-<div class="card mdb-color lighten-2" style="margin: 0em auto 1em auto; width: 80%;">
-  <h2 style="text-align:center; color: white;"> Categories </h2>
+<div class="card mdb-color mdb-color lighten-5 z-depth-0 rounded-0" style="margin: -1em auto 1em auto; width: 100%;">
+  <h4 style="margin: .3em 0em 0em 11%;"> Recommended Categories </h4>
 </div>
 
 <!-- | async -->
 
-<div style="text-align:center; width: 80%; margin: auto;">
-    <div *ngFor="let category of _categories" style="display: inline-block; cursor: pointer; width: 25%" id="indCategory">
+<div style="text-align:center; width: 90%; margin: auto;">
+    <div *ngFor="let category of _categories" style="display: inline-block; cursor: pointer; width: 20%" id="indCategory">
         <app-category-card [category]="category" (notify)="onSelectCategory($event)"></app-category-card>
     </div>
 </div>
