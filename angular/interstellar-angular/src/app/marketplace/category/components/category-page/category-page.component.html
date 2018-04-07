@@ -3,17 +3,17 @@
 <!-- {{ category.description }} -->
 <!-- <p style="text-align: center;"> Description: </p> -->
 
-<div class="card mdb-color mdb-color lighten-5 z-depth-0 rounded-0" style="margin: -1em auto 1em auto; width: 100%;">
+<div class="card mdb-color mdb-color lighten-5 z-depth-0 rounded-0" style="margin: -1.7em auto 1em auto; width: 100%;">
 
   <div class=row>
 
-  <div class="">
-  <h4 style="margin: .9em 0em -5em 10em;"> {{ pageCategory }} </h4>
+  <div class="" style="margin: 0em 0em 0em 11.2%;">
+  <h4 style="margin: .9em 0em -5em 0em;"> {{ pageCategory }} </h4>
   </div>
 
-  <div class="" style="margin: .7em 0em -5em 70em;">
+  <div class="" style="margin: .7em 0em -5em 78%;">
 
-    <input matInput type="text" id="productSearchFilter" placeholder="search for items" style="width: 40%;">
+    <input matInput type="text" id="productSearchFilter" placeholder="search products" style="width: 40%;">
     <!-- <button (click)="addProduct()" class="btn btn-default btn-sm"> Add Product </button> -->
     <button (click)="allCategories()" class="btn btn-default btn-sm z-depth-0"> Return to Categories </button>
 
@@ -25,7 +25,8 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-2">
+
+    <div class="col-2">
       <div class="card card-ecommerce example hoverable">
         <div class="card-body text-center">
           <h4 class="card-title">
@@ -60,11 +61,13 @@
         </div>
       </div>
     </div>
-    <div class="col-md-10">
+
+    <div class="col-10">
       <div *ngFor="let product of categoriedProducts | async" style="display: inline-block; margin: 0em .5em .5em 0em">
         <app-category-product-card [product]="product" (notify)="onSelectProduct($event)"></app-category-product-card>
       </div>
     </div>
+
   </div>
 </div>
 
