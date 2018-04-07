@@ -1,13 +1,12 @@
-<h1 mat-dialog-title class="primary-color"> {{ title }}</h1>
-<mat-dialog-content class="accent-color">
+<h1 mat-dialog-title> {{ title }}</h1>
+<mat-dialog-content >
     {{ content }}
 </mat-dialog-content>
 <mat-dialog-actions>
-        <button mat-raised-button color="primary" mat-dialog-close 
-            (click)="dialogRef.close(content)">
+        <button mat-raised-button mat-dialog-close (click)="dialogRef.close(content)">
             yes
         </button>  
-        <button mat-raised-button color="secondary" mat-dialog-close>
+        <button mat-raised-button mat-dialog-close>
             no
         </button>  
 </mat-dialog-actions>

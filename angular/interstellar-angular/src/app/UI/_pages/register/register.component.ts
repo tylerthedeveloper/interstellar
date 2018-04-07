@@ -21,7 +21,7 @@ export class RegisterComponent {
     constructor(private _stellarService: StellarAccountService,
                 private _userService: UserService,
                 private _eventEmiter: EventEmitterService,
-                public dialog: MatDialog) {
+                private dialog: MatDialog) {
                     console.log('creating register page');
     }
 
@@ -30,7 +30,7 @@ export class RegisterComponent {
     //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
-    
+
     /**
      * TODO: Handle errors
      * @returns void

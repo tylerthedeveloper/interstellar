@@ -1,5 +1,6 @@
 /** Angular */
 import { Component, OnInit } from '@angular/core';
+
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 // import { ReactiveFormsModule } from '@angular/forms';
 
@@ -18,6 +19,9 @@ import { UserService } from 'app/user.service';
 /** Models */
 import { Product } from 'app/marketplace/_market-models/product';
 import { User, publicUserData } from 'app/user';
+import { MatDialog, MatTab, MatTabGroup, MatDialogRef } from '@angular/material';
+import { ConfirmDialogComponent } from 'app/UI/_components';
+import { ProductFormComponent } from 'app/marketplace/products/components/product-form/product-form.component';
 
 
 @Component({
@@ -42,6 +46,7 @@ export class ProfileComponent implements OnInit {
 
     constructor(private _userService: UserService,
                 private _productService: ProductService,
+                private dialog: MatDialog,
                 private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
@@ -88,15 +93,31 @@ export class ProfileComponent implements OnInit {
         this.editProfile();
         return this._userService.updateProfile(data);
     }
+
+    /**
+     * @returns void
+     */
+    addProduct(): void {
+        let dialogRef: MatDialogRef<ProductFormComponent>;
+        dialogRef = this.dialog.open(ProductFormComponent);
+        // dialogRef.componentInstance.title = 'Do you want to save your private key in the browser?';
+        // dialogRef.componentInstance.content = 'Private Key';
+        dialogRef.afterClosed().subscribe((result: string) => {
+            if (result) {
+                console.log('resultttttt');
+              }
+              console.log(result);
+          });
+    }
     // ────────────────────────────────────────────────────────────────────────────────
 
-    
+
     //
     // ──────────────────────────────────────────────────────────────── I ──────────
     //   :::::: P A G E   H E L P E R S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
-    
+
     /**
      * @returns FormGroup
      */

@@ -26,7 +26,7 @@
                     </div>
 
                     <div *ngFor="let product of cartItemList" style="margin: 0em 0em .2em 0em;">
-                        <cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></cart-item-card>
+                        <app-cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></app-cart-item-card>
                     </div>
                 </div>
                 <div class="col-md-2 text-nowrap" id="assetTotals">
@@ -43,6 +43,7 @@
                     <h6 class="text-nowrap" style="display: flex; margin: 1em 0em 0em 0em;"> Cart Options </h6>
                     <div class="card">
                         <button (click)="proceedToCheckout()" class="btn btn-primary btn-sm"> Checkout </button>
+                        <button (click)="checkoutSelectedItems()" class="btn btn-blue-grey btn-sm"> Checkout Selected </button>
                         <button (click)="removeSelectedItems()" class="btn btn-blue-grey btn-sm"> Remove Selected </button>
                         <button (click)="emptyOutCart()" class="btn btn-blue-grey btn-sm"> Empty Cart </button>
                     </div>

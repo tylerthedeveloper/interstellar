@@ -8,8 +8,7 @@ import { CartItem } from 'app/marketplace/_market-models/cart-item';
 
 
 @Component({
-  // tslint:disable-next-line:component-selector
-  selector: 'cart',
+  selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
@@ -39,19 +38,33 @@ export class CartComponent implements OnInit {
     //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
-    checkoutSelectedItems() {
-        this._cartService.batchRemoveCartItems(this._checkedCartItemIDs);
+    // TODO: CHANGE THESE TO ABSTRACT CHECKITEMIDS || CARTITEMIDS
+
+    /**
+     * @returns void
+     */
+    checkoutSelectedItems(): void {
+        this.updateAddToCheckout(this._checkedCartItemIDs);
     }
 
-    proceedToCheckout() {
+    /**
+     * @returns void
+     */
+    proceedToCheckout(): void {
         this.updateAddToCheckout(this.cartItemIDs);
     }
 
-    removeSelectedItems() {
+    /**
+     * @returns void
+     */
+    removeSelectedItems(): void {
         this._cartService.batchRemoveCartItems(this._checkedCartItemIDs);
     }
 
-    emptyOutCart() {
+    /**
+     * @returns void
+     */
+    emptyOutCart(): void {
         this._cartService.emptyCart();
     }
     // ────────────────────────────────────────────────────────────────────────────────
@@ -63,7 +76,12 @@ export class CartComponent implements OnInit {
     //   :::::: H E L P E R   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────────
     //
-    onCartItemAction(data: string) {
+
+    /**
+     * @param  {string} data
+     * @returns void
+     */
+    onCartItemAction(data: string): void {
         const obj = JSON.parse(data);
         const _action = obj.action;
         const _cartItemID =  obj.payload;
@@ -94,14 +112,22 @@ export class CartComponent implements OnInit {
         }
     }
 
-    updateAddToCheckout(cartItemIDs: string[]) {
+
+    /**
+     * @param  {string[]} cartItemIDs
+     * @returns void
+     */
+    updateAddToCheckout(cartItemIDs: string[]): void {
         console.log(cartItemIDs);
         this._cartService.addToCheckout(cartItemIDs)
                         .catch(err => console.log(err))
                         .then(() => this._router.navigate(['/cart/checkout']));
     }
 
-    navigateToAllProducts() {
+    /**
+     * @returns void
+     */
+    navigateToAllProducts(): void {
         this._router.navigate(['/products']);
     }
 

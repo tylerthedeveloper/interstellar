@@ -2,8 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CartItem } from 'app/marketplace/_market-models/cart-item';
 
 @Component({
-  // tslint:disable-next-line:component-selector
-  selector: 'cart-item-card',
+  selector: 'app-cart-item-card',
   templateUrl: './cart-item-card.component.html',
   styleUrls: ['./cart-item-card.component.css']
 })
@@ -16,7 +15,10 @@ export class CartItemCardComponent implements OnInit {
     ngOnInit() {
     }
 
-    purchaseItem (cartItemID: string) {
+    /**
+     * @param  {string} cartItemID
+     */
+    purchaseItem (cartItemID: string): void {
         const data = {
             action: 'purchase',
             payload: cartItemID
@@ -24,7 +26,12 @@ export class CartItemCardComponent implements OnInit {
         this.notify.emit(JSON.stringify(data));
     }
 
-    editItem (cartItem: CartItem, newData: {})  {
+    /**
+     * @param  {CartItem} cartItem
+     * @param  {{}} newData
+     * @returns void
+     */
+    editItem (cartItem: CartItem, newData: {}): void  {
         const data = {
           action: 'edit',
           payload: cartItem,
@@ -33,7 +40,11 @@ export class CartItemCardComponent implements OnInit {
       this.notify.emit(JSON.stringify(data));
     }
 
-    removeItem (cartItemID: string)  {
+    /**
+     * @param  {string} cartItemID
+     * @returns void
+     */
+    removeItem (cartItemID: string): void  {
         const data = {
           action: 'remove',
           payload: cartItemID
@@ -41,7 +52,11 @@ export class CartItemCardComponent implements OnInit {
         this.notify.emit(JSON.stringify(data));
     }
 
-    test(cartItemID: string)  {
+    /**
+     * @param  {string} cartItemID
+     * @returns void
+     */
+    checkItem(cartItemID: string): void  {
         const data = {
             action: 'checkItem',
             payload: cartItemID

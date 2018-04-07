@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';  // , Optional, SkipSelf
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MaterialModule } from './material.module';
@@ -22,6 +23,7 @@ import { OrderService } from 'app/core/services/order.service';
         FormsModule,
         RouterModule,
         MaterialModule,
+        BrowserAnimationsModule,
         ReactiveFormsModule,
         NgbModule.forRoot()
     ],
@@ -30,6 +32,7 @@ import { OrderService } from 'app/core/services/order.service';
         FormsModule,
         RouterModule,
         MaterialModule,
+        BrowserAnimationsModule,
         ReactiveFormsModule,
         NgbModule,
         NavBarComponent // TODO: Why??? [NavBarComponent]

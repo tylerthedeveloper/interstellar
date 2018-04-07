@@ -15,6 +15,7 @@ import { ProductCardComponent } from 'app/marketplace/products/components/produc
 import { SellerPageComponent } from 'app/marketplace/_pages/seller-page/seller-page.component';
 import { ProductsHomePageComponent } from 'app/marketplace/products/components/products-home-page/products-home-page.component';
 import { ProductPageComponent } from 'app/marketplace/products/components/product-page/product-page.component';
+import { ProductFormComponent } from './components/product-form/product-form.component';
 
 @NgModule({
     imports: [
@@ -28,13 +29,15 @@ import { ProductPageComponent } from 'app/marketplace/products/components/produc
         ProductCardComponent,
         SellerPageComponent,
         ProductsHomePageComponent,
-        ProductPageComponent
+        ProductPageComponent,
+        ProductFormComponent
     ],
     exports: [
         ProductCardComponent,
         SellerPageComponent,
         ProductsHomePageComponent,
-        ProductPageComponent
+        ProductPageComponent,
+        ProductFormComponent
     ],
     providers: [ ProductService  ]
   })

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 import { AssetBalance, currencyAssetsMapper, getBalanceforAsset, isValidNewBalance } from 'app/stellar';
 import { ProductService } from 'app/core/services/product.service';
@@ -45,9 +45,10 @@ export class ProductPageComponent implements OnInit {
      * @param  {ActivatedRoute} privateroute
      */
     constructor(private _productService: ProductService,
+        private route: ActivatedRoute,
         private _cartService: CartService,
         private _router: Router,
-        private route: ActivatedRoute) { }
+        private location: Location) { }
 
     /**
      */
@@ -129,7 +130,8 @@ export class ProductPageComponent implements OnInit {
      * @returns void
      */
     public addProductAndGoToCart(): void {
-        if (this.addProductToCart()) {
+        if (this.addToCartHelper()) {
+            this.onCompleteProductAction();
             this._router.navigate(['/cart']);
         } else {
             alert('couldnt be completed');
@@ -140,13 +142,21 @@ export class ProductPageComponent implements OnInit {
      * @returns boolean
      */
     public addProductToCart(): boolean {
+        if (this.addToCartHelper()) {
+            this.onCompleteProductAction();
+            this.location.back();
+            return true;
+        }
+        return false;
+    }
+
+    private addToCartHelper() {
         if (this.onValidateProductAction()) {
             const cartItem = this.createCartItem(this.purchaseQuantity);
             this._cartService.addToCart(JSON.stringify(cartItem));
             this.onCompleteProductAction();
             return true;
         }
-        return false;
     }
 
 

@@ -1,0 +1,18 @@
+<form [formGroup]="productForm">
+    <div class="form-group">
+        <label for="userName">Username</label>
+        <mat-input-container>
+            <input matInput type="text" id="userName" formControlName="userName" [(ngModel)]="_userModel.userName">
+        </mat-input-container>
+    </div>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <mat-input-container>
+            <input matInput type="text" id="fullName" formControlName="fullName" [(ngModel)]="_userModel.fullName" name="fullName">
+        </mat-input-container>
+    </div>
+    <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" class="btn btn-default">Submit</button>
+    <!-- <input type="submit" class="button expanded" value="Update Profile"> -->
+    <!--   -->
+</form>
+

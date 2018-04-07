@@ -17,9 +17,9 @@ import { CartService } from 'app/core/services/cart.service';
 import { Order } from 'app/marketplace/_market-models/order';
 import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from 'app/marketplace/_market-models/transaction-group';
 import { MatHorizontalStepper } from '@angular/material';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+// import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({
@@ -55,12 +55,12 @@ export class CheckoutComponent implements OnInit {
         constructor(private _cartService: CartService,
                     private _stellarAccountService: StellarAccountService,
                     private _stellarPaymentService: StellarPaymentService,
-                    private _formBuilder: FormBuilder,
+                    // private _formBuilder: FormBuilder,
                     private _orderService: OrderService,
                     private _router: Router,
                     private location: Location) { }
 
-        private secondFormGroup: FormGroup;
+        // private secondFormGroup: FormGroup;
 
         ngOnInit() {
             this.curUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');

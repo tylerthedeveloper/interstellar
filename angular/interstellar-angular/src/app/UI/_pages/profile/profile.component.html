@@ -1,4 +1,3 @@
-
 <!-- <label> Publlic key {{ pubKey }}</label> -->
 
 <!--Section: Testimonials v.1-->
@@ -19,15 +18,15 @@
             <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(9).jpg" class="rounded-circle img-fluid">
         </div> -->
 
-    <div class="card-body">
+        <div class="card-body">
 
-        <div style="background-color: white;" class="card">
+            <div style="background-color: white;" class="card">
 
-          <h1 class="font-weight-bold h1 py-5" style="text-align: center;">Profile</h1>
+                <h1 class="font-weight-bold h1 py-5" style="text-align: center;">Profile</h1>
 
-            <div class="container">
+                <div class="container">
 
-                <div class="row">
+                    <div class="row">
 
                         <div style="margin: auto;">
                             <div class="profile-image" style="background-color: grey; width: 8em; height: 8em; margin: 0em 0em 3em 0em;">
@@ -43,25 +42,23 @@
 
                             </div>
                             <div *ngIf="edit">
-                                <form [formGroup]="profileForm" >
+                                <form [formGroup]="profileForm">
                                     <!-- <div *ngFor="let prop of Object.keys(profileForm)" class="form-group">
                                             <p>aaaa</p>
                                     </div> -->
                                     <div class="form-group">
                                         <label for="userName">Username</label>
                                         <mat-input-container>
-                                            <input matInput type="text" id="userName" formControlName="userName"
-                                            [(ngModel)]="_userModel.userName">
+                                            <input matInput type="text" id="userName" formControlName="userName" [(ngModel)]="_userModel.userName">
                                         </mat-input-container>
                                     </div>
                                     <div class="form-group">
                                         <label for="name">Name</label>
                                         <mat-input-container>
-                                            <input matInput type="text" id="fullName" formControlName="fullName"
-                                            [(ngModel)]="_userModel.fullName" name="fullName">
+                                            <input matInput type="text" id="fullName" formControlName="fullName" [(ngModel)]="_userModel.fullName" name="fullName">
                                         </mat-input-container>
                                     </div>
-                                    <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" class="btn btn-default" >Submit</button>
+                                    <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" class="btn btn-default">Submit</button>
                                     <!-- <input type="submit" class="button expanded" value="Update Profile"> -->
                                     <!--   -->
                                 </form>
@@ -72,68 +69,78 @@
                             </div>
                         </div>
 
+                    </div>
+
                 </div>
 
             </div>
 
+
+            <hr>
+            <!--Quotation-->
+            <p class="dark-grey-text">Public Key: {{_userModel?.publicKey}}</p>
+            <h4>My Balances</h4>
+            <ul>
+                <li *ngFor="let bal of balances">
+                    {{ bal?.balance }} {{ bal?.asset_type }}
+                </li>
+            </ul>
         </div>
 
-
-        <hr>
-            <!--Quotation-->
-        <p class="dark-grey-text">Public Key: {{_userModel?.publicKey}}</p>
-        <h4>My Balances</h4>
-        <ul>
-          <li *ngFor="let bal of balances">
-            {{ bal?.balance }} {{ bal?.asset_type }}
-          </li>
-        </ul>
     </div>
 
-</div>
-
-<hr>
+    <hr>
     <!--Card-->
 
-<div style="margin: auto;">
+    <button class="btn btn-default" aria-hidden="true" (click)="addProduct()">Add Product</button>
+    <mat-tab-group>
+        <mat-tab label="Tab 1">Content 1</mat-tab>
+        <mat-tab label="Tab 2">Content 2</mat-tab>
+    </mat-tab-group>
 
-  <div class="card" style="text-align: center; margin: 1em 0em 0em 0em;">
-    <h2>My Products</h2>
-  </div>
+    <div style="margin: auto;">
 
-  <div style="display: inline-block; width: 33.33%; margin: auto;" *ngFor="let prod of products">
-    <div class="card card-ecommerce" style="margin: .5em .2em 0em 0em;">
-
-        <!--Card image-->
-        <div class="view overlay z-depth-1">
-            <img src="{{ product.productThumbnailLink }}" class="img-fluid" alt="" style="width:100%; height: 20em; margin: auto; display: block;">
-            <div class="mask rgba-white-slight"></div>
+        <div class="card" style="text-align: center; margin: 1em 0em 0em 0em;">
+            <h2>My Products</h2>
         </div>
-        <!--/.Card image-->
 
-        <!--Card content-->
-        <div class="card-body text-center">
-            <!--Category & Title-->
-            <h4 class="card-title"><strong>{{ prod?.productName }}</strong></h4>
+        <div style="display: inline-block; width: 33.33%; margin: auto;" *ngFor="let prod of products">
+            <div class="card card-ecommerce" style="margin: .5em .2em 0em 0em;">
 
-            <!--Description-->
-            <p class="card-text">{{ prod?.productShortDescription }}
-            </p>
+                <!--Card image-->
+                <div class="view overlay z-depth-1">
+                    <img src="{{ prod?.productThumbnailLink }}" class="img-fluid" alt="" style="width:100%; height: 20em; margin: auto; display: block;">
+                    <div class="mask rgba-white-slight"></div>
+                </div>
+                <!--/.Card image-->
 
-            <!--Card footer-->
-            <div class="card-footer" style="height: 3em; width: 100%;">
-                <span class="float-left">Price ${{ product?.fixedUSDAmount }} <span class="discount">Quantity: {{ product?.quantity }}</span></span>
+                <!--Card content-->
+                <div class="card-body text-center">
+                    <!--Category & Title-->
+                    <h4 class="card-title">
+                        <strong>{{ prod?.productName }}</strong>
+                    </h4>
+
+                    <!--Description-->
+                    <p class="card-text">{{ prod?.productShortDescription }}
+                    </p>
+
+                    <!--Card footer-->
+                    <div class="card-footer" style="height: 3em; width: 100%;">
+                        <span class="float-left">Price ${{ product?.fixedUSDAmount }}
+                            <span class="discount">Quantity: {{ product?.quantity }}</span>
+                        </span>
+                    </div>
+                </div>
+                <!--/.Card content-->
+
             </div>
+
         </div>
-        <!--/.Card content-->
 
-    </div>
+        <!--Grid column-->
 
-</div>
-
-    <!--Grid column-->
-
-<!-- <div style="background-color: white;">
+        <!-- <div style="background-color: white;">
     <div class="container">
         <div class="row">
             <div class="col-12 col-mat-4">
@@ -191,23 +198,23 @@
 
 </div> -->
 
-<!-- <br />
+        <!-- <br />
 <button mat-raised-button (click)="sessionstorage()">temp </button> -->
 
-<!-- <div class="well well-lg">
+        <!-- <div class="well well-lg">
     <div *ngFor="let addr of profileForm">
       {{ addr }}
     </div>
   </div> -->
 
 
-<!-- <form novalidate [formGroup]="profileForm">
+        <!-- <form novalidate [formGroup]="profileForm">
         Name: <input type="text" formControlName="name">
         Location: <input type="text" formControlName="location">
         <button  (click)="updateProfile(myGroup); $event.preventDefault(); " class="btn btn-primary"> Submit</button>
       </form> -->
 
-<!-- <form [formGroup]="profileForm">
+        <!-- <form [formGroup]="profileForm">
     <div class="form-group">
       <label class="center-block">Name:
         <input class="form-control" formControlName="name">
@@ -219,7 +226,7 @@
    -->
 
 
-<!--
+        <!--
 <form class="form-horizontal" [formGroup]="form">
 
         <div class="form-group">
