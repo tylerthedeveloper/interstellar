@@ -13,24 +13,29 @@ export class DynamicFormComponent implements OnInit {
 
     // @Input() objectMapper: any;
     // @Input() questions: MyFormElement<any>[] = [];
-    objectMapper2: any;
+    objectMapper: any;
     questions: MyFormElement<any>[] = [];
 
     private form: FormGroup;
     private payLoad;
 
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-      this.objectMapper2 = data.mapper;
-      this.questions = data.mapper;
-      this.form = createFormGroup(this.objectMapper2, this.questions);
-      console.log(data)
-    }
+    // constructor() {
+    // }
+    // constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
+    //   // this.objectMapper2 = data.mapper;
+    //   // this.questions = data.mapper;
+    //   // console.log(data);
+    // }
+
 
     ngOnInit() {
+      this.form = createFormGroup(this.questions, this.objectMapper);
     }
 
     onSubmit() {
-      // this.payLoad = JSON.stringify(this.form.value);
+      this.payLoad = JSON.stringify(this.form.value);
+      console.log(JSON.stringify(this.form.value));
+
     }
 
 }

@@ -10,15 +10,18 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFormComponent } from './forms/dynamic-form/dynamic-form.component';
 import { DynamicFormQuestionComponent } from './forms/dynamic-form-question/dynamic-form-question.component';
+import { DialogComponent } from 'app/UI/_components/dialog/dialog.component';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { MaterialModule } from 'app/core/material.module';
 
 @NgModule({
   declarations: [
       // components
       // pipes
-
       // form stuff
       DynamicFormComponent,
       DynamicFormQuestionComponent,
+      DialogComponent
 
   ],
   exports: [
@@ -32,6 +35,7 @@ import { DynamicFormQuestionComponent } from './forms/dynamic-form-question/dyna
         // form stuff
         DynamicFormComponent,
         DynamicFormQuestionComponent,
+        DialogComponent
 
 
   ],
@@ -39,6 +43,10 @@ import { DynamicFormQuestionComponent } from './forms/dynamic-form-question/dyna
       FormsModule,
       ReactiveFormsModule,
       CommonModule,
-  ]
+      MaterialModule,
+
+  ],
+entryComponents: [ DialogComponent, DynamicFormComponent, DynamicFormQuestionComponent ], // DialogComponent,
+
 })
 export class SharedModule {}
