@@ -3,17 +3,27 @@
 <!-- {{ category.description }} -->
 <!-- <p style="text-align: center;"> Description: </p> -->
 
-<div class="container">
-  <h1 style="text-align: center;"> {{ pageCategory }} </h1>
-  <div class="row">
-    <div class="offset-md-4">
-      <mat-input-container>
-        <input matInput type="text" id="productSearchFilter" placeholder="search for items">
-      </mat-input-container>
-      <!-- <button (click)="addProduct()" class="btn btn-default btn-sm"> Add Product </button> -->
-        <button (click)="allCategories()" class="btn btn-default btn-sm"> Return to Categories </button>
-    </div>
+<div class="card mdb-color mdb-color lighten-5 z-depth-0 rounded-0" style="margin: -1em auto 1em auto; width: 100%;">
+
+  <div class=row>
+
+  <div class="">
+  <h4 style="margin: .9em 0em -5em 10em;"> {{ pageCategory }} </h4>
   </div>
+
+  <div class="" style="margin: .7em 0em -5em 70em;">
+
+    <input matInput type="text" id="productSearchFilter" placeholder="search for items" style="width: 40%;">
+    <!-- <button (click)="addProduct()" class="btn btn-default btn-sm"> Add Product </button> -->
+    <button (click)="allCategories()" class="btn btn-default btn-sm z-depth-0"> Return to Categories </button>
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="container">
   <div class="row">
     <div class="col-md-2">
       <div class="card card-ecommerce example hoverable">
@@ -59,7 +69,7 @@
 </div>
 
 
-<!-- 
+<!--
   <div class="card card-ecommerce example hoverable" (click)="selectProduct(product)">
           <!--Card image
           <div class="view overlay z-depth-1">
