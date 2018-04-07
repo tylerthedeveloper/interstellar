@@ -39,15 +39,3 @@ export class ShippingInformation {
 
 }
 
-
-export const publicProductData = [
-    'productName',
-    'productShortDescription',
-    'productLongDescription',
-    'fixedUSDAmount',
-    'quantity',
-    'productPrices',
-    'productThumbnailLink',
-    'productImages',
-    'productCategory'
-];

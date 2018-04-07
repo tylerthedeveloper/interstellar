@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Product, publicProductData } from '../../../_market-models/product';
-import { FormGroup } from '@angular/forms';
-import { createFormGroup } from 'app/UI/utils';
+import { Product } from '../../../_market-models/product';
+import { FormGroup, FormControl } from '@angular/forms';
+import { productFormGroup, MyFormElement, publicProductData, toFormGroup } from 'app/marketplace/_forms/product.form';
 
 @Component({
   selector: 'app-product-form',
@@ -12,14 +12,37 @@ export class ProductFormComponent implements OnInit {
 
   @Input() product: Product;
 
+  private formQuestions: MyFormElement<any>[] = [];
   private productForm: FormGroup;
 
-
-  // test reflectio
   constructor() {}
 
   ngOnInit() {
-      this.productForm = createFormGroup(publicProductData, this.product);
+      if (!this.product) {
+        this.product = <Product>{
+              productName: 'super fast GPU22222222',
+              productShortDescription: '',
+              productLongDescription: 'looooooooooooong des',
+              fixedUSDAmount: 10,
+              quantity: 15,
+              productCategory: 'Electronics',
+              productPrices: [
+              ],
+              productThumbnailLink: 'https://images10.newegg.com/productimage/14-487-290-01.jpg',
+              productSellerData: {
+                  productSellerID: sessionStorage.getItem('user_doc_id'),
+                  productSellerName: sessionStorage.getItem('user_name'),
+                  productSellerPublicKey: sessionStorage.getItem('public_key')
+              }
+          };
+      }
+      this.productForm = toFormGroup(this.product); // this.product
+      // this.formQuestions = Object.keys(this.productForm.controls).map(element => { 
+      //   console.log(element)
+      //   console.log(this.productForm.get(element))
+      //   return <any>this.productForm.get(element)
+      // });
+      this.formQuestions = publicProductData;
   }
 
 }
