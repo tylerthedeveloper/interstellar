@@ -15,7 +15,7 @@ export class AuthGuardService implements CanActivate {
     constructor(private _eventEmitter: EventEmitterService) {
         console.log('creating auth guard');
     }
-    
+
     /**
      * @returns boolean
      */

@@ -1,7 +1,7 @@
 /** Angular */
 import { Component, OnInit } from '@angular/core';
 
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 // import { ReactiveFormsModule } from '@angular/forms';
 
 /** Stellar */
@@ -19,9 +19,13 @@ import { UserService } from 'app/user.service';
 /** Models */
 import { Product } from 'app/marketplace/_market-models/product';
 import { User, publicUserData } from 'app/user';
-import { MatDialog, MatTab, MatTabGroup, MatDialogRef } from '@angular/material';
-import { ConfirmDialogComponent } from 'app/UI/_components';
+
+/** UI */
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { ProductFormComponent } from 'app/marketplace/products/components/product-form/product-form.component';
+
+/** Utils */
+import { createFormGroup } from 'app/UI/utils';
 
 
 @Component({
@@ -46,8 +50,7 @@ export class ProfileComponent implements OnInit {
 
     constructor(private _userService: UserService,
                 private _productService: ProductService,
-                private dialog: MatDialog,
-                private formBuilder: FormBuilder) {}
+                private dialog: MatDialog) {}
 
     ngOnInit(): void {
 
@@ -63,7 +66,8 @@ export class ProfileComponent implements OnInit {
                 .subscribe(user => {
                     this.user = user;
                     this._userModel = <User> user;
-                    this.profileForm = this.createFormGroup();
+                    this.profileFormMapper = {};
+                    this.profileForm = createFormGroup(publicUserData, this._userModel);
                     this._productService
                             .getProductsByUserID(user.id)
                             .subscribe(products => this.products = products);
@@ -118,33 +122,7 @@ export class ProfileComponent implements OnInit {
     // ──────────────────────────────────────────────────────────────────────────
     //
 
-    /**
-     * @returns FormGroup
-     */
-    createFormGroup(): FormGroup {
-        const group = this.formBuilder.group({});
-        this.profileFormMapper = {};
-        publicUserData.forEach(attr => {
-            group.addControl(attr, new FormControl(this._userModel[attr] || ''));
-            // this.profileFormMapper[attr] = this._userModel[attr] || '';
-        });
-        // console.log(this.profileFormMapper);
-        return group;
 
-
-        // const group = {};
-        // group[attr] = new FormControl(this._userModel[attr] || '');
-            // this.profileForm = this.formBuilder.group(Object.keys(user).map(key => {
-                    //     console.log(key);
-                    //     return new FormControl(key || '');
-                    // }));
-                    // const group: any = {};
-                    // publicUserData.forEach(question => {
-                    //         console.log(question);
-                    //             group[question] = new FormControl(user[question] || '');
-                    // });
-                    // this.profileForm = new FormGroup(group);
-    }
 
     /**
      * @returns void

@@ -1,32 +1,34 @@
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-// import { MaterialDesignModule } from './ng-md.module';
 
 import { ProfileComponent, RegisterComponent, WelcomeComponent } from './_pages';
 import { ConfirmDialogComponent } from './_components';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AbstractFormComponent } from 'app/UI/_components/abstract-form/abstract-form.component';
+import { ProductFormComponent } from '../marketplace/products/components/product-form/product-form.component';
+import { MaterialModule } from 'app/core/material.module';
 
-const uiPages = [ ProfileComponent, WelcomeComponent, RegisterComponent, ConfirmDialogComponent ];
+const UIPages = [ ProfileComponent, WelcomeComponent, RegisterComponent ];
+const dialogComponents = [ ConfirmDialogComponent, ProductFormComponent, AbstractFormComponent ];
 
 @NgModule({
     imports : [
-    //    MaterialDesignModule,
+        MaterialModule,
 //            CdkTableModule
         CommonModule, ReactiveFormsModule
     ],
     declarations:  [
                 // UI Pages
-                ...uiPages,
-                AbstractFormComponent
+                ...UIPages,
+                ...dialogComponents
             ],
     exports: [
             // MaterialDesignModule,
-            ...uiPages,
-            AbstractFormComponent
+            ...UIPages,
+            ...dialogComponents
         ],
-    entryComponents: [ ConfirmDialogComponent ], // DialogComponent,
+    entryComponents: [ ...dialogComponents ], // DialogComponent,
     schemas: [ NO_ERRORS_SCHEMA ],
 
 })

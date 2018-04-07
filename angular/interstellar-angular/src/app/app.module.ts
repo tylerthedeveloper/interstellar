@@ -11,7 +11,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 /** App */
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutes } from 'app/app.routes';
 import { environment } from '../environments/environment';
 
 /** Services */
@@ -27,6 +27,7 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { UIModule } from './UI/ui.app.module';
 import { MaterialModule } from './core/material.module';
+import { RouterModule, PreloadAllModules } from '@angular/router';
 
 
 @NgModule({
@@ -48,7 +49,7 @@ import { MaterialModule } from './core/material.module';
 
       MDBBootstrapModule.forRoot(),
 
-      AppRoutingModule,
+      RouterModule.forRoot(AppRoutes, { preloadingStrategy: PreloadAllModules }),
 
       // UI
       SharedModule,
