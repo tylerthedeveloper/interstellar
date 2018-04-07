@@ -19,7 +19,7 @@ export class Product {
 
     productSellerData: {
         productSellerID: string;
-        productSellerName: string;
+        productSellerName: string; // TODO: store user data in session storage!!!
         productSellerPublicKey: string;
     };
 
@@ -27,14 +27,27 @@ export class Product {
     productRating: number;
     productReviews: string[];
 
-
 }
 
 export class ShippingInformation {
 
     shipCost: number;
     shipService: string;
+    trackingNumber: string;
     validShipService: boolean;
     isShipped: boolean;
 
 }
+
+
+export const publicProductData = [
+    'productName',
+    'productShortDescription',
+    'productLongDescription',
+    'fixedUSDAmount',
+    'quantity',
+    'productPrices',
+    'productThumbnailLink',
+    'productImages',
+    'productCategory'
+];

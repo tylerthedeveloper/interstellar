@@ -67,6 +67,9 @@ export class ProfileComponent implements OnInit {
                     this.user = user;
                     this._userModel = <User> user;
                     this.profileFormMapper = {};
+
+                    // TODO: NGFOR OF ATTRIBUTES FOR FORM ELEMENTS
+                    // TODO: use abstract form
                     this.profileForm = createFormGroup(publicUserData, this._userModel);
                     this._productService
                             .getProductsByUserID(user.id)
