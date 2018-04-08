@@ -8,7 +8,7 @@ $(document).ready(function(){
 <div style="margin: 5em 0em 0em 0em;">
 <div class="container">
     <mat-sidenav-container style="height:100%;width:100%;">
-        <mat-sidenav #sidenav mode="over" align="end" class="app-sidenav" style="align-items: center; justify-content: center; overflow: hidden; position: fixed !important;">
+        <mat-sidenav #sidenav mode="over" align="end" class="app-sidenav" style="align-items: center; justify-content: center; overflow: hidden; position: fixed !important; width: 100%;">
             <!-- <mat-card style="min-width: 60%; display:inline-flex;">
                 <h3 style="margin-right: 10 px; margin-bottom: 10 px; padding-right: 10 px; padding-bottom: 10 px;"> Login with secret key </h3>
                 <input #secretKeyLogin matInput type="text" placeholder="secret key" autofocus style="margin-left: 10 px; margin-bottom: 10 px; padding-left: 10 px; padding-bottom: 10 px;"
@@ -17,13 +17,23 @@ $(document).ready(function(){
                 <button (click)="sidenav.toggle(); secretKeyLogin.value = null;" style="color:black">Close</button>
                 <br />
             </mat-card> -->
-            <mat-card >
-                <h3> Login with secret key </h3>
-                <input #secretKeyLogin matInput type="text" placeholder="secret key" autofocus />
-                <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">Login</button>
-                <button (click)="sidenav.toggle(); secretKeyLogin.value = null;" style="color:black">Close</button>
-                <br />
-            </mat-card>
+            <div style="margin: 5% auto 0% auto; width: 50%; height: 20%; text-align: center;">
+              <img style="max-width:100%; max-height: 100%" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+              <h2>Interstellar</h2>
+            </div>
+
+            <div class="card z-depth-0" style="margin: 5% auto 5% auto; padding: 5% 5% 5% 5%; width: 90%; max-height: 40%;">
+
+              <div style="width: 52%; margin: auto;">
+                <h6> Stellar Wallet Secret Key: </h6>
+                <input #secretKeyLogin matInput type="text" style="width: 100%; margin: 0% auto 1% auto;" placeholder="Key" autofocus />
+                <div style="display: flex; flex-direction: row;">
+                  <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" class="btn btn-primary">Login</button>
+                  <button (click)="sidenav.toggle(); secretKeyLogin.value = null;" class="btn z-depth-0" style="background-color: gray;">Close</button>
+                </div>
+              </div>
+
+            </div>
         </mat-sidenav>
         <mat-sidenav-content flex>
 
