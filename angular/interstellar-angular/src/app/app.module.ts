@@ -28,6 +28,9 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { UIModule } from './UI/ui.app.module';
 import { MaterialModule } from './core/material.module';
 import { RouterModule, PreloadAllModules } from '@angular/router';
+import { DialogComponent } from './UI/_components/dialog/dialog.component';
+import { DynamicFormComponent } from './UI/forms/dynamic-form/dynamic-form.component';
+import { DynamicFormQuestionComponent } from './UI/forms/dynamic-form-question/dynamic-form-question.component';
 
 
 @NgModule({
@@ -61,6 +64,7 @@ import { RouterModule, PreloadAllModules } from '@angular/router';
   exports: [
     // NavBarComponent
     // ConfirmDialogComponent
+    // DialogComponent, DynamicFormComponent, DynamicFormQuestionComponent
   ],
   providers: [
               StellarAccountService,
@@ -68,8 +72,10 @@ import { RouterModule, PreloadAllModules } from '@angular/router';
 
               UserService,
               // ConfirmDialogComponent
-
-  ],
+              
+              
+            ],
+  entryComponents: [ DialogComponent, DynamicFormComponent, DynamicFormQuestionComponent ], // DialogComponent,
   bootstrap: [AppComponent],
 })
 export class AppModule { }

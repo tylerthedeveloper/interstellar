@@ -13,8 +13,8 @@ export class DynamicFormComponent implements OnInit {
 
     // @Input() objectMapper: any;
     // @Input() questions: MyFormElement<any>[] = [];
-    objectMapper: any;
     questions: MyFormElement<any>[] = [];
+    objectMapper: any;
 
     private form: FormGroup;
     private payLoad;

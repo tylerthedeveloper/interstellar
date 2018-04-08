@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject, ComponentFactoryResolver, ViewChild, ViewContainerRef, ComponentFactory } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { Component, OnInit, Inject, ComponentRef, ViewContainerRef, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ComponentPortal } from '@angular/cdk/portal';
 
 @Component({
@@ -8,27 +8,43 @@ import { ComponentPortal } from '@angular/cdk/portal';
 })
 export class DialogComponent implements OnInit {
 
-    public title: string;
-    public content: string;
-    // private factoryResolver: any;
+    @ViewChild('target', { read: ViewContainerRef }) vcRef: ViewContainerRef;
 
-    // constructor(private dialog: MatDialog,
-    //             @Inject(ComponentFactoryResolver) factoryResolver,
-    //             @Inject(MAT_DIALOG_DATA) public data: any) {
-    //               this.factoryResolver = factoryResolver;
+    componentRef: ComponentRef<any>;
 
-    //               console.log(data);
-    // }
-    // @ViewChild('placeholder', {read: ViewContainerRef}) viewContainerRef;
-    // private componentFactory: ComponentFactory<any>;
-    // private _data;
-    portal: ComponentPortal<any>;
     constructor(public dialogRef: MatDialogRef<DialogComponent>,
+                private resolver: ComponentFactoryResolver,
                 @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  ngOnInit() {
-    this.portal = new ComponentPortal(this.data.component);
-  }
+    ngOnInit() {
+      const factory = this.resolver.resolveComponentFactory(this.data.component);
+      this.componentRef = this.vcRef.createComponent(factory);
+      // this.componentRef.instance.questions = this.data.payload.questions;
+      // this.componentRef.instance.objectMapper = this.data.payload.objectMapper;
+      Object.keys(this.data.payload).forEach(key => {
+          console.log(key);
+          console.log(this.data.payload[key]);
+          this.componentRef.instance[key] = this.data.payload[key];
+      });
+      // this.componentRef = this.data.componentRef;
+    }
+
+
+    ngOnDestroy() {
+      if (this.componentRef) {
+        this.componentRef.destroy();
+      }
+    }  
+    
+    // portal: ComponentPortal<any>;
+    // constructor(public dialogRef: MatDialogRef<DialogComponent>,
+    //             @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+    // ngOnInit() {
+    //     console.log(this.data)
+    //     console.log(this.data.component)
+    //     this.portal = new ComponentPortal(this.data.component);
+    // }
 
     // public invoke(modalComponent: any, modalData: any) { // : Observable<any> {
     //   this.portal = new ComponentPortal(this._data.component);

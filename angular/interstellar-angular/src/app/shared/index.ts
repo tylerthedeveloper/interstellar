@@ -8,10 +8,9 @@ import { NgModule } from '@angular/core';
 // imports
 // import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DynamicFormComponent } from './forms/dynamic-form/dynamic-form.component';
-import { DynamicFormQuestionComponent } from './forms/dynamic-form-question/dynamic-form-question.component';
-import { DialogComponent } from 'app/UI/_components/dialog/dialog.component';
-import { ComponentPortal } from '@angular/cdk/portal';
+// import { DynamicFormComponent } from './forms/dynamic-form/dynamic-form.component';
+// import { DynamicFormQuestionComponent } from './forms/dynamic-form-question/dynamic-form-question.component';
+// import { DialogComponent } from 'app/UI/_components/dialog/dialog.component';
 import { MaterialModule } from 'app/core/material.module';
 
 @NgModule({
@@ -19,9 +18,9 @@ import { MaterialModule } from 'app/core/material.module';
       // components
       // pipes
       // form stuff
-      DynamicFormComponent,
-      DynamicFormQuestionComponent,
-      DialogComponent
+    //   DynamicFormComponent,
+    //   DynamicFormQuestionComponent,
+    //   DialogComponent
 
   ],
   exports: [
@@ -33,11 +32,10 @@ import { MaterialModule } from 'app/core/material.module';
       // pipes
 
         // form stuff
-        DynamicFormComponent,
-        DynamicFormQuestionComponent,
-        DialogComponent
-
-
+        // DynamicFormComponent,
+        // DynamicFormQuestionComponent,
+        // DialogComponent,
+        // MaterialModule
   ],
   imports: [
       FormsModule,
@@ -46,7 +44,7 @@ import { MaterialModule } from 'app/core/material.module';
       MaterialModule,
 
   ],
-entryComponents: [ DialogComponent, DynamicFormComponent, DynamicFormQuestionComponent ], // DialogComponent,
+// entryComponents: [ DialogComponent, DynamicFormComponent, DynamicFormQuestionComponent ], // DialogComponent,
 
 })
 export class SharedModule {}

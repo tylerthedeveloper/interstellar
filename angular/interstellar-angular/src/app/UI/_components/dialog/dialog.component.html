@@ -5,13 +5,14 @@
 <button type="button" md-button 
     (click)="dialogRef.close()">Cancel</button> -->
 
-<h1 md-dialog-title class="primary-color"> {{ title }}</h1>
+<h1 mat-dialog-title class="primary-color"> {{ title }}</h1>
 <mat-dialog-content class="accent-color">
-    {{ content }}
-    <ng-template [cdkPortalOutlet]="portal"></ng-template>
+    <!-- {{ content }} -->
+    <!-- <ng-template [cdkPortalOutlet]="portal"></ng-template> -->
+    <ng-template #target></ng-template>
 </mat-dialog-content>
-<button type="button" md-raised-button 
-    (click)="dialogRef.close(true)">OK
+<button mat-button mat-dialog-close>Cancel</button>
+<button type="button" mat-raised-button (click)="dialogRef.close(true)">OK
 </button>
 
 <!-- <router-ou -->

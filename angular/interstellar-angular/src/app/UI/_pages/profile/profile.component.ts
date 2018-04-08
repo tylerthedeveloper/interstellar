@@ -21,14 +21,13 @@ import { Product } from 'app/marketplace/_market-models/product';
 import { User, publicUserData } from 'app/user';
 
 /** UI */
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { ProductFormComponent } from 'app/marketplace/products/components/product-form/product-form.component';
+import { MatDialog } from '@angular/material';
 
 /** Utils */
 import { createFormGroup } from 'app/UI/utils';
-import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
 import { publicProductData } from '../../../marketplace/_forms/product.form';
 import { DialogComponent } from '../../_components/dialog/dialog.component';
+import { DynamicFormComponent } from '../../forms/dynamic-form/dynamic-form.component';
 
 
 @Component({
@@ -107,6 +106,14 @@ export class ProfileComponent implements OnInit {
         return this._userService.updateProfile(data);
     }
 
+
+    createComponentRef(a: any, b: any) {
+        // const factory = this.resolver.resolveComponentFactory(this.data.component);
+        // this.componentRef = this.vcRef.createComponent(factory);
+        // this.componentRef.instance.objectMapper = this.data.data;
+        // this.componentRef.instance.questions = this.data.mapper;  
+    }
+
     /**
      * @returns void
      */
@@ -149,14 +156,19 @@ export class ProfileComponent implements OnInit {
                         data: { component: componentRef, mapper: publicProductData, data: product }
              });
         */
-       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DynamicFormComponent);
-       const componentRef = this.viewContainerRef.createComponent(componentFactory);
-       componentRef.instance.objectMapper = product;
-       componentRef.instance.questions = publicProductData;
+    //    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DynamicFormComponent);
+    //    const componentRef = this.viewContainerRef.createComponent(componentFactory);
+    //    componentRef.instance.objectMapper = product;
+    //    componentRef.instance.questions = publicProductData;
 
        let dialogRef = this.dialog.open(DialogComponent, {
-            width: '250px',
-            data: { component: componentRef }
+            // width: '250px',
+            data: { component: DynamicFormComponent, 
+                    payload: { 
+                        questions: publicProductData, 
+                        objectMapper: product 
+                    }
+            }
         });
         // let dialogRef: MatDialogRef<DialogComponent>;
         // this.dialog.invoke(DialogComponent, {
@@ -173,11 +185,11 @@ export class ProfileComponent implements OnInit {
             });
     }
 
-    loadComponent(viewContainerRef: ViewContainerRef, postItem: Product) {
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DynamicFormComponent);
-        const componentRef = this.viewContainerRef.createComponent(componentFactory);
-        viewContainerRef.clear();
-    }
+    // loadComponent(viewContainerRef: ViewContainerRef, postItem: Product) {
+    //     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DynamicFormComponent);
+    //     const componentRef = this.viewContainerRef.createComponent(componentFactory);
+    //     viewContainerRef.clear();
+    // }
     // ────────────────────────────────────────────────────────────────────────────────
 
 

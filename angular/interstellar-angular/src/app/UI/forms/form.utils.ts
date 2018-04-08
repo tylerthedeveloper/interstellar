@@ -17,11 +17,13 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 //     return group;
 // };
 
-const createFormGroup = (keySetMapper: any, object: any): FormGroup => {
+const createFormGroup = (questions: any, objectMapper: any): FormGroup => {
     const group: any = {};
-    keySetMapper.forEach(element => {
+    // console.log(keySetMapper);
+    // console.log(object);
+    questions.forEach(element => {
         const key = element.key;
-        const value = object[key] || element.value || '';
+        const value = objectMapper[key] || element.value || '';
         group[key] = element.required ?
                         new FormControl(value, Validators.required) :
                         new FormControl(value);
