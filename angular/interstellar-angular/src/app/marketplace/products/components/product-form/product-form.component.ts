@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Product } from '../../../_market-models/product';
 import { FormGroup } from '@angular/forms';
-import { MyFormElement, publicProductData } from 'app/marketplace/_forms/product.form';
+import { MyFormElement } from 'app/marketplace/_forms/product.form';
 
 @Component({
   selector: 'app-product-form',
@@ -42,7 +42,7 @@ export class ProductFormComponent implements OnInit {
       //   console.log(this.productForm.get(element))
       //   return <any>this.productForm.get(element)
       // });
-      this.formQuestions = publicProductData;
+    //   this.formQuestions = publicProductData;
   }
 
 }

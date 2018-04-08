@@ -1,42 +1,76 @@
-import { Component, OnInit, Inject, ComponentRef, ViewContainerRef, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, Inject, ComponentRef, ViewContainerRef, ViewChild, ComponentFactoryResolver, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ComponentPortal } from '@angular/cdk/portal';
+import { DynamicFormComponent } from '../../forms/dynamic-form/dynamic-form.component';
 
 @Component({
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.css']
 })
-export class DialogComponent implements OnInit {
+export class DialogComponent implements OnInit, OnDestroy  {
 
     @ViewChild('target', { read: ViewContainerRef }) vcRef: ViewContainerRef;
-
     componentRef: ComponentRef<any>;
+    private canFinish = false;
 
     constructor(public dialogRef: MatDialogRef<DialogComponent>,
                 private resolver: ComponentFactoryResolver,
                 @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+      ngOnInit() {
+        const factory = this.resolver.resolveComponentFactory(this.data.component);
+        this.componentRef = this.vcRef.createComponent(factory);
+        Object.keys(this.data.payload).forEach(key => this.componentRef.instance[key] = this.data.payload[key]);
+        <DynamicFormComponent> this.componentRef.instance.isValid().subscribe(bool => this.canFinish = bool)
+      }
+
+      closeWithData() {
+        // console.log(this.componentRef.instance.form.value)
+        // console.log(this.componentRef.instance.form.valid)
+        this.dialogRef.close(this.componentRef.instance.form.value);
+      }
+
+    ngOnDestroy() {
+        if (this.componentRef) {
+          this.componentRef.destroy();
+        }
+    }
+}
+
+/*
+
+    // loadComponent(viewContainerRef: ViewContainerRef, postItem: Product) {
+    //     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DynamicFormComponent);
+    //     const componentRef = this.viewContainerRef.createComponent(componentFactory);
+    //     viewContainerRef.clear();
+    // }
+
 
     ngOnInit() {
       const factory = this.resolver.resolveComponentFactory(this.data.component);
       this.componentRef = this.vcRef.createComponent(factory);
       // this.componentRef.instance.questions = this.data.payload.questions;
       // this.componentRef.instance.objectMapper = this.data.payload.objectMapper;
+      // this.componentRef.instance.
       Object.keys(this.data.payload).forEach(key => {
-          console.log(key);
-          console.log(this.data.payload[key]);
+          // console.log(key);
+          // console.log(this.data.payload[key]);
           this.componentRef.instance[key] = this.data.payload[key];
       });
       // this.componentRef = this.data.componentRef;
     }
 
-
-    ngOnDestroy() {
+     ngOnDestroy() {
       if (this.componentRef) {
+        // console.log(this.dialogRef.componentInstance)
+        // console.log(this.componentRef)
+        // console.log(this.vcRef)
+        // console.log(this.componentRef.instance.form)
+        // console.log(this.componentRef.instance.payload);
         this.componentRef.destroy();
       }
-    }  
-    
-    // portal: ComponentPortal<any>;
+
+    */
+  // portal: ComponentPortal<any>;
     // constructor(public dialogRef: MatDialogRef<DialogComponent>,
     //             @Inject(MAT_DIALOG_DATA) public data: any) { }
 
@@ -57,5 +91,3 @@ export class DialogComponent implements OnInit {
   //     return dialogRef.afterClosed();
   // }
 
-
-}

@@ -51,6 +51,14 @@ export class ProductService {
         return this.productsCollection.valueChanges();
     }
 
+        /**
+     * @returns string
+     */
+    getNewProductID(): string {
+        const _newProductID = this.afs.createId();
+        return _newProductID;
+    }
+
     // TODO: TEST bATCH
     // TODO: TEST RETURN CONFIRMATION / TRUE
     addProduct(productData: string) {
@@ -62,7 +70,7 @@ export class ProductService {
         batch.set(this.productsCollection.doc(_docID).ref, _productData);
         batch.set(this.userProductsCollection.doc(`${this._userID}/products/${_docID}`).ref, _productData);
         batch.set(this.productCategoriesCollection.doc(`${_cat}/products/${_docID}`).ref, _productData);
-        return batch.commit();
+        return batch.commit().then(() => _docID);
         // this.productsCollection.doc(_docID).set(_productData);
         // this.productCategoriesCollection.doc(`${_cat}/products/${_docID}`).set(_productData);
         // this.userProductsCollection.doc(`${this._userID}/products/${_docID}`).set(_productData);

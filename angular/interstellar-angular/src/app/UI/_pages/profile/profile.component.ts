@@ -1,5 +1,5 @@
 /** Angular */
-import { Component, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentFactory, ViewChild, Type } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { FormGroup } from '@angular/forms';
 // import { ReactiveFormsModule } from '@angular/forms';
@@ -25,9 +25,11 @@ import { MatDialog } from '@angular/material';
 
 /** Utils */
 import { createFormGroup } from 'app/UI/utils';
-import { publicProductData } from '../../../marketplace/_forms/product.form';
 import { DialogComponent } from '../../_components/dialog/dialog.component';
 import { DynamicFormComponent } from '../../forms/dynamic-form/dynamic-form.component';
+import { Router } from '@angular/router';
+import { isValidProduct } from 'app/marketplace/products/product.utils';
+import { productFormData } from 'app/marketplace/products/product.details';
 
 
 @Component({
@@ -54,8 +56,8 @@ export class ProfileComponent implements OnInit {
     constructor(private _userService: UserService,
                 private _productService: ProductService,
                 private dialog: MatDialog,
-                private viewContainerRef: ViewContainerRef,
-                private componentFactoryResolver: ComponentFactoryResolver) {}
+                public router: Router) {}
+
 
     ngOnInit(): void {
 
@@ -106,26 +108,46 @@ export class ProfileComponent implements OnInit {
         return this._userService.updateProfile(data);
     }
 
-
-    createComponentRef(a: any, b: any) {
-        // const factory = this.resolver.resolveComponentFactory(this.data.component);
-        // this.componentRef = this.vcRef.createComponent(factory);
-        // this.componentRef.instance.objectMapper = this.data.data;
-        // this.componentRef.instance.questions = this.data.mapper;  
-    }
-
     /**
      * @returns void
      */
     addProduct(): void {
-        const product = <Product> {
+        const dialogRef = this.dialog.open(DialogComponent, {
+            data: { component: DynamicFormComponent,
+                    payload: {
+                        questions: productFormData,
+                        // objectMapper: product
+                    }
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((result: string) => {
+            if (result) {
+                this.handleNewProduct(result);
+            }
+        });
+    }
+    // ────────────────────────────────────────────────────────────────────────────────
+
+
+    //
+    // ──────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: P A G E   H E L P E R S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────
+    //
+
+    handleNewProduct(product: any) {
+        // console.log('product');
+        // console.log(product);
+         const _product = <Product> {
             productName: 'super fast GPU22222222',
-            productShortDescription: '',
+            productShortDescription: 'shawrty',
             productLongDescription: 'looooooooooooong des',
             fixedUSDAmount: 10,
             quantity: 15,
             productCategory: 'Electronics',
             productPrices: [
+                new AssetBalance('7.00000', 'tycoin', 'Tycoins')
             ],
             productThumbnailLink: 'https://images10.newegg.com/productimage/14-487-290-01.jpg',
             productSellerData: {
@@ -135,7 +157,40 @@ export class ProfileComponent implements OnInit {
             }
         };
 
+        // validate product
+        if (!isValidProduct(product)) {
+            alert('invalid product error');
+            return;
+        }
+
+        // todo: add seller user data!!!!!!
+        
+        const p = JSON.stringify(product);
+        this._productService.addProduct(p)
+                    .catch(err => console.log(err))
+                    .then(res => this.router.navigate(['/products', res]));
+    }
+
+
+
+    /**
+     * @returns void
+     */
+    editProfile(): void {
+        this.edit = !this.edit;
+    }
+    // ────────────────────────────────────────────────────────────────────────────────
+}
+
         /*
+
+            createComponentRef(a: any, b: any) {
+        // const factory = this.resolver.resolveComponentFactory(this.data.component);
+        // this.componentRef = this.vcRef.createComponent(factory);
+        // this.componentRef.instance.objectMapper = this.data.data;
+        // this.componentRef.instance.questions = this.data.mapper;
+    }
+
         // const dialogRef2 = new DynamicFormComponent();
                     // dialogRef2.questions2 = publicProductData;
                     // dialogRef2.objectMapper2 = product;
@@ -161,52 +216,9 @@ export class ProfileComponent implements OnInit {
     //    componentRef.instance.objectMapper = product;
     //    componentRef.instance.questions = publicProductData;
 
-       let dialogRef = this.dialog.open(DialogComponent, {
-            // width: '250px',
-            data: { component: DynamicFormComponent, 
-                    payload: { 
-                        questions: publicProductData, 
-                        objectMapper: product 
-                    }
-            }
-        });
-        // let dialogRef: MatDialogRef<DialogComponent>;
+    // let dialogRef: MatDialogRef<DialogComponent>;
         // this.dialog.invoke(DialogComponent, {
         // // let dialogRef2: MatDialogRef<DialogComponent>;
         //     width: '250px',
         //     data: { component: componentRef, mapper: publicProductData, data: product }
         // });
-
-        dialogRef.afterClosed().subscribe((result: string) => {
-            if (result) {
-                console.log('resultttttt');
-            }
-            console.log(result);
-            });
-    }
-
-    // loadComponent(viewContainerRef: ViewContainerRef, postItem: Product) {
-    //     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DynamicFormComponent);
-    //     const componentRef = this.viewContainerRef.createComponent(componentFactory);
-    //     viewContainerRef.clear();
-    // }
-    // ────────────────────────────────────────────────────────────────────────────────
-
-
-    //
-    // ──────────────────────────────────────────────────────────────── I ──────────
-    //   :::::: P A G E   H E L P E R S : :  :   :    :     :        :          :
-    // ──────────────────────────────────────────────────────────────────────────
-    //
-
-
-
-    /**
-     * @returns void
-     */
-    editProfile(): void {
-        this.edit = !this.edit;
-    }
-    // ────────────────────────────────────────────────────────────────────────────────
-}
-

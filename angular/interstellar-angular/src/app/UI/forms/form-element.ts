@@ -1,4 +1,4 @@
-export class MyFormElement<T> {
+class MyFormElement<T> {
     value: T;
     key: string;
     label: string;
@@ -23,7 +23,7 @@ export class MyFormElement<T> {
     }
 }
 
-export class TextboxQuestion extends MyFormElement<string> {
+class TextboxQuestion extends MyFormElement<string> {
   controlType = 'textbox';
   type: string;
 
@@ -32,3 +32,31 @@ export class TextboxQuestion extends MyFormElement<string> {
     this.type = options['type'] || '';
   }
 }
+
+// Todo: figure out serlector
+class NumberInputQuestion extends MyFormElement<number> {
+  controlType = 'textbox';
+  type: number;
+
+  constructor(options: {} = {}) {
+    super(options);
+    this.type = options['type'] || '';
+  }
+}
+
+
+// todo: https://embed.plnkr.co/plunk/RYRuFD
+
+
+// https://embed.plnkr.co/plunk/QcCN2I
+class DropdownQuestion extends MyFormElement<string> {
+  controlType = 'dropdown';
+  options: {key: string, value: string}[] = [];
+
+  constructor(options: {} = {}) {
+    super(options);
+    this.options = options['options'] || [];
+  }
+}
+
+export { MyFormElement,  TextboxQuestion, DropdownQuestion, NumberInputQuestion };

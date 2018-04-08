@@ -25,7 +25,7 @@ export class CategoryPageComponent implements OnInit {
     constructor(private activatedRoute: ActivatedRoute,
         private _productService: ProductService,
         private location: Location,
-        public router: Router) {
+        private router: Router) {
     }
 
     ngOnInit() {

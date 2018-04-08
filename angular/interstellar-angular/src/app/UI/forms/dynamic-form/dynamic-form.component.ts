@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MyFormElement } from '../form-element';
 import { createFormGroup } from '../form.utils';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -11,31 +11,31 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 })
 export class DynamicFormComponent implements OnInit {
 
-    // @Input() objectMapper: any;
-    // @Input() questions: MyFormElement<any>[] = [];
     questions: MyFormElement<any>[] = [];
     objectMapper: any;
 
+    private _submitted = new Subject<boolean>();
     private form: FormGroup;
     private payLoad;
 
-    // constructor() {
-    // }
     // constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
     //   // this.objectMapper2 = data.mapper;
     //   // this.questions = data.mapper;
     //   // console.log(data);
     // }
 
+    isValid() {
+      return this._submitted.asObservable();
+    }
 
     ngOnInit() {
       this.form = createFormGroup(this.questions, this.objectMapper);
     }
 
     onSubmit() {
-      this.payLoad = JSON.stringify(this.form.value);
-      console.log(JSON.stringify(this.form.value));
-
+        this.payLoad = JSON.stringify(this.form.value);
+        this._submitted.next(true);
+        // console.log(JSON.stringify(this.form.value));
     }
 
 }

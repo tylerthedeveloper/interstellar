@@ -1,3 +1,6 @@
+// https://codecraft.tv/courses/angular/built-in-directives/ngfor/
+// https://stackoverflow.com/questions/44272911/angular2-nested-ngfor
+
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from 'app/core/services/order.service';
 import { ActivatedRoute } from '@angular/router';

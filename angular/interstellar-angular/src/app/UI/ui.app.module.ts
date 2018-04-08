@@ -3,10 +3,7 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ProfileComponent, RegisterComponent, WelcomeComponent } from './_pages';
-import { ConfirmDialogComponent } from './_components';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AbstractFormComponent } from 'app/UI/_components/abstract-form/abstract-form.component';
-import { ProductFormComponent } from '../marketplace/products/components/product-form/product-form.component';
 import { MaterialModule } from 'app/core/material.module';
 import { DialogComponent } from './_components/dialog/dialog.component';
 // import { SharedModule } from 'app/shared';
@@ -20,7 +17,7 @@ const UIPages = [ ProfileComponent, WelcomeComponent, RegisterComponent ];
     imports : [
         MaterialModule,
 //            CdkTableModule,
-        CommonModule, 
+        CommonModule,
         ReactiveFormsModule,
         // SharedModule
     ],
@@ -37,7 +34,7 @@ const UIPages = [ ProfileComponent, WelcomeComponent, RegisterComponent ];
             ...UIPages,
             // ...dialogComponents
         ],
-    entryComponents: [ DialogComponent, DynamicFormComponent, DynamicFormQuestionComponent ], // DialogComponent,
+    entryComponents: [ DialogComponent, DynamicFormComponent, DynamicFormQuestionComponent ],
     schemas: [ NO_ERRORS_SCHEMA ],
 
 })

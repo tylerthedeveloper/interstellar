@@ -39,40 +39,38 @@ import { Product } from '../_market-models/product';
 
 
 
-// const publicProductData = [
-//     // {'productName'},
-//     {key: 'productName',
-//     label: 'productName',
-//     value: '',
-//     required: true,
-//     order: 1},
+// const requiredPublicProductData = [
+//     'productName',
 //     'productShortDescription',
-//     'productLongDescription',
 //     'fixedUSDAmount',
 //     'quantity',
 //     'productPrices',
 //     'productThumbnailLink',
-//     'productImages',
 //     'productCategory'
 // ];
 
-const publicProductData = [
-    // {'productName'},
-    new TextboxQuestion({
-        key: 'productName',
-        label: 'productName',
-        value: '',
-        required: true,
-        order: 1
-      }),
-      new TextboxQuestion({
-        key: 'productShortDescription',
-        label: 'productShortDescription',
-        value: '',
-        required: true,
-        order: 1
-      }),
-];
+// const optionalPublicProductData = [
+//     'productLongDescription',
+//     'productImages',
+// ];
+
+// const productFormData = [
+//     // {'productName'},
+//     new TextboxQuestion({
+//         key: 'productName',
+//         label: 'productName',
+//         value: '',
+//         required: true,
+//         order: 1
+//       }),
+//       new TextboxQuestion({
+//         key: 'productShortDescription',
+//         label: 'productShortDescription',
+//         value: '',
+//         required: true,
+//         order: 1
+//       }),
+// ];
 
 
 
@@ -81,32 +79,32 @@ const publicProductData = [
  * @returns FormGroup
  */
 // _model: any = {}
-const productFormGroup = (): FormGroup => {
-        const _formBuilder = new FormBuilder();
-        const group = _formBuilder.group({});
-        // _model[attr] ||
-                                        // group.addControl(attr['key'] || attr, new FormControl(attr)));
-        publicProductData.forEach(element => (group[element.key] = element.required) ?
-                                            group[element.key] = new FormControl(element.value || '', Validators.required) :
-                                            group[element.key] = new FormControl(element.value || ''));
+// const productFormGroup = (): FormGroup => {
+//         const _formBuilder = new FormBuilder();
+//         const group = _formBuilder.group({});
+//         // _model[attr] ||
+//                                         // group.addControl(attr['key'] || attr, new FormControl(attr)));
+//         publicProductData.forEach(element => (group[element.key] = element.required) ?
+//                                             group[element.key] = new FormControl(element.value || '', Validators.required) :
+//                                             group[element.key] = new FormControl(element.value || ''));
 
-        return group;
-};
+//         return group;
+// };
 
-const toFormGroup = (object: any) => {
-    const group: any = {};
-    // if (product) {
-    //     Object.keys(product).forEach(key => console.log(key + ' ' + product[key]))
-    // }
-    publicProductData.forEach(element => {
-        const key = element.key;
-            const value = object[key] || element.value || '';
-            group[key] = element.required ? new FormControl(value, Validators.required) :
-                                            new FormControl(value);
-            console.log('+element', group[key]);
+// const toFormGroup = (object: any) => {
+//     const group: any = {};
+//     // if (product) {
+//     //     Object.keys(product).forEach(key => console.log(key + ' ' + product[key]))
+//     // }
+//     productFormData.forEach(element => {
+//         const key = element.key;
+//             const value = object[key] || element.value || '';
+//             group[key] = element.required ? new FormControl(value, Validators.required) :
+//                                             new FormControl(value);
+//             console.log('+element', group[key]);
 
-    });
-    return new FormGroup(group);
-  };
+//     });
+//     return new FormGroup(group);
+//   };
 
-export { publicProductData, toFormGroup, productFormGroup };
+// export { toFormGroup };

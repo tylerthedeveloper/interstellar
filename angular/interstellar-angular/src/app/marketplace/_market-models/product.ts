@@ -2,6 +2,7 @@ import { AssetBalance } from '../../stellar';
 
 export class Product {
 
+    // TODO: change to productID
     id: string;
     productName: string;
     productShortDescription: string;

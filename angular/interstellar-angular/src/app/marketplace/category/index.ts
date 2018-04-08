@@ -21,11 +21,11 @@ import { CategoryProductCardComponent } from 'app/marketplace/category/component
         RouterModule.forChild(routes),
 
     ],
-    declarations: [ 
-        CategoryFeedComponent, 
-        CategoryPageComponent, 
-        CategoryCardComponent, 
-        CategoryProductCardComponent 
+    declarations: [
+        CategoryFeedComponent,
+        CategoryPageComponent,
+        CategoryCardComponent,
+        CategoryProductCardComponent
     ],
     providers: [ ]
   })

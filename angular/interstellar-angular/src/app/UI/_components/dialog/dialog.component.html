@@ -9,10 +9,15 @@
 <mat-dialog-content class="accent-color">
     <!-- {{ content }} -->
     <!-- <ng-template [cdkPortalOutlet]="portal"></ng-template> -->
-    <ng-template #target></ng-template>
+    <ng-template #target >
+        <!-- (notify)="prp($event)" -->
+    </ng-template>
+    <button mat-button mat-dialog-close>
+        Cancel
+    </button>
+    <button type="button" mat-raised-button (click)="closeWithData()" [disabled]="!canFinish">
+        Finish
+    </button>
 </mat-dialog-content>
-<button mat-button mat-dialog-close>Cancel</button>
-<button type="button" mat-raised-button (click)="dialogRef.close(true)">OK
-</button>
 
 <!-- <router-ou -->

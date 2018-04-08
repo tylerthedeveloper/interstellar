@@ -17,6 +17,7 @@ export class CategoryFeedComponent implements OnInit {
 
     constructor(private router: Router) {
                 this._categories = categories;
+                // console.log(_categories2)
                 // console.log("creating category feed")
     }
 
