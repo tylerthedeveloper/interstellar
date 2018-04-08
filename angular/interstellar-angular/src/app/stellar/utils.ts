@@ -3,8 +3,8 @@ import { AssetBalance } from 'app/stellar';
 
 // TODO: add to asset balance
 const currencyAssetsMapper = {
-    'native' : 'Lumens',
-    'tycoin' : 'TyCoins'
+    'Native' : 'Lumens',
+    'Tycoin' : 'TyCoins'
 };
 
 const isValidSecretKey = (secretKey: string): string => {

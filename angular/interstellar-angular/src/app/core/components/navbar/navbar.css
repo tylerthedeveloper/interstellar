@@ -30,12 +30,14 @@
     z-index: 1;
     width: 100%  !important;
     /* fxLayoutAlign="space-around center" */
+    height: 6%;
 }
 
 .main-nav-button {
     background-color: #59698d;
-    padding: 0 4 0 4em;
-    margin: 0 4 0 4em;
+    /* padding: 0 0 0 4;
+    margin: 0 0 0 4; */
+    padding-top: .5em;
     box-shadow: none;
 }
 

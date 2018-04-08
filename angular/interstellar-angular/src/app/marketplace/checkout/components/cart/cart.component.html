@@ -4,7 +4,7 @@
             <span *ngIf="cartItemList.length > 0; then isCartItems; else emptyCart"> </span>
             <ng-template #isCartItems>
                 <div class="col-12 col-md-10">
-                    <h2> My Cart <small> ({{ cartItemList.length }} item{{ cartItemList.length > 0 ? 's' : '' }})</small> </h2>
+                    <h5> My Cart <small> ({{ cartItemList.length }} item{{ cartItemList.length > 0 ? 's' : '' }})</small> </h5>
 
                     <div class="card" style="display: flex; flex-direction: row; margin: 0em 0em .1em 0em;">
 
@@ -12,11 +12,11 @@
                       </div>
 
                       <div class="col-md-4" style="display: flex; flex-direction: row; margin: .5em -2.5em 0em 0em; ">
-                        <p style="text-align: left;">Product</p>
+                        <p style="text-align: left; margin: 0em 0em 0em 28%;">Product</p>
                         <!-- <p> {{ cartItem?.productID }} </p>
                         <p> {{ cartItem?.cartItemID }} </p> -->
-                        <p class="offset-1" style="text-align: center;">Quantity</p>
-                        <p class="offset-3" style="text-align: right;">Price</p>
+                        <p class="offset-1" style="text-align: center; margin: 0em 0em 0em 10%;">Quantity</p>
+                        <p class="offset-3" style="text-align: right; margin: 0em 0em 0em 10%;">Price</p>
                         <!-- <p> {{ cartItem?.description }} </p> -->
                       </div>
 
@@ -25,27 +25,27 @@
 
                     </div>
 
-                    <div *ngFor="let product of cartItemList" style="margin: 0em 0em .2em 0em;">
+                    <div *ngFor="let product of cartItemList" style="margin: 0em 0em .3% 0em;">
                         <app-cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></app-cart-item-card>
                     </div>
                 </div>
-                <div class="col-md-2 text-nowrap" id="assetTotals">
+                <div class="col-md-2 text-nowrap" id="assetTotals" style="margin: 1% 0% 0% 0%">
                     <!-- width:400 px;  -->
-                    <h6 style="display: flex; margin: 1em 0em 0em 0em;"> Cart Asset Totals </h6>
+                    <h6 style="display: flex; margin: 10% 0em 0em 0em;"> Cart Asset Totals </h6>
                     <div class="card">
-                        <div *ngFor="let asset of assetTotals ">
+                        <div *ngFor="let asset of assetTotals " style="margin: 5% 0em 0em 5%;">
                             <strong>{{ asset?.asset_type }}:</strong> {{ asset?.balance }}
                             <br />
                         </div>
-                        <button type="button" (click)="recalculateTotals()" class="btn btn-default btn-sm"> Recalculate </button>
+                        <button type="button" (click)="recalculateTotals()" class="btn btn-default btn-sm z-depth-0"> Recalculate </button>
                     </div>
                     <!-- width:400 px;  -->
                     <h6 class="text-nowrap" style="display: flex; margin: 1em 0em 0em 0em;"> Cart Options </h6>
                     <div class="card">
-                        <button (click)="proceedToCheckout()" class="btn btn-primary btn-sm"> Checkout </button>
-                        <button (click)="checkoutSelectedItems()" class="btn btn-blue-grey btn-sm"> Checkout Selected </button>
-                        <button (click)="removeSelectedItems()" class="btn btn-blue-grey btn-sm"> Remove Selected </button>
-                        <button (click)="emptyOutCart()" class="btn btn-blue-grey btn-sm"> Empty Cart </button>
+                        <button (click)="proceedToCheckout()" class="btn btn-primary btn-sm z-depth-0"> Checkout </button>
+                        <button (click)="checkoutSelectedItems()" class="btn btn-blue-grey btn-sm z-depth-0"> Checkout Selected </button>
+                        <button (click)="removeSelectedItems()" class="btn btn-blue-grey btn-sm z-depth-0"> Remove Selected </button>
+                        <button (click)="emptyOutCart()" class="btn btn-blue-grey btn-sm z-depth-0"> Empty Cart </button>
                     </div>
                 </div>
             </ng-template>
