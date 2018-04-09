@@ -1,32 +1,37 @@
 <div [formGroup]="form">
     <label [attr.for]="question.key">{{question.label}}</label>
-  
+
     <div [ngSwitch]="question.controlType">
-  
-      <input *ngSwitchCase="'textbox'" [formControlName]="question.key"
-              [id]="question.key" [type]="question.type">
-  
-      <select [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key">
-        <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
-      </select>
-      <div *ngSwitchCase="'array'"  [formArrayName]="question.key">
-          <div *ngFor="let item of question.options; let i=index"  [formGroupName]="i" >
-              <div *ngFor="let element of item.element">
-                  <div *ngIf="element.controlType === 'textbox'" >
-                      <label>{{element.label}}</label>
-                      <input [formControlName]="element.key" [id]="element.key" [type]="element.type" />
-                  </div>
-                  <div  *ngIf="element.controlType === 'dropdown'" >
-                      <label>{{item.label}}</label>
-                      <select [id]="element.key" [formControlName]="element.key">
-                          <option *ngFor="let opt of element.options" [value]="opt.key">{{opt.value}}</option>
-                      </select>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div> 
-  
+
+        <input *ngSwitchCase="'textbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type">
+        
+        <input *ngSwitchCase="'numberbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type">
+
+        <input *ngSwitchCase="'filebox'" [formControlName]="question.key" [id]="question.key" [type]="question.type" #fileInput (change)="renderFile($event)">
+        <!-- <button *ngSwitchCase="'filebox'" (click)="renderFile()"> add file </button> -->
+        <img *ngSwitchCase="'filebox'" [src]="imageUrl" />
+
+        <select [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key">
+            <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
+        </select>
+
+        <div *ngSwitchCase="'array'" [formArrayName]="question.key">
+            <div *ngFor="let item of question.options; let i=index" [formGroupName]="i">
+                <div *ngFor="let element of item.element">
+                    <div *ngIf="element.controlType === 'textbox'">
+                        <label>{{element.label}}</label>
+                        <input [formControlName]="element.key" [id]="element.key" [type]="element.type" />
+                    </div>
+                    <div *ngIf="element.controlType === 'dropdown'">
+                        <label>{{item.label}}</label>
+                        <select [id]="element.key" [formControlName]="element.key">
+                            <option *ngFor="let opt of element.options" [value]="opt.key">{{opt.value}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div>
-  </div>
-  
+</div>

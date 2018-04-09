@@ -27,10 +27,10 @@ export class NavBarComponent implements OnInit {
                     this.loggedIn = (sessionStorage.getItem('seed_key') ||
                                      localStorage.getItem('seed_key'))
                                      ? true : false;
-                    this.currentPage = (this.currentPage) ? this.currentPage : 'home';
                 }
 
     ngOnInit(): void {
+        this.currentPage = (this.currentPage === '') ? this.currentPage : 'home';
         document.getElementById(this.currentPage || 'home').style.textDecoration = 'underline';
         this._eventEmiter.dataStr.subscribe((data: any) => {
                 if (data.message === 'logout') {
@@ -108,7 +108,10 @@ export class NavBarComponent implements OnInit {
             document.getElementById(this.currentPage).style.textDecoration = 'none';
         }
         this.currentPage = nextPage;
-        document.getElementById(this.currentPage).style.textDecoration = 'underline';
+        this.loggedIn = true;
+        console.log(this.currentPage)
+        // TODO.... 
+        // document.getElementById(this.currentPage).style.textDecoration = 'underline';
         if (this.sideNav.opened) { this.sideNav.close(); }
         this.router.navigate(['/' + nextPage]);
     }

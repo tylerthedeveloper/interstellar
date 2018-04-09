@@ -33,9 +33,9 @@ class TextboxQuestion extends MyFormElement<string> {
   }
 }
 
-// Todo: figure out serlector
-class NumberInputQuestion extends MyFormElement<number> {
-  controlType = 'textbox';
+// Todo: figure out number selector
+class NumberInputQuestion extends MyFormElement<string> {
+  controlType = 'numberbox';
   type: number;
 
   constructor(options: {} = {}) {
@@ -46,7 +46,18 @@ class NumberInputQuestion extends MyFormElement<number> {
 
 
 // todo: https://embed.plnkr.co/plunk/RYRuFD
+// https://stackoverflow.com/questions/35399617/angular-2-file-upload-from-input-type-file
+// https://stackoverflow.com/questions/43444440/how-to-include-a-file-upload-control-in-an-angular2-reactive-form/43481420
+class FileUploadQuestion extends MyFormElement<string> {
+  controlType = 'filebox';
+  type: File;
+  hasContent: boolean;
 
+  constructor(options: {} = {}) {
+    super(options);
+    this.type = options['type'] || '';
+  }
+}
 
 // https://embed.plnkr.co/plunk/QcCN2I
 class DropdownQuestion extends MyFormElement<string> {
@@ -59,4 +70,6 @@ class DropdownQuestion extends MyFormElement<string> {
   }
 }
 
-export { MyFormElement,  TextboxQuestion, DropdownQuestion, NumberInputQuestion };
+export { MyFormElement, TextboxQuestion, DropdownQuestion, 
+         NumberInputQuestion, FileUploadQuestion
+};

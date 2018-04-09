@@ -1,6 +1,9 @@
 <h1 mat-dialog-title> {{ title }}</h1>
 <mat-dialog-content >
     {{ content }}
+    <!-- <input #fileInput type="file"/> -->
+    <input class="form-control" type="file" name="avatar" (change)="imageUpload($event)">
+
 </mat-dialog-content>
 <mat-dialog-actions>
         <button mat-raised-button mat-dialog-close (click)="dialogRef.close(content)">

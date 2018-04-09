@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MyFormElement } from '../form-element';
 import { createFormGroup } from '../form.utils';
@@ -10,6 +10,7 @@ import { Subject } from 'rxjs/Subject';
   styleUrls: ['./dynamic-form.component.css']
 })
 export class DynamicFormComponent implements OnInit {
+
 
     questions: MyFormElement<any>[] = [];
     objectMapper: any;

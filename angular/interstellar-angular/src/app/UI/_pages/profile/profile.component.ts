@@ -30,6 +30,7 @@ import { DynamicFormComponent } from '../../forms/dynamic-form/dynamic-form.comp
 import { Router } from '@angular/router';
 import { isValidProduct } from 'app/marketplace/products/product.utils';
 import { productFormData } from 'app/marketplace/products/product.details';
+import { ConfirmDialogComponent } from '../../_components/confirm-dialog/confirm.dialog.component';
 
 
 @Component({
@@ -123,10 +124,28 @@ export class ProfileComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: string) => {
             if (result) {
+                console.log(result)
                 this.handleNewProduct(result);
             }
         });
+        // const dialogRef = this.dialog.open(ConfirmDialogComponent);
+
+        // dialogRef.afterClosed().subscribe((result: string) => {
+        //     // if (result) {
+        //     //     this.handleNewProduct(result);
+        //     // }
+        // });
     }
+    imageUpload(e) {
+        let reader = new FileReader();
+        //get the selected file from event
+        let file = e.target.files[0];
+        reader.onloadend = () => {
+          //Assign the result to variable for setting the src of image element
+          // this.imageUrl = reader.result;
+        }
+        reader.readAsDataURL(file);
+      }
     // ────────────────────────────────────────────────────────────────────────────────
 
 
@@ -163,8 +182,12 @@ export class ProfileComponent implements OnInit {
             return;
         }
 
-        // todo: add seller user data!!!!!!
-        
+        // todo: TEST THESE ARENT EVER NULL!!!!!!
+        product.productSellerData = {
+            productSellerID: sessionStorage.getItem('user_doc_id'),
+            productSellerName: sessionStorage.getItem('user_name'), // TODO: store user data in session storage!!!
+            productSellerPublicKey: sessionStorage.getItem('public_key')
+        };
         const p = JSON.stringify(product);
         this._productService.addProduct(p)
                     .catch(err => console.log(err))

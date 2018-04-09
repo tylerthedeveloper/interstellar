@@ -9,6 +9,7 @@ import { DialogComponent } from './_components/dialog/dialog.component';
 // import { SharedModule } from 'app/shared';
 import { DynamicFormComponent } from './forms/dynamic-form/dynamic-form.component';
 import { DynamicFormQuestionComponent } from './forms/dynamic-form-question/dynamic-form-question.component';
+import { ConfirmDialogComponent } from './_components';
 
 const UIPages = [ ProfileComponent, WelcomeComponent, RegisterComponent ];
 // const dialogComponents = [ ConfirmDialogComponent, ProductFormComponent, DialogComponent ];
@@ -27,14 +28,15 @@ const UIPages = [ ProfileComponent, WelcomeComponent, RegisterComponent ];
                 // ...dialogComponents,
                 DynamicFormQuestionComponent,
                 DynamicFormComponent,
-                DialogComponent
+                DialogComponent,
+                ConfirmDialogComponent
             ],
     exports: [
             // MaterialDesignModule,
             ...UIPages,
             // ...dialogComponents
         ],
-    entryComponents: [ DialogComponent, DynamicFormComponent, DynamicFormQuestionComponent ],
+    entryComponents: [ ConfirmDialogComponent, DialogComponent, DynamicFormComponent, DynamicFormQuestionComponent ],
     schemas: [ NO_ERRORS_SCHEMA ],
 
 })

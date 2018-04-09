@@ -1,3 +1,6 @@
+// https://ng-run.com/edit/9giHmJ8bzMa8tBcZAm5t?open=app%2Fdialog.component.ts
+// https://ng-run.com/edit/OP87U87X2gR7U4ZmsxN3?open=app%2Fmaterial.module.ts
+
 import { Component, OnInit, Inject, ComponentRef, ViewContainerRef, ViewChild, ComponentFactoryResolver, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DynamicFormComponent } from '../../forms/dynamic-form/dynamic-form.component';
@@ -20,7 +23,12 @@ export class DialogComponent implements OnInit, OnDestroy  {
         const factory = this.resolver.resolveComponentFactory(this.data.component);
         this.componentRef = this.vcRef.createComponent(factory);
         Object.keys(this.data.payload).forEach(key => this.componentRef.instance[key] = this.data.payload[key]);
-        <DynamicFormComponent> this.componentRef.instance.isValid().subscribe(bool => this.canFinish = bool)
+
+        // TODO: check if is instance of 
+        if (this.componentRef.instance instanceof DynamicFormComponent) {
+          console.log('is instance if ');
+          (<DynamicFormComponent> this.componentRef.instance).isValid().subscribe(bool => this.canFinish = bool);
+        }
       }
 
       closeWithData() {

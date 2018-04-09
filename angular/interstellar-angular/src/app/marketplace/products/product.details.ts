@@ -1,4 +1,4 @@
-import { TextboxQuestion, DropdownQuestion, NumberInputQuestion } from 'app/UI/forms/form-element';
+import { TextboxQuestion, DropdownQuestion, NumberInputQuestion, FileUploadQuestion } from 'app/UI/forms/form-element';
 import { categoryTitleList } from '../category/categories';
 
 
@@ -34,16 +34,8 @@ const productFormData = [
     new TextboxQuestion({key: 'productShortDescription', label: 'Product Short Description', value: '', required: true, order: 1 }),
     new TextboxQuestion({key: 'productLongDescription', label: 'Product Long Description', value: '', required: false, order: 1 }),
     new TextboxQuestion({key: 'fixedUSDAmount', label: 'Fixed USD Amount', value: '', required: true, order: 1 }),
+    new NumberInputQuestion({key: 'quantity', label: 'Quantity', type : 'number', value: 1, required: true, order: 1 }),
 
-    // TODO: CHANGE TO QUANT
-    new NumberInputQuestion({
-        key: 'quantity',
-        // TODO: CHANGE TO productCategory
-        label: 'Quantity',
-        value: 1,
-        required: true,
-        order: 1
-      }),
     // TODO: CHANGE TO ASSET PROUDCT PRICES ... or dont????
     new DropdownQuestion({
         key: 'productAssetPrices',
@@ -55,17 +47,28 @@ const productFormData = [
         order: 3
       }),
       // todo: change to photo uplOAD
-    new TextboxQuestion({key: 'productThumbnailLink', label: 'Product ThumbnailLink', value: '', required: true, order: 1 }),
-    new DropdownQuestion({
-        key: 'productCategory',
-        label: 'Product Category',
-        options: categoryTitleList.map(element => {
-            return {key: element,  value: element};
-        }),
-        order: 3
-      }),
-            // todo: change to photo uplOAD --> set max
-      new TextboxQuestion({key: 'productImages', label: 'Product Images', value: '', required: false, order: 1 }),
+    new FileUploadQuestion({key: 'productThumbnailLink', 
+            label: 'Product ThumbnailLink', required: false, order: 1, type: 'file',
+            value: null
+        // click: console.log('in event')
+        //function(event) {
+        // console.log('in event')
+        
+        // const reader = new FileReader();
+     
+        // if(event.target.files && event.target.files.length) {
+        //   console.log('has content')
+        //   const [file] = event.target.files;
+        //   reader.readAsDataURL(file);
+        //   };
+         
+    }),
+    new DropdownQuestion({ key: 'productCategory', label: 'Product Category', required: true,
+                            options: categoryTitleList.map(element => { return {key: element,  value: element}; }), order: 3 
+    }),
+    
+    // todo: change to photo uplOAD --> set max
+    // new TextboxQuestion({key: 'productImages', label: 'Product Images', value: '', required: false, order: 1 }),
 ];
 
 export { productFormData, optionalPublicProductData, requiredPublicProductData };
