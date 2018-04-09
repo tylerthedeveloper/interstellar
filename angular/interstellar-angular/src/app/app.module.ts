@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database-deprecated';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-
+import { AngularFireStorageModule } from 'angularfire2/storage';
 
 /** App */
 import { AppComponent } from './app.component';
@@ -50,6 +50,7 @@ import { DynamicFormQuestionComponent } from './UI/forms/dynamic-form-question/d
       AngularFirestoreModule.enablePersistence(),
       AngularFireDatabaseModule, // AngularFireAuthModule,
       MDBBootstrapModule.forRoot(),
+      AngularFireStorageModule,
 
       RouterModule.forRoot(AppRoutes, { preloadingStrategy: PreloadAllModules }),
 

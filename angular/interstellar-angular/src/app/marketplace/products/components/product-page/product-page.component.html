@@ -3,7 +3,9 @@
     <h1 class="h1-responsive">{{ product?.productName }}</h1>
     <p class="lead">{{ product?.productLongDescription }}</p>
     <hr class="my-2">
-    <p>Price: ${{ product?.fixedUSDAmount }} </p> <p> Quantity {{ product?.quantity }} </p>
+    <p>Category: {{ product?.productCategory}} </p> 
+    <p>Price: ${{ product?.fixedUSDAmount }} </p> 
+    <p> Quantity {{ product?.quantity }} </p>
     <div *ngIf="!isMyProduct;" style="margin: 0em 0em 2em 0em;">
         <div>
             <input matInput type="number" id="purchaseQuantity" placeholder="Quantity" style="width: 20%;" 

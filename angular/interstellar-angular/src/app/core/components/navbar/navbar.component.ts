@@ -24,12 +24,12 @@ export class NavBarComponent implements OnInit {
                 private _stellarAccountService: StellarAccountService,
                 private _eventEmiter: EventEmitterService) {
 
-                    this.loggedIn = (sessionStorage.getItem('seed_key') ||
-                                     localStorage.getItem('seed_key'))
-                                     ? true : false;
                 }
 
     ngOnInit(): void {
+        this.loggedIn = (sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key')) ? true : false;
+        console.log(this.loggedIn)
+        console.log(sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key'))
         this.currentPage = (this.currentPage === '') ? this.currentPage : 'home';
         document.getElementById(this.currentPage || 'home').style.textDecoration = 'underline';
         this._eventEmiter.dataStr.subscribe((data: any) => {
@@ -108,9 +108,9 @@ export class NavBarComponent implements OnInit {
             document.getElementById(this.currentPage).style.textDecoration = 'none';
         }
         this.currentPage = nextPage;
-        this.loggedIn = true;
-        console.log(this.currentPage)
         // TODO.... 
+        // this.loggedIn = true;
+        // console.log(this.currentPage)
         // document.getElementById(this.currentPage).style.textDecoration = 'underline';
         if (this.sideNav.opened) { this.sideNav.close(); }
         this.router.navigate(['/' + nextPage]);

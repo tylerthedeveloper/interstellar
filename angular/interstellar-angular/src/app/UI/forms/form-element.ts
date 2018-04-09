@@ -70,6 +70,6 @@ class DropdownQuestion extends MyFormElement<string> {
   }
 }
 
-export { MyFormElement, TextboxQuestion, DropdownQuestion, 
+export { MyFormElement, TextboxQuestion, DropdownQuestion,
          NumberInputQuestion, FileUploadQuestion
 };

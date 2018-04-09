@@ -124,29 +124,44 @@ export class ProfileComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: string) => {
             if (result) {
-                console.log(result);
-                this.handleNewProduct(result);
+                const product = <Product> JSON.parse(JSON.stringify(result));
+                // console.log(res);
+                try {
+                    product.quantity = Number(product.quantity);
+                    product.fixedUSDAmount = Number(product.fixedUSDAmount);
+                    if (!isValidProductTypes(product)) {
+                        alert('invalid product error');
+                        return;
+                    }
+                    const newProductID = this._productService.getNewProductID();
+                    // console.log(id);
+                    this.uploadThumbnailImage(newProductID).subscribe(
+                        (imageUploadResult: string) => {
+                            // console.log(imageUploadResult);
+                            if (imageUploadResult) {
+                                // console.log(product);
+                                product.id = newProductID;
+                                product.productThumbnailLink = newProductID;
+                                // console.log(product);
+                                this.handleNewProduct(product);
+                            }
+                        },
+                        err => {
+                            alert('errror: \n ' + err);
+                        });
+                } catch (e) {
+                    alert('invalid product details:\n' + e);
+                }
             }
         });
-        // const dialogRef = this.dialog.open(ConfirmDialogComponent);
-
-        // dialogRef.afterClosed().subscribe((result: string) => {
-        //     // if (result) {
-        //     //     this.handleNewProduct(result);
-        //     // }
-        // });
     }
 
-    imageUpload(e) {
-        const reader = new FileReader();
-        // get the selected file from event
-        const file = e.target.files[0];
-        reader.onloadend = () => {
-          // Assign the result to variable for setting the src of image element
-          // this.imageUrl = reader.result;
-        };
-        reader.readAsDataURL(file);
-      }
+    uploadThumbnailImage(productID: string = 'new-prod-id23') {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            data: { productID: productID }
+        });
+        return dialogRef.afterClosed();
+    }
     // ────────────────────────────────────────────────────────────────────────────────
 
 
@@ -192,7 +207,6 @@ export class ProfileComponent implements OnInit {
             productSellerName: sessionStorage.getItem('user_name'), // TODO: store user data in session storage!!!
             productSellerPublicKey: sessionStorage.getItem('public_key')
         };
-        console.log(product.productSellerData);
         const p = JSON.stringify(product);
         this._productService.addProduct(p)
                     .catch(err => console.log(err))

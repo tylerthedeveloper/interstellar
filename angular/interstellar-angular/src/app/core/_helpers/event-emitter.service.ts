@@ -9,14 +9,14 @@ export class EventEmitterService {
     constructor() {
         console.log('creating event emitter');
     }
-    
+
     /**
      * @param  {{}} data
      */
     sendMessage = (data: {}) => {
         this.dataStr.next(data);
     }
-    
+
     /**
      * @param  {string} category
      */

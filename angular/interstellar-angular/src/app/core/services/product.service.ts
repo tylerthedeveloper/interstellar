@@ -63,9 +63,12 @@ export class ProductService {
     // TODO: TEST RETURN CONFIRMATION / TRUE
     addProduct(productData: string) {
         const _productData = <Product>JSON.parse(productData);
-        const _docID = this.afs.createId();
+        const _docID = _productData.id;
+// const _docID = this.afs.createId();
         const _cat = _productData.productCategory;
-        _productData.id = _docID;
+// _productData.id = _docID;
+        // console.log(_docID)
+        // console.log(_cat)
         const batch = this.afs.firestore.batch();
         batch.set(this.productsCollection.doc(_docID).ref, _productData);
         batch.set(this.userProductsCollection.doc(`${this._userID}/products/${_docID}`).ref, _productData);

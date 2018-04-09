@@ -101,14 +101,16 @@
     <!-- Bottom section consisting of Your listings and order history -->
 
 
-    <mat-tab-group style="margin-bottom: 5em;">
+    <mat-tab-group style="margin-bottom: 5em">
 
         <mat-tab label="My Listings">
 
-          <button class="btn btn-default z-depth-0" style="align" aria-hidden="true" (click)="addProduct()">List New Product</button>
+            <div style="align-items: center; justify-content: center;" >
+                <button class="btn btn-default z-depth-0" aria-hidden="true" (click)="addProduct()"> List New Product </button>
+            </div>
 
-          <div class="card" style="text-align: center; margin: 1em 0em 0em 0em;">
-          </div>
+          <!-- <div class="card" style="text-align:center; margin: 1em 0em 0em 0em;">
+          </div> -->
 
           <div style="display: inline-block; width: 20%; height: 20em; margin: auto;" *ngFor="let prod of products">
               <div class="card card-ecommerce z-depth-0" style="margin: .5em .2em 0em 0em;">
