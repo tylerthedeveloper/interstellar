@@ -124,7 +124,7 @@ export class ProfileComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: string) => {
             if (result) {
-                console.log(result)
+                console.log(result);
                 this.handleNewProduct(result);
             }
         });
@@ -136,14 +136,15 @@ export class ProfileComponent implements OnInit {
         //     // }
         // });
     }
+
     imageUpload(e) {
-        let reader = new FileReader();
-        //get the selected file from event
-        let file = e.target.files[0];
+        const reader = new FileReader();
+        // get the selected file from event
+        const file = e.target.files[0];
         reader.onloadend = () => {
-          //Assign the result to variable for setting the src of image element
+          // Assign the result to variable for setting the src of image element
           // this.imageUrl = reader.result;
-        }
+        };
         reader.readAsDataURL(file);
       }
     // ────────────────────────────────────────────────────────────────────────────────
@@ -183,11 +184,15 @@ export class ProfileComponent implements OnInit {
         }
 
         // todo: TEST THESE ARENT EVER NULL!!!!!!
+        product.productPrices = [
+            new AssetBalance('7.00000', 'native', 'Lumens')
+        ];
         product.productSellerData = {
             productSellerID: sessionStorage.getItem('user_doc_id'),
             productSellerName: sessionStorage.getItem('user_name'), // TODO: store user data in session storage!!!
             productSellerPublicKey: sessionStorage.getItem('public_key')
         };
+        console.log(product.productSellerData);
         const p = JSON.stringify(product);
         this._productService.addProduct(p)
                     .catch(err => console.log(err))

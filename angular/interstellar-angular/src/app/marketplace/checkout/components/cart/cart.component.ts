@@ -44,6 +44,7 @@ export class CartComponent implements OnInit {
      * @returns void
      */
     checkoutSelectedItems(): void {
+        console.log(this._checkedCartItemIDs)
         this.updateAddToCheckout(this._checkedCartItemIDs);
     }
 

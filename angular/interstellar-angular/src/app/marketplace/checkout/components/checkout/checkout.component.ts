@@ -88,6 +88,7 @@ export class CheckoutComponent implements OnInit {
                     cartPurchaseDetailsArray.push(CIT.assetPurchaseDetails);
                 });
                 this.sellerPublicKeys = new Set(_sellerPublicKeys);
+                console.log(this.sellerPublicKeys)
                 this.assetTotals = calcTotalsForMultipleAssets(cartPurchaseDetailsArray);
                 return arr;
             });
@@ -382,7 +383,7 @@ export class CheckoutComponent implements OnInit {
          */
         makeTransactionMemo(buyerPublicKey: string, sellerPublicKey: string): string {
             console.log(buyerPublicKey);
-            console.log(buyerPublicKey);
+            console.log(sellerPublicKey);
             const buyerKey = buyerPublicKey.substr(0, 5);
             const sellerKey = sellerPublicKey.substr(0, 5);
             return `From ${buyerKey}... to ${sellerKey}...`;

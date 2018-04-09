@@ -24,9 +24,9 @@ export class DialogComponent implements OnInit, OnDestroy  {
         this.componentRef = this.vcRef.createComponent(factory);
         Object.keys(this.data.payload).forEach(key => this.componentRef.instance[key] = this.data.payload[key]);
 
-        // TODO: check if is instance of 
+        // TODO: check if is instance of
         if (this.componentRef.instance instanceof DynamicFormComponent) {
-          console.log('is instance if ');
+          // console.log('is instance if ');
           (<DynamicFormComponent> this.componentRef.instance).isValid().subscribe(bool => this.canFinish = bool);
         }
       }

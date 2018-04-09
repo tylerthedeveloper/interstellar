@@ -13,7 +13,10 @@ const isValidProduct = (product: Product): boolean => {
     // todo: check if links are valid
     // check data types
     for (const attr of requiredPublicProductData) {
+        console.log(attr)
+        console.log(product[attr])
         if (!product[attr]) {
+            console.log(attr)
             return false;
         }
     }

@@ -32,19 +32,24 @@ export class DynamicFormQuestionComponent {
         console.log(fileToUpload);
         this.file = fileToUpload;
         const key = this.question.key;
-        this.form.patchValue({
-          key : 'aaaa'
-            // filename: fileToUpload.name,
-            // filetype: fileToUpload.type,
-            // value: reader.result.split(',')[1]
-        });
-      }
-      
-
-
+        console.log(key);
         console.log(this.fileInput.nativeElement.files);
-        this.form.controls[this.question.key].updateValueAndValidity()
-        console.log(this.form.controls[this.question.key]);
+        console.log(this.form.get(this.question.key).value);
+        // this.form.patchValue({key: 'fileToUpload'}); //, {onlySelf: true, emitEvent: true})
+        this.form.controls[key].patchValue('fileToUpload');
+
+        // this.form.patchValue({
+        //   key : 'aaaa'
+        //     // filename: fileToUpload.name,
+        //     // filetype: fileToUpload.type,
+        //     // value: reader.result.split(',')[1]
+        // });
+        console.log(this.fileInput.nativeElement.files);
+        console.log(this.form.get(this.question.key).value);
+      };
+
+
+
         // this.form.controls['file'].setValue($event.target.files)
   }
   constructor() { }

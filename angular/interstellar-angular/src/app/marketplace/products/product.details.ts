@@ -16,7 +16,7 @@ const requiredPublicProductData = [
     'productShortDescription',
     'fixedUSDAmount',
     'quantity',
-    'productThumbnailLink',
+    // 'productThumbnailLink',
     'productCategory'
 ];
 
@@ -47,26 +47,14 @@ const productFormData = [
         order: 3
       }),
       // todo: change to photo uplOAD
-    new FileUploadQuestion({key: 'productThumbnailLink', 
+    new FileUploadQuestion({key: 'productThumbnailLink',
             label: 'Product ThumbnailLink', required: false, order: 1, type: 'file',
-            value: null
-        // click: console.log('in event')
-        //function(event) {
-        // console.log('in event')
-        
-        // const reader = new FileReader();
-     
-        // if(event.target.files && event.target.files.length) {
-        //   console.log('has content')
-        //   const [file] = event.target.files;
-        //   reader.readAsDataURL(file);
-        //   };
-         
+            value: ''
     }),
-    new DropdownQuestion({ key: 'productCategory', label: 'Product Category', required: true,
-                            options: categoryTitleList.map(element => { return {key: element,  value: element}; }), order: 3 
+    new DropdownQuestion({ key: 'productCategory', label: 'Product Category', required: true, order: 3,
+                            options: categoryTitleList.map(element => ({key: element,  value: element})),
     }),
-    
+
     // todo: change to photo uplOAD --> set max
     // new TextboxQuestion({key: 'productImages', label: 'Product Images', value: '', required: false, order: 1 }),
 ];

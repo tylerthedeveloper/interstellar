@@ -49,7 +49,6 @@ import { DynamicFormQuestionComponent } from './UI/forms/dynamic-form-question/d
       AngularFireModule.initializeApp(environment.firebase),
       AngularFirestoreModule.enablePersistence(),
       AngularFireDatabaseModule, // AngularFireAuthModule,
-
       MDBBootstrapModule.forRoot(),
 
       RouterModule.forRoot(AppRoutes, { preloadingStrategy: PreloadAllModules }),
@@ -72,8 +71,6 @@ import { DynamicFormQuestionComponent } from './UI/forms/dynamic-form-question/d
 
               UserService,
               // ConfirmDialogComponent
-              
-              
             ],
   entryComponents: [ DialogComponent, DynamicFormComponent, DynamicFormQuestionComponent ], // DialogComponent,
   bootstrap: [AppComponent],

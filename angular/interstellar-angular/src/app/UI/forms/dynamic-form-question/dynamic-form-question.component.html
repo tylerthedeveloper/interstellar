@@ -7,7 +7,8 @@
         
         <input *ngSwitchCase="'numberbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type">
 
-        <input *ngSwitchCase="'filebox'" [formControlName]="question.key" [id]="question.key" [type]="question.type" #fileInput (change)="renderFile($event)">
+        <input *ngSwitchCase="'filebox'" [formControlName]="question.key" [id]="question.key" [type]="question.type" 
+                #fileInput (change)="renderFile($event)">
         <!-- <button *ngSwitchCase="'filebox'" (click)="renderFile()"> add file </button> -->
         <img *ngSwitchCase="'filebox'" [src]="imageUrl" />
 
