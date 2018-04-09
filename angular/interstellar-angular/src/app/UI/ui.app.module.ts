@@ -10,6 +10,7 @@ import { DialogComponent } from './_components/dialog/dialog.component';
 import { DynamicFormComponent } from './forms/dynamic-form/dynamic-form.component';
 import { DynamicFormQuestionComponent } from './forms/dynamic-form-question/dynamic-form-question.component';
 import { ConfirmDialogComponent } from './_components';
+import { FileUploadDialogComponent } from 'app/UI/_components/file-upload-dialog/file-upload.dialog.component';
 
 const UIPages = [ ProfileComponent, WelcomeComponent, RegisterComponent ];
 // const dialogComponents = [ ConfirmDialogComponent, ProductFormComponent, DialogComponent ];
@@ -29,14 +30,17 @@ const UIPages = [ ProfileComponent, WelcomeComponent, RegisterComponent ];
                 DynamicFormQuestionComponent,
                 DynamicFormComponent,
                 DialogComponent,
-                ConfirmDialogComponent
+                ConfirmDialogComponent,
+                FileUploadDialogComponent
             ],
     exports: [
             // MaterialDesignModule,
             ...UIPages,
             // ...dialogComponents
         ],
-    entryComponents: [ ConfirmDialogComponent, DialogComponent, DynamicFormComponent, DynamicFormQuestionComponent ],
+    entryComponents: [ ConfirmDialogComponent, DialogComponent, DynamicFormComponent,
+                        DynamicFormQuestionComponent, FileUploadDialogComponent
+    ],
     schemas: [ NO_ERRORS_SCHEMA ],
 
 })

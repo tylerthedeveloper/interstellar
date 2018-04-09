@@ -1,4 +1,4 @@
-import { TextboxQuestion, DropdownQuestion, NumberInputQuestion, FileUploadQuestion } from 'app/UI/forms/form-element';
+import { TextboxQuestion, DropdownQuestion, NumberInputQuestion } from 'app/UI/forms/form-element';
 import { categoryTitleList } from '../category/categories';
 
 
@@ -7,7 +7,7 @@ const requiredPublicProductDataTyped: Array<{ key: string, type: string}> = [
     { key: 'productShortDescription', type: 'string'},
     { key: 'fixedUSDAmount', type: 'number'},
     { key: 'quantity', type: 'number'},
-    { key: 'productThumbnailLink', type: 'string'},
+    // { key: 'productThumbnailLink', type: 'string'}, // todo: test in dialog
     { key: 'productCategory', type: 'string'}, // todo: test how????
 ];
 
@@ -17,7 +17,8 @@ const requiredPublicProductData = [
     'fixedUSDAmount',
     'quantity',
     'productThumbnailLink',
-    'productCategory'
+    'productCategory',
+    'productPrices',
 ];
 
 

@@ -6,7 +6,7 @@
       <mat-card-subtitle> {{ product.price }}</mat-card-subtitle>
       <mat-card-subtitle> {{ product.subtitle }}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="{{ product.thumbnailLink }}" style="width:150px; height: 150px;" alt="alt">
+    <img mat-card-image src="{{ product?.thumbnailLink }}" style="width:150px; height: 150px;" alt="alt">
     <mat-card-content>
       <p>
         {{ product.description }}

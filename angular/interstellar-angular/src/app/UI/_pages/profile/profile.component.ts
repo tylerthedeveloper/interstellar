@@ -28,9 +28,10 @@ import { createFormGroup } from 'app/UI/utils';
 import { DialogComponent } from '../../_components/dialog/dialog.component';
 import { DynamicFormComponent } from '../../forms/dynamic-form/dynamic-form.component';
 import { Router } from '@angular/router';
-import { isValidProduct } from 'app/marketplace/products/product.utils';
+import { areValidProductTypes } from 'app/marketplace/products/product.utils';
 import { productFormData } from 'app/marketplace/products/product.details';
 import { ConfirmDialogComponent } from '../../_components/confirm-dialog/confirm.dialog.component';
+import { FileUploadDialogComponent } from 'app/UI/_components';
 
 
 @Component({
@@ -109,6 +110,8 @@ export class ProfileComponent implements OnInit {
         return this._userService.updateProfile(data);
     }
 
+    // todo: make dialog service
+
     /**
      * @returns void
      */
@@ -125,24 +128,19 @@ export class ProfileComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result: string) => {
             if (result) {
                 const product = <Product> JSON.parse(JSON.stringify(result));
-                // console.log(res);
                 try {
                     product.quantity = Number(product.quantity);
                     product.fixedUSDAmount = Number(product.fixedUSDAmount);
-                    if (!isValidProductTypes(product)) {
+                    if (!areValidProductTypes(product)) {
                         alert('invalid product error');
                         return;
                     }
                     const newProductID = this._productService.getNewProductID();
-                    // console.log(id);
                     this.uploadThumbnailImage(newProductID).subscribe(
-                        (imageUploadResult: string) => {
-                            // console.log(imageUploadResult);
-                            if (imageUploadResult) {
-                                // console.log(product);
+                        (imageUploadResultURL: string) => {
+                            if (imageUploadResultURL) {
                                 product.id = newProductID;
-                                product.productThumbnailLink = newProductID;
-                                // console.log(product);
+                                product.productThumbnailLink = imageUploadResultURL;
                                 this.handleNewProduct(product);
                             }
                         },
@@ -157,7 +155,7 @@ export class ProfileComponent implements OnInit {
     }
 
     uploadThumbnailImage(productID: string = 'new-prod-id23') {
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        const dialogRef = this.dialog.open(FileUploadDialogComponent, {
             data: { productID: productID }
         });
         return dialogRef.afterClosed();
@@ -192,21 +190,24 @@ export class ProfileComponent implements OnInit {
             }
         };
 
-        // validate product
-        if (!isValidProduct(product)) {
-            alert('invalid product error');
-            return;
-        }
-
         // todo: TEST THESE ARENT EVER NULL!!!!!!
         product.productPrices = [
             new AssetBalance('7.00000', 'native', 'Lumens')
         ];
         product.productSellerData = {
             productSellerID: sessionStorage.getItem('user_doc_id'),
-            productSellerName: sessionStorage.getItem('user_name'), // TODO: store user data in session storage!!!
+            productSellerName: sessionStorage.getItem('user_name') || '', // TODO: store user data in session storage!!!
             productSellerPublicKey: sessionStorage.getItem('public_key')
         };
+
+        if (!(product.productPrices &&
+              product.productSellerData.productSellerID &&
+            //   product.productSellerData.productSellerName
+              product.productSellerData.productSellerPublicKey && product.productThumbnailLink)) {
+                alert('invalid product error');
+                return;
+        }
+
         const p = JSON.stringify(product);
         this._productService.addProduct(p)
                     .catch(err => console.log(err))

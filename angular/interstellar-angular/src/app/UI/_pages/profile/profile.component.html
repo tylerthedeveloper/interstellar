@@ -117,7 +117,7 @@
 
                   <!--Card image-->
                   <div class="view overlay z-depth-1">
-                      <img src="{{ prod?.productThumbnailLink }}" class="img-fluid" alt="" style="max-width:100%; max-height: 100%; margin: auto; display: block;">
+                      <img src="{{ (prod) ? prod?.productThumbnailLink : '' }}" class="img-fluid" alt="missing imagfwe" style="max-width:100%; max-height: 100%; margin: auto; display: block;">
                       <div class="mask rgba-white-slight"></div>
                   </div>
                   <!--/.Card image-->
