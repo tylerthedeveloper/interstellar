@@ -7,32 +7,34 @@ $(document).ready(function(){
 <!-- style="position: fixed;"" -->
 <div style="margin: 5em 0em 0em 0em;" flex>
     <div class="container" flex>
-        <mat-sidenav-container style="height:100%;width:100%; float: left; " flex>
-                <mat-sidenav #sidenav2 mode="over" posiion="start" style="width: 100%; align-items: center; justify-content: center; overflow: hidden; position: fixed !important; " flex>
+        <mat-sidenav-container style="height:100%;width:100%;" flex>
+                <mat-sidenav #sidenav2 mode="over" posiion="start" style="align-items: center; justify-content: center; overflow: hidden; position: fixed !important; width: 100%; margin: 0% 0% 0% -11.5%;">
                         <!-- <div style="margin: 5% auto 0% auto; width: 50%; height: 20%; text-align: center;">
                     <img style="max-width:100%; max-height: 100%" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
                     <h2>Interstellar</h2> -->
 
-                    <div style="width: 55%; margin: auto;">
-                            <div class="card z-depth-0" style="margin: -3% auto 0% auto; padding: 5% 5% 5% 5%; width: 100%; height: 100%;">
-
-                                    <div style="margin: 1% auto 7% auto; width: 13%; height: 20%; text-align: center;">
-                                      <img style="max-width:100%; max-height: 100%" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-                                      <h2>Interstellar</h2>
-                                    </div>
-                                    <div style="width: 52%; margin: 0% auto 3% auto;">
-                                      <h5> Get Started: </h5>
-                                      <button (click)="createAccount()" class="btn btn-primary">Create New Account</button>
-                                      <h6 style="margin: 3% 0% 0% 0%;"> Or: </h6>
-                                      <input matInput #accountMerge type="text" placeholder="Key" style="width: 100%; margin: 0% auto 1% auto;" />
-                                      <div style="display: flex; flex-direction: row;">
-                                        <button (click)="mergeAccountWithKey(accountMerge.value); accountMerge.value = null;" class="btn z-depth-0" style="background-color: gray;">Merge Existing Account</button>
-                                        <button (click)="sidenav2.toggle(); secretKeyLogin.value = null;" class="btn z-depth-0" style="background-color: gray;">Close</button>
-                                      </div>
-                                    </div>
-                                  </div>
+                    <div style="margin: 5% auto 0% auto; width: 50%; height: 20%; text-align: center;">
+                      <img style="max-width:100%; max-height: 100%" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+                      <h2>Interstellar</h2>
                     </div>
 
+                    <div class="card z-depth-0" style="margin: 3% auto 0% auto; padding: 5% 5% 5% 5%; width: 100%; height: 100%;">
+
+                      <div style="width: 52%; margin: 0% auto 3% auto;">
+
+                        <h5> Get Started: </h5>
+                        <button (click)="createAccount()" class="btn btn-primary">Create New Account</button>
+
+                        <h6 style="margin: 3% 0% 0% 0%;"> Or: </h6>
+                        <input matInput #accountMerge type="text" placeholder="Key" style="width: 100%; margin: 0% auto 1% auto;" />
+                        <div style="display: flex; flex-direction: row;">
+                          <button (click)="mergeAccountWithKey(accountMerge.value); accountMerge.value = null;" class="btn z-depth-0" style="background-color: gray;">Merge Existing Account</button>
+                          <button (click)="sidenav2.toggle(); secretKeyLogin.value = null;" class="btn z-depth-0" style="background-color: gray;">Close</button>
+
+                        </div>
+                      </div>
+
+                    </div>
                 <!-- </div> -->
             </mat-sidenav>
             <mat-sidenav #sidenav mode="over" position="end" class="app-sidenav" style="align-items: center; justify-content: center; overflow: hidden; position: fixed !important; width: 100%;">
