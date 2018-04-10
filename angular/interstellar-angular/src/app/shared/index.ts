@@ -8,12 +8,6 @@ import { NgModule } from '@angular/core';
 // imports
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
-// import { DynamicFormComponent } from './forms/dynamic-form/dynamic-form.component';
-// import { DynamicFormQuestionComponent } from './forms/dynamic-form-question/dynamic-form-question.component';
-// import { DialogComponent } from 'app/UI/_components/dialog/dialog.component';
-
-
 import { MaterialModule } from 'app/core/material.module';
 import { DialogComponent, ConfirmDialogComponent, FileUploadDialogComponent } from 'app/shared/_components';
 import { DynamicFormComponent } from './forms/dynamic-form/dynamic-form.component';

@@ -2,13 +2,18 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
-import { ProfileComponent } from './profile/profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'app/core/material.module';
 
 import { SharedModule } from 'app/shared';
+import { RouterModule } from '@angular/router';
+import { UserRoutes as routes } from './user.routes';
+import { ProfileComponent } from './components/profile/profile.component';
+// import { ConfirmDialogComponent, DialogComponent, FileUploadDialogComponent } from 'app/shared/_components';
+import { DynamicFormQuestionComponent } from 'app/shared/forms/dynamic-form-question/dynamic-form-question.component';
+import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
 
-const UIPages = [ ProfileComponent ];
+const UIPages = [ ProfileComponent];
 // const dialogComponents = [ ConfirmDialogComponent, ProductFormComponent, DialogComponent ];
 
 @NgModule({
@@ -18,6 +23,7 @@ const UIPages = [ ProfileComponent ];
         CommonModule,
         SharedModule,
         ReactiveFormsModule,
+        RouterModule.forChild(routes),
         // SharedModule
     ],
     declarations:  [

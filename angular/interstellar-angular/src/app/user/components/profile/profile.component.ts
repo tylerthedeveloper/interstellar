@@ -30,9 +30,9 @@ import { Router } from '@angular/router';
 import { areValidProductTypes } from 'app/marketplace/products/product.utils';
 import { productFormData } from 'app/marketplace/products/product.details';
 import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
-import { DialogComponent } from '../../../shared/_components';
-import { FileUploadDialogComponent } from 'app/shared/_components/file-upload-dialog/file-upload.dialog.component';
+// import { FileUploadDialogComponent } from 'app/shared/_components/file-upload-dialog/file-upload.dialog.component';
 import { createFormGroup } from 'app/shared/forms/form.utils';
+import { DialogComponent, FileUploadDialogComponent } from 'app/shared/_components';
 
 
 @Component({

@@ -9,8 +9,6 @@ import { HomeRoutes as routes } from './home.routes';
 import { RouterModule } from '@angular/router';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 
-// import { SharedModule } from 'app/shared';
-
 
 @NgModule({
     imports : [
@@ -18,7 +16,6 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 //            CdkTableModule,
         CommonModule,
         RouterModule.forChild(routes),
-        // SharedModule,
         ReactiveFormsModule,
         // SharedModule
     ],
@@ -38,8 +35,6 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
             // ...dialogComponents
         ],
     entryComponents: [
-                        //     ConfirmDialogComponent, DialogComponent, DynamicFormComponent,
-                        // DynamicFormQuestionComponent, FileUploadDialogComponent
     ],
     schemas: [ NO_ERRORS_SCHEMA ],
 
