@@ -14,13 +14,11 @@ import 'rxjs/add/operator/first';
 
 /** Services */
 import { ProductService } from 'app/core/services/product.service';
-import { UserService } from 'app/user.service';
 
 
 
 /** Models */
 import { Product } from 'app/marketplace/_market-models/product';
-import { User, publicUserData } from 'app/user';
 
 /** UI */
 import { MatDialog } from '@angular/material';
@@ -33,6 +31,8 @@ import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form
 // import { FileUploadDialogComponent } from 'app/shared/_components/file-upload-dialog/file-upload.dialog.component';
 import { createFormGroup } from 'app/shared/forms/form.utils';
 import { DialogComponent, FileUploadDialogComponent } from 'app/shared/_components';
+import { UserService } from 'app/core/services/user.service';
+import { User, publicUserData } from 'app/user/user';
 
 
 @Component({

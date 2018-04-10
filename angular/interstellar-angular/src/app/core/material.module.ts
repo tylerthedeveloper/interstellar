@@ -1,3 +1,5 @@
+// FIXME: move material to core ???... anything else??
+
 import { NgModule } from '@angular/core';
 
 // NoConflictStyleCompatibilityMode, MaterialModule

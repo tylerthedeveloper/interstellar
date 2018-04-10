@@ -1,3 +1,5 @@
+// FIXME: move material to core ???... anything else??
+
 // https://github.com/johnpapa/angular-first-look-examples/edit/master/_examples/storyline-tracker/app/core/core.module.ts
 
 
@@ -16,6 +18,7 @@ import { EventEmitterService } from './_helpers/event-emitter.service';
 import { ProductService } from './services/product.service';
 import { CartService } from './services/cart.service';
 import { OrderService } from 'app/core/services/order.service';
+import { UserService } from './services/user.service';
 
 @NgModule({
     imports: [
@@ -39,8 +42,12 @@ import { OrderService } from 'app/core/services/order.service';
     ],
     declarations: [NavBarComponent],
     providers: [
-        AuthGuardService, EventEmitterService,
-        ProductService, CartService, OrderService
+        AuthGuardService, 
+        EventEmitterService,
+        CartService, 
+        OrderService,
+        ProductService, 
+        UserService
     ]
 })
 export class CoreModule {

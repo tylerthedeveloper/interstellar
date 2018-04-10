@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { User } from './user';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/observable/fromPromise';
+import { User } from 'app/user/user';
 
 @Injectable()
 export class UserService {

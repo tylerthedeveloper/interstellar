@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 
 // import { ProfileComponent } from './UI/_pages/index';
-import { AuthGuardService as AuthGuard } from './core/_helpers/auth-guard.service';
-import { WelcomeComponent } from 'app/home/components/welcome/welcome.component';
+// import { AuthGuardService as AuthGuard } from './core/_helpers/auth-guard.service';
+// import { WelcomeComponent } from 'app/home/components/welcome/welcome.component';
 
 export const AppRoutes: Routes = [
     // { path: 'home', component: WelcomeComponent },

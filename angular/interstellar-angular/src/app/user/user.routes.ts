@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { ProfileComponent } from './components/profile/profile.component';
+import { AuthGuardService as AuthGuard} from 'app/core/_helpers/auth-guard.service';
 
 
  // todo: go to USER / ID
@@ -9,7 +10,7 @@ export const UserRoutes: Routes = [
     // component: WelcomeComponent,
     children: [
       // add id
-      { path: '', component: ProfileComponent },
+      { path: '', component: ProfileComponent, canActivate: [AuthGuard] },
     ]
   },
 ];

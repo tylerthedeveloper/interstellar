@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-// fire-base
+// firebase
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database-deprecated';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -16,7 +16,6 @@ import { environment } from '../environments/environment';
 
 /** Services */
 import { StellarAccountService, StellarPaymentService } from './stellar/index';
-import { UserService } from './user.service';
 
 /** Modules */
 import { CoreModule } from 'app/core';
@@ -28,14 +27,15 @@ import { HomeModule } from './home/index';
 // import { UIModule } from './UI/ui.app.module';
 import { MaterialModule } from './core/material.module';
 import { RouterModule, PreloadAllModules } from '@angular/router';
-import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
-import { DynamicFormQuestionComponent } from 'app/shared/forms/dynamic-form-question/dynamic-form-question.component';
-import { ConfirmDialogComponent } from './shared/_components/confirm-dialog/confirm.dialog.component';
+
+// import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
+// import { DynamicFormQuestionComponent } from 'app/shared/forms/dynamic-form-question/dynamic-form-question.component';
+// import { ConfirmDialogComponent } from './shared/_components/confirm-dialog/confirm.dialog.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
       // angular
@@ -73,8 +73,6 @@ import { ConfirmDialogComponent } from './shared/_components/confirm-dialog/conf
               StellarAccountService,
               StellarPaymentService,
 
-              UserService,
-              // ConfirmDialogComponent
             ],
   entryComponents: [  ],
   bootstrap: [AppComponent],
