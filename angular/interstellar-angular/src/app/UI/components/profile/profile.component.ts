@@ -16,6 +16,8 @@ import 'rxjs/add/operator/first';
 import { ProductService } from 'app/core/services/product.service';
 import { UserService } from 'app/user.service';
 
+
+
 /** Models */
 import { Product } from 'app/marketplace/_market-models/product';
 import { User, publicUserData } from 'app/user';
@@ -24,14 +26,13 @@ import { User, publicUserData } from 'app/user';
 import { MatDialog } from '@angular/material';
 
 /** Utils */
-import { createFormGroup } from 'app/UI/utils';
-import { DialogComponent } from '../../_components/dialog/dialog.component';
-import { DynamicFormComponent } from '../../forms/dynamic-form/dynamic-form.component';
 import { Router } from '@angular/router';
 import { areValidProductTypes } from 'app/marketplace/products/product.utils';
 import { productFormData } from 'app/marketplace/products/product.details';
-import { ConfirmDialogComponent } from '../../_components/confirm-dialog/confirm.dialog.component';
-import { FileUploadDialogComponent } from 'app/UI/_components';
+import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
+import { DialogComponent } from '../../../shared/_components';
+import { FileUploadDialogComponent } from 'app/shared/_components/file-upload-dialog/file-upload.dialog.component';
+import { createFormGroup } from 'app/shared/forms/form.utils';
 
 
 @Component({

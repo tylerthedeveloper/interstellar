@@ -2,27 +2,29 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
-import { ProfileComponent } from './_pages';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'app/core/material.module';
 
-import { SharedModule } from 'app/shared';
+import { HomeRoutes as routes } from './home.routes';
+import { RouterModule } from '@angular/router';
+import { WelcomeComponent } from './components/welcome/welcome.component';
 
-const UIPages = [ ProfileComponent];
-// const dialogComponents = [ ConfirmDialogComponent, ProductFormComponent, DialogComponent ];
+// import { SharedModule } from 'app/shared';
+
 
 @NgModule({
     imports : [
         MaterialModule,
 //            CdkTableModule,
         CommonModule,
-        SharedModule,
+        RouterModule.forChild(routes),
+        // SharedModule,
         ReactiveFormsModule,
         // SharedModule
     ],
     declarations:  [
+        WelcomeComponent
                 // UI Pages
-                ...UIPages,
                 // ...dialogComponents,
                 // DynamicFormQuestionComponent,
                 // DynamicFormComponent,
@@ -31,8 +33,8 @@ const UIPages = [ ProfileComponent];
                 // FileUploadDialogComponent
             ],
     exports: [
+        WelcomeComponent
             // MaterialDesignModule,
-            ...UIPages,
             // ...dialogComponents
         ],
     entryComponents: [
@@ -42,4 +44,4 @@ const UIPages = [ ProfileComponent];
     schemas: [ NO_ERRORS_SCHEMA ],
 
 })
-export class UIModule { }
+export class HomeModule { }

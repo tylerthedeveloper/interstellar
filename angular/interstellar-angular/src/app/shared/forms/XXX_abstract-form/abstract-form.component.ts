@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MyFormElement } from '../../../UI/forms/form-element';
+import { MyFormElement } from '../../forms/form-element';
 
 @Component({
   selector: 'app-abstract-form',

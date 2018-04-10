@@ -1,0 +1,264 @@
+<!-- <label> Publlic key {{ pubKey }}</label> -->
+
+<!--Section: Testimonials v.1-->
+
+<!--Grid column-->
+
+<div class="col-12 col-md-9" style="margin: auto;">
+
+    <!--Card-->
+    <div class="card testimonial-card z-depth-0">
+
+
+        <!--Background color-->
+        <div class="card-up info-color"></div>
+
+        <!--Avatar-->
+        <!-- <div class="avatar mx-auto white">
+            <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(9).jpg" class="rounded-circle img-fluid">
+        </div> -->
+
+        <div class="card-body">
+
+            <div style="background-color: white;" class="card">
+
+                <div class="profile-image" style="background-color: grey; width: 100%; height: 15em; margin: 0em 0em -2em 0em;">
+                    <img class="main-profile-pic" src="{{_userModel?.photoUrl}}" alt="Image Here (placeholder cover photo)" />
+                </div>
+                <h1 class="font-weight-bold h1 py-5" style="text-align: center; margin: 0em 0em -.5em 0em;">Merchant Profile</h1>
+
+                <div class="container">
+
+                    <div class="row">
+
+                        <div style="margin: auto;">
+                            <div class="profile-image" style="background-color: grey; width: 20em; height: 15em; margin: 0em 0em 3em 0em;">
+                                <img class="main-profile-pic" src="{{_userModel?.photoUrl}}" alt="Image Here (placeholder profile photo)" />
+                            </div>
+                            <div class="profile-image-two">
+
+                            </div>
+                            <div *ngIf="!edit">
+                              <label for="userName">Username:</label>
+                              <h2>{{_userModel?.userName}}</h2>
+
+                              <label for="name">Name:</label>
+                              <p class="" aria-hidden="true"> {{_userModel?.fullName}}</p>
+
+                            </div>
+                            <div *ngIf="edit" style="">
+                                <form [formGroup]="profileForm">
+                                    <!-- <div *ngFor="let prop of Object.keys(profileForm)" class="form-group">
+                                            <p>aaaa</p>
+                                    </div> -->
+                                    <div class="form-group">
+                                        <label for="userName">Username:</label>
+
+                                        <input matInput type="text" id="userName" formControlName="userName" [(ngModel)]="_userModel.userName" style="max-width: 100%; max-height: 100%;">
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Name:</label>
+
+                                        <input matInput type="text" id="fullName" formControlName="fullName" [(ngModel)]="_userModel.fullName" name="fullName" style="max-width: 100%; max-height: 100%;">
+
+                                    </div>
+                                    <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" class="btn btn-default">Submit</button>
+                                    <!-- <input type="submit" class="button expanded" value="Update Profile"> -->
+                                    <!--   -->
+                                </form>
+                                <!-- <a href="https://github.com/{{userModel.gitUsername}}"> git link </a> -->
+                            </div>
+                            <div *ngIf="!edit">
+                                <button class="btn btn-default" aria-hidden="true" (click)="editProfile()">Edit</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <hr>
+            <!--Quotation-->
+            <p class="dark-grey-text">Public Key: {{_userModel?.publicKey}}</p>
+            <h4>My Balances</h4>
+            <ul>
+                <li *ngFor="let bal of balances">
+                    {{ bal?.balance }} {{ bal?.asset_type }}
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <hr>
+    <!--Card-->
+
+
+    <!-- Bottom section consisting of Your listings and order history -->
+
+
+    <mat-tab-group style="margin-bottom: 5em">
+
+        <mat-tab label="My Listings">
+
+            <div style="align-items: center; justify-content: center;" >
+                <button class="btn btn-default z-depth-0" aria-hidden="true" (click)="addProduct()"> List New Product </button>
+            </div>
+
+          <!-- <div class="card" style="text-align:center; margin: 1em 0em 0em 0em;">
+          </div> -->
+
+          <div style="display: inline-block; width: 20%; height: 20em; margin: auto;" *ngFor="let prod of products">
+              <div class="card card-ecommerce z-depth-0" style="margin: .5em .2em 0em 0em;">
+
+                  <!--Card image-->
+                  <div class="view overlay z-depth-1">
+                      <img src="{{ (prod) ? prod?.productThumbnailLink : '' }}" class="img-fluid" alt="missing imagfwe" style="max-width:100%; max-height: 100%; margin: auto; display: block;">
+                      <div class="mask rgba-white-slight"></div>
+                  </div>
+                  <!--/.Card image-->
+
+                  <!--Card content-->
+                  <div class="card-body text-center">
+                      <!--Category & Title-->
+                      <h4 class="card-title">
+                          <strong>{{ prod?.productName }}</strong>
+                      </h4>
+
+                      <!--Description-->
+                      <p class="card-text">{{ prod?.productShortDescription }}
+                      </p>
+
+                      <!--Card footer-->
+                      <div class="card-footer" style="height: 3em; width: 100%;">
+                          <span class="float-left">Price ${{ product?.fixedUSDAmount }}
+                              <span class="discount">Quantity: {{ product?.quantity }}</span>
+                          </span>
+                      </div>
+                  </div>
+                  <!--/.Card content-->
+
+              </div>
+
+          </div>
+
+
+
+        </mat-tab>
+
+        <mat-tab label="Order History"></mat-tab>
+
+    </mat-tab-group>
+
+        <!--Grid column-->
+
+        <!-- <div style="background-color: white;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-mat-4">
+                <mat-card>
+                    <div class="profile-image" style="background-color: grey; width: 8em; height: 8em; margin: auto;">
+                      Image Here (placeholder)
+                        <img class="main-profile-pic" src="{{_userModel?.photoUrl}}" />
+                    </div>
+                    <div class="profile-image-two">
+
+                    </div>
+                    <mat-card-content *ngIf="!edit">
+                        <h2>Username: {{_userModel?.userName}}</h2>
+                        <ul>
+                            <li>
+                                <i class="fa fa-envelope" aria-hidden="true"></i> Public Key: {{_userModel?.publicKey}}
+                            </li>
+                            <li>
+                                <i class="fa fa-github" aria-hidden="true"></i> Name: {{_userModel?.fullName}}
+                            </li>
+                        </ul>
+                    </mat-card-content>
+                    <mat-card-content *ngIf="edit">
+                        <form [formGroup]="profileForm" >
+                            <div *ngFor="let prop of Object.keys(profileForm)" class="form-group">
+                                    <p>aaaa</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Username</label>
+                                <mat-input-container>
+                                    <input matInput type="text" id="userName" formControlName="userName"
+                                    [(ngModel)]="_userModel.userName">
+                                </mat-input-container>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <mat-input-container>
+                                    <input matInput type="text" id="fullName" formControlName="fullName"
+                                    [(ngModel)]="_userModel.fullName" name="fullName">
+                                </mat-input-container>
+                            </div>
+                            <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" mat-raised-button >Submit</button>
+                            <input type="submit" class="button expanded" value="Update Profile">
+
+                        </form>
+                        <a href="https://github.com/{{userModel.gitUsername}}"> git link </a>
+                    </mat-card-content>
+                    <mat-card-footer *ngIf="!edit">
+                        <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" (click)="editProfile()"></i>
+                    </mat-card-footer>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+</div> -->
+
+        <!-- <br />
+<button mat-raised-button (click)="sessionstorage()">temp </button> -->
+
+        <!-- <div class="well well-lg">
+    <div *ngFor="let addr of profileForm">
+      {{ addr }}
+    </div>
+  </div> -->
+
+
+        <!-- <form novalidate [formGroup]="profileForm">
+        Name: <input type="text" formControlName="name">
+        Location: <input type="text" formControlName="location">
+        <button  (click)="updateProfile(myGroup); $event.preventDefault(); " class="btn btn-primary"> Submit</button>
+      </form> -->
+
+        <!-- <form [formGroup]="profileForm">
+    <div class="form-group">
+      <label class="center-block">Name:
+        <input class="form-control" formControlName="name">
+      </label>
+    </div>
+  </form>
+
+  <p>Form value: {{ profileForm.value | json }}</p>
+   -->
+
+
+        <!--
+<form class="form-horizontal" [formGroup]="form">
+
+        <div class="form-group">
+          <div class="col-sm-12">
+            <label for="email" class="control-label">Email</label>
+            <input type="text" id="email" class="form-control" formControlName="email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-12">
+            <label for="password" class="control-label">Password</label>
+            <input type="password" id="password" class="form-control" formControlName="password">
+          </div>
+        </div>
+
+        <button class="btn btn-primary" (click)="$event.preventDefault(); updateProfile(form.value)">Submit</button>
+      </form>
+   -->

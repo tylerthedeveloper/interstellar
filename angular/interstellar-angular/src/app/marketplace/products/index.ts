@@ -12,10 +12,8 @@ import { ProductService } from 'app/core/services/product.service';
 /**  UI and components */
 import { MaterialModule } from '../../core/material.module';
 import { ProductCardComponent } from 'app/marketplace/products/components/product-card/product-card.component';
-import { SellerPageComponent } from 'app/marketplace/_pages/seller-page/seller-page.component';
 import { ProductsHomePageComponent } from 'app/marketplace/products/components/products-home-page/products-home-page.component';
 import { ProductPageComponent } from 'app/marketplace/products/components/product-page/product-page.component';
-import { ProductFormComponent } from './components/product-form/product-form.component';
 
 @NgModule({
     imports: [
@@ -27,17 +25,13 @@ import { ProductFormComponent } from './components/product-form/product-form.com
     ],
     declarations: [
         ProductCardComponent,
-        SellerPageComponent,
         ProductsHomePageComponent,
         ProductPageComponent,
-        ProductFormComponent
     ],
     exports: [
         ProductCardComponent,
-        SellerPageComponent,
         ProductsHomePageComponent,
         ProductPageComponent,
-        ProductFormComponent
     ],
     providers: [ ProductService  ]
   })

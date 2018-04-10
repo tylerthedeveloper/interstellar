@@ -19,18 +19,20 @@ import { StellarAccountService, StellarPaymentService } from './stellar/index';
 import { UserService } from './user.service';
 
 /** Modules */
-import { SharedModule } from './shared/index';
+// import { SharedModule } from './shared/index';
 import { CoreModule } from 'app/core';
 
 /** UI  */
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { HomeModule } from './home/index';
 import { UIModule } from './UI/ui.app.module';
 import { MaterialModule } from './core/material.module';
 import { RouterModule, PreloadAllModules } from '@angular/router';
-import { DialogComponent } from './UI/_components/dialog/dialog.component';
-import { DynamicFormComponent } from './UI/forms/dynamic-form/dynamic-form.component';
-import { DynamicFormQuestionComponent } from './UI/forms/dynamic-form-question/dynamic-form-question.component';
+import { DialogComponent } from 'app/shared/_components';
+import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
+import { DynamicFormQuestionComponent } from 'app/shared/forms/dynamic-form-question/dynamic-form-question.component';
+import { ConfirmDialogComponent } from './shared/_components/confirm-dialog/confirm.dialog.component';
 
 
 @NgModule({
@@ -52,11 +54,14 @@ import { DynamicFormQuestionComponent } from './UI/forms/dynamic-form-question/d
       MDBBootstrapModule.forRoot(),
       AngularFireStorageModule,
 
+
+      // TODO: Test pre-load
       RouterModule.forRoot(AppRoutes, { preloadingStrategy: PreloadAllModules }),
 
       // UI
-      SharedModule,
+      // SharedModule,
       UIModule,
+      HomeModule,
       CoreModule,
       MaterialModule
   ],
@@ -73,7 +78,7 @@ import { DynamicFormQuestionComponent } from './UI/forms/dynamic-form-question/d
               UserService,
               // ConfirmDialogComponent
             ],
-  entryComponents: [ DialogComponent, DynamicFormComponent, DynamicFormQuestionComponent ], // DialogComponent,
+  entryComponents: [ DialogComponent, ConfirmDialogComponent, DynamicFormComponent, DynamicFormQuestionComponent ], // DialogComponent,
   bootstrap: [AppComponent],
 })
 export class AppModule { }

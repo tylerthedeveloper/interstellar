@@ -1,6 +1,5 @@
 import { Product } from '../_market-models/product';
 import { requiredPublicProductData, requiredPublicProductDataTyped } from './product.details';
-import { ConfirmDialogComponent } from 'app/UI/_components';
 import { MatDialog } from '@angular/material';
 import { AssetBalance } from 'app/stellar';
 

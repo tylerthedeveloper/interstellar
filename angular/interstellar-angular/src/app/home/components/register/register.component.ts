@@ -8,7 +8,7 @@ import { EventEmitterService } from 'app/core/_helpers/event-emitter.service';
 
 /** UI */
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { ConfirmDialogComponent } from 'app/UI/_components';
+import { ConfirmDialogComponent } from 'app/shared/_components';
 
 @Component({
   selector: 'app-register',

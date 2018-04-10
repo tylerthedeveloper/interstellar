@@ -3,7 +3,7 @@
 
 import { Component, OnInit, Inject, ComponentRef, ViewContainerRef, ViewChild, ComponentFactoryResolver, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { DynamicFormComponent } from '../../forms/dynamic-form/dynamic-form.component';
+import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
 
 @Component({
   templateUrl: './dialog.component.html',

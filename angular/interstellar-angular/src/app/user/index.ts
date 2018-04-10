@@ -2,13 +2,13 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
-import { ProfileComponent } from './_pages';
+import { ProfileComponent } from './profile/profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'app/core/material.module';
 
 import { SharedModule } from 'app/shared';
 
-const UIPages = [ ProfileComponent];
+const UIPages = [ ProfileComponent ];
 // const dialogComponents = [ ConfirmDialogComponent, ProductFormComponent, DialogComponent ];
 
 @NgModule({
@@ -42,4 +42,4 @@ const UIPages = [ ProfileComponent];
     schemas: [ NO_ERRORS_SCHEMA ],
 
 })
-export class UIModule { }
+export class UserModule { }

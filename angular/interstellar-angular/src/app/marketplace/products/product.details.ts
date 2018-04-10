@@ -1,5 +1,5 @@
-import { TextboxQuestion, DropdownQuestion, NumberInputQuestion } from 'app/UI/forms/form-element';
 import { categoryTitleList } from '../category/categories';
+import { NumberInputQuestion, DropdownQuestion, TextboxQuestion } from '../../shared/forms/form-element';
 
 
 const requiredPublicProductDataTyped: Array<{ key: string, type: string}> = [
