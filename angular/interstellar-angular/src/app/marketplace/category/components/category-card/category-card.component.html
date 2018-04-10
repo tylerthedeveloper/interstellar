@@ -27,7 +27,7 @@
 <!--Card-->
 <div class="card example hoverable rounded-0" style="cursor: pointer;" (click)="selectCategory(category.category)">
 
-  <div style="width: 90%; margin: 1em auto -1em auto;">
+  <div style="width: 90%; margin: 1em auto -1em auto; overflow: hidden; white-space: nowrap;">
   <p class="text-left">{{ category.category }}</p>
   </div>
 
@@ -45,7 +45,7 @@
       <!-- <button class="btn btn-primary btn-block" disabled>{{ category.category }}</button> -->
 
       <!--Text-->
-      <p class="card-text text-left">{{ category.description }}</p>
+      <p class="card-text text-left" style="white-space: nowrap; overflow: hidden;">{{ category.description }}</p>
 
       <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
   </div>

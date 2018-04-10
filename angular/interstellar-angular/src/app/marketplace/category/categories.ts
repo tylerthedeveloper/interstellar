@@ -20,7 +20,7 @@ export const categories: ProductCategory[] = [
     // tslint:disable-next-line:max-line-length
     new ProductCategory('Beauty & Health', 'For you.', 'https://images.pexels.com/photos/6148/brush-makeup-make-up-brushes.jpg?cs=srgb&dl=brushes-make-up-makeup-6148.jpg&fm=jpg'),
     // tslint:disable-next-line:max-line-length
-    new ProductCategory('Home, Garden, Pets & Tools', 'For where you call home.', 'https://images.pexels.com/photos/597329/pexels-photo-597329.jpeg?cs=srgb&dl=art-materials-arts-and-crafts-bloom-597329.jpg&fm=jpg'),
+    new ProductCategory('Home, Garden, Pets & Tools', 'For your home.', 'https://images.pexels.com/photos/597329/pexels-photo-597329.jpeg?cs=srgb&dl=art-materials-arts-and-crafts-bloom-597329.jpg&fm=jpg'),
   ];
 
 export const categoryTitleList: string[] = categories.map(category => category.category);
