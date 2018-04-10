@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from 'app/core/services';
 import { Observable } from 'rxjs/Observable';
 import { ChatThread } from '../../models/chat-thread';
+import { ChatService } from 'app/core/services';
 
 @Component({
   selector: 'app-chat-page',
@@ -21,7 +21,7 @@ export class ChatPageComponent implements OnInit {
     }
 
     // TODO: Remove
-    addProduct() {
+    ADDCHATHREAD() {
         if (!((sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id')) &&
              (sessionStorage.getItem('public_key') || localStorage.getItem('public_key')) &&
              (sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key')))) {
