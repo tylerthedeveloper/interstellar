@@ -1,22 +1,12 @@
 <h1 mat-dialog-title> {{ title }}</h1>
 <mat-dialog-content>
     {{ content }}
-    <input type="file" accept=".png,.jpg" #fileInput/>
-    <!-- (change)="upload($event)"  -->
-    <img [src]="imageUrl" />
 </mat-dialog-content>
 <mat-dialog-actions>
-    <!-- <input #fileInput type="file"/> -->
-    <!-- <input class="form-control" type="file" name="avatar" (change)="imageUpload($event)"> -->
-    <!--         <input *ngSwitchCase="'filebox'" [formControlName]="question.key" [id]="question.key" [type]="question.type" 
-                #fileInput (change)="renderFile($event)">-->
     <button mat-raised-button mat-dialog-close>
-        cancel
+        Not today
     </button>
-    <button mat-raised-button (click)="renderFile()">
-        add file
-    </button>
-    <button mat-raised-button [disabled]="fileToUpload ? false : true" (click)="uploadFile()">
-        upload file
+    <button mat-raised-button (click)="dialogRef.close(true)">
+        Yes please!
     </button>
 </mat-dialog-actions>

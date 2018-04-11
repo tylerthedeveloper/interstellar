@@ -5,3 +5,10 @@ list of
 chat          active chat
 threads       send message box - button     -->
 <p> chat page </p>
+
+<div style="text-align:center; margin: auto;">
+    <div *ngFor="let chatThread of myChatThreads | async" style="cursor: pointer;" id="chatThreadList">
+        <app-chat-thread [chatThread]="chatThread" (notify)="onSelectChat($event)"></app-chat-thread>
+    </div>
+</div>
+    

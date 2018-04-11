@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { DialogComponent } from '..';
 
 @Component({
   templateUrl: './confirm.dialog.component.html',
@@ -6,7 +8,13 @@ import { Component } from '@angular/core';
 })
 export class ConfirmDialogComponent {
 
-
-    public title: string;
+    @Input() public title: string;
     public content: string;
+
+    constructor(public dialogRef: MatDialogRef<DialogComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: any) {
+        this.title = data.title;
+        this.content = data.content;
+    }
+
 }

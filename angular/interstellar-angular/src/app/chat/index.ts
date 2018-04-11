@@ -14,6 +14,7 @@ import { ChatRoutes as routes } from './chat.routes';
 
 /** Components */
 import { ChatMessageComponent, ChatPageComponent, ChatThreadComponent } from './components/chat.components';
+import { ConfirmDialogComponent } from 'app/shared/_components';
 
 const components = [ ChatPageComponent, ChatMessageComponent, ChatThreadComponent ];
 
@@ -31,6 +32,7 @@ const components = [ ChatPageComponent, ChatMessageComponent, ChatThreadComponen
         ...components,
     ],
     entryComponents: [
+        ConfirmDialogComponent
                         //     ConfirmDialogComponent, DialogComponent, DynamicFormComponent,
                         // DynamicFormQuestionComponent, FileUploadDialogComponent
     ],

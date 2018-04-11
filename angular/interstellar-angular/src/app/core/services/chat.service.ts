@@ -23,12 +23,12 @@ import { User } from 'app/user/user';
 export class ChatService {
 
     /** AFS Collections */
-    public userChatThreadsCollection: AngularFirestoreCollection<ChatThread>;
-    public chatThreadsCollection: AngularFirestoreCollection<ChatThread>;
+    private userChatThreadsCollection: AngularFirestoreCollection<User>;
+    private chatThreadsCollection: AngularFirestoreCollection<ChatThread>;
+    private userChatRef: firebase.firestore.CollectionReference;
 
     public myChatThreads: Observable<ChatThread[]>;
 
-    // firebase.firestore.CollectionReference;
 
      private _userID: string;
 
@@ -36,9 +36,10 @@ export class ChatService {
         const userID: string = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         this._userID = userID;
         if (userID) {
-            this.userChatThreadsCollection = afs.collection<User>('user-chat-threads').doc(userID).collection<ChatThread>('chatThreads');
+            this.userChatThreadsCollection = afs.collection<User>('user-chat-threads');
             this.chatThreadsCollection = afs.collection<ChatThread>('chat-threads');
-            this.myChatThreads = this.userChatThreadsCollection.valueChanges();
+            this.myChatThreads = this.userChatThreadsCollection.doc(userID).collection<ChatThread>('chatThreads').valueChanges();
+            this.userChatRef = this.userChatThreadsCollection.ref;
             // this.chatMessagesCollection = afs.collection('user-chat-rooms');
 
         }
@@ -55,6 +56,34 @@ export class ChatService {
 
     getMessagesForChat(): Observable<ChatMessage[]> {
         return;
+    }
+
+    createNewChatThread(senderID: string, receiverID: string) {
+        // const NEWCHATID = 'NEWCHATID';
+        const NEWCHATID = this.afs.createId();
+        const senderRef = this.userChatRef.doc(senderID).collection('chatThreads').doc(receiverID);
+        const receiverRef = this.userChatRef.doc(receiverID).collection('chatThreads').doc(senderID);
+        const chatThreadObj = <ChatThread> {
+            chatTheadID: NEWCHATID,
+            senderFbID: senderID,
+            senderPublicKeyFbID: 'CHANGE ME',
+            receiverFbID: receiverID,
+            receiverPublicKeyFbID: 'CHANGE ME'
+        }
+        // const _chatThread = new ChatThread({
+        //     chatTheadID: NEWCHATID,
+        //     senderFbID: senderID,
+        //     senderPublicKeyFbID: 'CHANGE ME',
+        //     receiverFbID: receiverID,
+        //     receiverPublicKeyFbID: 'CHANGE ME'
+        // });
+        const batch = this.afs.firestore.batch();
+        batch.set(senderRef, chatThreadObj);
+        batch.set(receiverRef, chatThreadObj);
+        return batch.commit();
+        // .catch(this.HandleError);
+        // .then(res => res)
+        // .map()
     }
     // ────────────────────────────────────────────────────────────────────────────────
 

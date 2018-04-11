@@ -5,6 +5,7 @@ import { MatSidenav } from '@angular/material';
 import { StellarAccountService } from 'app/stellar';
 import { EventEmitterService } from 'app/core/_helpers/event-emitter.service';
 import { Router } from '@angular/router';
+import { UserService } from 'app/core/services';
 
 
 @Component({
@@ -13,6 +14,9 @@ import { Router } from '@angular/router';
   templateUrl: './navbar.component.html',
   providers: [ ]
 })
+
+    // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
+    // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
 
 export class NavBarComponent implements OnInit {
 
@@ -23,6 +27,7 @@ export class NavBarComponent implements OnInit {
 
     @ViewChild('sidenav') public sideNav: MatSidenav;
     constructor(public router: Router,
+                private _userService: UserService,
                 private _stellarAccountService: StellarAccountService,
                 private _eventEmiter: EventEmitterService) {}
 
@@ -91,7 +96,11 @@ export class NavBarComponent implements OnInit {
             console.log(payload);
             sessionStorage.setItem('my_balances', payload);
         }
-        this.changePage('profile');
+        this._userService.getCurrentUser().subscribe(currentUser => {
+            // console.log(currentUser);
+            this._userID = currentUser.id;
+            this.changePage('profile');
+        });
     }
     // ────────────────────────────────────────────────────────────────────────────────
 
@@ -114,12 +123,12 @@ export class NavBarComponent implements OnInit {
         } else if (nextPage === 'profile' && this.loggedIn) {
             nextPage = `people/${this._userID}/me`;
         }
-        console.log(nextPage)
+        console.log(nextPage);
         if (document.getElementById(this.currentPage)) {
             document.getElementById(this.currentPage).style.textDecoration = 'none';
         }
         this.currentPage = nextPage;
-        // TODO.... 
+        // TODO....
         // this.loggedIn = true;
         // console.log(this.currentPage)
         if (document.getElementById(this.currentPage)) {

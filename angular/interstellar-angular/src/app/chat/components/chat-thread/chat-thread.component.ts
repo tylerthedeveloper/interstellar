@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ChatThread } from '../../models/chat-thread';
 
 @Component({
   selector: 'app-chat-thread',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatThreadComponent implements OnInit {
 
-  constructor() { }
+    @Input() chatThread: ChatThread;
+    @Output() notify: EventEmitter<string> = new EventEmitter<string>();
 
-  ngOnInit() {
-  }
+    constructor() { }
+
+    ngOnInit() {
+    }
+
+    selectChat = (chatThreadID: string) => {
+        this.notify.emit(chatThreadID);
+    }
 
 }
