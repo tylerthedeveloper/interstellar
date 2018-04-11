@@ -19,6 +19,14 @@ Todo:
     ☐ anchor to USD ....
       ☐ pull from live feed...
       
+  ☐ CHECKOUT
+      ☐ CREATE ORDER FOR SUPPLIER
 
-     
 
+
+****** App performance
+https://github.com/angular/angular-cli/issues/8280
+https://www.npmjs.com/package/cleanup-dependencies
+https://github.com/bjfish/stellar-core-es-indexer
+https://www.google.com/search?q=anguolar+load+chidlren+one+after+the+other+preload&oq=anguolar+load+chidlren+one+after+the+other+preload&aqs=chrome..69i57.5135j0j7&sourceid=chrome&ie=UTF-8
+https://www.google.com/search?q=selly.gg+sellers&oq=selly&aqs=chrome.1.69i57j0l5.8879j0j7&sourceid=chrome&ie=UTF-8

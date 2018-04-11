@@ -7,10 +7,12 @@ import { Routes } from '@angular/router';
 export const AppRoutes: Routes = [
     // { path: 'home', component: WelcomeComponent },
     { path: 'home', loadChildren: 'app/home/index#HomeModule' },
+    { path: 'people', loadChildren: 'app/user/index#UserModule' },
     { path: 'profile', loadChildren: 'app/user/index#UserModule' },
     // { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'products', loadChildren: 'app/marketplace/products/index#ProductModule' },
     { path: 'categories', loadChildren: 'app/marketplace/category/index#CategoryModule'},
+    { path: 'chat', loadChildren: 'app/chat/index#ChatModule'},
     { path: 'cart', loadChildren: 'app/marketplace/checkout/index#CheckoutModule'},
     // { path: 'register', component: RegisterComponent, pathMatch: 'full' },
     { path: '**', redirectTo: 'home', pathMatch: 'full' },

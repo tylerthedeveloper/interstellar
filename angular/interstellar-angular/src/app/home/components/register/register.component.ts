@@ -2,13 +2,13 @@
 import { Component } from '@angular/core';
 
 /** Services */
-import { UserService } from 'app/user.service';
 import { StellarAccountService } from 'app/stellar';
 import { EventEmitterService } from 'app/core/_helpers/event-emitter.service';
 
 /** UI */
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmDialogComponent } from 'app/shared/_components';
+import { UserService } from 'app/core/services';
 
 @Component({
   selector: 'app-register',

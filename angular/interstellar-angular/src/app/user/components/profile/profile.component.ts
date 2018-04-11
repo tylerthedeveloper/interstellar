@@ -15,8 +15,6 @@ import 'rxjs/add/operator/first';
 /** Services */
 import { ProductService } from 'app/core/services/product.service';
 
-
-
 /** Models */
 import { Product } from 'app/marketplace/_market-models/product';
 
@@ -55,6 +53,8 @@ export class ProfileComponent implements OnInit {
     private profileForm: FormGroup;
     private profileFormMapper: any = {};
 
+    private _userID: string;
+    private isMyProfile;
 
     constructor(private _userService: UserService,
                 private _productService: ProductService,
@@ -68,29 +68,40 @@ export class ProfileComponent implements OnInit {
         // switch too this.user$ ... auto destroy / unsubscribe
         // this.user = this._userService.getCurrentUser().first();
         // this.userModel = new User('', '', '', '', '', '', 0);
+        const myUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
+        console.log(myUserID)
 
         this._userService
                 .getCurrentUser()
                 .first()
                 // .map(user => <User> user)
                 .subscribe(user => {
-                    this.user = user;
-                    this._userModel = <User> user;
-                    this.profileFormMapper = {};
+                    const userID = user.id;
+                    this._userID = myUserID;
+                    this.isMyProfile = (myUserID === userID);
+                    console.log(userID);
+                    console.log(this.isMyProfile);
 
-                    // TODO: NGFOR OF ATTRIBUTES FOR FORM ELEMENTS
-                    // TODO: use abstract form
-                    this.profileForm = createFormGroup(publicUserData, this._userModel);
-                    this._productService
-                            .getProductsByUserID(user.id)
-                            .subscribe(products => this.products = products);
+                    this.user = user;
+                    if (this.isMyProfile) {
+
+                        this._userModel = <User> user;
+                        this.profileFormMapper = {};
+
+                        // TODO: NGFOR OF ATTRIBUTES FOR FORM ELEMENTS
+                        // TODO: use abstract form
+                        this.profileForm = createFormGroup(publicUserData, this._userModel);
+                        this._productService
+                        .getProductsByUserID(user.id)
+                        .subscribe(products => this.products = products);
+                    }
         });
 
         // User balances //
         this.balances = new Array<AssetBalance>();
         const _balances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
-        console.log(_balances);
         if (_balances) { this.balances = <AssetBalance[]>JSON.parse(_balances); }
+        // console.log(_balances);
     }
 
 
@@ -210,11 +221,17 @@ export class ProfileComponent implements OnInit {
         }
 
         const p = JSON.stringify(product);
+        // console.log(p)
         this._productService.addProduct(p)
                     .catch(err => console.log(err))
                     .then(res => this.router.navigate(['/products', res]));
     }
 
+
+
+    // TODO: add go to product
+
+    // TODO: add orders
 
 
     /**

@@ -1,5 +1,4 @@
 export class ChatUser {
-    
     userFbID: string;
     userPublicKey: string;
     userName: string;

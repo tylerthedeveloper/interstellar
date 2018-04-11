@@ -19,6 +19,7 @@ import { ProductService } from './services/product.service';
 import { CartService } from './services/cart.service';
 import { OrderService } from 'app/core/services/order.service';
 import { UserService } from './services/user.service';
+import { ChatService } from './services';
 
 @NgModule({
     imports: [
@@ -42,11 +43,12 @@ import { UserService } from './services/user.service';
     ],
     declarations: [NavBarComponent],
     providers: [
-        AuthGuardService, 
+        AuthGuardService,
         EventEmitterService,
-        CartService, 
+        ChatService,
+        CartService,
         OrderService,
-        ProductService, 
+        ProductService,
         UserService
     ]
 })

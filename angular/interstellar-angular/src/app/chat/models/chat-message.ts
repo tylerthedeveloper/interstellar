@@ -1,5 +1,5 @@
-import { ChatUser } from "./chat-user";
-import { ChatThread } from "./chat-thread";
+import { ChatThread } from './chat-thread';
+import { ChatUser } from './chat-user';
 
 export class ChatMessage {
 

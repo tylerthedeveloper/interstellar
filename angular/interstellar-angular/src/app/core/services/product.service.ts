@@ -15,9 +15,9 @@ import { Observable } from 'rxjs/Observable';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
 
-import { User } from 'app/user';
 import { ProductCategory } from 'app/marketplace/_market-models/product-category';
 import { Product } from 'app/marketplace/_market-models/product';
+import { User } from 'app/user/user';
 
 
 @Injectable()
