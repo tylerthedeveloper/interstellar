@@ -9,27 +9,33 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
-  styleUrls: ['./navbar.css'],
-  templateUrl: './navbar.html',
+  styleUrls: ['./navbar.component.css'],
+  templateUrl: './navbar.component.html',
   providers: [ ]
 })
 
 export class NavBarComponent implements OnInit {
 
+    private _userID;
+    private _secretKey;
     public currentPage: string;
     private loggedIn: boolean;
 
     @ViewChild('sidenav') public sideNav: MatSidenav;
     constructor(public router: Router,
                 private _stellarAccountService: StellarAccountService,
-                private _eventEmiter: EventEmitterService) {
-
-                }
+                private _eventEmiter: EventEmitterService) {}
 
     ngOnInit(): void {
-        this.loggedIn = (sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key')) ? true : false;
-        console.log(this.loggedIn)
-        console.log(sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key'))
+        this._secretKey = (sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key'));
+        // TODO: test subcription and entry
+        this._userID = (sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id'));
+        // todo: test this works with speed on callback
+        this.loggedIn = (this._secretKey && this._userID) ? true : false;
+        console.log(this._secretKey);
+        console.log(this._userID);
+        console.log(this.loggedIn);
+        // console.log(sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key'))
         this.currentPage = (this.currentPage === '') ? this.currentPage : 'home';
         document.getElementById(this.currentPage || 'home').style.textDecoration = 'underline';
         this._eventEmiter.dataStr.subscribe((data: any) => {
@@ -103,7 +109,12 @@ export class NavBarComponent implements OnInit {
         // console.log(this.router.url)
         // console.log(this.router.routerState)
 
-        if (nextPage === 'profile' && !this.loggedIn) { return; }
+        if (nextPage === 'profile' && !this.loggedIn) {
+            return;
+        } else if (nextPage === 'profile' && this.loggedIn) {
+            nextPage = `people/${this._userID}/me`;
+        }
+        console.log(nextPage)
         if (document.getElementById(this.currentPage)) {
             document.getElementById(this.currentPage).style.textDecoration = 'none';
         }
@@ -111,7 +122,9 @@ export class NavBarComponent implements OnInit {
         // TODO.... 
         // this.loggedIn = true;
         // console.log(this.currentPage)
-        // document.getElementById(this.currentPage).style.textDecoration = 'underline';
+        if (document.getElementById(this.currentPage)) {
+            document.getElementById(this.currentPage).style.textDecoration = 'underline';
+        }
         if (this.sideNav.opened) { this.sideNav.close(); }
         this.router.navigate(['/' + nextPage]);
     }

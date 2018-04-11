@@ -12,10 +12,8 @@ import { SharedModule } from 'app/shared';
 import { RouterModule } from '@angular/router';
 import { ChatRoutes as routes } from './chat.routes';
 
-/** Compoents */
-import { ChatMessageComponent } from './components/chat-message/chat-message.component';
-import { ChatPageComponent } from './components/chat-page/chat-page.component';
-import { ChatThreadComponent } from './components/chat-thread/chat-thread.component';
+/** Components */
+import { ChatMessageComponent, ChatPageComponent, ChatThreadComponent } from './components/chat.components';
 
 const components = [ ChatPageComponent, ChatMessageComponent, ChatThreadComponent ];
 

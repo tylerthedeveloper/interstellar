@@ -52,7 +52,7 @@ export class CartComponent implements OnInit {
      * @returns void
      */
     proceedToCheckout(): void {
-        this.updateAddToCheckout(this.cartItemIDs);
+        this.updateAddToCheckout(this._checkedCartItemIDs || this.cartItemIDs);
     }
 
     /**

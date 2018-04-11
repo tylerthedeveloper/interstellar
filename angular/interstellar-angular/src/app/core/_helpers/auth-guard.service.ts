@@ -35,8 +35,7 @@ export class AuthGuardService implements CanActivate {
         // return !this.jwtHelper.isTokenExpired(token);
 
         /// MAYEB CHECK IF PUBLIC KEY IS IN DB AND IS REAL ....???
-        let _key = sessionStorage.getItem('seed_key');
-        if (!_key) { _key = localStorage.getItem('seed_key'); }
+        let _key = sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key');
         return  (_key !== null && isValidSecretKey(_key) != null);
         ////////////////////////////////////////////////////
     }

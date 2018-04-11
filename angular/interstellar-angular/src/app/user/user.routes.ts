@@ -5,6 +5,7 @@ import { UserListComponent } from './components/user-list/user-list.component';
 
 
  // todo: go to USER / ID
+ // todo: HANDLE AUTH GUAD
 export const UserRoutes: Routes = [
   {
     path: '',
@@ -12,7 +13,9 @@ export const UserRoutes: Routes = [
     children: [
       // add id
       { path: '', component: UserListComponent},
-      { path: 'me', component: ProfileComponent, canActivate: [AuthGuard] },
+      { path: ':id', component: ProfileComponent }, // , canActivate: [AuthGuard]
+      { path: ':id/me', component: ProfileComponent, canActivate: [AuthGuard] },
+      { path: '**', redirectTo: '', pathMatch: 'full' },
     ]
   },
 ];

@@ -42,10 +42,10 @@ export class ProductPageComponent implements OnInit {
      * @param  {ProductService} private_productService
      * @param  {CartService} private_cartService
      * @param  {Router} private_router
-     * @param  {ActivatedRoute} privateroute
+     * @param  {ActivatedRoute} private_route
      */
     constructor(private _productService: ProductService,
-        private route: ActivatedRoute,
+        private _route: ActivatedRoute,
         private _cartService: CartService,
         private _router: Router,
         private location: Location) { }
@@ -61,7 +61,7 @@ export class ProductPageComponent implements OnInit {
         this.balances = <Array<AssetBalance>>JSON.parse(curBalances);
         this.assetTypes = Object.keys(currencyAssetsMapper).map((type: any) => <Array<AssetBalance>>type);
         this._productService
-            .getProductByProductId(this.route.snapshot.params['id'])
+            .getProductByProductId(this._route.snapshot.params['id'])
             .map(product => <Product>product)
             .subscribe(product => {
                 this.product = product;

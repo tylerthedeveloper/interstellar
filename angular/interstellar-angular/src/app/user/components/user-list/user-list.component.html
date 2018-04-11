@@ -1,3 +1,9 @@
 <p>
   user-list works!
 </p>
+
+<div style="text-align:center; width: 90%; margin: auto;">
+    <div *ngFor="let person of _peopleList | async" style="cursor: pointer; width: 20%" id="indCategory">
+        <app-user-card [person]="person" (notify)="onSelectPerson($event)"></app-user-card>
+    </div>
+</div>

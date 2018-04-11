@@ -22,7 +22,7 @@ import { Product } from 'app/marketplace/_market-models/product';
 import { MatDialog } from '@angular/material';
 
 /** Utils */
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { areValidProductTypes } from 'app/marketplace/products/product.utils';
 import { productFormData } from 'app/marketplace/products/product.details';
 import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
@@ -44,21 +44,27 @@ export class ProfileComponent implements OnInit {
     // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
     // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
 
+    /** Page Objects */
     private _userModel: User;
     private user: Observable<User>;
     private balances: AssetBalance[];
     private products: Observable<Product[]>;
 
+    /** Page Identifiers */
+    private _userID: string;
+    private _pagePersonID: string;
+    private isMyProfile;
+
+    /** Page Helpers */
     public edit = false;
     private profileForm: FormGroup;
     private profileFormMapper: any = {};
 
-    private _userID: string;
-    private isMyProfile;
 
     constructor(private _userService: UserService,
                 private _productService: ProductService,
                 private dialog: MatDialog,
+                private _route: ActivatedRoute,
                 public router: Router) {}
 
 
@@ -69,32 +75,25 @@ export class ProfileComponent implements OnInit {
         // this.user = this._userService.getCurrentUser().first();
         // this.userModel = new User('', '', '', '', '', '', 0);
         const myUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-        console.log(myUserID)
-
+        this._userID = myUserID;
+        const pagePersonID = this._route.snapshot.params['id'];
+        this._pagePersonID = pagePersonID;
+        this.isMyProfile = (pagePersonID === myUserID);
         this._userService
-                .getCurrentUser()
+                .getUserByID(pagePersonID)
                 .first()
-                // .map(user => <User> user)
                 .subscribe(user => {
                     const userID = user.id;
-                    this._userID = myUserID;
-                    this.isMyProfile = (myUserID === userID);
-                    console.log(userID);
-                    console.log(this.isMyProfile);
-
                     this.user = user;
                     if (this.isMyProfile) {
-
                         this._userModel = <User> user;
                         this.profileFormMapper = {};
-
                         // TODO: NGFOR OF ATTRIBUTES FOR FORM ELEMENTS
                         // TODO: use abstract form
                         this.profileForm = createFormGroup(publicUserData, this._userModel);
-                        this._productService
-                        .getProductsByUserID(user.id)
-                        .subscribe(products => this.products = products);
                     }
+                    this._productService.getProductsByUserID(userID)
+                                        .subscribe(products => this.products = products);
         });
 
         // User balances //
@@ -181,6 +180,10 @@ export class ProfileComponent implements OnInit {
     // ──────────────────────────────────────────────────────────────────────────
     //
 
+    sendMessage() {
+        this.router.navigate(['/chat', this._pagePersonID]);
+    }
+
     handleNewProduct(product: any) {
         // console.log('product');
         // console.log(product);
@@ -226,8 +229,6 @@ export class ProfileComponent implements OnInit {
                     .catch(err => console.log(err))
                     .then(res => this.router.navigate(['/products', res]));
     }
-
-
 
     // TODO: add go to product
 

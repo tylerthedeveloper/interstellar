@@ -108,8 +108,9 @@
                                     Cart {{ cartItemCount }}
                                 </i>
                             </button>
-                            <button mat-button [style.display]="!loggedIn ? 'none' : 'inherit' " id="profile" [routerLink]="['/people/me']" (click)="changePage('people/me')"
-                            routerLinkActive="active" style="padding: 1% 0% 0% 5%;">
+                            <!-- [routerLink]="['/people/${_userID}/me']"  -->
+                            <button mat-button [style.display]="!loggedIn ? 'none' : 'inherit' " id="profile" 
+                                    (click)="changePage('profile')" routerLinkActive="active" style="padding: 1% 0% 0% 5%;">
                             <i class="fa fa-user" style="color: white;">
                                 Profile
                             </i>
@@ -117,6 +118,7 @@
                             <button mat-button (click)="logout()" style="padding: 1% 0% 0% 0%;">
                                 <i class="fa fa-sign-out">
                                     Logout
+                                    <!-- {{ _userID }} -->
                                 </i>
                             </button>
                         </div>

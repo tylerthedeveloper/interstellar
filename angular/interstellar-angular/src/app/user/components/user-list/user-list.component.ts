@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'app/core/services';
+import { Router } from '@angular/router';
+import { User } from 'app/user/user';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-user-list',
@@ -7,9 +11,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserListComponent implements OnInit {
 
-  constructor() { }
+    // TODO: LEARN TO DO PARTIAL ....
+    // TODO: USE SAME FOR PRODUCT CARD ^^^ ...
+    private _peopleList: Observable<User[]>;
 
-  ngOnInit() {
+    constructor(private _userService: UserService,
+                public router: Router) {}
+
+    ngOnInit() {
+        const myUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
+        this._peopleList = this._userService.getAllUsers()
+            .valueChanges()
+            .map(users => users.filter((user: User) => user.id !== myUserID));
+    }
+
+    onSelectPerson = (personID: string) => {
+      console.log(personID)
+      this.router.navigate([`/people/${personID}`]);
   }
 
 }

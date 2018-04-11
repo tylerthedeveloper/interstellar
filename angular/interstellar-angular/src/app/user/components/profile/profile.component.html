@@ -38,6 +38,13 @@
                             <div class="profile-image-two">
 
                             </div>
+                            <div *ngIf="isMyProfile; else NotMyProfile"> my profile </div>
+                            <ng-template #NotMyProfile>     
+                                NOT my profile 
+                                <button (click)="sendMessage()"> 
+                                    send me a message!!!
+                                </button>
+                            </ng-template>
                             <div *ngIf="!edit">
                               <label for="userName">Username:</label>
                               <h2>{{_userModel?.userName}}</h2>

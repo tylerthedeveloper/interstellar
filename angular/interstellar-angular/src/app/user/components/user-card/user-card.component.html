@@ -1,0 +1,9 @@
+<p>
+  user-card works!
+</p>
+
+<div class="card example hoverable rounded-0" style="cursor: pointer;" (click)="selectPerson(person.id)">
+    <div style="width: 90%; margin: 1em auto -1em auto; overflow: hidden; white-space: nowrap;">
+       <p class="text-left">{{ person | json }}</p>
+    </div>
+</div>

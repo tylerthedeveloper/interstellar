@@ -39,7 +39,7 @@ export class UserService {
         //
         let _keyLoginId = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         if (_keyLoginId) {
-            console.log(_keyLoginId);
+            // console.log(_keyLoginId);
             return this.usersCollection.doc(_keyLoginId).valueChanges();
         } else if (_keyLoginId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key')) {
             return Observable.create((observer: any) => {
@@ -52,7 +52,7 @@ export class UserService {
                     });
             });
         }
-        console.log("no user")
+        console.log('no user');
     }
 
     /**
@@ -69,7 +69,7 @@ export class UserService {
         user.id = _docID;
         return Observable.fromPromise(this.usersCollection.doc(_docID).set(user));
     }
-    
+
     /**
      * @param  {User} user
      * @returns Observable
@@ -100,13 +100,13 @@ export class UserService {
     //   :::::: Q U E R Y   M E T H O D S : :  :   :    :     :        :          :
     // ────────────────────────────────────────────────────────────────────────────
     //
-    
+
     /**
      * @param  {string} userID
      * @returns Observable
      */
-    getUserByID(userID: string): Observable<User> {
-        return this.usersCollection.doc(userID).valueChanges().map(user => <User>user);
+    getUserByID(userID: string): Observable<any> {
+        return this.usersCollection.doc(userID).valueChanges(); // .map(user => <User>user);
     }
 
     /**
