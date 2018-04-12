@@ -1,3 +1,21 @@
+/deep/ .mat-tab-label{
+/* line-height: 28px !important;
+height: 28px !important; */
+}
+
+/deep/ .mat-tab-header {
+background-color: #ffffff;
+color: white;
+/* border-radius: 5px 5px 0px 0px; */
+}
+
+/deep/ .mat-tab-header:active {
+}
+
+/deep/ .mat-ink-bar {
+background-color: #0024FF !important;
+/* min-width: 120px; */
+}
 /* .profile-image {
     height: 2em;
     background-color: #60ad5e;

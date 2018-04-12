@@ -13,16 +13,16 @@
 
                       <div class="col-md-4" style="display: flex; flex-direction: row; margin: 0% 0em 0em 12.5%;">
                         <div style="width: 40%; max-height: 100%; text-align: left;">
-                          <p style="">Product</p>
+                          <p style="margin: 10% 0% 0% 0%;">Product</p>
                         </div>
                         <!-- <p> {{ cartItem?.productID }} </p>
                         <p> {{ cartItem?.cartItemID }} </p> -->
                         <div style="width: 30%; max-height: 100%; text-align: left;">
-                          <p class="" style="">Quantity</p>
+                          <p class="" style="margin: 13% 0% 0% 0%;">Quantity</p>
                         </div>
 
                         <div style="width: 30%; max-height: 100%; text-align: center;">
-                          <p class="" style="">Price</p>
+                          <p class="" style="margin: 13% 0% 0% 0%;">Price</p>
                         </div>
                         <!-- <p> {{ cartItem?.description }} </p> -->
                       </div>
@@ -38,21 +38,21 @@
                 </div>
                 <div class="col-md-2 text-nowrap" id="assetTotals" style="margin: -.3% 0% 0% 0%">
                     <!-- width:400 px;  -->
-                    <h6 style="display: flex; margin: 10% 0em 0em 0em;"> Cart Asset Totals </h6>
-                    <div class="card">
+                    <h6 style="display: flex; margin: 10% 0em 0em 0em;"> Cart Subtotals </h6>
+                    <div class="card" style="height: 20%; width: 100%;">
                         <div *ngFor="let asset of assetTotals " style="margin: 5% 0em 0em 5%;">
                             <strong>{{ asset?.asset_type }}:</strong> {{ asset?.balance }}
                             <br />
                         </div>
-                        <button type="button" (click)="recalculateTotals()" class="btn btn-default btn-sm z-depth-0"> Recalculate </button>
+                        <!-- <button type="button" (click)="recalculateTotals()" class="btn btn-default btn-sm z-depth-0"> Recalculate </button> -->
                     </div>
                     <!-- width:400 px;  -->
                     <h6 class="text-nowrap" style="display: flex; margin: 1em 0em 0em 0em;"> Cart Options </h6>
                     <div class="card">
-                        <button (click)="proceedToCheckout()" class="btn btn-primary btn-sm z-depth-0"> Checkout </button>
-                        <button (click)="checkoutSelectedItems()" class="btn btn-blue-grey btn-sm z-depth-0"> Checkout Selected </button>
-                        <button (click)="removeSelectedItems()" class="btn btn-blue-grey btn-sm z-depth-0"> Remove Selected </button>
-                        <button (click)="emptyOutCart()" class="btn btn-blue-grey btn-sm z-depth-0"> Empty Cart </button>
+                        <button (click)="proceedToCheckout()" class="btn btn-primary btn-sm z-depth-0"> Buy All </button>
+                        <button (click)="checkoutSelectedItems()" class="btn btn-blue-grey btn-sm z-depth-0"> Buy Selected </button>
+                        <!-- <button (click)="removeSelectedItems()" class="btn btn-blue-grey btn-sm z-depth-0"> Empty Selected </button> -->
+                        <button (click)="emptyOutCart()" class="btn btn-mdb-color btn-sm z-depth-0"> Empty Cart </button>
                     </div>
                 </div>
             </ng-template>

@@ -18,7 +18,7 @@
 }
 
 .main-nav {
-    background-color: #59698d;
+    background-color: #0D082B;
     /* border-bottom: .08em solid #cCcCcC; */
     /* display:flex;
     flex-direction: row; */
@@ -30,11 +30,11 @@
     z-index: 1;
     width: 100%  !important;
     /* fxLayoutAlign="space-around center" */
-    height: 6%;
+    height: 8%;
 }
 
 .main-nav-button {
-    background-color: #59698d;
+    background-color: #0D082B;
     /* padding: 0 0 0 4;
     margin: 0 0 0 4; */
     padding-top: .5em;
@@ -55,9 +55,13 @@
 
 button {
     color: white;
-    height: 2.5em;
+    height: 100%;
     font-family: 'Kanit', sans-serif;
     font-size: .8em;
+}
+
+button:hover {
+  background-color: #192350;
 }
 
 i {
