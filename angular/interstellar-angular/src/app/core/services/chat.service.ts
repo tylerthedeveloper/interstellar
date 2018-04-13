@@ -19,6 +19,7 @@ import { User } from 'app/user/user';
 
 
 
+
 @Injectable()
 export class ChatService {
 
@@ -64,12 +65,12 @@ export class ChatService {
         const senderRef = this.userChatRef.doc(senderID).collection('chatThreads').doc(receiverID);
         const receiverRef = this.userChatRef.doc(receiverID).collection('chatThreads').doc(senderID);
         const chatThreadObj = <ChatThread> {
-            chatTheadID: NEWCHATID,
+            chatThreadID: NEWCHATID,
             senderFbID: senderID,
             senderPublicKeyFbID: 'CHANGE ME',
             receiverFbID: receiverID,
             receiverPublicKeyFbID: 'CHANGE ME'
-        }
+        };
         // const _chatThread = new ChatThread({
         //     chatTheadID: NEWCHATID,
         //     senderFbID: senderID,

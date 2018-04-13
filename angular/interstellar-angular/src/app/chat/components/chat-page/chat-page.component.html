@@ -5,10 +5,32 @@ list of
 chat          active chat
 threads       send message box - button     -->
 <p> chat page </p>
-
-<div style="text-align:center; margin: auto;">
-    <div *ngFor="let chatThread of myChatThreads | async" style="cursor: pointer;" id="chatThreadList">
-        <app-chat-thread [chatThread]="chatThread" (notify)="onSelectChat($event)"></app-chat-thread>
+<!-- style="cursor: pointer;"  -->
+<!-- <div style="text-align:center; margin: auto;">
+    <div *ngFor="let thread of myChatThreads | async" id="chatThreadList">
+        <app-chat-thread [chatThread]="thread" (notify)="onSelectChat($event)"></app-chat-thread>
     </div>
-</div>
+</div> -->
+
+<div class="container">
+        <div class="row">
+            <ng-container *ngIf="myChatThreads | async; let chatThreadList" id="chatThreadList">
+                    <div class="col-12 col-md-4">
+                        <h5> My Chats <small> {{ chatThreadList.length }} </small> </h5>
+    
+                        <div *ngFor="let thread of chatThreadList" id="chatThreadList">
+                            <app-chat-thread [chatThread]="thread" (notify)="onSelectChat($event)"></app-chat-thread>
+                        </div>
+                    </div>
+                    <div class="col-md-8 text-nowrap" id="assetTotals" style="margin: 0% 0% 0% 0%">
+                        <h6 style="display: flex; margin: 0% 0em 0em 0em;"> Messages </h6>
+
+                        <div class="card">
+                            <p> messages should go hjere</p>
+                        </div>
+                    </div>
+            </ng-container>
+        </div>
+    </div>
+    
     

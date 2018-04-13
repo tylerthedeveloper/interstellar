@@ -30,7 +30,7 @@ export class ChatPageComponent implements OnInit {
             this.activeThreadID = this._route.snapshot.queryParams['receiverID'];
             this.myChatThreads = this._chatService.getMyChatThreads()
                 .map(threads => {
-                    console.log(this.activeThreadID)
+                    // console.log(this.activeThreadID)
                     if (this.activeThreadID && !threads.find(thread => thread.receiverFbID === this.activeThreadID)) {
                         this.handleNewChat();
                     }
@@ -78,7 +78,9 @@ export class ChatPageComponent implements OnInit {
      * @returns void
      */
     onSelectChat(chatID: string): void {
-      // this.currentThread = chatID;
+        this.activeThreadID = chatID;
+        console.log(chatID);
+        // this.activeThread = this.myChatThreads.first(thread => thread.;
       // focus on chat on right side
     }
     // ────────────────────────────────────────────────────────────────────────────────

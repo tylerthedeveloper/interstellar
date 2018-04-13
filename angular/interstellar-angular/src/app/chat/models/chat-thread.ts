@@ -1,6 +1,6 @@
 export class ChatThread {
 
-    chatTheadID: string;
+    chatThreadID: string;
 
     senderFbID: string;
     senderPublicKeyFbID: string;
@@ -9,7 +9,7 @@ export class ChatThread {
     receiverPublicKeyFbID: string;
 
     constructor(obj?: any) {
-        this.chatTheadID            = obj.chatTheadID;
+        this.chatThreadID            = obj.chatThreadID;
         this.senderFbID             = obj.senderFbID;
         this.senderPublicKeyFbID    = obj.senderPublicKeyFbID;
         this.receiverFbID           = obj.receiverFbID;
