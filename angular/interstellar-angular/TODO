@@ -7,21 +7,36 @@ Todo:
   ☐ UI ...
     ☐ THEME DECISION ... ANGULAR / MD BOOTRSTRAP --> HOW AND WHY?
     ☐ DECICDE HOW TO PROCEED / WITH WHICH REGARDING CARDS / MAJOR PAGES
+    ☐ all of chat
+    ☐ checkout page
+    ☐ profile
   
   ☐ MODULES
-    ☐ CREATE USER-ESQUE MODULE... PROFILE... USER LIST... 
-    ☐ HOME MODULE... MAIN PAGES
+√    ☐ CREATE USER-ESQUE MODULE... PROFILE... USER LIST... 
+√    ☐ HOME MODULE... MAIN PAGES
 
+2)
   ☐ FEATURES
-    ☐ add reviews ...
+    ☐ chat
+    ☐ shipping
+      ☐ ASK FOR ADDRESS WHEN LIST PRODUCT
+      ☐ ASK FOR ADDRESS WHEN CHECKOUT
+    ... 
     ☐ add ratings
-    ☐ add shipping -> API
+    ☐ add reviews ...
     ☐ anchor to USD ....
       ☐ pull from live feed...
       
-  ☐ CHECKOUT
-      ☐ CREATE ORDER FOR SUPPLIER
 
+1)
+☐ MISC
+  ☐ CREATE ORDER FOR SUPPLIER
+    ☐ seller history --> filter by ordertype = sale
+  ☐ update product quanity --> after payment goes through
+  
+☐ MAJOR 
+    ☐ NGRX store
+      ☐ immutable
 
 
 ****** App performance

@@ -26,8 +26,10 @@ export class ChatService {
     /** AFS Collections */
     private userChatThreadsCollection: AngularFirestoreCollection<User>;
     private chatThreadsCollection: AngularFirestoreCollection<ChatThread>;
-    private userChatRef: firebase.firestore.CollectionReference;
 
+    private userChatRef: firebase.firestore.CollectionReference;
+    private chatThreadsRef: firebase.firestore.CollectionReference;
+    
     public myChatThreads: Observable<ChatThread[]>;
 
 
@@ -38,11 +40,12 @@ export class ChatService {
         this._userID = userID;
         if (userID) {
             this.userChatThreadsCollection = afs.collection<User>('user-chat-threads');
-            this.chatThreadsCollection = afs.collection<ChatThread>('chat-threads');
-            this.myChatThreads = this.userChatThreadsCollection.doc(userID).collection<ChatThread>('chatThreads').valueChanges();
             this.userChatRef = this.userChatThreadsCollection.ref;
-            // this.chatMessagesCollection = afs.collection('user-chat-rooms');
-
+            
+            this.chatThreadsCollection = afs.collection<ChatThread>('chat-threads');
+            this.chatThreadsRef = this.chatThreadsCollection.ref;
+            
+            this.myChatThreads = this.userChatThreadsCollection.doc(userID).collection<ChatThread>('chatThreads').valueChanges();
         }
     }
 
@@ -71,16 +74,10 @@ export class ChatService {
             receiverFbID: receiverID,
             receiverPublicKeyFbID: 'CHANGE ME'
         };
-        // const _chatThread = new ChatThread({
-        //     chatTheadID: NEWCHATID,
-        //     senderFbID: senderID,
-        //     senderPublicKeyFbID: 'CHANGE ME',
-        //     receiverFbID: receiverID,
-        //     receiverPublicKeyFbID: 'CHANGE ME'
-        // });
         const batch = this.afs.firestore.batch();
         batch.set(senderRef, chatThreadObj);
         batch.set(receiverRef, chatThreadObj);
+        batch.set(this.chatThreadsRef.doc(chatThreadObj.chatThreadID), chatThreadObj);
         return batch.commit();
         // .catch(this.HandleError);
         // .then(res => res)
