@@ -6,16 +6,23 @@
   </div>
 
   <div class="col-md-4" style="display: flex; flex-direction: row;">
-    <p style="text-align: left; margin: 0em 0em 0em -1em;"> {{ cartItem?.productName }} </p>
+
+    <div style="width: 40%; max-height: 100%;">
+      <p style="text-align: left;"> {{ cartItem?.productName }} </p>
+    </div>
     <!-- <p> {{ cartItem?.productID }} </p>
     <p> {{ cartItem?.cartItemID }} </p> -->
-    <p class="offset-2" style="text-align: center; margin: 0em 0em 0em 2em;">{{ cartItem?.quantityPurchased }}</p>
-    <p class="offset-1" style="text-align: right; margin: 0em 0em 0em 2em;">{{ cartItem?.assetPurchaseDetails.balance }} {{ cartItem?.assetPurchaseDetails.asset_type }}</p>
+    <div style="width: 30%; max-height: 100%">
+      <p class="offset-2" style="text-align: left;">{{ cartItem?.quantityPurchased }}</p>
+    </div>
+    <div style="width: 30%; max-height: 100%">
+      <p class="offset-1" style="text-align: left;">{{ cartItem?.assetPurchaseDetails.balance }} {{ cartItem?.assetPurchaseDetails.asset_type }}</p>
+    </div>
     <!-- <p> {{ cartItem?.description }} </p> -->
   </div>
 
   <div class="offset-1 col-md-5" style="margin: 0em -2.5em 0em 0em;">
-    <button (click)="purchaseItem(cartItem.cartItemID)" class="btn btn-primary btn-sm z-depth-0"> Purchase </button>
+    <button (click)="purchaseItem(cartItem.cartItemID)" class="btn btn-primary btn-sm z-depth-0"> Buy </button>
     <button (click)="editItem(cartItem)" class="btn btn-blue-grey btn-sm z-depth-0"> Edit </button>
     <button (click)="removeItem(cartItem.cartItemID)" class="btn btn-mdb-color btn-sm z-depth-0"> Remove </button>
     <mat-checkbox (change)="checkItem(cartItem.cartItemID)" style="margin: 0em 0em 0em 63%;">Select</mat-checkbox>
