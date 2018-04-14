@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from 'app/core/services/order.service';
 import { ActivatedRoute } from '@angular/router';
 import { Order } from 'app/marketplace/_market-models/order';
-import { TransactionGroup } from 'app/marketplace/_market-models/transaction-group';
+import { TransactionGroup } from '../../../_market-models/transaction';
 
 @Component({
   selector: 'app-order-confirmation',

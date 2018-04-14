@@ -1,11 +1,10 @@
-import { TransactionGroup } from './transaction-group';
+import { TransactionGroup } from './transaction';
 
 export class Order {
 
     userID: string;
     orderID: string;
     timestamp: string;
-
     transactionsGroups: Array<TransactionGroup>;
 
     constructor(userID: string,
@@ -16,3 +15,9 @@ export class Order {
                     this.transactionsGroups = transactionsGroups;
                 }
 }
+
+// export const enum OrderType {
+//     Purchase = 'Purchase',
+//     Sale = 'Sale',
+//     Other = 'Other'
+// }

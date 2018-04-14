@@ -11,14 +11,16 @@ Todo:
     ☐ checkout page
     ☐ profile
   
+
   ☐ MODULES
-√    ☐ CREATE USER-ESQUE MODULE... PROFILE... USER LIST... 
-√    ☐ HOME MODULE... MAIN PAGES
+    √    ☐ CREATE USER-ESQUE MODULE... PROFILE... USER LIST... 
+    √    ☐ HOME MODULE... MAIN PAGES
 
 2)
   ☐ FEATURES
     ☐ chat
     ☐ shipping
+    ☐ search
       ☐ ASK FOR ADDRESS WHEN LIST PRODUCT
       ☐ ASK FOR ADDRESS WHEN CHECKOUT
     ... 
@@ -26,13 +28,12 @@ Todo:
     ☐ add reviews ...
     ☐ anchor to USD ....
       ☐ pull from live feed...
-      
 
 1)
 ☐ MISC
   ☐ CREATE ORDER FOR SUPPLIER
     ☐ seller history --> filter by ordertype = sale
-  ☐ update product quanity --> after payment goes through
+    √  ☐ update product quanity --> after payment goes through
   
 ☐ MAJOR 
     ☐ NGRX store

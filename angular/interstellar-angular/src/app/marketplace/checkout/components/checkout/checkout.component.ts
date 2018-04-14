@@ -1,6 +1,6 @@
 // TODO: CLLEAN UP UNUSED CODE
 
-import { Component, OnInit,  } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -15,8 +15,9 @@ import { OrderService } from 'app/core/services/order.service';
 import { CartItem } from 'app/marketplace/_market-models/cart-item';
 import { CartService } from 'app/core/services/cart.service';
 import { Order } from 'app/marketplace/_market-models/order';
-import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from 'app/marketplace/_market-models/transaction-group';
+import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from 'app/marketplace/_market-models/transaction';
 import { MatHorizontalStepper } from '@angular/material';
+import { ProductService } from 'app/core/services';
 
 // import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 // import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -48,15 +49,17 @@ export class CheckoutComponent implements OnInit {
         private curSeedKey: string;
 
         private hasItems = false;
+        private _transactionRecords: TransactionRecord[];
         private _transactionGroups: TransactionGroup[];
 
         private _pageError = false;
+        private _productQuantityPairs: Array<any>;
 
         constructor(private _cartService: CartService,
                     private _stellarAccountService: StellarAccountService,
                     private _stellarPaymentService: StellarPaymentService,
-                    // private _formBuilder: FormBuilder,
                     private _orderService: OrderService,
+                    private _productService: ProductService,
                     private _router: Router,
                     private location: Location) { }
 
@@ -88,19 +91,16 @@ export class CheckoutComponent implements OnInit {
                     cartPurchaseDetailsArray.push(CIT.assetPurchaseDetails);
                 });
                 this.sellerPublicKeys = new Set(_sellerPublicKeys);
-                console.log(this.sellerPublicKeys)
+                // console.log(this.sellerPublicKeys);
                 this.assetTotals = calcTotalsForMultipleAssets(cartPurchaseDetailsArray);
                 return arr;
             });
 
             this.balances = <AssetBalance[]> JSON.parse(sessionStorage.getItem('my_balances') || localStorage.getItem('balances'));
-            console.log(this.balances);
+            // console.log(this.balances);
 
             // https://stackoverflow.com/questions/46710178/material-design-stepper-how-to-remove-disable-steps?rq=1
             // https://stackoverflow.com/questions/47314219/using-separate-components-in-a-linear-mat-horizontal-stepper?rq=1
-            // this.secondFormGroup = this._formBuilder.group({
-            //     secondCtrl: ['', Validators.required]
-            //   });
         }
 
         /**
@@ -108,14 +108,11 @@ export class CheckoutComponent implements OnInit {
          * @param  {MatHorizontalStepper} stepper
          */
         validateCheckoutSecretKey(secretKey: string, stepper: MatHorizontalStepper) {
-
             const currentStep: number = stepper.selectedIndex;
-
             if (!secretKey) {
                 alert('Please enter a secret key');
                 return;
             }
-
             if (!(this.curUserID && this.curPubKey && this.curSeedKey &&
                   this.curSeedKey === secretKey &&
                   isValidSecretKey(this.curSeedKey) === this.curPubKey)) {
@@ -144,7 +141,7 @@ export class CheckoutComponent implements OnInit {
          */
         validateFundsForPurchase(currentStep: number) {
             // TODO: is step == 3
-            console.log(currentStep);
+            // console.log(currentStep);
             if (areValidNewBalances(this.updatedBalances)) {
                 this.stepChecker[3] = true;
             } else {
@@ -170,14 +167,14 @@ export class CheckoutComponent implements OnInit {
             const memo = 'create a memo thingy...';
 
             // TURN ITEMS INTO TRANSACTIONS
-            const transactions = this.makeTransactionRecords();
+            const transactions = this._transactionRecords = this.makeTransactionRecords();
 
             // TODO: --> put into helper
             // TODO: test for each by index error
             // COMBINE PAYMENTS .... INTO TRANS GROUPS
             const transactionGroups = new Array<TransactionGroup>();
             Array.from(this.sellerPublicKeys).map((key: string) => {
-                console.log(key);
+                // console.log(key);
                 const newGroup = new TransactionGroup(key);
                 newGroup.transactionID = this._orderService.getNewOrderID();
                 transactionGroups.push(newGroup);
@@ -185,7 +182,7 @@ export class CheckoutComponent implements OnInit {
 
             // TODO: --> put into helper
             //  /// this.makeTransactionGroups(transactionGroups, transactions);
-            console.log(JSON.stringify(transactionGroups));
+            // console.log(JSON.stringify(transactionGroups));
             for (let i = 0; i < transactions.length; i++) {
                 const transaction = transactions[i];
                 const sellerKey = transaction.receiverPublicKey;
@@ -196,7 +193,7 @@ export class CheckoutComponent implements OnInit {
                 const newListAtIndex = transactionGroups[idx].transactionRecords.concat(transaction);
                 transactionGroups[idx].transactionRecords = newListAtIndex;
             }
-            console.log(JSON.stringify(transactionGroups));
+            // console.log(JSON.stringify(transactionGroups));
 
 
             // TODO: --> put into helper
@@ -226,7 +223,7 @@ export class CheckoutComponent implements OnInit {
                 // TODO: onrejceted
                 result = result.then(() => this._stellarPaymentService.sendPayment(transGroup.transactionPaymentDetails)
                                 .catch(e => {
-                                    alert('tere has been an error');
+                                    alert(`there has been an error:\n ${e}`);
                                     this._pageError = true;
                                     console.log(this._pageError);
                                 }));
@@ -308,19 +305,6 @@ export class CheckoutComponent implements OnInit {
 
         }
 
-        /**
-         * @returns void
-         */
-        proceedToOrderConfirmation(): void {
-            // TODO: PREVENT GOIONG BACK ....
-            // TODO: PREVENT FORM RESUBMISSION
-
-            const _orderID = this._orderService.getNewOrderID();
-            const _order = new Order(this.curUserID, _orderID, this._transactionGroups);
-            this._orderService.addNewOrder(JSON.stringify(_order));
-            this._cartService.batchRemoveCartItems(this.cartItemIDs);
-            setTimeout(() => this._router.navigate(['../cart/order-history', _orderID]), 2000);
-        }
 
         /**
          * @returns TransactionRecord[]
@@ -331,8 +315,43 @@ export class CheckoutComponent implements OnInit {
                         item.sellerPublicKey, item.assetPurchaseDetails,
                         this.makeTransactionMemo(item.buyerPublicKey, item.sellerPublicKey),
                         item.productID, item.productName, 'TODO ADD DESCRIPTION', // TODO: ....
-                        item.quantityPurchased, item.fixedUSDAmount);
+                        item.quantityPurchased, item.fixedUSDAmount, item.productCategory,
+                        item.oldQuantity);
                     });
+        }
+
+        /**
+         * @returns void
+         */
+        proceedToOrderConfirmation(): void {
+            // TODO: PREVENT GOIONG BACK ....
+            // TODO: PREVENT FORM RESUBMISSION
+            const _productQuantityUpdates = this._transactionRecords.map(record => {
+                return {
+                        productID: record.productID,
+                        sellerID: record.sellerUserID,
+                        newQuantity: (record.oldQuantity - record.quantityPurchased),
+                        category: record.productCategory
+                    };
+            });
+            const _orderID = this._orderService.getNewOrderID();
+            const _order = new Order(this.curUserID, _orderID, this._transactionGroups);
+
+            // todo: SUBSEQUENT HANDLING... should this be async???
+            const combined = Observable.forkJoin(
+                this._orderService.addNewOrder(JSON.stringify(_order)),
+                this._productService.updateProductQuantities(_productQuantityUpdates).catch(error => Observable.of(error)),
+                this._cartService.batchRemoveCartItems(this.cartItemIDs).catch(error => Observable.of(error)),
+            );
+
+
+            combined.subscribe(latestValues => {
+                const [ firstObs, secondObs, thirdObs ] = latestValues;
+                console.log( 'firstObs' , firstObs);
+                console.log( 'secondObs' , secondObs);
+                console.log( 'thirdObs' , thirdObs);
+            }).add(() => setTimeout(() => this._router.navigate(['../cart/order-history', _orderID]), 2000));
+
         }
 
         // makeTransactionGroups(transactionGroups: TransactionGroup[], transactionRecords: TransactionRecord[]) {
@@ -382,8 +401,8 @@ export class CheckoutComponent implements OnInit {
          * @returns string
          */
         makeTransactionMemo(buyerPublicKey: string, sellerPublicKey: string): string {
-            console.log(buyerPublicKey);
-            console.log(sellerPublicKey);
+            // console.log(buyerPublicKey);
+            // console.log(sellerPublicKey);
             const buyerKey = buyerPublicKey.substr(0, 5);
             const sellerKey = sellerPublicKey.substr(0, 5);
             return `From ${buyerKey}... to ${sellerKey}...`;

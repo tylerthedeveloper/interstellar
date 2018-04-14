@@ -10,6 +10,7 @@
 import { Injectable  } from '@angular/core';
 
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import * as firebase from 'firebase/app';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -26,6 +27,7 @@ export class OrderService {
     public ordersCollection: AngularFirestoreCollection<Order>;
     public userOrderCollection: AngularFirestoreCollection<Order>;
     public userOrderItems: Observable<Order[]>;
+    private userOrdersRef: firebase.firestore.CollectionReference;
 
     private orderItemIDs: string[] = [];
 
@@ -35,9 +37,11 @@ export class OrderService {
         this._userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
 
         this.ordersCollection = afs.collection<Order>('orders');
-        this.userOrderCollection = afs.collection('user-orders').doc(this._userID).collection<Order>('orderHistory');
+        this.userOrderCollection = afs.collection('user-orders');
+        this.userOrdersRef = this.userOrderCollection.ref;
         this.orderItemIDs = [];
-        this.userOrderItems = this.userOrderCollection
+        this.userOrderItems = this.userOrderCollection.doc(this._userID)
+                                    .collection<Order>('orderHistory')
                                     .valueChanges()
                                     .map(changes => {
                                         const _ids = changes.map(a => a.orderID);
@@ -79,17 +83,19 @@ export class OrderService {
     getOrderByID(orderItemID: string): Observable<Order> {
         return this.ordersCollection.doc(orderItemID).valueChanges().map(o => <Order> o);
     }
+
     /**
      * @param  {string} orderData
+     * @returns Promise
      */
-    addNewOrder(orderData: string) {
+    addNewOrder(orderData: string): Promise<any> {
         const _orderData = <Order>JSON.parse(orderData);
         const _docID = _orderData.orderID;
         console.log(_orderData);
         const batch = this.afs.firestore.batch();
         batch.set(this.ordersCollection.doc(_docID).ref, _orderData);
         batch.set(this.userOrderCollection.doc(_docID).ref, _orderData);
-        batch.commit();
+        return batch.commit();
     }
 
     // ────────────────────────────────────────────────────────────────────────────────

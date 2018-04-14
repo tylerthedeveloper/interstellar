@@ -28,12 +28,13 @@ export class TransactionRecord {
     assetPurchaseDetails: AssetBalance;
     memo: string;
 
-
     productID: string;
     productName: string;
     productShortDescription: string;
+    oldQuantity: number;
     quantityPurchased: number;
     fixedUSDAmount: number;
+    productCategory: string;
 
     constructor(
             // trans details //
@@ -48,7 +49,9 @@ export class TransactionRecord {
                 productName: string,
                 productShortDescription: string,
                 quantityPurchased: number,
-                fixedUSDAmount: number) {
+                fixedUSDAmount: number,
+                productCategory: string,
+                oldQuantity: number) {
                     this.buyerUserID = buyerUserID,
                     this.senderPublicKey = senderPublicKey,
                     this.sellerUserID = sellerUserID,
@@ -60,17 +63,15 @@ export class TransactionRecord {
                     this.productName = productName,
                     this.productShortDescription = productShortDescription,
                     this.quantityPurchased = quantityPurchased,
-                    this.fixedUSDAmount = fixedUSDAmount;
+                    this.fixedUSDAmount = fixedUSDAmount,
+                    this.oldQuantity = oldQuantity,
+                    this.productCategory = productCategory;
     }
 
 }
 
 
-export const enum OrderType {
-    Purchase = 'Purchase',
-    Sale = 'Sale',
-    Other = 'Other'
-}
+
 
 export class TransactionPaymentDetails {
     senderPublicKey: string;

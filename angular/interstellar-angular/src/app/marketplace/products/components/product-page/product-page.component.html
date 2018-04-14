@@ -22,8 +22,8 @@
       <span *ngIf="!isMyProduct; then notMyProduct; else myProductBlock"> </span>
       <ng-template #notMyProduct>
         <!-- <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn && isInStock" role="button" (click)="onBuyProduct()">Buy Product</button> -->
-        <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn && isInStock" role="button" (click)="addProductToCart()">Add-to-Cart</button>
-        <button class="btn btn-mdb-color btn-lg" [disabled]="!isLoggedIn && isInStock" role="button" (click)="addProductAndGoToCart()">Add-and-Go-to-Cart</button>
+        <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn || !isInStock" role="button" (click)="addProductToCart()">Add-to-Cart</button>
+        <button class="btn btn-mdb-color btn-lg" [disabled]="!isLoggedIn || !isInStock" role="button" (click)="addProductAndGoToCart()">Add-and-Go-to-Cart</button>
         <button (click)="allCategories()" class="btn btn-mdb-color btn-lg z-depth-0"> Return </button>
       </ng-template>
       <ng-template #myProductBlock>

@@ -85,6 +85,23 @@ export class ProductService {
         return this.productsCollection.doc(key).update(newProductData);
     }
 
+    // TODO: need to get old / current quant
+    updateProductQuantities(pairArray: Array<any>) {
+        const batch = this.afs.firestore.batch();
+        pairArray.map(pair => {
+            const prodID = pair.productID;
+            const sellerID = pair.sellerID;
+            const newProdQuant = pair.newQuantity;
+            const category = pair.category;
+            const quantPairDict = {quantity: newProdQuant};
+            batch.update(this.productsCollection.doc(prodID).ref, quantPairDict);
+            batch.update(this.userProductsCollection.doc(`${sellerID}/products/${prodID}`).ref, quantPairDict);
+            batch.update(this.productCategoriesCollection.doc(`${category}/products/${prodID}`).ref, quantPairDict);
+        });
+        return batch.commit();
+        // return this.productsCollection.doc(key).update(newProductData);
+    }
+
     // TODO: TEST bATCH
     // TODO: TEST RETURN CONFIRMATION / TRUE
     deleteProduct(productID: string, category: string) {

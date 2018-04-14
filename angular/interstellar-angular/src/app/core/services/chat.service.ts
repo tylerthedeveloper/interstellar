@@ -29,7 +29,7 @@ export class ChatService {
 
     private userChatRef: firebase.firestore.CollectionReference;
     private chatThreadsRef: firebase.firestore.CollectionReference;
-    
+
     public myChatThreads: Observable<ChatThread[]>;
 
 
@@ -41,10 +41,10 @@ export class ChatService {
         if (userID) {
             this.userChatThreadsCollection = afs.collection<User>('user-chat-threads');
             this.userChatRef = this.userChatThreadsCollection.ref;
-            
+
             this.chatThreadsCollection = afs.collection<ChatThread>('chat-threads');
             this.chatThreadsRef = this.chatThreadsCollection.ref;
-            
+
             this.myChatThreads = this.userChatThreadsCollection.doc(userID).collection<ChatThread>('chatThreads').valueChanges();
         }
     }

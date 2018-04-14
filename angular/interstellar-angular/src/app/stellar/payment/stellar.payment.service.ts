@@ -6,8 +6,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { Observable } from 'rxjs/Observable';
+import { TransactionPaymentDetails } from 'app/marketplace/_market-models/transaction';
 
-import { TransactionPaymentDetails } from 'app/marketplace/_market-models/transaction-group';
 
 @Injectable()
 export class StellarPaymentService {

@@ -65,9 +65,15 @@ export class ProductPageComponent implements OnInit {
             .map(product => <Product>product)
             .subscribe(product => {
                 this.product = product;
-                this._sellerShortData = (product) ? product.productSellerData : null;
-                this.isInStock = (product) ? (product.quantity > 0) : false;
-                this.isMyProduct = (product) ? (product.productSellerData.productSellerID === this.myUserId) : false;
+                if (product) {
+                    this._sellerShortData = product.productSellerData;
+                    this.isInStock = (product.quantity > 0);
+                    this.isMyProduct = (product.productSellerData.productSellerID === this.myUserId);
+                }
+                // this._sellerShortData = (product) ? product.productSellerData : null;
+                // this.isInStock = (product) ? (product.quantity > 0) : false;
+                // this.isMyProduct = (product) ? (product.productSellerData.productSellerID === this.myUserId) : false;
+
                 // product.productPrices.forEach((price: ProductPrice) => {
                 //   console.log(price);
                 // });
@@ -257,12 +263,14 @@ export class ProductPageComponent implements OnInit {
 
             productID: this.product.id,
             productName: this.product.productName,
+            oldQuantity: this.product.quantity,
             quantityPurchased: purchaseQuantity,
             fixedUSDAmount: this.product.fixedUSDAmount,
             productThumbnailLink: this.product.productThumbnailLink,
             productShortDescription: this.product.productShortDescription,
             assetPricePerItem: this.selectedAssetType.balance,
-            assetPurchaseDetails: asset
+            assetPurchaseDetails: asset,
+            productCategory: this.product.productCategory
         };
         return cartItem;
     }

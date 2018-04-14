@@ -18,7 +18,8 @@ export class CartItem {
     assetPurchaseDetails: AssetBalance;
     productShortDescription: string;
     productThumbnailLink: string;
-
+    productCategory: string;
+    oldQuantity: number;
 
 
     fixedUSDAmount: number;
@@ -36,7 +37,9 @@ export class CartItem {
                 productThumbnailLink: string,
                 productShortDescription: string,
                 assetPricePerItem: string,
-                assetPurchaseDetails: AssetBalance) {
+                assetPurchaseDetails: AssetBalance,
+                productCategory: string,
+                oldQuantity: number) {
                         this.buyerUserID = buyerUserID,
                         this.buyerPublicKey = buyerPublicKey,
                         this.sellerUserID = sellerUserID,
@@ -50,5 +53,8 @@ export class CartItem {
                         this.assetPricePerItem = assetPricePerItem,
                         this.assetPurchaseDetails = assetPurchaseDetails;
                         this.isInCheckout = false;
+
+                        this.productCategory = productCategory;
+                        this.oldQuantity = oldQuantity;
                 }
 }
