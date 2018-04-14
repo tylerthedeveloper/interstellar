@@ -5,6 +5,7 @@ import { ChatService } from 'app/core/services';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from 'app/shared/_components';
+import { ChatMessage } from '../../models/chat-message';
 
 @Component({
   selector: 'app-chat-page',
@@ -17,6 +18,7 @@ export class ChatPageComponent implements OnInit {
     private activeThreadID: string;
     private activeThread: Observable<ChatThread>;
     private myChatThreads: Observable<ChatThread[]>;
+    private activeThreadMessages: Observable<ChatMessage[]>;
     private myUserID: string;
 
     constructor(private _chatService: ChatService,
@@ -33,10 +35,14 @@ export class ChatPageComponent implements OnInit {
                     // console.log(this.activeThreadID)
                     if (this.activeThreadID && !threads.find(thread => thread.receiverFbID === this.activeThreadID)) {
                         this.handleNewChat();
+                    } else if (this.activeThreadID && threads.find(thread => thread.receiverFbID === this.activeThreadID)) {
+                        this.handleExistingChat();
                     }
+                    // this.activeThreadMessages = this._chatService.getMessagesForChat(this.activeThreadID);
+
                     return threads;
-            });
-        }
+                });
+            }
 
 
     //
@@ -61,6 +67,16 @@ export class ChatPageComponent implements OnInit {
         });
     }
 
+    handleExistingChat(): void {
+        this.activeThreadMessages = this._chatService.getMessagesForChat(this.activeThreadID);
+    }
+
+    sendMessage(message: string) {
+        console.log(this.activeThreadID);
+        console.log(message);
+        this._chatService.sendMessage(this.activeThreadID, message);
+    }
+
     // TODO: Remove
     ADDCHATHREAD() {
         if (!((sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id')) &&
@@ -80,7 +96,7 @@ export class ChatPageComponent implements OnInit {
     onSelectChat(chatID: string): void {
         this.activeThreadID = chatID;
         console.log(chatID);
-        // this.activeThread = this.myChatThreads.first(thread => thread.;
+        this.activeThreadMessages = this._chatService.getMessagesForChat(chatID);
       // focus on chat on right side
     }
     // ────────────────────────────────────────────────────────────────────────────────

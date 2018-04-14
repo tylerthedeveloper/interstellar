@@ -58,8 +58,9 @@ export class ChatService {
         return this.myChatThreads;
     }
 
-    getMessagesForChat(): Observable<ChatMessage[]> {
-        return;
+    getMessagesForChat(activeThreadID: string): Observable<ChatMessage[]> {
+        return this.chatThreadsCollection.doc(activeThreadID).collection<ChatMessage>('chatMessages').valueChanges();
+
     }
 
     createNewChatThread(senderID: string, receiverID: string) {
@@ -82,6 +83,10 @@ export class ChatService {
         // .catch(this.HandleError);
         // .then(res => res)
         // .map()
+    }
+
+    sendMessage(threadID: string, message: string) {
+        this.chatThreadsCollection.doc(threadID).collection('chatMessages').add({message});
     }
     // ────────────────────────────────────────────────────────────────────────────────
 
