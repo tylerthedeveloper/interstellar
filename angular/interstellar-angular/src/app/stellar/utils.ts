@@ -1,7 +1,7 @@
 import { StellarLumensMinimum, TyCoinMinimum } from 'app/core/_constants/quantities';
 import { AssetBalance } from 'app/stellar';
 
-// TODO: add to asset balance
+// StellarSdk.Asset.native() ....
 const currencyAssetsMapper = {
     'Native' : 'Lumens',
     'Tycoin' : 'TyCoins'
@@ -19,7 +19,6 @@ const isValidSecretKey = (secretKey: string): string => {
 const updateBalance = (balanceArray: Array<AssetBalance>, asset: AssetBalance): void => {
     const index = balanceArray.findIndex(bal => bal.asset_type === asset.asset_type);
     const newbal = parseInt(balanceArray[index].balance, 10) - parseInt(asset.balance, 10);
-    // FIXME: TEST IF THIS IS A MUTATION
     balanceArray[index].balance = String(newbal);
 };
 
@@ -92,7 +91,6 @@ const isValidNewBalance2 = (asset: AssetBalance): boolean => {
     return false;
 };
 
-// FIXME: CONFIRM VALID METHOD
 const areValidNewBalances = (newBalances: Array<AssetBalance>): boolean => {
     // if (!newBalances || newBalances.length === 0) {
     //     console.log('false');
@@ -114,8 +112,6 @@ const areValidNewBalances = (newBalances: Array<AssetBalance>): boolean => {
     //     });
     // }
     // return true;
-
-    // TODO: TEST MEEEE
     let bool = true;
     for (const balance of newBalances) {
         if (!isValidNewBalance2(balance)) {

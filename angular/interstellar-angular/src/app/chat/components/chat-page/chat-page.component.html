@@ -26,10 +26,11 @@ threads       send message box - button     -->
                         <h6 style="display: flex; margin: 0% 0em 0em 0em;"> Messages </h6>
                         <div class="card">
                             <div *ngFor="let message of activeThreadMessages | async" id="chatThreadList">
-                                <p> a </p>
                                 <app-chat-message [chatMessage]="message" > a </app-chat-message>
                             </div>
-                            <button (click)="sendMessage('message')">send a message </button>
+                            <input #messageBox [disabled]="(activeThreadID === '')" placeholder="message text"/>
+                            <button [disabled]="(activeThreadID === '')" 
+                                    (click)="sendMessage(messageBox.value); messageBox.value = '';">send a message </button>
                         </div>
                     </div>
             </ng-container>

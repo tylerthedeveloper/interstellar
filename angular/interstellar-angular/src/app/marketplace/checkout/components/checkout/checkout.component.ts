@@ -19,9 +19,6 @@ import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from '
 import { MatHorizontalStepper } from '@angular/material';
 import { ProductService } from 'app/core/services';
 
-// import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 
 @Component({
   selector: 'app-checkout',
@@ -30,7 +27,6 @@ import { ProductService } from 'app/core/services';
 })
 export class CheckoutComponent implements OnInit {
 
-        // TODO: subscription choice here?
         private checkoutItemsSource: Observable<CartItem[]>;
         private checkoutItems: CartItem[];
         private assetTotals: AssetBalance[];
@@ -140,8 +136,6 @@ export class CheckoutComponent implements OnInit {
          * @param  {number} currentStep
          */
         validateFundsForPurchase(currentStep: number) {
-            // TODO: is step == 3
-            // console.log(currentStep);
             if (areValidNewBalances(this.updatedBalances)) {
                 this.stepChecker[3] = true;
             } else {
@@ -155,22 +149,18 @@ export class CheckoutComponent implements OnInit {
         /**
          * @param  {MatHorizontalStepper} matStepper
          */
+// TODO: --> put all into helper
         completePurchase(matStepper: MatHorizontalStepper) {
             // const sellerKeys = this.
             // get user secret key
             // get seller public keys
-            // TODO: ITERATE OVER ALL ITEMS ...
-            // this.checkoutItems
 
-            // TODO: 'create a memo thingy somewhere... some how...'
             // const memo = `Order #: ${checkoutItem.}`;
             const memo = 'create a memo thingy...';
 
             // TURN ITEMS INTO TRANSACTIONS
             const transactions = this._transactionRecords = this.makeTransactionRecords();
 
-            // TODO: --> put into helper
-            // TODO: test for each by index error
             // COMBINE PAYMENTS .... INTO TRANS GROUPS
             const transactionGroups = new Array<TransactionGroup>();
             Array.from(this.sellerPublicKeys).map((key: string) => {
@@ -180,8 +170,7 @@ export class CheckoutComponent implements OnInit {
                 transactionGroups.push(newGroup);
             });
 
-            // TODO: --> put into helper
-            //  /// this.makeTransactionGroups(transactionGroups, transactions);
+// this.makeTransactionGroups(transactionGroups, transactions);
             // console.log(JSON.stringify(transactionGroups));
             for (let i = 0; i < transactions.length; i++) {
                 const transaction = transactions[i];
@@ -195,9 +184,7 @@ export class CheckoutComponent implements OnInit {
             }
             // console.log(JSON.stringify(transactionGroups));
 
-
-            // TODO: --> put into helper
-            // this.fillTransactionGroups(transactionGroups);
+// this.fillTransactionGroups(transactionGroups);
             for (let i = 0; i < transactionGroups.length; i++) {
                 const transGroup = transactionGroups[i];
                 const groupAssetPurchaseDetails = transGroup.transactionRecords.map(trans => trans.assetPurchaseDetails);
@@ -210,41 +197,191 @@ export class CheckoutComponent implements OnInit {
             }
             this._transactionGroups = transactionGroups;
 
-            // FIXME: TEST THE BELOW
-            // NEED TO BE CAREFUL WITH ASYNC CALL BACKS AND ERROR HANDLING ...
-            // NEED TO CONFIRM COMPLETION BEFORE MUTATION OF SUBSEQUENT STEPS
+// FIXME: TEST THE BELOW
+// NEED TO BE CAREFUL WITH ASYNC CALL BACKS AND ERROR HANDLING ...
+// NEED TO CONFIRM COMPLETION BEFORE MUTATION OF SUBSEQUENT STEPS
             this.stepChecker[2] = false;
             this.stepChecker[3] = false;
 
-            let result = Promise.resolve();
-            // let _error = false;
-            for (const transGroup of transactionGroups) {
-                if (this._pageError) { break; }
-                // TODO: onrejceted
-                result = result.then(() => this._stellarPaymentService.sendPayment(transGroup.transactionPaymentDetails)
-                                .catch(e => {
-                                    alert(`there has been an error:\n ${e}`);
-                                    this._pageError = true;
-                                    console.log(this._pageError);
-                                }));
-            }
+        //     let result = Promise.resolve();
+        //     for (const transGroup of transactionGroups) {
+        //         if (this._pageError) { break; }
+        //         // TODO: onrejceted
+        //         result = result.then(() => this._stellarPaymentService.sendPayment(transGroup.transactionPaymentDetails)
+        //                         .catch(e => {
+        //                             alert(`there has been an error:\n ${e}`);
+        //                             this._pageError = true;
+        //                             // console.log(this._pageError);
+        //                         }));
+        //     }
 
-            console.log(this._pageError);
-            if (!this._pageError) {
-                // TODO: wait for the above
-                this.stepChecker[4] = true;
-                console.log('no erorr');
-                this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal =>
-                        sessionStorage.setItem('my_balances', JSON.stringify(bal)));
-                        matStepper.next();
-                        this.proceedToOrderConfirmation();
-                        return;
-            }
+        //     // console.log(this._pageError);
+        //     if (!this._pageError) {
+        //         // TODO: wait for the above
+        //         this.stepChecker[4] = true;
+        //         console.log('no erorr');
+        //         this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal => {
+        //             sessionStorage.setItem('my_balances', JSON.stringify(bal));
+        //             console.log(JSON.stringify(bal));
+        //             console.log(sessionStorage.getItem('my_balances'));
+        //             matStepper.next();
+        //             this.proceedToOrderConfirmation();
+        //             return;
+        //         });
+        //     }
+        // }
+
+        let result = Promise.resolve();
+        const transGroup = transactionGroups[0];
+        result = result.then(() => this._stellarPaymentService.sendPayment(transGroup.transactionPaymentDetails)
+                        .then(() => {
+                            this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal => {
+                                console.log(JSON.stringify(bal));
+                                sessionStorage.setItem('my_balances', JSON.stringify(bal));
+                                console.log(sessionStorage.getItem('my_balances'));
+                                matStepper.next();
+                                this.stepChecker[4] = true;
+                                this.proceedToOrderConfirmation();
+                                return;
+                            });
+                        })
+                        .catch(e => {
+                            alert(`there has been an error:\n ${e}`);
+                            this._pageError = true;
+                        }));
+
+        // if (!this._pageError) {
+        //     // TODO: wait for the above
+        //     console.log('no erorr');
+        // }
+    }
 
 
+        /**
+         * @returns TransactionRecord[]
+         */
+        makeTransactionRecords(): TransactionRecord[] {
+            return this.checkoutItems.map(item => {
+                    const newTransID = this._orderService.getNewOrderID();
+                    return new TransactionRecord(newTransID, item.buyerUserID, item.buyerPublicKey,
+                        item.sellerUserID, item.sellerPublicKey, item.assetPurchaseDetails,
+                        this.makeTransactionMemo(item.buyerPublicKey, item.sellerPublicKey),
+                        item.productID, item.productName, item.productShortDescription,
+                        item.quantityPurchased, item.fixedUSDAmount, item.productCategory,
+                        item.oldQuantity);
+                    });
+        }
 
-            // TODO: Review trials below - ssave what is needed
-            /*
+        /**
+         * @returns void
+         */
+        proceedToOrderConfirmation(): void {
+            // TODO: PREVENT GOIONG BACK ... PREVENT FORM RESUBMISSION
+            const _productQuantityUpdates = this._transactionRecords.map(record => {
+                return {
+                        productID: record.productID,
+                        sellerID: record.sellerUserID,
+                        newQuantity: (record.oldQuantity - record.quantityPurchased),
+                        category: record.productCategory
+                    };
+            });
+            const _orderID = this._orderService.getNewOrderID();
+            const _order = new Order(this.curUserID, _orderID, this._transactionGroups);
+
+// consideration: SUBSEQUENT HANDLING... should this be async???
+            const combined = Observable.forkJoin(
+                this._orderService.addNewOrder(JSON.stringify(_order)),
+                this._orderService.addTransactions(this._transactionRecords),
+                this._productService.updateProductQuantities(_productQuantityUpdates).catch(error => Observable.of(error)),
+                this._cartService.batchRemoveCartItems(this.cartItemIDs).catch(error => Observable.of(error)),
+            );
+
+
+            combined.subscribe(latestValues => {
+                const [ firstObs, secondObs, thirdObs ] = latestValues;
+                console.log( 'firstObs' , firstObs);
+                console.log( 'secondObs' , secondObs);
+                console.log( 'thirdObs' , thirdObs);
+            }).add(() => setTimeout(() => this._router.navigate(['../cart/order-history', _orderID]), 2000));
+
+        }
+
+        /**
+         // TODO: TOO LONG... WHAT SHOULD GO HERE ... ONLY 28 CHARACTERS
+         * @param  {string} buyerPublicKey
+         * @param  {string} sellerPublicKey
+         * @returns string
+         */
+        makeTransactionMemo(buyerPublicKey: string, sellerPublicKey: string): string {
+            const buyerKey = buyerPublicKey.substr(0, 5);
+            const sellerKey = sellerPublicKey.substr(0, 5);
+            return `From ${buyerKey}... to ${sellerKey}...`;
+        }
+
+        returnHome(): void {
+        }
+
+        logout(): void {
+        }
+
+        /**
+         * @returns void
+         */
+        returnToCart(): void {
+            this.location.back();
+        }
+
+        /**
+         * @param  {number} currentStep
+         * @returns void
+         */
+        updateStep(currentStep: number): void {
+            console.log(currentStep);
+            this.stepChecker[currentStep - 1] = true;
+            // console.log(this.stepChecker);
+        }
+}
+
+   // makeTransactionGroups(transactionGroups: TransactionGroup[], transactionRecords: TransactionRecord[]) {
+        //     // console.log(transactionGroups);
+        //     transactionRecords.forEach(transaction => {
+        //         const sellerKey = transaction.receiverPublicKey;
+        //             const transGroupIds = transactionGroups.map(TG => TG.transactionRecords[0].receiverPublicKey);
+        //             const idx = transGroupIds.findIndex(ID => ID === sellerKey);
+        //             if (idx === -1) {
+        //                 console.log(transactionGroups);
+        //                 transactionGroups = transactionGroups.concat(new TransactionGroup(new Array<TransactionRecord>(transaction)));
+        //                 console.log(transactionGroups);
+        //             } else {
+        //                 console.log(transactionGroups);
+        //                 let newListAtIndex = new Array<TransactionRecord>();
+        //                 newListAtIndex = transactionGroups[idx].transactionRecords;
+        //                 newListAtIndex = newListAtIndex.concat(transaction);
+        //                 transactionGroups[idx].transactionRecords = newListAtIndex;
+        //                 console.log(transactionGroups);
+        //         }
+        //     });
+        // }
+
+        // fillTransactionGroups(transactionGroups: TransactionGroup[]) {
+        //     for (let transGroup of transactionGroups) {
+        //     // transactionGroups.map(transGroup => {
+        //         const groupAssetPurchaseDetails = transGroup.transactionRecords.map(trans => trans.assetPurchaseDetails);
+        //         const totalAssetPurchaseDetails = calcTotalsForMultipleAssets(groupAssetPurchaseDetails);
+        //         transGroup.transactionID = this._orderService.getNewOrderID();
+        //         transGroup.transactionPaymentDetails = new Array<TransactionPaymentDetails>();
+        //         totalAssetPurchaseDetails.map(purchaseDetails => {
+        //             const sellerPublicKey = transGroup.transactionRecords[0].receiverPublicKey;
+        //             transGroup.transactionPaymentDetails.push(
+        //                     new TransactionPaymentDetails(this.curPubKey,
+        //                                                   sellerPublicKey,
+        //                                                   purchaseDetails,
+        //                                                   this.makeTransactionMemo(this.curPubKey, sellerPublicKey)));
+        //         });
+        //     }
+        // }
+
+     /*
                 NEED TO UPDATE BALANCES
                 or just pull from stellar ...
                 const newStellarBalances = this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal => {
@@ -286,7 +423,6 @@ export class CheckoutComponent implements OnInit {
                         err => console.log(err)
                     );
 
-                TODO: testing above fix request
                 SUBSEQUENT HANDLING... should this be async???
                 const combined = Observable.forkJoin(
                     this._stellarPaymentService.sendPayment(transactionRecord).catch(error => Observable.of(error)),
@@ -301,135 +437,3 @@ export class CheckoutComponent implements OnInit {
                     console.log( 'thirdObs' , thirdObs);
                 });
             */
-
-
-        }
-
-
-        /**
-         * @returns TransactionRecord[]
-         */
-        makeTransactionRecords(): TransactionRecord[] {
-            return this.checkoutItems.map(item => {
-                    return new TransactionRecord(item.buyerUserID, item.buyerPublicKey, item.sellerUserID,
-                        item.sellerPublicKey, item.assetPurchaseDetails,
-                        this.makeTransactionMemo(item.buyerPublicKey, item.sellerPublicKey),
-                        item.productID, item.productName, 'TODO ADD DESCRIPTION', // TODO: ....
-                        item.quantityPurchased, item.fixedUSDAmount, item.productCategory,
-                        item.oldQuantity);
-                    });
-        }
-
-        /**
-         * @returns void
-         */
-        proceedToOrderConfirmation(): void {
-            // TODO: PREVENT GOIONG BACK ....
-            // TODO: PREVENT FORM RESUBMISSION
-            const _productQuantityUpdates = this._transactionRecords.map(record => {
-                return {
-                        productID: record.productID,
-                        sellerID: record.sellerUserID,
-                        newQuantity: (record.oldQuantity - record.quantityPurchased),
-                        category: record.productCategory
-                    };
-            });
-            const _orderID = this._orderService.getNewOrderID();
-            const _order = new Order(this.curUserID, _orderID, this._transactionGroups);
-
-            // todo: SUBSEQUENT HANDLING... should this be async???
-            const combined = Observable.forkJoin(
-                this._orderService.addNewOrder(JSON.stringify(_order)),
-                this._productService.updateProductQuantities(_productQuantityUpdates).catch(error => Observable.of(error)),
-                this._cartService.batchRemoveCartItems(this.cartItemIDs).catch(error => Observable.of(error)),
-            );
-
-
-            combined.subscribe(latestValues => {
-                const [ firstObs, secondObs, thirdObs ] = latestValues;
-                console.log( 'firstObs' , firstObs);
-                console.log( 'secondObs' , secondObs);
-                console.log( 'thirdObs' , thirdObs);
-            }).add(() => setTimeout(() => this._router.navigate(['../cart/order-history', _orderID]), 2000));
-
-        }
-
-        // makeTransactionGroups(transactionGroups: TransactionGroup[], transactionRecords: TransactionRecord[]) {
-        //     // console.log(transactionGroups);
-        //     transactionRecords.forEach(transaction => {
-        //         const sellerKey = transaction.receiverPublicKey;
-        //             const transGroupIds = transactionGroups.map(TG => TG.transactionRecords[0].receiverPublicKey);
-        //             const idx = transGroupIds.findIndex(ID => ID === sellerKey);
-        //             if (idx === -1) {
-        //                 console.log(transactionGroups);
-        //                 transactionGroups = transactionGroups.concat(new TransactionGroup(new Array<TransactionRecord>(transaction)));
-        //                 console.log(transactionGroups);
-        //             } else {
-        //                 console.log(transactionGroups);
-        //                 let newListAtIndex = new Array<TransactionRecord>();
-        //                 newListAtIndex = transactionGroups[idx].transactionRecords;
-        //                 newListAtIndex = newListAtIndex.concat(transaction);
-        //                 transactionGroups[idx].transactionRecords = newListAtIndex;
-        //                 console.log(transactionGroups);
-        //         }
-        //     });
-        // }
-
-        // fillTransactionGroups(transactionGroups: TransactionGroup[]) {
-        //     for (let transGroup of transactionGroups) {
-        //     // transactionGroups.map(transGroup => {
-        //         const groupAssetPurchaseDetails = transGroup.transactionRecords.map(trans => trans.assetPurchaseDetails);
-        //         const totalAssetPurchaseDetails = calcTotalsForMultipleAssets(groupAssetPurchaseDetails);
-        //         transGroup.transactionID = this._orderService.getNewOrderID();
-        //         transGroup.transactionPaymentDetails = new Array<TransactionPaymentDetails>();
-        //         totalAssetPurchaseDetails.map(purchaseDetails => {
-        //             const sellerPublicKey = transGroup.transactionRecords[0].receiverPublicKey;
-        //             transGroup.transactionPaymentDetails.push(
-        //                     new TransactionPaymentDetails(this.curPubKey,
-        //                                                   sellerPublicKey,
-        //                                                   purchaseDetails,
-        //                                                   this.makeTransactionMemo(this.curPubKey, sellerPublicKey)));
-        //         });
-        //     }
-        // }
-
-
-        /**
-         // TODO: TOO LONG... WHAT SHOULD GO HERE ... ONLY 28 CHARACTERS
-         * @param  {string} buyerPublicKey
-         * @param  {string} sellerPublicKey
-         * @returns string
-         */
-        makeTransactionMemo(buyerPublicKey: string, sellerPublicKey: string): string {
-            // console.log(buyerPublicKey);
-            // console.log(sellerPublicKey);
-            const buyerKey = buyerPublicKey.substr(0, 5);
-            const sellerKey = sellerPublicKey.substr(0, 5);
-            return `From ${buyerKey}... to ${sellerKey}...`;
-        }
-
-        returnHome(): void {
-        }
-
-        logout(): void {
-        }
-
-        /**
-         * @returns void
-         */
-        returnToCart(): void {
-            this.location.back();
-        }
-
-        /**
-         * @param  {number} currentStep
-         * @returns void
-         */
-        updateStep(currentStep: number): void {
-            console.log(currentStep);
-            this.stepChecker[currentStep - 1] = true;
-            // console.log(this.stepChecker);
-        }
-
-
-}

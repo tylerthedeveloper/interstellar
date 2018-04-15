@@ -1,3 +1,6 @@
+// TODO: Handle errors
+
+
 /** Angular */
 import { Component } from '@angular/core';
 
@@ -32,7 +35,6 @@ export class RegisterComponent {
     //
 
     /**
-     * TODO: Handle errors
      * @returns void
      */
     public createAccount(): void {
@@ -53,7 +55,6 @@ export class RegisterComponent {
     }
 
     /**
-     * TODO: Handle errors
      * @param  {string} secretKey
      * @returns void
      */
@@ -72,7 +73,6 @@ export class RegisterComponent {
     // ──────────────────────────────────────────────────────────────────────────────
     //
     /**
-     * TODO: Handle errors
      * @param  {string} res
      * @returns void
      */
@@ -101,8 +101,6 @@ export class RegisterComponent {
         });
     }
     // ────────────────────────────────────────────────────────────────────────────────
-
-    // TODO: Delete
 
     // private authenticate(secretKey: string) {
     //     let pubkey = isValidSecretKey(secretKey);

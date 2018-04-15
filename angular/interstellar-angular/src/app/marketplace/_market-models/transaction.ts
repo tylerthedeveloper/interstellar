@@ -18,7 +18,7 @@ export class TransactionGroup {
 export class TransactionRecord {
 
     // TODO: below 2.....
-    // transactionID: string;
+    transactionID: string;
     timestamp: string;
 
     buyerUserID: string;
@@ -38,6 +38,7 @@ export class TransactionRecord {
 
     constructor(
             // trans details //
+                transactionID: string,
                 buyerUserID: string,
                 senderPublicKey: string,
                 sellerUserID: string,
@@ -52,6 +53,7 @@ export class TransactionRecord {
                 fixedUSDAmount: number,
                 productCategory: string,
                 oldQuantity: number) {
+                    this.transactionID = transactionID,
                     this.buyerUserID = buyerUserID,
                     this.senderPublicKey = senderPublicKey,
                     this.sellerUserID = sellerUserID,
@@ -69,9 +71,6 @@ export class TransactionRecord {
     }
 
 }
-
-
-
 
 export class TransactionPaymentDetails {
     senderPublicKey: string;

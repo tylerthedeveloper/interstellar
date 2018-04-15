@@ -3,8 +3,9 @@
 //   :::::: T O D O : :  :   :    :     :        :          :
 // ─────────────────────────────────────────────────────────
 /**
- * TODO:
- * STATE MANAGEMENT ... ALL SERVICES
+ * TODO: STATE MANAGEMENT ... ALL SERVICES
+ * TODO: TEST bATCH and TEST RETURN CONFIRMATION / TRUE
+ *
  */
 //
 
@@ -47,11 +48,15 @@ export class ProductService {
     //   :::::: P U B L I C   C R U D   M E T H O D S : :  :   :    :     :        :          :
     // ────────────────────────────────────────────────────────────────────────────────────────
     //
+
+    /**
+     * @returns Observable
+     */
     getAllProducts(): Observable<Product[]> {
         return this.productsCollection.valueChanges();
     }
 
-        /**
+    /**
      * @returns string
      */
     getNewProductID(): string {
@@ -59,60 +64,61 @@ export class ProductService {
         return _newProductID;
     }
 
-    // TODO: TEST bATCH
-    // TODO: TEST RETURN CONFIRMATION / TRUE
-    addProduct(productData: string) {
+    /**
+     * @param  {string} productData
+     * @returns Promise
+     */
+    addProduct(productData: string): Promise<string> {
         const _productData = <Product>JSON.parse(productData);
         const _docID = _productData.id;
-// const _docID = this.afs.createId();
         const _cat = _productData.productCategory;
-// _productData.id = _docID;
-        // console.log(_docID)
-        // console.log(_cat)
         const batch = this.afs.firestore.batch();
         batch.set(this.productsCollection.doc(_docID).ref, _productData);
-        batch.set(this.userProductsCollection.doc(`${this._userID}/products/${_docID}`).ref, _productData);
-        batch.set(this.productCategoriesCollection.doc(`${_cat}/products/${_docID}`).ref, _productData);
+        batch.set(this.userProductsCollection.doc(this._userID).collection('products').doc(_docID).ref, _productData);
+        batch.set(this.productCategoriesCollection.doc(_cat).collection('products').doc(_docID).ref, _productData);
         return batch.commit().then(() => _docID);
-        // this.productsCollection.doc(_docID).set(_productData);
-        // this.productCategoriesCollection.doc(`${_cat}/products/${_docID}`).set(_productData);
-        // this.userProductsCollection.doc(`${this._userID}/products/${_docID}`).set(_productData);
-
     }
 
-    // TODO: NEEDS TO RETURN CONFIRMATION / TRUE
-    updateProduct(key: string, newProductData: {}) {
+    /**
+     * @param  {string} key
+     * @param  {{}} newProductData
+     * @returns Promise
+     */
+    updateProduct(key: string, newProductData: {}): Promise<void> {
         return this.productsCollection.doc(key).update(newProductData);
     }
 
-    // TODO: need to get old / current quant
-    updateProductQuantities(pairArray: Array<any>) {
+    /**
+     * @param  {Array<any>} pairArray
+     * @returns Observable
+     */
+    updateProductQuantities(pairArray: Array<any>): Observable<any> {
         const batch = this.afs.firestore.batch();
-        pairArray.map(pair => {
+        return Observable.of(pairArray.map(pair => {
             const prodID = pair.productID;
             const sellerID = pair.sellerID;
             const newProdQuant = pair.newQuantity;
             const category = pair.category;
             const quantPairDict = {quantity: newProdQuant};
+            console.log(newProdQuant);
             batch.update(this.productsCollection.doc(prodID).ref, quantPairDict);
-            batch.update(this.userProductsCollection.doc(`${sellerID}/products/${prodID}`).ref, quantPairDict);
-            batch.update(this.productCategoriesCollection.doc(`${category}/products/${prodID}`).ref, quantPairDict);
-        });
-        return batch.commit();
-        // return this.productsCollection.doc(key).update(newProductData);
+            batch.update(this.userProductsCollection.doc(sellerID).collection('products').doc(prodID).ref, quantPairDict);
+            batch.update(this.productCategoriesCollection.doc(category).collection('products').doc(prodID).ref, quantPairDict);
+            return batch.commit();
+        }));
     }
 
-    // TODO: TEST bATCH
-    // TODO: TEST RETURN CONFIRMATION / TRUE
-    deleteProduct(productID: string, category: string) {
+    /**
+     * @param  {string} productID
+     * @param  {string} category
+     * @returns Promise
+     */
+    deleteProduct(productID: string, category: string): Promise<void> {
         const batch = this.afs.firestore.batch();
         batch.delete(this.productsCollection.doc(productID).ref);
         batch.delete(this.userProductsCollection.doc(`${this._userID}/products/${productID}`).ref);
         batch.delete(this.productCategoriesCollection.doc(`${category}/products/${productID}`).ref);
         return batch.commit();
-        // this.productsCollection.doc(productID).delete();
-        // this.productCategoriesCollection.doc(`${category}/products/${productID}`).delete();
-        // this.userProductsCollection.doc(`${this._userID}/products/${productID}`).delete();
     }
     // ────────────────────────────────────────────────────────────────────────────────
 
@@ -123,24 +129,26 @@ export class ProductService {
     //   :::::: Q U E R Y   M E T H O D S : :  :   :    :     :        :          :
     // ────────────────────────────────────────────────────────────────────────────
     //
-    // TODO: TEST THESE!!!
-    // TODO: IMPLEMENT ALGOLIA!!!
+    /**
+     // TODO: TEST THESE and IMPLEMENT ALGOLIA!!!
+     * @param  {string} productID
+     * @returns Observable
+     */
     getProductByProductId(productID: string): Observable<any> {
-        // return this.afs.collection('products', ref => ref.where('id', '==', productID)).valueChanges();
-        // return this.productsCollection.doc(productID).valueChanges();
         return Observable.create((observer: any) => {
             this.afs.collection('products', ref => ref.where('id', '==', productID))
                 .valueChanges()
                 .subscribe(prod => {
                     observer.next(prod[0]);
-                    // console.log(prod[0]);
                 });
         });
     }
 
+    /**
+     * @param  {string} userID
+     * @returns Observable
+     */
     getProductsByUserID(userID: string): Observable<any> {
-        // `${_userID}/products/${_docID}`
-        // if (!userID) userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         return this.userProductsCollection.doc(userID).collection('products').valueChanges();
     }
 
@@ -148,13 +156,12 @@ export class ProductService {
         return;
     }
 
+    /**
+     * @param  {string} category
+     * @returns Observable
+     */
     getProductsByCategory(category: string): Observable<any> {
-        console.log(category);
         return this.productCategoriesCollection.doc(category).collection('products').valueChanges();
-    }
-
-    getProductsByUserTitle(title: string): Observable<any> {
-        return;
     }
     // ────────────────────────────────────────────────────────────────────────────────
 }

@@ -1,9 +1,6 @@
-// FIXME: move material to core ???... anything else??
-
 import { NgModule } from '@angular/core';
 
 // NoConflictStyleCompatibilityMode, MaterialModule
-// import { PortalModule } from '@angular/cdk/portal'
 
 import {
     MatButtonModule,
@@ -39,7 +36,6 @@ const materialModules = [
     MatCheckboxModule,
     MatListModule,
     MatSliderModule,
-    // PortalModule
 ];
 
 @NgModule({

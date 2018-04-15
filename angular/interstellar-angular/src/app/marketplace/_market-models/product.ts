@@ -20,7 +20,7 @@ export class Product {
 
     productSellerData: {
         productSellerID: string;
-        productSellerName: string; // TODO: store user data in session storage!!!
+        productSellerName: string;
         productSellerPublicKey: string;
     };
 

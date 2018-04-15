@@ -1,5 +1,3 @@
-// FIXME: move material to core ???... anything else??
-
 // https://github.com/johnpapa/angular-first-look-examples/edit/master/_examples/storyline-tracker/app/core/core.module.ts
 
 
@@ -39,7 +37,9 @@ import { ChatService } from './services';
         BrowserAnimationsModule,
         ReactiveFormsModule,
         NgbModule,
-        NavBarComponent // TODO: Why??? [NavBarComponent]
+
+        // Why??? [NavBarComponent]
+        NavBarComponent
     ],
     declarations: [NavBarComponent],
     providers: [

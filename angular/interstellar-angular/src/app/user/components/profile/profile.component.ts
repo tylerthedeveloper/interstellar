@@ -30,6 +30,8 @@ import { createFormGroup } from 'app/shared/forms/form.utils';
 import { DialogComponent, FileUploadDialogComponent } from 'app/shared/_components';
 import { UserService } from 'app/core/services/user.service';
 import { User, publicUserData } from 'app/user/user';
+import { OrderService } from 'app/core/services';
+import { Order } from 'app/marketplace/_market-models/order';
 
 
 @Component({
@@ -49,6 +51,9 @@ export class ProfileComponent implements OnInit {
     private balances: AssetBalance[];
     private products: Observable<Product[]>;
 
+    // todo: test
+    private orders: Observable<Order[]>;
+
     /** Page Identifiers */
     private _userID: string;
     private _pagePersonID: string;
@@ -62,6 +67,7 @@ export class ProfileComponent implements OnInit {
 
     constructor(private _userService: UserService,
                 private _productService: ProductService,
+                private _orderService: OrderService,
                 private dialog: MatDialog,
                 private _route: ActivatedRoute,
                 public router: Router) {
@@ -76,10 +82,11 @@ export class ProfileComponent implements OnInit {
         const myUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         this._userID = myUserID;
         const pagePersonID = this._route.snapshot.params['id'];
-
-// todo: make sure not / me
-// todo: if so :         this.router.navigate(['/people, id'],
-
+        const path = this._route.snapshot.routeConfig.path;
+        if (myUserID === pagePersonID && path !== ':id/me') {
+            this.router.navigate(['/people', myUserID, 'me']);
+            console.log('its me ');
+        }
 
         this._pagePersonID = pagePersonID;
         this.isMyProfile = (pagePersonID === myUserID);
@@ -91,18 +98,15 @@ export class ProfileComponent implements OnInit {
                     this._userModel = <User> user;
                     this.profileFormMapper = {};
                     // TODO: NGFOR OF ATTRIBUTES FOR FORM ELEMENTS
-                    // TODO: use abstract form
                     this.profileForm = createFormGroup(publicUserData, this._userModel);
                 }
-                this._productService.getProductsByUserID(userID)
-                            .subscribe(products => this.products = products);
-        });
+            });
+        this.products = this._productService.getProductsByUserID(myUserID);
+        this.orders = this._orderService.Orders;
 
-        // User balances //
         this.balances = new Array<AssetBalance>();
         const _balances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
         if (_balances) { this.balances = <AssetBalance[]>JSON.parse(_balances); }
-        // console.log(_balances);
     }
 
 
@@ -122,8 +126,6 @@ export class ProfileComponent implements OnInit {
         this.editProfile();
         return this._userService.updateProfile(data);
     }
-
-    // todo: make dialog service
 
     /**
      * @returns void
@@ -232,10 +234,6 @@ export class ProfileComponent implements OnInit {
                     .catch(err => console.log(err))
                     .then(res => this.router.navigate(['/products', res]));
     }
-
-    // TODO: add go to product
-
-    // TODO: add orders
 
 
     /**

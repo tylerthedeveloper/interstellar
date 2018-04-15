@@ -39,15 +39,6 @@ export class StellarAccountService {
         this._server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
     }
 
-    // TODO: DO we need this?
-    getAccountKeys() {
-      // let pair: any = StellarSdk.Keypair.random();
-      // let stellarKeys: IStellarKeyPair = new IStellarKeyPair();
-      // stellarKeys.publicKey = pair.publicKey();
-      // stellarKeys.secretKey = pair.secret();
-      // return stellarKeys;
-    }
-
     //
     // ──────────────────────────────────────────────────────────────── I ──────────
     //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :

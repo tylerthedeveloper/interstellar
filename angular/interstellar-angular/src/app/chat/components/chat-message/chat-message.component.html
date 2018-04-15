@@ -3,7 +3,8 @@
 
   <div class="col-md-4" style="display: flex; flex-direction: row;">
 
-      <p style="text-align: left;"> {{ chatMessage | json }} </p>
+      <p style="text-align: left;"> {{ chatMessage.text }} </p>
+      <p style="text-align: left;"> at {{ chatMessage.sentAt }} </p>
     
       <!-- <div style="width: 40%; max-height: 100%;">
         <p style="text-align: left;"> {{ chatMessage?.sender }} </p>

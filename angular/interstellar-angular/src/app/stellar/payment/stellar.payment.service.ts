@@ -51,29 +51,40 @@ export class StellarPaymentService {
             })
             .then(() => server.loadAccount(pubKey))
             .then(function(sourceAccount) {
-                const paymentOps = assets.map(asset => {
-                        return {
-                            destination: destinationKey,
-                            asset: StellarSdk.Asset.native(), // TODO: ASSET.ASSET_TYPE
-                            amount: asset.balance
-                        };
-                });
-                // const _asset = paymentOps[0];
-                // const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
-                paymentOps.map(payOP => {
-                    const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
-                            .addOperation(StellarSdk.Operation.payment(payOP))
-                            .build();
-                            transaction.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
+                // const paymentOps = assets.map(asset => {
+                //         return {
+                //             destination: destinationKey,
+                //             asset: StellarSdk.Asset.native(), // TODO: ASSET.ASSET_TYPE
+                //             amount: asset.balance
+                //         };
+                // });
+                // paymentOps.map(payOP => {
+                //     console.log(payOP);
+                //     const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
+                //             .addOperation(StellarSdk.Operation.payment(payOP))
+                //             .build();
+                //             transaction.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
 
-                });
+                // });
 
+                const _asset = assets[0];
+                console.log(_asset)
+                const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
+                    .addOperation(StellarSdk.Operation.payment({
+                        destination: destinationKey,
+                        asset: StellarSdk.Asset.native(), // todo: switch to above asset type...
+                        // memo: transactionRecord.memo,
+                        amount: _asset.balance
+                    }))
+                .build();
+                // .sign(sourceKeys);
+                transaction.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
 
                 // assets.map(asset =>
                     // transaction.addOperation(StellarSdk.Operation.payment({
                     // .addOperation(StellarSdk.Operation.payment({
                     //     destination: destinationKey,
-                    //     asset: StellarSdk.Asset.native(), // TODO: ASSET.ASSET_TYPE
+                    //     asset: StellarSdk.Asset.native(),
                     //       /*
 
 
@@ -86,7 +97,7 @@ export class StellarPaymentService {
                     // transaction.addMemo(StellarSdk.Memo.text(memo))
                 // .build(); //.sign(sourceKeys);
                 // transaction.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
-                // return server.submitTransaction(transaction); // And finally, send it off to Stellar!
+                return server.submitTransaction(transaction); // And finally, send it off to Stellar!
             })
             // .catch(handleError));
             .catch(function(error) {

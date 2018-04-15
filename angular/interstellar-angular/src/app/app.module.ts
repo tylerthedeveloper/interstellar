@@ -27,6 +27,7 @@ import { HomeModule } from './home/index';
 // import { UIModule } from './UI/ui.app.module';
 import { MaterialModule } from './core/material.module';
 import { RouterModule, PreloadAllModules } from '@angular/router';
+import { BaseComponent } from './base.component';
 
 // import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
 // import { DynamicFormQuestionComponent } from 'app/shared/forms/dynamic-form-question/dynamic-form-question.component';
@@ -35,7 +36,8 @@ import { RouterModule, PreloadAllModules } from '@angular/router';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BaseComponent
   ],
   imports: [
       // angular

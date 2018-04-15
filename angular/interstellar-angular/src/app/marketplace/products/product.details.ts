@@ -7,8 +7,8 @@ const requiredPublicProductDataTyped: Array<{ key: string, type: string}> = [
     { key: 'productShortDescription', type: 'string'},
     { key: 'fixedUSDAmount', type: 'number'},
     { key: 'quantity', type: 'number'},
-    // { key: 'productThumbnailLink', type: 'string'}, // todo: test in dialog
-    { key: 'productCategory', type: 'string'}, // todo: test how????
+    // { key: 'productThumbnailLink', type: 'string'},
+    { key: 'productCategory', type: 'string'},
 ];
 
 const requiredPublicProductData = [
@@ -39,24 +39,20 @@ const productFormData = [
     new DropdownQuestion({ key: 'productCategory', label: 'Product Category', required: true, order: 3,
                             options: categoryTitleList.map(element => ({key: element,  value: element})),
     }),
-    // TODO: CHANGE TO ASSET PROUDCT PRICES ... or dont????
     // new DropdownQuestion({
-    //     key: 'productAssetPrices',
-    //     label: 'ASSET PROUDCT PRICES',
-    //     options: [
-    //       {key: 'solid',  value: 'Solid'},
-    //       {key: 'unproven', value: 'Unproven'}
-    //     ],
-    //     order: 3
-    //   }),
-      // todo: change to photo uplOAD
-    // new FileUploadQuestion({key: 'productThumbnailLink',
-    //         label: 'Product ThumbnailLink', required: false, order: 1, type: 'file',
-    //         value: ''
-    // }),
-
-
-    // todo: change to photo uplOAD --> set max
+        //     key: 'productAssetPrices',
+        //     label: 'ASSET PROUDCT PRICES',
+        //     options: [
+            //       {key: 'solid',  value: 'Solid'},
+            //       {key: 'unproven', value: 'Unproven'}
+            //     ],
+            //     order: 3
+            //   }),
+            // new FileUploadQuestion({key: 'productThumbnailLink',
+            //         label: 'Product ThumbnailLink', required: false, order: 1, type: 'file',
+            //         value: ''
+            // }),
+    // TODO: ASSET PROUDCT PRICES ... change to photo uplOAD .. set max for product images
     // new TextboxQuestion({key: 'productImages', label: 'Product Images', value: '', required: false, order: 1 }),
 ];
 

@@ -41,7 +41,7 @@
                     <h6 style="display: flex; margin: 10% 0em 0em 0em;"> Cart Subtotals </h6>
                     <div class="card" style="height: 20%; width: 100%;">
                         <div *ngFor="let asset of assetTotals " style="margin: 5% 0em 0em 5%;">
-                            <strong>{{ asset?.asset_type }}:</strong> {{ asset?.balance }}
+                                {{ asset?.balance }} {{ asset?.coin_name }} ({{ asset?.asset_type }})
                             <br />
                         </div>
                         <!-- <button type="button" (click)="recalculateTotals()" class="btn btn-default btn-sm z-depth-0"> Recalculate </button> -->

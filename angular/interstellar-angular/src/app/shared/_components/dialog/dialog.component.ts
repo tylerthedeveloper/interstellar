@@ -20,21 +20,16 @@ export class DialogComponent implements OnInit, OnDestroy  {
                 @Inject(MAT_DIALOG_DATA) public data: any) { }
 
       ngOnInit() {
-        const factory = this.resolver.resolveComponentFactory(this.data.component);
-        this.componentRef = this.vcRef.createComponent(factory);
-        Object.keys(this.data.payload).forEach(key => this.componentRef.instance[key] = this.data.payload[key]);
-
-        // TODO: check if is instance of
-        if (this.componentRef.instance instanceof DynamicFormComponent) {
-          // console.log('is instance if ');
-          (<DynamicFormComponent> this.componentRef.instance).isValid().subscribe(bool => this.canFinish = bool);
-        }
+          const factory = this.resolver.resolveComponentFactory(this.data.component);
+          this.componentRef = this.vcRef.createComponent(factory);
+          Object.keys(this.data.payload).forEach(key => this.componentRef.instance[key] = this.data.payload[key]);
+          if (this.componentRef.instance instanceof DynamicFormComponent) {
+              (<DynamicFormComponent> this.componentRef.instance).isValid().subscribe(bool => this.canFinish = bool);
+          }
       }
 
       closeWithData() {
-        // console.log(this.componentRef.instance.form.value)
-        // console.log(this.componentRef.instance.form.valid)
-        this.dialogRef.close(this.componentRef.instance.form.value);
+          this.dialogRef.close(this.componentRef.instance.form.value);
       }
 
     ngOnDestroy() {

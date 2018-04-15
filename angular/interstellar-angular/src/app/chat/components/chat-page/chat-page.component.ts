@@ -6,40 +6,47 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from 'app/shared/_components';
 import { ChatMessage } from '../../models/chat-message';
+import { BaseComponent } from 'app/base.component';
+import { CONSTANTS } from '@firebase/util';
 
 @Component({
   selector: 'app-chat-page',
   templateUrl: './chat-page.component.html',
   styleUrls: ['./chat-page.component.css']
 })
-export class ChatPageComponent implements OnInit {
+export class ChatPageComponent extends BaseComponent implements OnInit {
 
+    // TODO: https://loiane.com/2017/08/angular-tips-formatting-dates-with-a-custom-date-pipe-dd-mm-yyyy/
 
     private activeThreadID: string;
-    private activeThread: Observable<ChatThread>;
+    // private activeThread: Observable<ChatThread>;
+    private activeThread: ChatThread;
     private myChatThreads: Observable<ChatThread[]>;
     private activeThreadMessages: Observable<ChatMessage[]>;
-    private myUserID: string;
+
+
+    // private myUserID: string;
+    private localChatThreads: ChatThread[];
 
     constructor(private _chatService: ChatService,
                 private _route: ActivatedRoute,
-                private dialog: MatDialog) {}
+                private dialog: MatDialog) {
+                    super();
+                    // console.log(this.myUserID)
+                    // console.log(this.myPublicKey)
+                }
 
         ngOnInit() {
-            // activeThreadID
-            this.myUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-
-            this.activeThreadID = this._route.snapshot.queryParams['receiverID'];
+            // this.myUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
+            this.activeThreadID = this._route.snapshot.queryParams['receiverID'] || '';
             this.myChatThreads = this._chatService.getMyChatThreads()
                 .map(threads => {
-                    // console.log(this.activeThreadID)
                     if (this.activeThreadID && !threads.find(thread => thread.receiverFbID === this.activeThreadID)) {
                         this.handleNewChat();
                     } else if (this.activeThreadID && threads.find(thread => thread.receiverFbID === this.activeThreadID)) {
                         this.handleExistingChat();
                     }
-                    // this.activeThreadMessages = this._chatService.getMessagesForChat(this.activeThreadID);
-
+                    this.localChatThreads = threads;
                     return threads;
                 });
             }
@@ -51,6 +58,9 @@ export class ChatPageComponent implements OnInit {
     // ──────────────────────────────────────────────────────────────────────────
     //
 
+    /**
+     * @returns void
+     */
     handleNewChat(): void {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             data: {
@@ -61,32 +71,46 @@ export class ChatPageComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: string) => {
             if (result) {
-                // console.log(result);
                 this._chatService.createNewChatThread(this.myUserID, this.activeThreadID);
             }
         });
     }
 
+    /**
+     * @returns void
+     */
     handleExistingChat(): void {
         this.activeThreadMessages = this._chatService.getMessagesForChat(this.activeThreadID);
     }
 
-    sendMessage(message: string) {
-        console.log(this.activeThreadID);
-        console.log(message);
-        this._chatService.sendMessage(this.activeThreadID, message);
-    }
-
-    // TODO: Remove
-    ADDCHATHREAD() {
-        if (!((sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id')) &&
-             (sessionStorage.getItem('public_key') || localStorage.getItem('public_key')) &&
-             (sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key')))) {
-                alert('You must be logged in order to post a new product');
-                return;
+    /**
+     * @param  {string} message
+     * @returns void
+     */
+    sendMessage(message: string): void {
+        if (!message || message === '') {
+            alert('uh oh, looks liek you forgot to enter text');
+            return;
         }
+        const messageObj = new ChatMessage({
+            isRead: false,
+            sender: this.myUserID,
+            reciever: this.activeThread.senderFbID,
+            text: message,
+            chatThreadID: this.activeThreadID
+        });
+        const _messageData = JSON.stringify(messageObj);
+        this._chatService.sendMessage(this.activeThreadID, _messageData);
     }
 
+    // ADDCHATHREAD() {
+    //     if (!((sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id')) &&
+    //          (sessionStorage.getItem('public_key') || localStorage.getItem('public_key')) &&
+    //          (sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key')))) {
+    //             alert('You must be logged in order to post a new product');
+    //             return;
+    //     }
+    // }
 
 
     /**
@@ -95,7 +119,11 @@ export class ChatPageComponent implements OnInit {
      */
     onSelectChat(chatID: string): void {
         this.activeThreadID = chatID;
-        console.log(chatID);
+        const activeChatThread = this.localChatThreads.find(thread => thread.chatThreadID === chatID);
+        if (activeChatThread) {
+            this.activeThread = activeChatThread;
+        }
+        // TODO: make ordered by timestamp
         this.activeThreadMessages = this._chatService.getMessagesForChat(chatID);
       // focus on chat on right side
     }

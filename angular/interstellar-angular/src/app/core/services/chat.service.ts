@@ -86,7 +86,11 @@ export class ChatService {
     }
 
     sendMessage(threadID: string, message: string) {
-        this.chatThreadsCollection.doc(threadID).collection('chatMessages').add({message});
+        const NEWMESSAGEID = this.afs.createId();
+        const _messageObj = JSON.parse(message);
+        _messageObj.messageid = NEWMESSAGEID;
+        _messageObj.sentAt = firebase.firestore.FieldValue.serverTimestamp();
+        this.chatThreadsCollection.doc(threadID).collection('chatMessages').doc(NEWMESSAGEID).set(_messageObj);
     }
     // ────────────────────────────────────────────────────────────────────────────────
 

@@ -1,11 +1,14 @@
+//  TODO: NEEDS TO RETURN CONFIRMATION / TRUE --> for all helpers
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, Location } from '@angular/common';
+// import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 
-import { AssetBalance, currencyAssetsMapper, getBalanceforAsset, isValidNewBalance } from 'app/stellar';
+import { AssetBalance, currencyAssetsMapper, getBalanceforAsset, isValidNewBalance, updateBalance } from 'app/stellar';
 import { ProductService } from 'app/core/services/product.service';
 
-import { updateBalance, calcTotalPurchaseAmount } from 'app/stellar/utils';
+import { calcTotalPurchaseAmount } from 'app/stellar/utils';
 import { CartService } from 'app/core/services/cart.service';
 import { Product } from 'app/marketplace/_market-models/product';
 import { ProductCategoryEnum } from 'app/marketplace/_market-models/product-category';
@@ -27,7 +30,9 @@ export class ProductPageComponent implements OnInit {
     /** Page product information */
     private product: Product;
     private assetTypes: any = [];
-    private selectedAssetType: AssetBalance; //  TODO: Set to default???
+
+//  Set to default???
+    private selectedAssetType: AssetBalance;
     private purchaseQuantity = 1;
     private _sellerShortData: { productSellerID: string, productSellerName: string, productSellerPublicKey: string };
 
@@ -50,8 +55,6 @@ export class ProductPageComponent implements OnInit {
         private _router: Router,
         private location: Location) { }
 
-    /**
-     */
     ngOnInit() {
         this.myUserId = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         this.myPubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
@@ -70,13 +73,6 @@ export class ProductPageComponent implements OnInit {
                     this.isInStock = (product.quantity > 0);
                     this.isMyProduct = (product.productSellerData.productSellerID === this.myUserId);
                 }
-                // this._sellerShortData = (product) ? product.productSellerData : null;
-                // this.isInStock = (product) ? (product.quantity > 0) : false;
-                // this.isMyProduct = (product) ? (product.productSellerData.productSellerID === this.myUserId) : false;
-
-                // product.productPrices.forEach((price: ProductPrice) => {
-                //   console.log(price);
-                // });
             });
     }
 
@@ -167,7 +163,6 @@ export class ProductPageComponent implements OnInit {
 
 
     /**
-     * TODO: NEEDS TO RETURN CONFIRMATION / TRUE
      * @returns void
      */
     public editProduct(): void {
@@ -175,7 +170,6 @@ export class ProductPageComponent implements OnInit {
     }
 
     /**
-     * TODO: NEEDS TO RETURN CONFIRMATION / TRUE
      * @returns void
      */
     public deleteProduct(): void {
@@ -228,14 +222,9 @@ export class ProductPageComponent implements OnInit {
         cartItem.isInCheckout = true;
         this._cartService.addToCart(JSON.stringify(cartItem));
 
-        // TODO: need to update quantity
-        // this._productService.updateProduct(this.product.id, {quantity: this.product.quantity - purchaseQuantity});
-
-        // TODO: test from here or seller ......
-        // update user balance for asset //
         updateBalance(this.balances, cartItem.assetPurchaseDetails);
-        this._router.navigate(['/cart/checkout']);
         this.onCompleteProductAction();
+        this._router.navigate(['/cart/checkout']);
     }
 
     // private validateSellerStatus(amount: number): boolean {
@@ -292,7 +281,6 @@ export class ProductPageComponent implements OnInit {
         return true;
     }
 
-    // TODO: NEEDS TO RETURN CONFIRMATION / TRUE
     private onCompleteProductAction() {
         this.purchaseQuantity = 1;
         this.selectedAssetType = null;

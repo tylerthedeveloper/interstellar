@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-// TODO: import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
 
-// TODO: Get from somewhere static...
 import { categories } from 'app/marketplace/category/categories';
 import { ProductCategory } from 'app/marketplace/_market-models/product-category';
 

@@ -26,9 +26,6 @@ export class CartComponent implements OnInit {
         this.cartItemsSource = this._cartService.Cart.map(cartItems => {
             this.cartItemIDs = cartItems.map((c: CartItem) => c.cartItemID);
             this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
-
-            // TODO: add to asset balance
-            // this.assetTotals.forEach(ass => console.log(currencyAssetsMapper[ass.asset_type]));
             return cartItems;
         });
     }
@@ -38,13 +35,10 @@ export class CartComponent implements OnInit {
     //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
-    // TODO: CHANGE THESE TO ABSTRACT CHECKITEMIDS || CARTITEMIDS
-
     /**
      * @returns void
      */
     checkoutSelectedItems(): void {
-        console.log(this._checkedCartItemIDs);
         this.updateAddToCheckout(this._checkedCartItemIDs);
     }
 
@@ -52,7 +46,11 @@ export class CartComponent implements OnInit {
      * @returns void
      */
     proceedToCheckout(): void {
-        this.updateAddToCheckout(this._checkedCartItemIDs || this.cartItemIDs);
+        if (this._checkedCartItemIDs.length !== 0) {
+            this.updateAddToCheckout(this._checkedCartItemIDs);
+        } else {
+            this.updateAddToCheckout(this.cartItemIDs);
+        }
     }
 
     /**
@@ -104,8 +102,7 @@ export class CartComponent implements OnInit {
                 this._cartService.removeCartItem(_cartItemID);
                 break;
             case 'checkItem':
-                // TODO:
-                console.log(_cartItemID);
+                // console.log(_cartItemID);
                 this._checkedCartItemIDs.push(_cartItemID);
                 break;
             default:

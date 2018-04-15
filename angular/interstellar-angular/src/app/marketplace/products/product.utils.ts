@@ -63,7 +63,7 @@ const areValidProductTypes = (object: any): boolean => {
 //     ];
 //     product.productSellerData = {
 //         productSellerID: sessionStorage.getItem('user_doc_id'),
-//         productSellerName: sessionStorage.getItem('user_name') || '', // TODO: store user data in session storage!!!
+//         productSellerName: sessionStorage.getItem('user_name') || '',
 //         productSellerPublicKey: sessionStorage.getItem('public_key')
 //     };
 

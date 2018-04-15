@@ -11,8 +11,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class UserListComponent implements OnInit {
 
-    // TODO: LEARN TO DO PARTIAL ....
-    // TODO: USE SAME FOR PRODUCT CARD ^^^ ...
+    // TODO: LEARN TO DO PARTIAL ....USE SAME FOR PRODUCT CARD
     private _peopleList: Observable<User[]>;
 
     constructor(private _userService: UserService,
@@ -26,7 +25,7 @@ export class UserListComponent implements OnInit {
     }
 
     onSelectPerson = (personID: string) => {
-      console.log(personID)
+      // console.log(personID);
       this.router.navigate([`/people/${personID}`]);
   }
 
