@@ -5,6 +5,13 @@ import { Router } from '@angular/router';
 import { AssetBalance, calcTotalsForMultipleAssets } from 'app/stellar';
 import { CartService } from 'app/core/services/cart.service';
 import { CartItem } from 'app/marketplace/_market-models/cart-item';
+import { ConfirmDialogComponent, DialogComponent } from 'app/shared/_components';
+import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
+import { userFormData } from 'app/user/user.details';
+import { MatDialog } from '@angular/material';
+import { BaseComponent } from 'app/base.component';
+import { User } from 'app/user/user';
+import { UserService } from 'app/core/services';
 
 
 @Component({
@@ -12,17 +19,32 @@ import { CartItem } from 'app/marketplace/_market-models/cart-item';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartComponent implements OnInit {
+export class CartComponent extends BaseComponent implements OnInit {
 
     private cartItemsSource: Observable<CartItem[]>;
     private cartItemIDs: string[] = [];
     private _checkedCartItemIDs: string[] = [];
     private assetTotals: AssetBalance[];
 
+    private user: Observable<User>;
+    private hasAddress = false;
+
+    private tempAddress = '';
+
     constructor(private _cartService: CartService,
-                private _router: Router) {}
+                private _router: Router,
+                private _userService: UserService,
+                private dialog: MatDialog) {
+                    super();
+    }
 
     ngOnInit() {
+        this._userService.getUserByID(this.myUserID).first()
+            .subscribe(user => {
+                this.user = user;
+                const userTyped = <User> user;
+                this.hasAddress = (userTyped.address) ? true : false;
+        });
         this.cartItemsSource = this._cartService.Cart.map(cartItems => {
             this.cartItemIDs = cartItems.map((c: CartItem) => c.cartItemID);
             this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
@@ -35,12 +57,6 @@ export class CartComponent implements OnInit {
     //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
-    /**
-     * @returns void
-     */
-    checkoutSelectedItems(): void {
-        this.updateAddToCheckout(this._checkedCartItemIDs);
-    }
 
     /**
      * @returns void
@@ -56,8 +72,23 @@ export class CartComponent implements OnInit {
     /**
      * @returns void
      */
+    checkoutSelectedItems(): void {
+        if (this._checkedCartItemIDs.length === 0) {
+            alert('You don\'t have any items checked currently');
+        } else {
+            this.updateAddToCheckout(this._checkedCartItemIDs);
+        }
+    }
+
+    /**
+     * @returns void
+     */
     removeSelectedItems(): void {
-        this._cartService.batchRemoveCartItems(this._checkedCartItemIDs);
+        if (this._checkedCartItemIDs.length === 0) {
+            alert('You don\'t have any items checked currently');
+        } else {
+            this._cartService.batchRemoveCartItems(this._checkedCartItemIDs);
+        }
     }
 
     /**
@@ -116,10 +147,92 @@ export class CartComponent implements OnInit {
      * @returns void
      */
     updateAddToCheckout(cartItemIDs: string[]): void {
-        console.log(cartItemIDs);
-        this._cartService.addToCheckout(cartItemIDs)
-                        .catch(err => console.log(err))
-                        .then(() => this._router.navigate(['/cart/checkout']));
+        if (!this.hasAddress) {
+            // this.handleMissingAddress(); // .add(s => console.log(s))
+            const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+                data: {
+                        title: 'Add Address',
+                        content: 'It seems you have not added your address but ' +
+                                 'need to inorder to checkout. \n' +
+                                 'Would you like to save it or just enter it for this one time?',
+                        noText: 'Just this time',
+                        yesText: 'Save Address',
+                }
+            });
+            dialogRef.afterClosed().subscribe((result: string) => {
+                // console.log(result);
+                const dialogRefInner = this.dialog.open(DialogComponent, {
+                    data: { component: DynamicFormComponent,
+                            payload: {
+                                questions: new Array(userFormData[3])
+                            }
+                    }
+                });
+                return dialogRefInner.afterClosed().map(res => res).subscribe((newAddressData: string) => {
+                    if (newAddressData && newAddressData !== '') {
+                        console.log(newAddressData);
+                        const payload = {
+                            id: this.myUserID,
+                            data: newAddressData
+                        };
+                        if (result) {
+                            this._userService.updateProfile(payload);
+                        }
+                        this.tempAddress = newAddressData;
+                        this.hasAddress = true;
+                        if (this.hasAddress && this.tempAddress) {
+                            this._cartService.addToCheckout(cartItemIDs)
+                                .catch(err => console.log(err))
+                                .then(() => this._router.navigate(['/cart/checkout']));
+                        }
+                    }
+                });
+            });
+        }
+        // console.log(this.hasAddress)
+        // console.log(this.tempAddress)
+        if (this.hasAddress && this.tempAddress) {
+            this._cartService.addToCheckout(cartItemIDs)
+                .catch(err => console.log(err))
+                .then(() => this._router.navigate(['/cart/checkout']));
+        }
+    }
+
+    handleMissingAddress() {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            data: {
+                    title: 'Add Address',
+                    content: 'It seems you have not added your address but ' +
+                             'need to inorder to checkout. \n' +
+                             'Would you like to save it or just enter it for this one time?',
+                    noText: 'Just this time',
+                    yesText: 'Save Address',
+            }
+        });
+        return dialogRef.afterClosed().subscribe((result: string) => {
+            const dialogRefInner = this.dialog.open(DialogComponent, {
+                data: { component: DynamicFormComponent,
+                        payload: {
+                            questions: new Array(userFormData[3])
+                        }
+                }
+            });
+            return dialogRefInner.afterClosed().map(res => res).subscribe((newAddressData: string) => {
+                if (newAddressData && newAddressData !== '') {
+                    console.log(newAddressData);
+                    const payload = {
+                        id: this.myUserID,
+                        data: newAddressData
+                    };
+                    if (result) {
+                        this._userService.updateProfile(payload);
+                    }
+                    this.tempAddress = newAddressData;
+                    this.hasAddress = true;
+                    return newAddressData;
+                }
+            });
+        });
     }
 
     /**

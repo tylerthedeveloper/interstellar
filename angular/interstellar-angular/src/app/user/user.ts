@@ -8,12 +8,14 @@ export class User {
     email: string;
     birthdate: string;
     age: number;
+    address: string;
 
     // stellar
     publicKey: string;
     isValidBuyer: boolean;
     isValidSeller: boolean;
 
+    // todo: ...
     constructor(id: string,
                 publicKey: string,
                 userName: string = '',
@@ -31,10 +33,10 @@ export class User {
                 }
 }
 
-export const publicUserData = [
-    'userName',
-    'fullName',
-    'email',
-    'birthdate',
-    'age'
-];
+// export const publicUserData = [
+//     'userName',
+//     'fullName',
+//     'email',
+//     'birthdate',
+//     'age'
+// ];

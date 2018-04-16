@@ -10,11 +10,15 @@ export class ConfirmDialogComponent {
 
     @Input() public title: string;
     public content: string;
+    public noText: string;
+    public yesText: string;
 
     constructor(public dialogRef: MatDialogRef<DialogComponent>,
                 @Inject(MAT_DIALOG_DATA) public data: any) {
-        this.title = data.title;
-        this.content = data.content;
+                this.title = data.title;
+                this.content = data.content;
+                this.noText = data.noText;
+                this.yesText = data.yesText;
     }
 
 }

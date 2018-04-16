@@ -4,9 +4,9 @@
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-raised-button mat-dialog-close>
-        Not today
+        {{ (noText) ? noText : 'Not today!' }}
     </button>
     <button mat-raised-button (click)="dialogRef.close(true)">
-        Yes please!
+        {{ (yesText) ? yesText : 'Yes please!' }}
     </button>
 </mat-dialog-actions>

@@ -22,6 +22,7 @@ export class DialogComponent implements OnInit, OnDestroy  {
       ngOnInit() {
           const factory = this.resolver.resolveComponentFactory(this.data.component);
           this.componentRef = this.vcRef.createComponent(factory);
+          console.log(this.data.payload);
           Object.keys(this.data.payload).forEach(key => this.componentRef.instance[key] = this.data.payload[key]);
           if (this.componentRef.instance instanceof DynamicFormComponent) {
               (<DynamicFormComponent> this.componentRef.instance).isValid().subscribe(bool => this.canFinish = bool);

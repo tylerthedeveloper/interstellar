@@ -184,9 +184,9 @@ export class CheckoutComponent implements OnInit {
             }
             // console.log(JSON.stringify(transactionGroups));
 
-// this.fillTransactionGroups(transactionGroups);
+            // this.fillTransactionGroups(transactionGroups);
             for (let i = 0; i < transactionGroups.length; i++) {
-                const transGroup = transactionGroups[i];
+                const transGroup: TransactionGroup = transactionGroups[i];
                 const groupAssetPurchaseDetails = transGroup.transactionRecords.map(trans => trans.assetPurchaseDetails);
                 const totalAssetPurchaseDetails = calcTotalsForMultipleAssets(groupAssetPurchaseDetails);
                 transGroup.transactionPaymentDetails =
@@ -231,9 +231,10 @@ export class CheckoutComponent implements OnInit {
         //     }
         // }
 
+// FIXME: JOIN PROMISES AND BLOCK THREAD
         let result = Promise.resolve();
-        const transGroup = transactionGroups[0];
-        result = result.then(() => this._stellarPaymentService.sendPayment(transGroup.transactionPaymentDetails)
+const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
+        result = result.then(() => this._stellarPaymentService.sendPayment(TRANSGROUPNEEDTOCHANGE.transactionPaymentDetails)
                         .then(() => {
                             this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal => {
                                 console.log(JSON.stringify(bal));
@@ -269,7 +270,7 @@ export class CheckoutComponent implements OnInit {
                         item.productID, item.productName, item.productShortDescription,
                         item.quantityPurchased, item.fixedUSDAmount, item.productCategory,
                         item.oldQuantity);
-                    });
+            });
         }
 
         /**

@@ -7,6 +7,7 @@ import { CheckoutRoutes as routes } from './checkout.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /**  UI and components */
+import { SharedModule } from 'app/shared';
 import { MaterialModule } from 'app/core/material.module';
 import { CartComponent } from 'app/marketplace/checkout/components/cart/cart.component';
 import { CartItemCardComponent } from 'app/marketplace/checkout/components/cart-item-card/cart-item-card.component';
@@ -17,6 +18,7 @@ import { OrderConfirmationComponent } from 'app/marketplace/checkout/components/
   imports: [
     CommonModule,
     MaterialModule,
+    SharedModule,
     RouterModule.forChild(routes),
     ReactiveFormsModule
   ],

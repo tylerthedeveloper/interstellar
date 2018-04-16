@@ -26,12 +26,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { areValidProductTypes } from 'app/marketplace/products/product.utils';
 import { productFormData } from 'app/marketplace/products/product.details';
 import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
-import { createFormGroup } from 'app/shared/forms/form.utils';
-import { DialogComponent, FileUploadDialogComponent } from 'app/shared/_components';
+// import { createFormGroup } from 'app/shared/forms/form.utils';
+import { DialogComponent, FileUploadDialogComponent, ConfirmDialogComponent } from 'app/shared/_components';
 import { UserService } from 'app/core/services/user.service';
-import { User, publicUserData } from 'app/user/user';
+import { User } from 'app/user/user';
 import { OrderService } from 'app/core/services';
 import { Order } from 'app/marketplace/_market-models/order';
+import { userFormData } from '../../user.details';
 
 
 @Component({
@@ -60,9 +61,11 @@ export class ProfileComponent implements OnInit {
     private isMyProfile;
 
     /** Page Helpers */
-    public edit = false;
-    private profileForm: FormGroup;
-    private profileFormMapper: any = {};
+    private edit = false;
+    private hasAddress = false;
+// private profileForm: FormGroup;
+// private profileFormMapper: any = {};
+
 
 
     constructor(private _userService: UserService,
@@ -92,15 +95,17 @@ export class ProfileComponent implements OnInit {
         this.isMyProfile = (pagePersonID === myUserID);
         this._userService.getUserByID(pagePersonID).first()
             .subscribe(user => {
-                const userID = user.id;
                 this.user = user;
                 if (this.isMyProfile) {
-                    this._userModel = <User> user;
-                    this.profileFormMapper = {};
-                    // TODO: NGFOR OF ATTRIBUTES FOR FORM ELEMENTS
-                    this.profileForm = createFormGroup(publicUserData, this._userModel);
+                    const userTyped = <User> user;
+                    this._userModel = userTyped;
+                    this.hasAddress = (userTyped.address) ? true : false;
                 }
-            });
+                console.log(user);
+                if (!this.hasAddress) {
+                    this.handleUpdateAddress();
+                }
+        });
         this.products = this._productService.getProductsByUserID(myUserID);
         this.orders = this._orderService.Orders;
 
@@ -118,13 +123,26 @@ export class ProfileComponent implements OnInit {
     /**
      * @returns Observable
      */
-    updateProfile(): Observable<any> {
-        const data = {
-            id: this._userModel.id,
-            data: this.profileForm.value
-        };
-        this.editProfile();
-        return this._userService.updateProfile(data);
+    // updateProfile(): Observable<any> {
+    updateProfile() {
+        const dialogRef = this.dialog.open(DialogComponent, {
+            data: { component: DynamicFormComponent,
+                    payload: {
+                        questions: userFormData,
+                        objectMapper: this._userModel
+                    }
+            }
+        });
+        dialogRef.afterClosed().subscribe((newProfileData: string) => {
+            if (newProfileData) {
+                this.edit = !this.edit;
+                const payload = {
+                    id: this._userModel.id,
+                    data: newProfileData
+                };
+                return this._userService.updateProfile(payload);
+            }
+        });
     }
 
     /**
@@ -169,7 +187,11 @@ export class ProfileComponent implements OnInit {
         });
     }
 
-    uploadThumbnailImage(productID: string = 'new-prod-id23') {
+    /**
+     * @param  {string='new-prod-id23'} productID
+     * @returns Observable
+     */
+    uploadThumbnailImage(productID: string = 'new-prod-id23'): Observable<any> {
         const dialogRef = this.dialog.open(FileUploadDialogComponent, {
             data: { productID: productID }
         });
@@ -186,12 +208,9 @@ export class ProfileComponent implements OnInit {
 
     sendMessage() {
         this.router.navigate(['../chat'], { queryParams: { receiverID: this._pagePersonID } });
-        // this.router.navigate([ '/your-route' ], { queryParams: { key: va1, keyN: valN } });
     }
 
     handleNewProduct(product: any) {
-        // console.log('product');
-        // console.log(product);
          const _product = <Product> {
             productName: 'super fast GPU22222222',
             productShortDescription: 'shawrty',
@@ -229,19 +248,50 @@ export class ProfileComponent implements OnInit {
         }
 
         const p = JSON.stringify(product);
-        // console.log(p)
         this._productService.addProduct(p)
                     .catch(err => console.log(err))
                     .then(res => this.router.navigate(['/products', res]));
     }
 
-
-    /**
-     * @returns void
-     */
-    editProfile(): void {
-        this.edit = !this.edit;
+    handleUpdateAddress(): void {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            data: {
+                    title: 'Add Address',
+                    content: 'It seems you have not added your address but need to in order to list an item, \n' +
+                    'would you like too now?'
+            }
+        });
+        dialogRef.afterClosed().subscribe((result: string) => {
+            if (result) {
+                console.log(result);
+                const dialogRefInner = this.dialog.open(DialogComponent, {
+                    data: { component: DynamicFormComponent,
+                            payload: {
+                                questions: new Array(userFormData[3])
+                            }
+                    }
+                });
+                dialogRefInner.afterClosed().subscribe((newAddressData: string) => {
+                    if (newAddressData) {
+                        console.log(newAddressData);
+                        const payload = {
+                            id: this._userModel.id,
+                            data: newAddressData
+                        };
+                        return this._userService.updateProfile(payload);
+                    }
+                });
+            }
+        });
     }
+
+
+    // /**
+    //  * @returns void
+    //  */
+    // editProfile(): void {
+    //     this.edit = !this.edit;
+    // }
     // ────────────────────────────────────────────────────────────────────────────────
 }
 

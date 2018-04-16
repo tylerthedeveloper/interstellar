@@ -45,19 +45,26 @@
                                     Message
                                 </button>
                             </ng-template>
-                            <div *ngIf="!edit">
-                              <label for="userName">Username:</label>
-                              <h2>{{_userModel?.userName}}</h2>
+                            <!-- *ngIf="!edit" -->
+                            <div>
+                                <label for="userName">Username:</label>
+                                <h2>{{user?.userName}}</h2>
 
-                              <label for="name">Name:</label>
-                              <p class="" aria-hidden="true"> {{_userModel?.fullName}}</p>
+                                <label for="name">Name:</label>
+                                <h2 class="" aria-hidden="true"> {{user?.fullName}}</h2>
+
+                                <label for="userName">Email:</label>
+                                <h2>{{user?.email}}</h2>
+
+                                <label for="userName">Address:</label>
+                                <h2>{{user?.address}}</h2>
+
+                                <label for="userName">Age:</label>
+                                <h2>{{user?.age}}</h2>
 
                             </div>
-                            <div *ngIf="edit" style="">
+                            <!-- <div *ngIf="edit" style="">
                                 <form [formGroup]="profileForm">
-                                    <!-- <div *ngFor="let prop of Object.keys(profileForm)" class="form-group">
-                                            <p>aaaa</p>
-                                    </div> -->
                                     <div class="form-group">
                                         <label for="userName">Username:</label>
 
@@ -71,14 +78,11 @@
 
                                     </div>
                                     <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" class="btn btn-default">Submit</button>
-                                    <!-- <input type="submit" class="button expanded" value="Update Profile"> -->
-                                    <!--   -->
                                 </form>
-                                <!-- <a href="https://github.com/{{userModel.gitUsername}}"> git link </a> -->
-                            </div>
-                            <div *ngIf="!edit">
-                                <button class="btn btn-mdb-color z-depth-0" aria-hidden="true" (click)="editProfile()">Edit</button>
-                            </div>
+                            </div> -->
+                            <!-- <div *ngIf="!edit"> -->
+                                <button class="btn btn-mdb-color z-depth-0" aria-hidden="true" (click)="updateProfile()">Edit</button>
+                            <!-- </div> -->
                         </div>
 
                     </div>
@@ -104,71 +108,57 @@
     <hr>
     <!--Card-->
 
-
     <!-- Bottom section consisting of Your listings and order history -->
-
-
     <mat-tab-group primary style="margin-bottom: 5%;">
-
         <mat-tab label="My Listings">
-
-            <div style="align-items: center; justify-content: center;" >
-                <button class="btn btn-primary z-depth-0" aria-hidden="true" (click)="addProduct()"> List New Product </button>
+            <div style="align-items: center; justify-content: center;">
+                <button class="btn btn-primary z-depth-0" aria-hidden="true" (click)="addProduct()"
+                        [disabled]="!hasAddress">
+                    List New Product
+                </button>
             </div>
-
-          <!-- <div class="card" style="text-align:center; margin: 1em 0em 0em 0em;">
-          </div> -->
-
-          <div style="display: inline-block; width: 20%; height: 100%; margin: auto;" *ngFor="let prod of products | async">
-              <div class="card card-ecommerce z-depth-0" style="margin: .5em .2em 0em 0em;">
-
-                  <!--Card image-->
-                  <div class="view overlay z-depth-1">
-                      <img src="{{ (prod) ? prod?.productThumbnailLink : '' }}" class="img-fluid" alt="missing imagfwe" style="max-width:100%; max-height: 100%; margin: auto; display: block;">
-                      <div class="mask rgba-white-slight"></div>
-                  </div>
-                  <!--/.Card image-->
-
-                  <!--Card content-->
-                  <div class="card-body text-center">
-                      <!--Category & Title-->
-                      <h4 class="card-title">
-                          <strong>{{ prod?.productName }}</strong>
-                      </h4>
-
-                      <!--Description-->
-                      <p class="card-text">{{ prod?.productShortDescription }}
-                      </p>
-
-                      <!--Card footer-->
-                      <div class="card-footer" style="height: 3em; width: 100%;">
-                          <span class="float-left">Price ${{ product?.fixedUSDAmount }}
-                              <span class="discount">Quantity: {{ product?.quantity }}</span>
-                          </span>
-                      </div>
-                  </div>
-                  <!--/.Card content-->
-
-              </div>
-
-          </div>
-
-
-
+            <div style="display: inline-block; width: 20%; height: 100%; margin: auto;" *ngFor="let prod of products | async">
+                <div class="card card-ecommerce z-depth-0" style="margin: .5em .2em 0em 0em;">
+                    <!--Card image-->
+                    <div class="view overlay z-depth-1">
+                        <img src="{{ (prod) ? prod?.productThumbnailLink : '' }}" class="img-fluid" alt="missing imagfwe" style="max-width:100%; max-height: 100%; margin: auto; display: block;">
+                        <div class="mask rgba-white-slight"></div>
+                    </div>
+                    <!--/.Card image-->
+                    <!--Card content-->
+                    <div class="card-body text-center">
+                        <!--Category & Title-->
+                        <h4 class="card-title">
+                            <strong>{{ prod?.productName }}</strong>
+                        </h4>
+                        <!--Description-->
+                        <p class="card-text">
+                            {{ prod?.productShortDescription }}
+                        </p>
+                        <!--Card footer-->
+                        <div class="card-footer" style="height: 3em; width: 100%;">
+                            <span class="float-left">Price ${{ product?.fixedUSDAmount }}
+                                <span class="discount">Quantity: {{ product?.quantity }}</span>
+                            </span>
+                        </div>
+                    </div>
+                    <!--/.Card content-->
+                </div>
+            </div>
         </mat-tab>
-
         <mat-tab label="Order History">
             <p *ngFor="let order of orders | async">
-                {{ order | json }} 
-                AAAA
+                {{ order | json }} AAAA
             </p>
         </mat-tab>
-
     </mat-tab-group>
 
-        <!--Grid column-->
 
-        <!-- <div style="background-color: white;">
+
+
+    <!--Grid column-->
+
+    <!-- <div style="background-color: white;">
     <div class="container">
         <div class="row">
             <div class="col-12 col-mat-4">
@@ -226,23 +216,23 @@
 
 </div> -->
 
-        <!-- <br />
+    <!-- <br />
 <button mat-raised-button (click)="sessionstorage()">temp </button> -->
 
-        <!-- <div class="well well-lg">
+    <!-- <div class="well well-lg">
     <div *ngFor="let addr of profileForm">
       {{ addr }}
     </div>
   </div> -->
 
 
-        <!-- <form novalidate [formGroup]="profileForm">
+    <!-- <form novalidate [formGroup]="profileForm">
         Name: <input type="text" formControlName="name">
         Location: <input type="text" formControlName="location">
         <button  (click)="updateProfile(myGroup); $event.preventDefault(); " class="btn btn-primary"> Submit</button>
       </form> -->
 
-        <!-- <form [formGroup]="profileForm">
+    <!-- <form [formGroup]="profileForm">
     <div class="form-group">
       <label class="center-block">Name:
         <input class="form-control" formControlName="name">
@@ -254,7 +244,7 @@
    -->
 
 
-        <!--
+    <!--
 <form class="form-horizontal" [formGroup]="form">
 
         <div class="form-group">
