@@ -18,8 +18,8 @@ import { Order } from 'app/marketplace/_market-models/order';
 import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from 'app/marketplace/_market-models/transaction';
 import { MatHorizontalStepper } from '@angular/material';
 import { ProductService } from 'app/core/services';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ValidateFormSecretKey } from 'app/shared/forms/form.utils';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { ValidateFormSecretKey, ValidateFormSecretKeyLength } from 'app/shared/forms/form.utils';
 import { stellarKeyLength } from 'app/core/_constants/quantities';
 
 
@@ -216,34 +216,35 @@ export class CheckoutComponent implements OnInit {
 // NEED TO CONFIRM COMPLETION BEFORE MUTATION OF SUBSEQUENT STEPS
             this.stepChecker[2] = false;
             this.stepChecker[3] = false;
+            /*
+                let result = Promise.resolve();
+                for (const transGroup of transactionGroups) {
+                    if (this._pageError) { break; }
+                    // TODO: onrejceted
+                    result = result.then(() => this._stellarPaymentService.sendPayment(transGroup.transactionPaymentDetails)
+                                    .catch(e => {
+                                        alert(`there has been an error:\n ${e}`);
+                                        this._pageError = true;
+                                        // console.log(this._pageError);
+                                    }));
+                }
 
-        //     let result = Promise.resolve();
-        //     for (const transGroup of transactionGroups) {
-        //         if (this._pageError) { break; }
-        //         // TODO: onrejceted
-        //         result = result.then(() => this._stellarPaymentService.sendPayment(transGroup.transactionPaymentDetails)
-        //                         .catch(e => {
-        //                             alert(`there has been an error:\n ${e}`);
-        //                             this._pageError = true;
-        //                             // console.log(this._pageError);
-        //                         }));
-        //     }
-
-        //     // console.log(this._pageError);
-        //     if (!this._pageError) {
-        //         // TODO: wait for the above
-        //         this.stepChecker[4] = true;
-        //         console.log('no erorr');
-        //         this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal => {
-        //             sessionStorage.setItem('my_balances', JSON.stringify(bal));
-        //             console.log(JSON.stringify(bal));
-        //             console.log(sessionStorage.getItem('my_balances'));
-        //             matStepper.next();
-        //             this.proceedToOrderConfirmation();
-        //             return;
-        //         });
-        //     }
-        // }
+                // console.log(this._pageError);
+                if (!this._pageError) {
+                    // TODO: wait for the above
+                    this.stepChecker[4] = true;
+                    console.log('no erorr');
+                    this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal => {
+                        sessionStorage.setItem('my_balances', JSON.stringify(bal));
+                        console.log(JSON.stringify(bal));
+                        console.log(sessionStorage.getItem('my_balances'));
+                        matStepper.next();
+                        this.proceedToOrderConfirmation();
+                        return;
+                    });
+                }
+            }
+        */
 
 // FIXME: JOIN PROMISES AND BLOCK THREAD
         let result = Promise.resolve();
@@ -282,11 +283,14 @@ const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
         this.firstFormGroup = this._formBuilder.group({
             firstCtrl: ['', Validators.required]
           });
+           // ValidateFormSecretKey
           this.secondFormGroup = this._formBuilder.group({
-            secondCtrl: ['', Validators.required, ValidateFormSecretKey,
-                         Validators.minLength(stellarKeyLength), Validators.maxLength(stellarKeyLength)
+            secondCtrl: ['', Validators.compose([Validators.required,
+                                                Validators.minLength(stellarKeyLength),
+                                                Validators.maxLength(stellarKeyLength),
+                                                ]),
+                                                [ValidateFormSecretKey]]
           });
-        //   this.secondFormGroup.get('secondCtrl').markAsPending()
     }
 
     /**

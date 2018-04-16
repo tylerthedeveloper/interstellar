@@ -31,7 +31,7 @@
             <!-- <mat-error *ngIf="!stepChecker[0]"> please return to step 1 </mat-error> -->
             <form [formGroup]="secondFormGroup">                    
                 <mat-form-field>
-                    <input class="form-control" matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey formControlName="secondCtrl">
+                    <input type="password" class="form-control"  matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey formControlName="secondCtrl">
                     <!-- <div *ngIf="secondCtrl.errors.minlength">
                             Secret key must be 56 characters long.
                     </div> -->
