@@ -191,7 +191,8 @@ export class CartComponent extends BaseComponent implements OnInit {
         }
         // console.log(this.hasAddress)
         // console.log(this.tempAddress)
-        if (this.hasAddress && this.tempAddress) {
+        // if (this.hasAddress && this.tempAddress) {
+        if (this.hasAddress) {
             this._cartService.addToCheckout(cartItemIDs)
                 .catch(err => console.log(err))
                 .then(() => this._router.navigate(['/cart/checkout']));

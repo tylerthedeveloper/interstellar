@@ -15,26 +15,28 @@
                     <p> Total Asset Value: {{ product.assetPurchaseDetails.balance }} {{ product.assetPurchaseDetails.asset_type }} </p>
                 </mat-card-content>
             </mat-card>
-            <button mat-button  [disabled]="!hasItems" (click)="updateStep(stepper.selectedIndex)"matStepperNext>Next</button>
+            <form [formGroup]="firstFormGroup">
+                    <!-- (change)="checkItem()" -->
+                <mat-checkbox formControlName="firstCtrl" > Confirm </mat-checkbox>                
+                <!-- <button mat-button [disabled]="!hasItems" (click)="updateStep(stepper.selectedIndex)" matStepperNext> -->
+                <button mat-button [disabled]="!firstFormGroup.valid" (click)="updateStep(stepper.selectedIndex)" matStepperNext>
+                    Next
+                </button>
+            </form>
         </div>
     </mat-step>
     <mat-step [stepControl]="secondFormGroup" #stepTwo editable="false">
         <div>
-            <ng-template matStepLabel> Re-enter seceret key </ng-template>
-            <mat-error *ngIf="!stepChecker[0]"> please return to step 1 </mat-error>
-            <!-- <form [formGroup]="secondFormGroup">
-                    <ng-template matStepLabel>Fill out your address</ng-template>
-                    <mat-form-field>
-                      <input matInput placeholder="Address" formControlName="secondCtrl" required>
-                    </mat-form-field>
-                    <div>
-                      <button mat-button matStepperPrevious>Back</button>
-                      <button mat-button matStepperNext>Next</button>
-                    </div>
-                    </form> -->
-            <mat-form-field>
-                <input [disabled]="!stepChecker[0]" matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey required>
-            </mat-form-field>
+            <ng-template matStepLabel> Confirm secret key </ng-template>
+            <!-- <mat-error *ngIf="!stepChecker[0]"> please return to step 1 </mat-error> -->
+            <form [formGroup]="secondFormGroup">                    
+                <mat-form-field>
+                    <input class="form-control" matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey formControlName="secondCtrl">
+                    <!-- <div *ngIf="secondCtrl.errors.minlength">
+                            Secret key must be 56 characters long.
+                    </div> -->
+                </mat-form-field>
+            </form>
             <button mat-button (click)="validateCheckoutSecretKey(checkoutSecretKey.value, stepper)"> Validate Key </button>
             <button *ngIf="stepChecker[1]" (click)="updateStep(stepper.selectedIndex)" mat-button matStepperNext>Next</button>
         </div>

@@ -24,7 +24,7 @@ import 'rxjs/add/observable/fromPromise';
 
 import * as StellarSDK from 'stellar-sdk';
 import { AssetBalance } from '..';
-import { isValidSecretKey } from 'app/stellar/utils';
+import { isValidSecretKey } from 'app/stellar/stellar.utils';
 
 declare var StellarSdk: any;
 

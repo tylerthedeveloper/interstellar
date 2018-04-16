@@ -38,6 +38,7 @@ Todo:
     ☐ implement error handling for all services
   
 ☐ MAJOR 
+    ☐ SERVICE WORKER 
     ☐ NGRX store
       ☐ immutable
 

@@ -59,7 +59,8 @@ export class ChatService {
     }
 
     getMessagesForChat(activeThreadID: string): Observable<ChatMessage[]> {
-        return this.chatThreadsCollection.doc(activeThreadID).collection<ChatMessage>('chatMessages').valueChanges();
+        return this.chatThreadsCollection.doc(activeThreadID)
+                    .collection<ChatMessage>('chatMessages', ref => ref.orderBy('sentAt')).valueChanges()
 
     }
 
@@ -89,7 +90,7 @@ export class ChatService {
         const NEWMESSAGEID = this.afs.createId();
         const _messageObj = JSON.parse(message);
         _messageObj.messageid = NEWMESSAGEID;
-        _messageObj.sentAt = firebase.firestore.FieldValue.serverTimestamp();
+        // _messageObj.sentAt = firebase.firestore.FieldValue.serverTimestamp();
         this.chatThreadsCollection.doc(threadID).collection('chatMessages').doc(NEWMESSAGEID).set(_messageObj);
     }
     // ────────────────────────────────────────────────────────────────────────────────

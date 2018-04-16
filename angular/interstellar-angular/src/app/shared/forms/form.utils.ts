@@ -1,4 +1,12 @@
+import { AbstractControl } from '@angular/forms';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { isValidSecretKey } from 'app/stellar';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/do';
 
 /* TODO: https://embed.plnkr.co/plunk/QcCN2I */
 /**
@@ -22,7 +30,34 @@ const createFormGroup = (questions: any, objectMapper: any): FormGroup => {
     return new FormGroup(group);
 };
 
-export { createFormGroup };
+
+function ValidateFormUrl(control: AbstractControl) {
+    if (!control.value.startsWith('https') || !control.value.includes('.io')) {
+        return { validUrl: true };
+    }
+    return null;
+}
+
+function ValidateFormSecretKey(control: AbstractControl) {
+    console.log(control.value);
+    const str = String(control.value);
+    if (!control.valueChanges || control.pristine) {
+        return Observable.of( null );
+    } else {
+        return control.valueChanges
+          .debounceTime( 1000 )
+          .distinctUntilChanged()
+        //   .take( 1 )
+          .switchMap( () => isValidSecretKey(control.value) )
+          .do( () => control.markAsTouched() )
+          .map( isValid => {
+              console.log(isValid)
+              return isValid ? { isValid: true } : null;
+        } );
+    }
+}
+
+export { createFormGroup, ValidateFormUrl, ValidateFormSecretKey };
 
 /*
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';

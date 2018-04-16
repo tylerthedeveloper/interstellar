@@ -96,14 +96,14 @@ export class ProfileComponent implements OnInit {
         this._userService.getUserByID(pagePersonID).first()
             .subscribe(user => {
                 this.user = user;
+                console.log(user);
                 if (this.isMyProfile) {
                     const userTyped = <User> user;
                     this._userModel = userTyped;
                     this.hasAddress = (userTyped.address) ? true : false;
-                }
-                console.log(user);
-                if (!this.hasAddress) {
-                    this.handleUpdateAddress();
+                    if (!this.hasAddress) {
+                        this.handleUpdateAddress();
+                    }
                 }
         });
         this.products = this._productService.getProductsByUserID(myUserID);
@@ -211,7 +211,8 @@ export class ProfileComponent implements OnInit {
     }
 
     handleNewProduct(product: any) {
-         const _product = <Product> {
+        /*
+        const _product = <Product> {
             productName: 'super fast GPU22222222',
             productShortDescription: 'shawrty',
             productLongDescription: 'looooooooooooong des',
@@ -228,8 +229,10 @@ export class ProfileComponent implements OnInit {
                 productSellerPublicKey: sessionStorage.getItem('public_key')
             }
         };
+        */
 
         // todo: TEST THESE ARENT EVER NULL!!!!!!
+        product.productListedAt = Date.now();
         product.productPrices = [
             new AssetBalance('7.00000', 'native', 'Lumens')
         ];

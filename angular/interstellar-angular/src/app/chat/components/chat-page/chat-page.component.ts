@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ChatThread } from '../../models/chat-thread';
+import {  Location } from '@angular/common';
 import { ChatService } from 'app/core/services';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from 'app/shared/_components';
 import { ChatMessage } from '../../models/chat-message';
 import { BaseComponent } from 'app/base.component';
-import { CONSTANTS } from '@firebase/util';
 
 @Component({
   selector: 'app-chat-page',
@@ -17,6 +17,7 @@ import { CONSTANTS } from '@firebase/util';
 export class ChatPageComponent extends BaseComponent implements OnInit {
 
     // TODO: https://loiane.com/2017/08/angular-tips-formatting-dates-with-a-custom-date-pipe-dd-mm-yyyy/
+    // todo:    CACHE MESSAGES IN 2D ARRAY .....????
 
     private activeThreadID: string;
     // private activeThread: Observable<ChatThread>;
@@ -24,12 +25,12 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
     private myChatThreads: Observable<ChatThread[]>;
     private activeThreadMessages: Observable<ChatMessage[]>;
 
-
     // private myUserID: string;
     private localChatThreads: ChatThread[];
 
     constructor(private _chatService: ChatService,
                 private _route: ActivatedRoute,
+                private location: Location,
                 private dialog: MatDialog) {
                     super();
                     // console.log(this.myUserID)
@@ -41,10 +42,11 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
             this.activeThreadID = this._route.snapshot.queryParams['receiverID'] || '';
             this.myChatThreads = this._chatService.getMyChatThreads()
                 .map(threads => {
-                    if (this.activeThreadID && !threads.find(thread => thread.receiverFbID === this.activeThreadID)) {
+                    const foundCurrentThread = threads.find(thread => thread.receiverFbID === this.activeThreadID);
+                    if (this.activeThreadID && !foundCurrentThread) {
                         this.handleNewChat();
-                    } else if (this.activeThreadID && threads.find(thread => thread.receiverFbID === this.activeThreadID)) {
-                        this.handleExistingChat();
+                    } else if (this.activeThreadID && foundCurrentThread) {
+                        this.handleExistingChat(foundCurrentThread);
                     }
                     this.localChatThreads = threads;
                     return threads;
@@ -79,8 +81,9 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
     /**
      * @returns void
      */
-    handleExistingChat(): void {
+    handleExistingChat(currentThread: ChatThread): void {
         this.activeThreadMessages = this._chatService.getMessagesForChat(this.activeThreadID);
+        this.activeThread = currentThread;
     }
 
     /**
@@ -92,8 +95,10 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
             alert('uh oh, looks liek you forgot to enter text');
             return;
         }
+        console.log(this.activeThread)
         const messageObj = new ChatMessage({
             isRead: false,
+            sentAt: Date.now(),
             sender: this.myUserID,
             reciever: this.activeThread.senderFbID,
             text: message,
@@ -125,7 +130,9 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
         }
         // TODO: make ordered by timestamp
         this.activeThreadMessages = this._chatService.getMessagesForChat(chatID);
-      // focus on chat on right side
+        if (!this._route.snapshot.queryParams['receiverID']) {
+            this.location.go('/chat', this.activeThreadID);
+        }
     }
     // ────────────────────────────────────────────────────────────────────────────────
 }

@@ -24,19 +24,11 @@ export class Product {
         productSellerPublicKey: string;
     };
 
+    productListedAt: Date;
+
     // some day
     productRating: number;
     productReviews: string[];
-
-}
-
-export class ShippingInformation {
-
-    shipCost: number;
-    shipService: string;
-    trackingNumber: string;
-    validShipService: boolean;
-    isShipped: boolean;
 
 }
 

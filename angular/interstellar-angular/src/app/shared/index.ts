@@ -12,6 +12,7 @@ import { MaterialModule } from 'app/core/material.module';
 import { DialogComponent, ConfirmDialogComponent, FileUploadDialogComponent } from 'app/shared/_components';
 import { DynamicFormComponent } from './forms/dynamic-form/dynamic-form.component';
 import { DynamicFormQuestionComponent } from './forms/dynamic-form-question/dynamic-form-question.component';
+import { DateFormatterPipe } from './pipes/DatePipe';
 
 @NgModule({
   declarations: [
@@ -22,8 +23,8 @@ import { DynamicFormQuestionComponent } from './forms/dynamic-form-question/dyna
       DynamicFormQuestionComponent,
       DialogComponent,
       ConfirmDialogComponent,
-      FileUploadDialogComponent
-
+      FileUploadDialogComponent,
+      DateFormatterPipe
   ],
   exports: [
       // components
@@ -41,7 +42,8 @@ import { DynamicFormQuestionComponent } from './forms/dynamic-form-question/dyna
       DynamicFormComponent,
       DynamicFormQuestionComponent,
       DialogComponent,
-      ConfirmDialogComponent
+      ConfirmDialogComponent,
+      DateFormatterPipe
   ],
   imports: [
       FormsModule,

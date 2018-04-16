@@ -18,6 +18,9 @@ import { Order } from 'app/marketplace/_market-models/order';
 import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from 'app/marketplace/_market-models/transaction';
 import { MatHorizontalStepper } from '@angular/material';
 import { ProductService } from 'app/core/services';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ValidateFormSecretKey } from 'app/shared/forms/form.utils';
+import { stellarKeyLength } from 'app/core/_constants/quantities';
 
 
 @Component({
@@ -50,12 +53,16 @@ export class CheckoutComponent implements OnInit {
 
         private _pageError = false;
         private _productQuantityPairs: Array<any>;
+        firstFormGroup: FormGroup;
+        secondFormGroup: FormGroup;
+        thirddFormGroup: FormGroup;
 
         constructor(private _cartService: CartService,
                     private _stellarAccountService: StellarAccountService,
                     private _stellarPaymentService: StellarPaymentService,
                     private _orderService: OrderService,
                     private _productService: ProductService,
+                    private _formBuilder: FormBuilder,
                     private _router: Router,
                     private location: Location) { }
 
@@ -92,6 +99,7 @@ export class CheckoutComponent implements OnInit {
                 return arr;
             });
 
+            this.initForm();
             this.balances = <AssetBalance[]> JSON.parse(sessionStorage.getItem('my_balances') || localStorage.getItem('balances'));
             // console.log(this.balances);
 
@@ -99,6 +107,11 @@ export class CheckoutComponent implements OnInit {
             // https://stackoverflow.com/questions/47314219/using-separate-components-in-a-linear-mat-horizontal-stepper?rq=1
         }
 
+        //
+        // ────────────────────────────────────────────────────────────────────────── I ──────────
+        //   :::::: V A L I D A T O R   M E T H O D S : :  :   :    :     :        :          :
+        // ────────────────────────────────────────────────────────────────────────────────────
+        //
         /**
          * @param  {string} secretKey
          * @param  {MatHorizontalStepper} stepper
@@ -145,6 +158,7 @@ export class CheckoutComponent implements OnInit {
 
             }
         }
+
 
         /**
          * @param  {MatHorizontalStepper} matStepper
@@ -258,89 +272,118 @@ const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
     }
 
 
-        /**
-         * @returns TransactionRecord[]
-         */
-        makeTransactionRecords(): TransactionRecord[] {
-            return this.checkoutItems.map(item => {
-                    const newTransID = this._orderService.getNewOrderID();
-                    return new TransactionRecord(newTransID, item.buyerUserID, item.buyerPublicKey,
-                        item.sellerUserID, item.sellerPublicKey, item.assetPurchaseDetails,
-                        this.makeTransactionMemo(item.buyerPublicKey, item.sellerPublicKey),
-                        item.productID, item.productName, item.productShortDescription,
-                        item.quantityPurchased, item.fixedUSDAmount, item.productCategory,
-                        item.oldQuantity);
-            });
-        }
+    //
+    // ──────────────────────────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: B U I L D E R   H E L P E R   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────────────────────────
+    //
 
-        /**
-         * @returns void
-         */
-        proceedToOrderConfirmation(): void {
-            // TODO: PREVENT GOIONG BACK ... PREVENT FORM RESUBMISSION
-            const _productQuantityUpdates = this._transactionRecords.map(record => {
-                return {
-                        productID: record.productID,
-                        sellerID: record.sellerUserID,
-                        newQuantity: (record.oldQuantity - record.quantityPurchased),
-                        category: record.productCategory
-                    };
-            });
-            const _orderID = this._orderService.getNewOrderID();
-            const _order = new Order(this.curUserID, _orderID, this._transactionGroups);
+    initForm(): any {
+        this.firstFormGroup = this._formBuilder.group({
+            firstCtrl: ['', Validators.required]
+          });
+          this.secondFormGroup = this._formBuilder.group({
+            secondCtrl: ['', Validators.required, ValidateFormSecretKey,
+                         Validators.minLength(stellarKeyLength), Validators.maxLength(stellarKeyLength)
+          });
+        //   this.secondFormGroup.get('secondCtrl').markAsPending()
+    }
+
+    /**
+     * @returns TransactionRecord[]
+     */
+    makeTransactionRecords(): TransactionRecord[] {
+        return this.checkoutItems.map(item => {
+                const newTransID = this._orderService.getNewOrderID();
+                return new TransactionRecord(newTransID, item.buyerUserID, item.buyerPublicKey,
+                    item.sellerUserID, item.sellerPublicKey, item.assetPurchaseDetails,
+                    this.makeTransactionMemo(item.buyerPublicKey, item.sellerPublicKey),
+                    item.productID, item.productName, item.productShortDescription,
+                    item.quantityPurchased, item.fixedUSDAmount, item.productCategory,
+                    item.oldQuantity);
+        });
+    }
+
+
+    /**
+    // TODO: TOO LONG... WHAT SHOULD GO HERE ... ONLY 28 CHARACTERS
+    * @param  {string} buyerPublicKey
+    * @param  {string} sellerPublicKey
+    * @returns string
+    */
+    makeTransactionMemo(buyerPublicKey: string, sellerPublicKey: string): string {
+        const buyerKey = buyerPublicKey.substr(0, 5);
+        const sellerKey = sellerPublicKey.substr(0, 5);
+        return `From ${buyerKey}... to ${sellerKey}...`;
+    }
+    // ────────────────────────────────────────────────────────────────────────────────
+
+
+
+    //
+    // ────────────────────────────────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: N A V I G A T I O N   H E L P E R   M E T H O D S : :  :   :    :     :        :          :
+    // ────────────────────────────────────────────────────────────────────────────────────────────────────
+    //
+    /**
+     * @returns void
+     */
+    proceedToOrderConfirmation(): void {
+        // TODO: PREVENT GOIONG BACK ... PREVENT FORM RESUBMISSION
+        const _productQuantityUpdates = this._transactionRecords.map(record => {
+            return {
+                    productID: record.productID,
+                    sellerID: record.sellerUserID,
+                    newQuantity: (record.oldQuantity - record.quantityPurchased),
+                    category: record.productCategory
+                };
+        });
+        const _orderID = this._orderService.getNewOrderID();
+        const _order = new Order(this.curUserID, _orderID, this._transactionGroups);
 
 // consideration: SUBSEQUENT HANDLING... should this be async???
-            const combined = Observable.forkJoin(
-                this._orderService.addNewOrder(JSON.stringify(_order)),
-                this._orderService.addTransactions(this._transactionRecords),
-                this._productService.updateProductQuantities(_productQuantityUpdates).catch(error => Observable.of(error)),
-                this._cartService.batchRemoveCartItems(this.cartItemIDs).catch(error => Observable.of(error)),
-            );
+        const combined = Observable.forkJoin(
+            this._orderService.addNewOrder(JSON.stringify(_order)),
+            this._orderService.addTransactions(this._transactionRecords),
+            this._productService.updateProductQuantities(_productQuantityUpdates).catch(error => Observable.of(error)),
+            this._cartService.batchRemoveCartItems(this.cartItemIDs).catch(error => Observable.of(error)),
+        );
 
 
-            combined.subscribe(latestValues => {
-                const [ firstObs, secondObs, thirdObs ] = latestValues;
-                console.log( 'firstObs' , firstObs);
-                console.log( 'secondObs' , secondObs);
-                console.log( 'thirdObs' , thirdObs);
-            }).add(() => setTimeout(() => this._router.navigate(['../cart/order-history', _orderID]), 2000));
+        combined.subscribe(latestValues => {
+            const [ firstObs, secondObs, thirdObs ] = latestValues;
+            console.log( 'firstObs' , firstObs);
+            console.log( 'secondObs' , secondObs);
+            console.log( 'thirdObs' , thirdObs);
+        }).add(() => setTimeout(() => this._router.navigate(['../cart/order-history', _orderID]), 2000));
 
-        }
+    }
 
-        /**
-         // TODO: TOO LONG... WHAT SHOULD GO HERE ... ONLY 28 CHARACTERS
-         * @param  {string} buyerPublicKey
-         * @param  {string} sellerPublicKey
-         * @returns string
-         */
-        makeTransactionMemo(buyerPublicKey: string, sellerPublicKey: string): string {
-            const buyerKey = buyerPublicKey.substr(0, 5);
-            const sellerKey = sellerPublicKey.substr(0, 5);
-            return `From ${buyerKey}... to ${sellerKey}...`;
-        }
+    returnHome(): void {
+    }
 
-        returnHome(): void {
-        }
+    logout(): void {
+    }
 
-        logout(): void {
-        }
+    /**
+     * @returns void
+     */
+    returnToCart(): void {
+        this.location.back();
+    }
+    // ────────────────────────────────────────────────────────────────────────────────
 
-        /**
-         * @returns void
-         */
-        returnToCart(): void {
-            this.location.back();
-        }
+    /**
+     * @param  {number} currentStep
+     * @returns void
+     */
+    updateStep(currentStep: number): void {
+        console.log(currentStep);
+        this.stepChecker[currentStep - 1] = true;
+        // console.log(this.stepChecker);
+    }
+    // ─────────────────────────────────────────────────────────────────
 
-        /**
-         * @param  {number} currentStep
-         * @returns void
-         */
-        updateStep(currentStep: number): void {
-            console.log(currentStep);
-            this.stepChecker[currentStep - 1] = true;
-            // console.log(this.stepChecker);
-        }
 }
 
    // makeTransactionGroups(transactionGroups: TransactionGroup[], transactionRecords: TransactionRecord[]) {
