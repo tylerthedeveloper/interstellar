@@ -14,7 +14,7 @@ import { ChatRoutes as routes } from './chat.routes';
 
 /** Components */
 import { ChatMessageComponent, ChatPageComponent, ChatThreadComponent } from './components/chat.components';
-import { ConfirmDialogComponent } from 'app/shared/_components';
+import { ConfirmDialogComponent } from 'app/shared/components';
 
 const components = [ ChatPageComponent, ChatMessageComponent, ChatThreadComponent ];
 

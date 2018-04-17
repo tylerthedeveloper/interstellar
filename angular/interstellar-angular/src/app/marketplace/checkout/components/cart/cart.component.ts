@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { AssetBalance, calcTotalsForMultipleAssets } from 'app/stellar';
 import { CartService } from 'app/core/services/cart.service';
 import { CartItem } from 'app/marketplace/_market-models/cart-item';
-import { ConfirmDialogComponent, DialogComponent } from 'app/shared/_components';
+import { ConfirmDialogComponent, DialogComponent } from 'app/shared/components';
 import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
 import { userFormData } from 'app/user/user.details';
 import { MatDialog } from '@angular/material';

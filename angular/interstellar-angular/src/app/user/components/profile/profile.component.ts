@@ -24,7 +24,7 @@ import { areValidProductTypes } from 'app/marketplace/products/product.utils';
 
 /** Components */
 import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
-import { DialogComponent, FileUploadDialogComponent, ConfirmDialogComponent } from 'app/shared/_components';
+import { DialogComponent, FileUploadDialogComponent, ConfirmDialogComponent } from 'app/shared/components';
 
 /** Services */
 import { OrderService } from 'app/core/services';

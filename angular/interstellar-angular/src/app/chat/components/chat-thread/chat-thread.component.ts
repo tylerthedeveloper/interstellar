@@ -17,7 +17,11 @@ export class ChatThreadComponent implements OnInit {
     }
 
     selectChat = (chatThreadID: string) => {
-        this.notify.emit(chatThreadID);
+        const data = {
+            threadID: this.chatThread.chatThreadID,
+            receiverID: this.chatThread.receiverFbID
+        };
+        this.notify.emit(JSON.stringify(data));
     }
 
 }

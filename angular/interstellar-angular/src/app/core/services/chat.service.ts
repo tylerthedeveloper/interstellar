@@ -67,8 +67,10 @@ export class ChatService {
     createNewChatThread(senderID: string, receiverID: string) {
         // const NEWCHATID = 'NEWCHATID';
         const NEWCHATID = this.afs.createId();
-        const senderRef = this.userChatRef.doc(senderID).collection('chatThreads').doc(receiverID);
-        const receiverRef = this.userChatRef.doc(receiverID).collection('chatThreads').doc(senderID);
+        const senderRef = this.userChatRef.doc(senderID).collection('chatThreads').doc(NEWCHATID);
+        const receiverRef = this.userChatRef.doc(receiverID).collection('chatThreads').doc(NEWCHATID);
+        // const senderRef = this.userChatRef.doc(senderID).collection('chatThreads').doc(receiverID);
+        // const receiverRef = this.userChatRef.doc(receiverID).collection('chatThreads').doc(senderID);
         const chatThreadObj = <ChatThread> {
             chatThreadID: NEWCHATID,
             senderFbID: senderID,

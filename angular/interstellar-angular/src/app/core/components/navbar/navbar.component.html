@@ -21,7 +21,7 @@
                     <button (click)="createAccount()" class="btn btn-primary">Create New Account</button>
 
                     <h6 style="margin: 3% 0% 0% 0%;"> Or: </h6>
-                    <input matInput #accountMerge type="text" placeholder="Key" style="width: 100%; margin: 0% auto 1% auto;" />
+                    <input matInput #accountMerge type="password" placeholder="Key" style="width: 100%; margin: 0% auto 1% auto;" />
                     <div style="display: flex; flex-direction: row;">
                         <button (click)="mergeAccountWithKey(accountMerge.value); accountMerge.value = null;" class="btn z-depth-0" style="background-color: gray;">Merge Existing Account</button>
                         <button (click)="sidenav2.toggle(); secretKeyLogin.value = null;" class="btn z-depth-0" style="background-color: gray;">Close</button>
@@ -50,7 +50,7 @@
 
                 <div style="width: 52%; margin: auto;">
                     <h6> Stellar Wallet Secret Key: </h6>
-                    <input #secretKeyLogin matInput type="text" style="width: 100%; margin: 0% auto 1% auto;" placeholder="Key" autofocus />
+                    <input #secretKeyLogin matInput type="password" style="width: 100%; margin: 0% auto 1% auto;" placeholder="Key" autofocus />
                     <div style="display: flex; flex-direction: row;">
                         <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" class="btn btn-primary">Login</button>
                         <button (click)="sidenav.toggle(); secretKeyLogin.value = null;" class="btn z-depth-0" style="background-color: gray;">Close</button>

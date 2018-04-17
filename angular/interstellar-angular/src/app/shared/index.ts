@@ -9,7 +9,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialModule } from 'app/core/material.module';
-import { DialogComponent, ConfirmDialogComponent, FileUploadDialogComponent } from 'app/shared/_components';
+import { DialogComponent, ConfirmDialogComponent, FileUploadDialogComponent } from 'app/shared/components';
 import { DynamicFormComponent } from './forms/dynamic-form/dynamic-form.component';
 import { DynamicFormQuestionComponent } from './forms/dynamic-form-question/dynamic-form-question.component';
 import { DateFormatterPipe } from './pipes/DatePipe';

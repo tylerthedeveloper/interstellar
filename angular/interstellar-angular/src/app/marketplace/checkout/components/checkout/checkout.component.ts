@@ -1,24 +1,33 @@
 // TODO: CLLEAN UP UNUSED CODE --> anything with step checker
+/** Angular */
 import { Component, OnInit  } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
+/** RxJS and forms */
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
+import { CustomValidators } from 'app/shared/forms/form.utils';
 
+/** Stellar */
 import { isValidSecretKey, AssetBalance, calcTotalsForMultipleAssets,
         calcDifferenceForMultipleAssets, areValidNewBalances,
         StellarPaymentService, StellarAccountService } from 'app/stellar';
 
-import { OrderService } from 'app/core/services/order.service';
-import { CartItem } from 'app/marketplace/_market-models/cart-item';
-import { CartService } from 'app/core/services/cart.service';
-import { Order } from 'app/marketplace/_market-models/order';
+// import { OrderService } from 'app/core/services/order.service';
+// import {  } from 'app/core/services';
+/** Services */
+import { CartService, OrderService, ProductService } from 'app/core/services';
+/** Models */
+import { CartItem, Order } from 'app/marketplace/_market-models/';
+// import {  } from 'app/marketplace/_market-models/order';
 import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from 'app/marketplace/_market-models/transaction';
+
+/** UI */
 import { MatHorizontalStepper } from '@angular/material';
-import { ProductService } from 'app/core/services';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CustomValidators } from 'app/shared/forms/form.utils';
+
+/** Other */
 import { stellarKeyLength } from 'app/core/_constants/quantities';
 
 

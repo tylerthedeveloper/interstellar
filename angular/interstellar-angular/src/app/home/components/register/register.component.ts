@@ -10,7 +10,7 @@ import { EventEmitterService } from 'app/core/_helpers/event-emitter.service';
 
 /** UI */
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { ConfirmDialogComponent } from 'app/shared/_components';
+import { ConfirmDialogComponent } from 'app/shared/components';
 import { UserService } from 'app/core/services';
 
 @Component({
