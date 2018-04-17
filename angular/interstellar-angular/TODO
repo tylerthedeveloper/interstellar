@@ -44,6 +44,7 @@ Todo:
 
 
 ****** App performance
+https://www.npmjs.com/package/cleanup-dependencies
 https://github.com/angular/angular-cli/issues/8280
 https://www.npmjs.com/package/cleanup-dependencies
 https://github.com/bjfish/stellar-core-es-indexer

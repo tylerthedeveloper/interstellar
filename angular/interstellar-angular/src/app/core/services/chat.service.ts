@@ -7,18 +7,18 @@
  * STATE MANAGEMENT ... ALL SERVICES
  */
 //
-
-import { Injectable } from '@angular/core';
+/** Angular */
 import { Observable } from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
 
+/** Firebase */
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
+
+/** Models */
 import { ChatThread } from 'app/chat/models/chat-thread';
 import { ChatMessage } from '../../chat/models/chat-message';
 import { User } from 'app/user/user';
-
-
-
 
 @Injectable()
 export class ChatService {
@@ -32,8 +32,7 @@ export class ChatService {
 
     public myChatThreads: Observable<ChatThread[]>;
 
-
-     private _userID: string;
+    private _userID: string;
 
      constructor(private afs: AngularFirestore) {
         const userID: string = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
@@ -60,7 +59,8 @@ export class ChatService {
 
     getMessagesForChat(activeThreadID: string): Observable<ChatMessage[]> {
         return this.chatThreadsCollection.doc(activeThreadID)
-                    .collection<ChatMessage>('chatMessages', ref => ref.orderBy('sentAt')).valueChanges()
+                    .collection<ChatMessage>('chatMessages', ref => ref.orderBy('sentAt'))
+                    .valueChanges();
 
     }
 

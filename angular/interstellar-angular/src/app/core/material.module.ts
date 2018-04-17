@@ -17,7 +17,8 @@ import {
     MatStepperModule,
     MatCheckboxModule,
     MatListModule,
-    MatSliderModule
+    MatSliderModule,
+    MatIconModule
 } from '@angular/material';
 
 const materialModules = [
@@ -36,6 +37,7 @@ const materialModules = [
     MatCheckboxModule,
     MatListModule,
     MatSliderModule,
+    MatIconModule
 ];
 
 @NgModule({

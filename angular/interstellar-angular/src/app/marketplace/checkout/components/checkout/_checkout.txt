@@ -32,6 +32,7 @@
     <mat-step [stepControl]="secondFormGroup" #stepTwo editable="false">
         <div>
             <ng-template matStepLabel> Confirm secret key </ng-template>
+            <!-- <mat-error *ngIf="!stepChecker[0]"> please return to step 1 </mat-error> -->
             <form [formGroup]="secondFormGroup">
                 <mat-form-field hintLabel="must be 56 characters">
                     <input type="password" class="form-control" matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey formControlName="secondCtrl">
@@ -42,6 +43,7 @@
                 </mat-form-field>
             </form>
             <button mat-button (click)="validateCheckoutSecretKey(checkoutSecretKey.value, stepper)"> Validate Key </button>
+            <!-- <button  [disabled]="!secondFormGroup.valid" (click)="updateStep(stepper.selectedIndex)" mat-button matStepperNext>Next</button> -->
         </div>
     </mat-step>
     <!-- End Step Two -->
@@ -49,6 +51,7 @@
     <mat-step #stepThree editable="false" [stepControl]="thirdFormGroup">
         <!-- (click)="$event.preventDefault(); alert('jkk');" -->
         <ng-template matStepLabel> Validate Funds </ng-template>
+        <!-- <mat-error *ngIf="!stepChecker[1]"> please return to step 2 </mat-error> -->
         <div class="col-md-12">
             <form [formGroup]="thirdFormGroup">
                 <div class="row">
@@ -59,6 +62,7 @@
                                 <p> Asset {{ i + 1 }}: {{ balance.balance }} {{ balance.asset_type }} </p>
                             </mat-card-content>
                         </mat-card>
+                        <!-- <button [disabled]="!stepChecker[1]" mat-button (click)="calculateFundsForPurchase(stepper.selectedIndex)"> Calculate balance </button> -->
                         <button [class.disabled]="calBalBtnBool" [disabled]="calBalBtnBool" mat-button
                                 (click)="calculateFundsForPurchase(stepper.selectedIndex); calBalBtnBool = true" value="calcBal">
                             Calculate new balances 
@@ -71,15 +75,16 @@
                                 <p> Asset {{ i + 1 }}: {{ balance.balance }} {{ balance.asset_type }} </p>
                             </mat-card-content>
                         </mat-card>
-                        <button [class.disabled]="valBalBtnBool || !calBalBtnBool" [disabled]="valBalBtnBool || !calBalBtnBool" mat-button 
+                        <button [class.disabled]="!stepChecker[2] || valBalBtnBool" [disabled]="!stepChecker[2] || valBalBtnBool" mat-button 
                                 (click)="validateFundsForPurchase(stepper.selectedIndex); valBalBtnBool = true">
                             Validate Funds 
                         </button>
                     </div>
                     <div class="col-md-2" style="display:flex">
                         <mat-checkbox visible="false" hidden="hidden"  formControlName="thirdCtrlFirst"> </mat-checkbox>
-                        <button class="primary" [disabled]="cnfPurBtnBool || !valBalBtnBool" [class.disabled]="cnfPurBtnBool || !valBalBtnBool"
+                        <button class="primary" [disabled]="!stepChecker[3] || cnfPurBtnBool" [class.disabled]="!stepChecker[3] || cnfPurBtnBool"
                             (click)="completePurchase(stepper); cnfPurBtnBool = true" mat-button> Confirm Purchase</button>
+                        <!-- <button class="primary" [disabled]="!stepChecker[4]" (click)="proceedToOrderConfirmation()" mat-button matStepperNext> Finish </button> -->
                     </div>
                 </div>
             </form>
@@ -88,8 +93,8 @@
     <!-- End Step Three -->
     <mat-step editable="false" #stepFour>
         <ng-template matStepLabel> Confirm </ng-template>
-        <h3 > You are now done. Thanks for shopping!</h3>
-        <p > Below is your order receipt</p>
+        <h3 *ngIf="(stepChecker[1] && stepChecker[1])"> You are now done. Thanks for shopping!</h3>
+        <p *ngIf="stepChecker[3]"> Below is your order receipt</p>
         <div>
             <button mat-button (click)="returnHome()"> Return Home </button>
             <button mat-button (click)="checkoutLogout()"> Logout </button>

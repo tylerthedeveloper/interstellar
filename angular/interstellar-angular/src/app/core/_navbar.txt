@@ -1,3 +1,4 @@
+
 <!-- style="position: fixed;"" -->
 <div style="margin: 5em 0em 0em 0em;" flex>
 
@@ -30,10 +31,19 @@
                 </div>
 
             </div>
+            <!-- </div> -->
         </mat-sidenav>
-        <!-- End Login Side Nav -->
-        <!-- Signup Side Nav -->
+        <!-- End Login Side Nav -->        
+        <!-- Signup Side Nav -->        
         <mat-sidenav #sidenav mode="over" position="end" class="app-sidenav" style="align-items: center; justify-content: center; overflow: hidden; position: fixed !important; width: 100%;">
+            <!-- <mat-card style="min-width: 60%; display:inline-flex;">
+                <h3 style="margin-right: 10 px; margin-bottom: 10 px; padding-right: 10 px; padding-bottom: 10 px;"> Login with secret key </h3>
+                <input #secretKeyLogin matInput type="text" placeholder="secret key" autofocus style="margin-left: 10 px; margin-bottom: 10 px; padding-left: 10 px; padding-bottom: 10 px;"
+                />
+                <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" style="color:black">Login</button>
+                <button (click)="sidenav.toggle(); secretKeyLogin.value = null;" style="color:black">Close</button>
+                <br />
+            </mat-card> -->
             <div style="margin: 5% auto 0% auto; width: 50%; height: 20%; text-align: center;">
                 <img style="max-width:100%; max-height: 100%" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
                 <h2>Interstellar</h2>
@@ -43,8 +53,7 @@
 
                 <div style="width: 52%; margin: auto;">
                     <h6> Stellar Wallet Secret Key: </h6>
-                    <input #secretKeyLogin matInput type="password" style="width: 100%; margin: 0% auto 1% auto;" placeholder="Key" autofocus
-                    />
+                    <input #secretKeyLogin matInput type="password" style="width: 100%; margin: 0% auto 1% auto;" placeholder="Key" autofocus />
                     <div style="display: flex; flex-direction: row;">
                         <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" class="btn btn-primary">Login</button>
                         <button (click)="sidenav.toggle(); secretKeyLogin.value = null;" class="btn z-depth-0" style="background-color: gray;">Close</button>
@@ -53,9 +62,9 @@
 
             </div>
         </mat-sidenav>
-        <!-- End Signup Side Nav -->
+        <!-- End Signup Side Nav -->    
 
-        <!-- Main Nav -->
+        <!-- Main Nav -->        
         <mat-sidenav-content flex>
 
             <mat-toolbar class="main-nav" flex>
@@ -65,6 +74,11 @@
                         Home
                     </i>
                 </button>
+                <!-- *ngIf="loggedIn"   [routerLink]="['/profile', user.uid]"   -->
+                <!-- <button [style.display]="!loggedIn?'none':'inherit'" mat-button id="profile" [routerLink]="['/profile']" (click)="changePage('profile')"
+                    routerLinkActive="active" class="main-nav-button">
+                    Profile
+                </button> -->
                 <button mat-button id="categories" (click)="changePage('categories')" [routerLink]="['/categories']" routerLinkActive="active"
                     style="padding: .5% 1% 0% 1%;">
                     <i class="fa fa-map-signs">
@@ -77,90 +91,83 @@
                         Products
                     </i>
                 </button>
-                <button mat-button id="people" (click)="changePage('people')" [routerLink]="['/people']" routerLinkActive="active" style="padding: .5% 1% 0% 1%;">
+                <button mat-button id="people" (click)="changePage('people')" [routerLink]="['/people']" routerLinkActive="active"
+                    style="padding: .5% 1% 0% 1%;">
                     <i class="fa fa-bars">
                         People
                     </i>
                 </button>
                 <span class="example-fill-remaining-space"></span>
-                <span *ngIf="loggedIn; then isLoggedIn; else notLoggedIn"> </span>
-                <!-- <div *ngIf="loggedIn" style="display: flex; flex-direction: row; padding: 0% 0% 0% 0%"> -->
-                    
-                    <ng-template #isLoggedIn style="display: flex; flex-direction: row; margin: 0% -3% 0% 0%">
-                        <button mat-icon-button [matMenuTriggerFor]="menu">
-                            Account
-                            <mat-icon>more_vert</mat-icon>
-                        </button>
-                        <mat-menu #menu="matMenu">
-                            <button mat-menu-item id="chat" [routerLink]="['/chat']" (click)="changePage('chat')" 
-                                    routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
-                                <mat-icon>comments</mat-icon>                            
-                                <i class="fa fa-comments" style="color: black;">
-                                    Chat
-                                </i>
-                            </button>
-                            <button mat-menu-item id="chat" [routerLink]="['/cart']" (click)="changePage('cart')" 
-                                    routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
-                                <mat-icon>comments</mat-icon>                            
-                                <i class="fa fa-shopping-cart" style="color: black;">
-                                        Cart {{ cartItemCount }}
-                                </i>
-                            </button>
-                            <button mat-menu-item id="profile" [style.display]="!loggedIn ? 'none' : 'inherit'" (click)="changePage('profile')"
-                                    routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
-                                <mat-icon>comments</mat-icon>                            
-                                <i class="fa fa-user-circle" style="color: black;">
-                                        Profile
-                                </i>
-                            </button>
-                        </mat-menu>
-                        <!-- <div *ngIf="loggedIn" style="display: flex; flex-direction: row; padding: 0% 0% 0% 0%">
-                            <button mat-button id="chat" [routerLink]="['/chat']" (click)="changePage('chat')" routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
-                                <i class="fa fa-comments" style="color: white;">
-                                    Chat
-                                </i>
-                            </button>
-                            <button mat-button id="cart" [routerLink]="['/cart']" (click)="changePage('cart')" routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
-                                <i class="fa fa-shopping-cart" style="color: white;">
-                                    Cart {{ cartItemCount }}
-                                </i>
-                            </button>
-                            <button mat-button [style.display]="!loggedIn ? 'none' : 'inherit' " id="profile" (click)="changePage('profile')" routerLinkActive="active"
-                                style="padding: 1% 0% 0% 5%; height: 3.5em;">
-                                <i class="fa fa-user" style="color: white;">
-                                    Profile
-                                </i>
-                            </button>
-                            <button mat-button (click)="logout()" style="padding: 1% 0% 0% 0%; height: 3.5em;">
-                                <i class="fa fa-sign-out">
-                                    Logout
-                                </i>
-                            </button>
-                        </div> -->
-                    </ng-template>
-                <!-- </div> -->
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                    Account
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                        <mat-icon>dialpad</mat-icon>
+                        <span>Redial</span>
+                    </button>
+                    <button mat-menu-item disabled>
+                        <mat-icon>voicemail</mat-icon>
+                        <span>Check voicemail</span>
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon>notifications_off</mat-icon>
+                        <span>Disable alerts</span>
+                    </button>
+                </mat-menu>
+                <span class="example-fill-remaining-space"></span>
                 
-                <ng-template #notLoggedIn style="float:right;">
-                    <div *ngIf="!loggedIn" style="padding: 0% 0% 0% 0%;">
-                        <button mat-button id="register" (click)="sidenav2.toggle()" style="padding: 1% 0% 0% 0%; height: 3.5em;">
-                            <!-- (click)="changePage('register')"  [routerLink]="['/register']" routerLinkActive="active" -->
-                            <i class="fa fa-money">
-                                Signup
-                            </i>
-                        </button>
-                        <button mat-button *ngIf="!loggedIn" (click)="sidenav.toggle()" style="padding: 1% 0% 0% 0%; height: 3.5em;">
-                            <i class="fa fa-sign-in">
-                                Login
-                            </i>
-                        </button>
-                    </div>
-                </ng-template>
-                <!-- <button mat-raised-button class="main-nav-button">
+                <span *ngIf="loggedIn; then isLoggedIn; else notLoggedIn"> </span>
+                    <!-- TODO: test BETTER TEMPLATING!!!! -->
+                  <ng-template #isLoggedIn style="float:right;">
+                      <div *ngIf="loggedIn" style="display: flex; flex-direction: row; padding: 0% 0% 0% 0%">
+                          <button mat-button id="chat" [routerLink]="['/chat']" (click)="changePage('chat')" routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
+                              <i class="fa fa-comments" style="color: white;">
+                                  Chat
+                              </i>
+                          </button>
+                          <button mat-button id="cart" [routerLink]="['/cart']" (click)="changePage('cart')" routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
+                              <i class="fa fa-shopping-cart" style="color: white;">
+                                  Cart {{ cartItemCount }}
+                              </i>
+                          </button>
+                          <!-- [routerLink]="['/people/${_userID}/me']"  -->
+                          <button mat-button [style.display]="!loggedIn ? 'none' : 'inherit' " id="profile"
+                                  (click)="changePage('profile')" routerLinkActive="active" style="padding: 1% 0% 0% 5%; height: 3.5em;">
+                          <i class="fa fa-user" style="color: white;">
+                              Profile
+                          </i>
+                          </button>
+                          <button mat-button (click)="logout()" style="padding: 1% 0% 0% 0%; height: 3.5em;">
+                              <i class="fa fa-sign-out">
+                                  Logout
+                                  <!-- {{ _userID }} -->
+                              </i>
+                          </button>
+                      </div>
+                  </ng-template>
+                  <ng-template #notLoggedIn style="float:right;">
+                      <div *ngIf="!loggedIn" style="padding: 0% 0% 0% 0%;">
+                          <button mat-button id="register" (click)="sidenav2.toggle()" style="padding: 1% 0% 0% 0%; height: 3.5em;">
+                              <!-- (click)="changePage('register')"  [routerLink]="['/register']" routerLinkActive="active" -->
+                              <i class="fa fa-money">
+                                  Signup
+                              </i>
+                          </button>
+                          <button mat-button *ngIf="!loggedIn" (click)="sidenav.toggle()" style="padding: 1% 0% 0% 0%; height: 3.5em;">
+                              <i class="fa fa-sign-in">
+                                  Login
+                              </i>
+                          </button>
+                      </div>
+                  </ng-template>
+                    <!-- <button mat-raised-button class="main-nav-button">
                 <span (click)="toggle(sidenav)" *ngIf="!loggedIn; else logswitch"> Login </span>
                 <ng-template #logswitch> <span (click)="logout()"> Logout </span> </ng-template>
             </button> -->
             </mat-toolbar>
         </mat-sidenav-content>
-        <!-- End Main Nav -->
+        <!-- End Main Nav -->                
     </mat-sidenav-container>
 </div>

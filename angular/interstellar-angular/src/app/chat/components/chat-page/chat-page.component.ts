@@ -43,11 +43,11 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
             this.activeThreadUserID = this._route.snapshot.queryParams['receiverID'] || '';
             this.myChatThreads = this._chatService.getMyChatThreads()
                 .map(threads => {
-                    console.log(this.activeThreadUserID)
+                    console.log(this.activeThreadUserID);
                     const foundCurrentThread = threads.find(thread => thread.receiverFbID === this.activeThreadUserID);
                     this.activeThreadID = (foundCurrentThread) ? foundCurrentThread.chatThreadID : '';
-                    console.log(foundCurrentThread)
-                    console.log(this.activeThreadID)
+                    console.log(foundCurrentThread);
+                    console.log(this.activeThreadID);
                     if (this.activeThreadUserID && !foundCurrentThread) {
                         this.handleNewChat();
                     } else if (this.activeThreadID && foundCurrentThread && this.activeThreadUserID) {
@@ -101,7 +101,7 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
             alert('uh oh, looks liek you forgot to enter text');
             return;
         }
-        console.log(this.activeThread)
+        console.log(this.activeThread);
         const messageObj = new ChatMessage({
             isRead: false,
             sentAt: Date.now(),
@@ -140,7 +140,7 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
         if (activeChatThread) {
             this.activeThread = activeChatThread;
         }
-        console.log(this.activeThread)        
+        console.log(this.activeThread);
         // TODO: make ordered by timestamp
         this.activeThreadMessages = this._chatService.getMessagesForChat(chatID);
         if (!this._route.snapshot.queryParams['receiverID']) {
