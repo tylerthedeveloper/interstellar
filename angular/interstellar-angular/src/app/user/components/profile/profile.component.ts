@@ -63,10 +63,6 @@ export class ProfileComponent implements OnInit {
     /** Page Helpers */
     private edit = false;
     private hasAddress = false;
-// private profileForm: FormGroup;
-// private profileFormMapper: any = {};
-
-
 
     constructor(private _userService: UserService,
                 private _productService: ProductService,
@@ -108,7 +104,6 @@ export class ProfileComponent implements OnInit {
         });
         this.products = this._productService.getProductsByUserID(myUserID);
         this.orders = this._orderService.Orders;
-
         this.balances = new Array<AssetBalance>();
         const _balances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
         if (_balances) { this.balances = <AssetBalance[]>JSON.parse(_balances); }
@@ -137,7 +132,7 @@ export class ProfileComponent implements OnInit {
             if (newProfileData) {
                 this.edit = !this.edit;
                 const payload = {
-                    id: this._userModel.id,
+                    id: this._userID,
                     data: newProfileData
                 };
                 return this._userService.updateProfile(payload);
@@ -153,7 +148,6 @@ export class ProfileComponent implements OnInit {
             data: { component: DynamicFormComponent,
                     payload: {
                         questions: productFormData,
-                        // objectMapper: product
                     }
             }
         });

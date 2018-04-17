@@ -41,9 +41,9 @@
             <button *ngIf="stepChecker[1]" (click)="updateStep(stepper.selectedIndex)" mat-button matStepperNext>Next</button>
         </div>
     </mat-step>
-    <mat-step (click)="$event.preventDefault(); alert('jkk');" #stepThree editable="false">
+    <mat-step #stepThree editable="false"> <!-- (click)="$event.preventDefault(); alert('jkk');" -->
         <ng-template matStepLabel> Validate Funds </ng-template>
-        <mat-error *ngIf="!stepChecker[1]"> please return to step 2 </mat-error>
+        <!-- <mat-error *ngIf="!stepChecker[1]"> please return to step 2 </mat-error> -->
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-5">
@@ -53,7 +53,8 @@
                             <p> Asset {{ i + 1 }}: {{ balance.balance }} {{ balance.asset_type }} </p>
                         </mat-card-content>
                     </mat-card>
-                    <button [disabled]="!stepChecker[1]" mat-button (click)="calculateFundsForPurchase(stepper.selectedIndex)"> Calculate balance </button>
+                    <!-- <button [disabled]="!stepChecker[1]" mat-button (click)="calculateFundsForPurchase(stepper.selectedIndex)"> Calculate balance </button> -->
+                    <button [class.disabled]="calBalBtnBool" [disabled]="calBalBtnBool" mat-button (click)="calculateFundsForPurchase(stepper.selectedIndex); calBalBtnBool = true"> Calculate balance </button>
                 </div>
                 <div class="col-md-5">
                     Your Asset Totals After
@@ -62,10 +63,10 @@
                             <p> Asset {{ i + 1 }}: {{ balance.balance }} {{ balance.asset_type }} </p>
                         </mat-card-content>
                     </mat-card>
-                    <button [disabled]="!stepChecker[2]" mat-button (click)="validateFundsForPurchase(stepper.selectedIndex)"> Validate Funds </button>
+                    <button [class.disabled]="!stepChecker[2] || valBalBtnBool" [disabled]="!stepChecker[2] || valBalBtnBool" mat-button (click)="validateFundsForPurchase(stepper.selectedIndex); valBalBtnBool = true"> Validate Funds </button>
                 </div>
                 <div class="col-md-2" style="display:flex">
-                    <button class="primary" [disabled]="!stepChecker[3]" (click)="completePurchase(stepper)" mat-button> Confirm Purchase</button>
+                    <button class="primary" [disabled]="!stepChecker[3] || cnfPurBtnBool" [class.disabled]="!stepChecker[3] || cnfPurBtnBool" (click)="completePurchase(stepper); cnfPurBtnBool = true" mat-button> Confirm Purchase</button>
                     <!-- <button class="primary" [disabled]="!stepChecker[4]" (click)="proceedToOrderConfirmation()" mat-button matStepperNext> Finish </button> -->
                 </div>
             </div>

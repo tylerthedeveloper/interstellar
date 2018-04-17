@@ -1,7 +1,7 @@
 // TODO: CLLEAN UP UNUSED CODE
 
 import { Component, OnInit  } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -18,8 +18,8 @@ import { Order } from 'app/marketplace/_market-models/order';
 import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from 'app/marketplace/_market-models/transaction';
 import { MatHorizontalStepper } from '@angular/material';
 import { ProductService } from 'app/core/services';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { ValidateFormSecretKey, ValidateFormSecretKeyLength } from 'app/shared/forms/form.utils';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ValidateFormSecretKey, ValidateFormSecretKeyLength, CustomValidators } from 'app/shared/forms/form.utils';
 import { stellarKeyLength } from 'app/core/_constants/quantities';
 
 
@@ -283,13 +283,13 @@ const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
         this.firstFormGroup = this._formBuilder.group({
             firstCtrl: ['', Validators.required]
           });
-           // ValidateFormSecretKey
           this.secondFormGroup = this._formBuilder.group({
-            secondCtrl: ['', Validators.compose([Validators.required,
-                                                Validators.minLength(stellarKeyLength),
-                                                Validators.maxLength(stellarKeyLength),
-                                                ]),
-                                                [ValidateFormSecretKey]]
+                secondCtrl: ['', Validators.compose([
+                                Validators.required, // ValidateFormSecretKeyLength, minLength, maxLength
+                                CustomValidators.ValidateFormFieldLength(stellarKeyLength)
+                                ]),
+                                [CustomValidators.ValidateFormFieldMatch(this.curPubKey)]
+                            ]
           });
     }
 
@@ -364,6 +364,7 @@ const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
     }
 
     returnHome(): void {
+        this._router.navigate(['home']);
     }
 
     logout(): void {
@@ -384,7 +385,6 @@ const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
     updateStep(currentStep: number): void {
         console.log(currentStep);
         this.stepChecker[currentStep - 1] = true;
-        // console.log(this.stepChecker);
     }
     // ─────────────────────────────────────────────────────────────────
 
