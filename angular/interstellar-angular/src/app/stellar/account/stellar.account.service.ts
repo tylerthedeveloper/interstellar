@@ -74,7 +74,7 @@ export class StellarAccountService {
             sessionStorage.setItem('seed_key', secretKey);
             return Observable.fromPromise(this._server.loadAccount(pubkey)
                 .catch(StellarSdk.NotFoundError, function (error) {
-                    throw new Error('The destination account does not exist!');
+                    throw new Error('The destination account does not exist!: \n' + error);
                 })
                 .then(account => account))
                 .map((r: any) => <Array<AssetBalance>> r.balances)

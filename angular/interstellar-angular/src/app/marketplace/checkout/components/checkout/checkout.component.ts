@@ -1,5 +1,4 @@
-// TODO: CLLEAN UP UNUSED CODE
-
+// TODO: CLLEAN UP UNUSED CODE --> anything with step checker
 import { Component, OnInit  } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
@@ -19,7 +18,7 @@ import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from '
 import { MatHorizontalStepper } from '@angular/material';
 import { ProductService } from 'app/core/services';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ValidateFormSecretKey, ValidateFormSecretKeyLength, CustomValidators } from 'app/shared/forms/form.utils';
+import { CustomValidators } from 'app/shared/forms/form.utils';
 import { stellarKeyLength } from 'app/core/_constants/quantities';
 
 
@@ -52,10 +51,10 @@ export class CheckoutComponent implements OnInit {
         private _transactionGroups: TransactionGroup[];
 
         private _pageError = false;
-        private _productQuantityPairs: Array<any>;
+        // private _productQuantityPairs: Array<any>;
         firstFormGroup: FormGroup;
         secondFormGroup: FormGroup;
-        thirddFormGroup: FormGroup;
+        thirdFormGroup: FormGroup;
 
         constructor(private _cartService: CartService,
                     private _stellarAccountService: StellarAccountService,
@@ -65,8 +64,6 @@ export class CheckoutComponent implements OnInit {
                     private _formBuilder: FormBuilder,
                     private _router: Router,
                     private location: Location) { }
-
-        // private secondFormGroup: FormGroup;
 
         ngOnInit() {
             this.curUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
@@ -94,15 +91,12 @@ export class CheckoutComponent implements OnInit {
                     cartPurchaseDetailsArray.push(CIT.assetPurchaseDetails);
                 });
                 this.sellerPublicKeys = new Set(_sellerPublicKeys);
-                // console.log(this.sellerPublicKeys);
                 this.assetTotals = calcTotalsForMultipleAssets(cartPurchaseDetailsArray);
                 return arr;
             });
 
             this.initForm();
             this.balances = <AssetBalance[]> JSON.parse(sessionStorage.getItem('my_balances') || localStorage.getItem('balances'));
-            // console.log(this.balances);
-
             // https://stackoverflow.com/questions/46710178/material-design-stepper-how-to-remove-disable-steps?rq=1
             // https://stackoverflow.com/questions/47314219/using-separate-components-in-a-linear-mat-horizontal-stepper?rq=1
         }
@@ -152,10 +146,8 @@ export class CheckoutComponent implements OnInit {
             if (areValidNewBalances(this.updatedBalances)) {
                 this.stepChecker[3] = true;
             } else {
-                alert('You don\'t seem to have sufficient funds or \n ' +
-                'the purchase amount goes below the minimum required holding threshold');
-                return;
-
+                return alert('You don\'t seem to have sufficient funds or \n ' +
+                      'the purchase amount goes below the minimum required holding threshold');
             }
         }
 
@@ -170,7 +162,7 @@ export class CheckoutComponent implements OnInit {
             // get seller public keys
 
             // const memo = `Order #: ${checkoutItem.}`;
-            const memo = 'create a memo thingy...';
+            // const memo = 'create a memo thingy...';
 
             // TURN ITEMS INTO TRANSACTIONS
             const transactions = this._transactionRecords = this.makeTransactionRecords();
@@ -246,6 +238,7 @@ export class CheckoutComponent implements OnInit {
             }
         */
 
+
 // FIXME: JOIN PROMISES AND BLOCK THREAD
         let result = Promise.resolve();
 const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
@@ -257,6 +250,8 @@ const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
                                 console.log(sessionStorage.getItem('my_balances'));
                                 matStepper.next();
                                 this.stepChecker[4] = true;
+                                // todo:
+                                this.thirdFormGroup.get('thirdCtrlFirst').setValue(true);
                                 this.proceedToOrderConfirmation();
                                 return;
                             });
@@ -266,10 +261,6 @@ const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
                             this._pageError = true;
                         }));
 
-        // if (!this._pageError) {
-        //     // TODO: wait for the above
-        //     console.log('no erorr');
-        // }
     }
 
 
@@ -279,18 +270,23 @@ const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
     // ──────────────────────────────────────────────────────────────────────────────────────────────
     //
 
+    // https://stackblitz.com/edit/angular-1czeuw?file=app%2Fapp.component.html
     initForm(): any {
         this.firstFormGroup = this._formBuilder.group({
             firstCtrl: ['', Validators.required]
-          });
-          this.secondFormGroup = this._formBuilder.group({
-                secondCtrl: ['', Validators.compose([
-                                Validators.required, // ValidateFormSecretKeyLength, minLength, maxLength
-                                CustomValidators.ValidateFormFieldLength(stellarKeyLength)
-                                ]),
-                                [CustomValidators.ValidateFormFieldMatch(this.curPubKey)]
-                            ]
-          });
+        });
+        this.secondFormGroup = this._formBuilder.group({
+            secondCtrl: ['', Validators.compose([
+                            Validators.required, // ValidateFormSecretKeyLength, minLength, maxLength
+                            CustomValidators.ValidateFormFieldLength(stellarKeyLength)
+                            ]),
+                            [CustomValidators.ValidateFormFieldMatch(this.curPubKey)]
+                        ]
+        });
+        this.thirdFormGroup = this._formBuilder.group({
+            thirdCtrlFirst: ['', Validators.required, ],
+        });
+        // this.thirdFormGroup.get('thirdCtrlFirst').disable();
     }
 
     /**
@@ -333,7 +329,7 @@ const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
      * @returns void
      */
     proceedToOrderConfirmation(): void {
-        // TODO: PREVENT GOIONG BACK ... PREVENT FORM RESUBMISSION
+        // TODO: PREVENT GOIONG BACK ... PREVENT FORM RESUBMISSION --> ,aybe try promise resolving
         const _productQuantityUpdates = this._transactionRecords.map(record => {
             return {
                     productID: record.productID,
@@ -352,7 +348,6 @@ const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
             this._productService.updateProductQuantities(_productQuantityUpdates).catch(error => Observable.of(error)),
             this._cartService.batchRemoveCartItems(this.cartItemIDs).catch(error => Observable.of(error)),
         );
-
 
         combined.subscribe(latestValues => {
             const [ firstObs, secondObs, thirdObs ] = latestValues;

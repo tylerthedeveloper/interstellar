@@ -68,12 +68,12 @@ export class StellarPaymentService {
                 // });
 
                 const _asset = assets[0];
-                console.log(_asset)
+                console.log(_asset);
                 const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
                     .addOperation(StellarSdk.Operation.payment({
                         destination: destinationKey,
                         asset: StellarSdk.Asset.native(), // todo: switch to above asset type...
-                        // memo: transactionRecord.memo,
+                        memo: memo,
                         amount: _asset.balance
                     }))
                 .build();

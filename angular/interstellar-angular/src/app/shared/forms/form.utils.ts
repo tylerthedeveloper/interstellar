@@ -83,6 +83,9 @@ const ValidateFormSecretKey = (control: AbstractControl) => {
 
 export { createFormGroup, ValidateFormUrl, ValidateFormSecretKeyLength, ValidateFormSecretKey };
 
+
+// https://alligator.io/angular/async-validators/
+// https://stackoverflow.com/questions/36756159/angular-2-custom-validator-with-parameters
 export class CustomValidators {
     static ValidateFormFieldLength(length: number) {
       return (control: AbstractControl) => {

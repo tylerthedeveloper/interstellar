@@ -1,7 +1,8 @@
 <button (click)="returnToCart()"> Return to Cart </button>
 
 
-<mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper"> 
+<mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper">
+    <!-- Step One -->
     <mat-step [stepControl]="firstFormGroup" #stepOne editable="false">
         <ng-template matStepLabel> Review product details </ng-template>
         <div>
@@ -12,12 +13,13 @@
                     <p> Fixed USD Amount ($): {{ product.fixedUSDAmount }} </p>
                     <p> Quantity: {{ product.quantityPurchased }} </p>
                     <p> Current Asset Value: {{ product.assetPricePerItem }} </p>
-                    <p> Total Asset Value: {{ product.assetPurchaseDetails.balance }} {{ product.assetPurchaseDetails.asset_type }} </p>
+                    <p> Total Asset Value: {{ product.assetPurchaseDetails.balance }} {{ product.assetPurchaseDetails.asset_type
+                        }} </p>
                 </mat-card-content>
             </mat-card>
             <form [formGroup]="firstFormGroup">
-                    <!-- (change)="checkItem()" -->
-                <mat-checkbox formControlName="firstCtrl" > Confirm </mat-checkbox>                
+                <!-- (change)="checkItem()" -->
+                <mat-checkbox formControlName="firstCtrl"> Confirm </mat-checkbox>
                 <!-- <button mat-button [disabled]="!hasItems" (click)="updateStep(stepper.selectedIndex)" matStepperNext> -->
                 <button mat-button [disabled]="!firstFormGroup.valid" (click)="updateStep(stepper.selectedIndex)" matStepperNext>
                     Next
@@ -25,53 +27,70 @@
             </form>
         </div>
     </mat-step>
+    <!-- End Step One -->
+    <!-- Step Two -->
     <mat-step [stepControl]="secondFormGroup" #stepTwo editable="false">
         <div>
             <ng-template matStepLabel> Confirm secret key </ng-template>
             <!-- <mat-error *ngIf="!stepChecker[0]"> please return to step 1 </mat-error> -->
-            <form [formGroup]="secondFormGroup">                    
-                <mat-form-field>
-                    <input type="password" class="form-control"  matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey formControlName="secondCtrl">
+            <form [formGroup]="secondFormGroup">
+                <mat-form-field hintLabel="must be 56 characters">
+                    <input type="password" class="form-control" matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey formControlName="secondCtrl">
                     <!-- <div *ngIf="secondCtrl.errors.minlength">
                             Secret key must be 56 characters long.
                     </div> -->
+                    <mat-hint align="end">{{checkoutSecretKey.value?.length || 0}}/56</mat-hint>
                 </mat-form-field>
             </form>
             <button mat-button (click)="validateCheckoutSecretKey(checkoutSecretKey.value, stepper)"> Validate Key </button>
-            <button *ngIf="stepChecker[1]" (click)="updateStep(stepper.selectedIndex)" mat-button matStepperNext>Next</button>
+            <!-- <button  [disabled]="!secondFormGroup.valid" (click)="updateStep(stepper.selectedIndex)" mat-button matStepperNext>Next</button> -->
         </div>
     </mat-step>
-    <mat-step #stepThree editable="false"> <!-- (click)="$event.preventDefault(); alert('jkk');" -->
+    <!-- End Step Two -->
+    <!-- Step Three -->
+    <mat-step #stepThree editable="false" [stepControl]="thirdFormGroup">
+        <!-- (click)="$event.preventDefault(); alert('jkk');" -->
         <ng-template matStepLabel> Validate Funds </ng-template>
         <!-- <mat-error *ngIf="!stepChecker[1]"> please return to step 2 </mat-error> -->
         <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-5">
-                    Your Asset Totals Before:
-                    <mat-card *ngFor="let balance of balances; index as i" [attr.data-index]="i">
-                        <mat-card-content>
-                            <p> Asset {{ i + 1 }}: {{ balance.balance }} {{ balance.asset_type }} </p>
-                        </mat-card-content>
-                    </mat-card>
-                    <!-- <button [disabled]="!stepChecker[1]" mat-button (click)="calculateFundsForPurchase(stepper.selectedIndex)"> Calculate balance </button> -->
-                    <button [class.disabled]="calBalBtnBool" [disabled]="calBalBtnBool" mat-button (click)="calculateFundsForPurchase(stepper.selectedIndex); calBalBtnBool = true"> Calculate balance </button>
+            <form [formGroup]="thirdFormGroup">
+                <div class="row">
+                    <div class="col-md-5">
+                        Your Asset Totals Before:
+                        <mat-card *ngFor="let balance of balances; index as i" [attr.data-index]="i">
+                            <mat-card-content>
+                                <p> Asset {{ i + 1 }}: {{ balance.balance }} {{ balance.asset_type }} </p>
+                            </mat-card-content>
+                        </mat-card>
+                        <!-- <button [disabled]="!stepChecker[1]" mat-button (click)="calculateFundsForPurchase(stepper.selectedIndex)"> Calculate balance </button> -->
+                        <button [class.disabled]="calBalBtnBool" [disabled]="calBalBtnBool" mat-button
+                                (click)="calculateFundsForPurchase(stepper.selectedIndex); calBalBtnBool = true" value="calcBal">
+                            Calculate new balances 
+                        </button>
+                    </div>
+                    <div class="col-md-5">
+                        Your Asset Totals After
+                        <mat-card *ngFor="let balance of updatedBalances; index as i" [attr.data-index]="i">
+                            <mat-card-content>
+                                <p> Asset {{ i + 1 }}: {{ balance.balance }} {{ balance.asset_type }} </p>
+                            </mat-card-content>
+                        </mat-card>
+                        <button [class.disabled]="!stepChecker[2] || valBalBtnBool" [disabled]="!stepChecker[2] || valBalBtnBool" mat-button 
+                                (click)="validateFundsForPurchase(stepper.selectedIndex); valBalBtnBool = true">
+                            Validate Funds 
+                        </button>
+                    </div>
+                    <div class="col-md-2" style="display:flex">
+                        <mat-checkbox visible="false" hidden="hidden"  formControlName="thirdCtrlFirst"> </mat-checkbox>
+                        <button class="primary" [disabled]="!stepChecker[3] || cnfPurBtnBool" [class.disabled]="!stepChecker[3] || cnfPurBtnBool"
+                            (click)="completePurchase(stepper); cnfPurBtnBool = true" mat-button> Confirm Purchase</button>
+                        <!-- <button class="primary" [disabled]="!stepChecker[4]" (click)="proceedToOrderConfirmation()" mat-button matStepperNext> Finish </button> -->
+                    </div>
                 </div>
-                <div class="col-md-5">
-                    Your Asset Totals After
-                    <mat-card *ngFor="let balance of updatedBalances; index as i" [attr.data-index]="i">
-                        <mat-card-content>
-                            <p> Asset {{ i + 1 }}: {{ balance.balance }} {{ balance.asset_type }} </p>
-                        </mat-card-content>
-                    </mat-card>
-                    <button [class.disabled]="!stepChecker[2] || valBalBtnBool" [disabled]="!stepChecker[2] || valBalBtnBool" mat-button (click)="validateFundsForPurchase(stepper.selectedIndex); valBalBtnBool = true"> Validate Funds </button>
-                </div>
-                <div class="col-md-2" style="display:flex">
-                    <button class="primary" [disabled]="!stepChecker[3] || cnfPurBtnBool" [class.disabled]="!stepChecker[3] || cnfPurBtnBool" (click)="completePurchase(stepper); cnfPurBtnBool = true" mat-button> Confirm Purchase</button>
-                    <!-- <button class="primary" [disabled]="!stepChecker[4]" (click)="proceedToOrderConfirmation()" mat-button matStepperNext> Finish </button> -->
-                </div>
-            </div>
+            </form>
         </div>
     </mat-step>
+    <!-- End Step Three -->
     <mat-step editable="false" #stepFour>
         <ng-template matStepLabel> Confirm </ng-template>
         <h3 *ngIf="(stepChecker[1] && stepChecker[1])"> You are now done. Thanks for shopping!</h3>

@@ -1,9 +1,6 @@
 /** Angular */
 import { Component, OnInit } from '@angular/core';
 
-import { FormGroup } from '@angular/forms';
-// import { ReactiveFormsModule } from '@angular/forms';
-
 /** Stellar */
 // import StellarSdk from 'stellar-sdk';
 import { AssetBalance } from 'app/stellar';
@@ -24,15 +21,20 @@ import { MatDialog } from '@angular/material';
 /** Utils */
 import { Router, ActivatedRoute } from '@angular/router';
 import { areValidProductTypes } from 'app/marketplace/products/product.utils';
-import { productFormData } from 'app/marketplace/products/product.details';
+
+/** Components */
 import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
-// import { createFormGroup } from 'app/shared/forms/form.utils';
 import { DialogComponent, FileUploadDialogComponent, ConfirmDialogComponent } from 'app/shared/_components';
-import { UserService } from 'app/core/services/user.service';
-import { User } from 'app/user/user';
+
+/** Services */
 import { OrderService } from 'app/core/services';
+import { UserService } from 'app/core/services/user.service';
+
+/** Models */
+import { User } from 'app/user/user';
 import { Order } from 'app/marketplace/_market-models/order';
-import { userFormData } from '../../user.details';
+import { productFormData } from 'app/marketplace/products/product.details';
+import { userFormData } from 'app/user/user.details';
 
 
 @Component({
