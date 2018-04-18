@@ -91,7 +91,7 @@ export class OrderService {
     addNewOrder(orderData: string): Promise<any> {
         const _orderData = <Order>JSON.parse(orderData);
         const _docID = _orderData.orderID;
-        const transactions = _orderData.transactionsGroups.map(group => group.transactionRecords)
+        // const transactions = _orderData.transactionsGroups.map(group => group.transactionRecords);
         // console.log(_orderData);
         const batch = this.afs.firestore.batch();
         batch.set(this.ordersCollection.doc(_docID).ref, _orderData);

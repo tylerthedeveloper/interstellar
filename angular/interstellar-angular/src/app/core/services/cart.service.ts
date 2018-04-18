@@ -121,6 +121,22 @@ export class CartService {
     }
 
     /**
+     * @param  {string} cartItemID
+     */
+    removeCartItem(cartItemID: string) {
+        this.userCartCollection.doc(cartItemID).delete();
+        this.cartItemIDs.filter(_cartItemID => _cartItemID !== cartItemID);
+    }
+    // ────────────────────────────────────────────────────────────────────────────────
+
+
+    //
+    // ────────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: B A T C H   M E T H O D S : :  :   :    :     :        :          :
+    // ────────────────────────────────────────────────────────────────────────────
+    //
+
+    /**
      * @param  {string[]} cartItemIDs
      */
     addToCheckout(cartItemIDs: string[]) {
@@ -129,36 +145,33 @@ export class CartService {
         cartItemIDs.forEach(id => batch.update(this.myCartRef.doc(id), { isInCheckout: true }));
         return batch.commit();
     }
-    /**
-     * @param  {string} cartItemID
-     */
-    removeCartItem(cartItemID: string) {
-        this.userCartCollection.doc(cartItemID).delete();
-        this.cartItemIDs.filter(_cartItemID => _cartItemID !== cartItemID);
-    }
 
     /**
      * @param  {string[]} cartItemIdArray
+     * @returns Promise {string[]}
      */
-    batchRemoveCartItems(cartItemIdArray: string[]) {
+    batchRemoveCartItems(cartItemIdArray: string[]): Promise<string[]> {
         const batch = this.afs.firestore.batch();
         cartItemIdArray.forEach(id => batch.delete(this.myCartRef.doc(id)));
-        // console.log(this.cartItemIDs);
         return batch.commit()
             .catch(error => console.log(error))
             .then(() => this.cartItemIDs.filter(_cartItemID => cartItemIdArray.find(c => c === _cartItemID)));
-        // console.log(this.cartItemIDs);
     }
 
-    /**
-     */
-    emptyCart() {
+    batchMarkItemsPaidFor(cartItemIdArray: string[]): any {
+        console.log(cartItemIdArray);
+        const batch = this.afs.firestore.batch();
+        cartItemIdArray.map(id => batch.update(this.myCartRef.doc(id), { isPaidFor: true }));
+        return batch.commit();
+    }
+
+    emptyCart(): Promise<any[]> {
         const batch = this.afs.firestore.batch();
         this.cartItemIDs.forEach(id => batch.delete(this.myCartRef.doc(id)));
-        batch.commit()
+        return batch.commit()
             .catch(error => console.log(error))
             .then(() => this.cartItemIDs = []);
-        console.log(this.cartItemIDs);
+        // console.log(this.cartItemIDs);
     }
     // ────────────────────────────────────────────────────────────────────────────────
 

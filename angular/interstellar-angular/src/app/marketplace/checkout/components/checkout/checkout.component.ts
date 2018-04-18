@@ -120,7 +120,7 @@ export class CheckoutComponent implements OnInit {
          * @param  {MatHorizontalStepper} stepper
          */
         validateCheckoutSecretKey(secretKey: string, stepper: MatHorizontalStepper) {
-            const currentStep: number = stepper.selectedIndex;
+            // const currentStep: number = stepper.selectedIndex;
             if (!secretKey) {
                 alert('Please enter a secret key');
                 return;
@@ -130,7 +130,7 @@ export class CheckoutComponent implements OnInit {
                   isValidSecretKey(this.curSeedKey) === this.curPubKey)) {
                     alert('there is missing information or that key is not valid or does not match');
             } else {
-                this.stepChecker[currentStep] = true;
+                // this.stepChecker[currentStep] = true;
                 stepper.next();
             }
         }
@@ -138,22 +138,22 @@ export class CheckoutComponent implements OnInit {
         /**
          * @param  {number} currentStep
          */
-        calculateFundsForPurchase(currentStep: number) {
+        calculateFundsForPurchase() {
             const _updatedBalances = calcDifferenceForMultipleAssets(this.balances, this.assetTotals);
             if (!_updatedBalances) {
                 return;
             } else {
                 this.updatedBalances = _updatedBalances;
-                this.stepChecker[currentStep] = true;
+                // this.stepChecker[currentStep] = true;
             }
         }
 
         /**
          * @param  {number} currentStep
          */
-        validateFundsForPurchase(currentStep: number) {
+        validateFundsForPurchase() {
             if (areValidNewBalances(this.updatedBalances)) {
-                this.stepChecker[3] = true;
+                // this.stepChecker[3] = true;
             } else {
                 return alert('You don\'t seem to have sufficient funds or \n ' +
                       'the purchase amount goes below the minimum required holding threshold');
@@ -181,7 +181,7 @@ export class CheckoutComponent implements OnInit {
             Array.from(this.sellerPublicKeys).map((key: string) => {
                 // console.log(key);
                 const newGroup = new TransactionGroup(key);
-                newGroup.transactionID = this._orderService.getNewOrderID();
+                newGroup.transactionGroupID = this._orderService.getNewOrderID();
                 transactionGroups.push(newGroup);
             });
 
@@ -215,8 +215,8 @@ export class CheckoutComponent implements OnInit {
 // FIXME: TEST THE BELOW
 // NEED TO BE CAREFUL WITH ASYNC CALL BACKS AND ERROR HANDLING ...
 // NEED TO CONFIRM COMPLETION BEFORE MUTATION OF SUBSEQUENT STEPS
-            this.stepChecker[2] = false;
-            this.stepChecker[3] = false;
+            // this.stepChecker[2] = false;
+            // this.stepChecker[3] = false;
             /*
                 let result = Promise.resolve();
                 for (const transGroup of transactionGroups) {
@@ -249,20 +249,37 @@ export class CheckoutComponent implements OnInit {
 
 
 // FIXME: JOIN PROMISES AND BLOCK THREAD
-        let result = Promise.resolve();
-const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
-        result = result.then(() => this._stellarPaymentService.sendPayment(TRANSGROUPNEEDTOCHANGE.transactionPaymentDetails)
-                        .then(() => {
+                let result = Promise.resolve();
+                const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
+                const TRANSGROUPNEEDTOChangeFirstRecord = transactionGroups[0].transactionRecords[0];
+                const recordInCheckout = this.checkoutItems.find(item => item.productID === TRANSGROUPNEEDTOChangeFirstRecord.productID);
+                if (recordInCheckout.isPaidFor) {
+                    console.log(recordInCheckout);
+                    return alert(`Error: you have already completed transaction id number: ${TRANSGROUPNEEDTOCHANGE.transactionGroupID}`);
+                }
+                result = result.then(() => this._stellarPaymentService.sendPayment(TRANSGROUPNEEDTOCHANGE.transactionPaymentDetails)
+                .catch(e => {
+                    alert(`there has been an error:\n ${e}`);
+                    this._pageError = true;
+                })
+                .then(() => {
+                    TRANSGROUPNEEDTOCHANGE.isPaidFor = true;
+                    const THISGROUPITEMIDS = TRANSGROUPNEEDTOCHANGE.transactionRecords.map(record => record.transactionID);
+                    console.log(TRANSGROUPNEEDTOCHANGE);
                             this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal => {
-                                console.log(JSON.stringify(bal));
+                                // console.log(JSON.stringify(bal));
                                 sessionStorage.setItem('my_balances', JSON.stringify(bal));
-                                console.log(sessionStorage.getItem('my_balances'));
+                                // console.log(sessionStorage.getItem('my_balances'));
                                 matStepper.next();
                                 this.stepChecker[4] = true;
                                 // todo:
-                                this.thirdFormGroup.get('thirdCtrlFirst').setValue(true);
-                                this.proceedToOrderConfirmation();
-                                return;
+                                this._cartService.batchMarkItemsPaidFor(THISGROUPITEMIDS)
+                                    .catch(error => Observable.of(error))
+                                    .then(() => {
+                                        this.thirdFormGroup.get('thirdCtrlFirst').setValue(true);
+                                        this.proceedToOrderConfirmation();
+                                        return;
+                                    });
                             });
                         })
                         .catch(e => {
@@ -303,8 +320,8 @@ const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
      */
     makeTransactionRecords(): TransactionRecord[] {
         return this.checkoutItems.map(item => {
-                const newTransID = this._orderService.getNewOrderID();
-                return new TransactionRecord(newTransID, item.buyerUserID, item.buyerPublicKey,
+                // const newTransID = this._orderService.getNewOrderID();
+                return new TransactionRecord(item.cartItemID, item.buyerUserID, item.buyerPublicKey,
                     item.sellerUserID, item.sellerPublicKey, item.assetPurchaseDetails,
                     this.makeTransactionMemo(item.buyerPublicKey, item.sellerPublicKey),
                     item.productID, item.productName, item.productShortDescription,

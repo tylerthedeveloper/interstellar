@@ -1,0 +1,4 @@
+node version management
+https://github.com/coreybutler/nvm-windows
+https://github.com/coreybutler/nvm-windows/releases
+https://stackoverflow.com/questions/7718313/how-to-change-to-an-older-version-of-node-js/23569481

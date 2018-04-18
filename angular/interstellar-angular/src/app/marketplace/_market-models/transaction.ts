@@ -2,12 +2,14 @@ import { AssetBalance } from 'app/stellar';
 
 export class TransactionGroup {
 
-    transactionID: string;
+    transactionGroupID: string;
     sellerPublicKey: string;
     timestamp: string;
 
     transactionRecords: Array<TransactionRecord>;
     transactionPaymentDetails: TransactionPaymentDetails;
+
+    isPaidFor: boolean;
 
     constructor(sellerPublicKey: string) {
                 this.sellerPublicKey = sellerPublicKey;

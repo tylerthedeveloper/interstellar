@@ -24,6 +24,7 @@ export class CartItem {
 
     fixedUSDAmount: number;
     isInCheckout: boolean;
+    isPaidFor: boolean;
 
     constructor(buyerUserID: string,
                 buyerPublicKey: string,
