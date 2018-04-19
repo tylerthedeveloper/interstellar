@@ -92,9 +92,9 @@ export class ProductService {
      * @param  {Array<any>} pairArray
      * @returns Observable
      */
-    updateProductQuantities(pairArray: Array<any>): Observable<any> {
+    updateProductQuantities(pairArray: Array<any>): Promise<any> {
         const batch = this.afs.firestore.batch();
-        return Observable.of(pairArray.map(pair => {
+        pairArray.map(pair => {
             const prodID = pair.productID;
             const sellerID = pair.sellerID;
             const newProdQuant = pair.newQuantity;
@@ -104,8 +104,8 @@ export class ProductService {
             batch.update(this.productsCollection.doc(prodID).ref, quantPairDict);
             batch.update(this.userProductsCollection.doc(sellerID).collection('products').doc(prodID).ref, quantPairDict);
             batch.update(this.productCategoriesCollection.doc(category).collection('products').doc(prodID).ref, quantPairDict);
-            return batch.commit();
-        }));
+        });
+        return batch.commit();
     }
 
     /**

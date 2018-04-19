@@ -55,6 +55,11 @@ export class ProductPageComponent implements OnInit {
         private location: Location) { }
 
     ngOnInit() {
+        // this.curUserID = this.myBaseUserID;
+        // this.curPubKey = this.myBasePublicKey;
+        // this.curSeedKey = this.myBaseSeedKey;
+        // this.balances = this.myBaseBalances;
+
         this.myUserId = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         this.myPubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
         this.mySeedKey = sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key');
@@ -138,7 +143,7 @@ export class ProductPageComponent implements OnInit {
         //     alert('couldnt be completed');
         // }
         this.addToCartHelper().then((res) => {
-            console.log(res)
+            console.log(res);
             if (!res) { return; }
             this.onCompleteProductAction();
             this._router.navigate(['/cart']);
@@ -165,13 +170,15 @@ export class ProductPageComponent implements OnInit {
             const cartItem = this.createCartItem(this.purchaseQuantity);
             return this._cartService.addToCart(JSON.stringify(cartItem))
                 .then(res => {
-                    console.log(res)
+                    console.log(res);
                     return (res) ? this.onCompleteProductAction() : false;
                 })
                 .catch(e => {
                     return this.errorAndAlert(`There was an error:\n ${e}`);
                     // return false;
                 });
+        } else {
+            return Promise.resolve(false);
         }
     }
 

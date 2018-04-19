@@ -146,10 +146,17 @@
                 </div>
             </div>
         </mat-tab>
+        <mat-tab label="Transaction History">
+            <p *ngFor="let transaction of transactions | async">
+                {{ transaction | json }} 
+            </p>
+            <hr>
+        </mat-tab>
         <mat-tab label="Order History">
             <p *ngFor="let order of orders | async">
                 {{ order | json }} AAAA
             </p>
+            <hr>       
         </mat-tab>
     </mat-tab-group>
 

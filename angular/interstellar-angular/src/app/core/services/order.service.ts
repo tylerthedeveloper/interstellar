@@ -29,9 +29,10 @@ export class OrderService {
     private userOrdersRef: firebase.firestore.CollectionReference;
     public userOrderCollection: AngularFirestoreCollection<Order>;
     public userOrderItems: Observable<Order[]>;
+    public userTransRecords: Observable<TransactionRecord[]>;
 
     public transactionsCollection: AngularFirestoreCollection<TransactionRecord>;
-    public userTransactionsCollection: AngularFirestoreCollection<TransactionRecord>;
+    public userTransCollection: AngularFirestoreCollection<TransactionRecord>;
 
     // private orderItemIDs: string[] = [];
 
@@ -41,11 +42,12 @@ export class OrderService {
         this._userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         this.ordersCollection = afs.collection<Order>('orders');
         this.transactionsCollection = afs.collection<TransactionRecord>('transactions');
-        this.userTransactionsCollection = afs.collection<TransactionRecord>('user-transactions');
+        this.userTransCollection = afs.collection<TransactionRecord>('user-transactions');
         this.userOrderCollection = afs.collection('user-orders');
         this.userOrdersRef = this.userOrderCollection.ref;
         // this.orderItemIDs = [];
         this.userOrderItems = this.userOrderCollection.doc(this._userID).collection<Order>('orderHistory').valueChanges();
+        this.userTransRecords = this.userTransCollection.doc(this._userID).collection<TransactionRecord>('transactions').valueChanges();
                 // .map(changes => {
                 //     const _ids = changes.map(a => a.orderID);
                 //     this.orderItemIDs = _ids;
@@ -63,6 +65,13 @@ export class OrderService {
      */
     get Orders(): Observable<any> {
         return this.userOrderItems;
+    }
+
+    /**
+     * @returns Observable
+     */
+    get Transactions(): Observable<any> {
+        return this.userTransRecords;
     }
 
     // get OrderItemIDs(): string[] {
@@ -99,22 +108,22 @@ export class OrderService {
         return batch.commit();
     }
 
-    addTransactions(transactionRecords: TransactionRecord[]): Observable<any> {
+    addTransactions(transactionRecords: TransactionRecord[]): Promise<any> {
         const batch = this.afs.firestore.batch();
-        return Observable.of(transactionRecords.map(record => {
+        transactionRecords.map(record => {
             const transactionID = record.transactionID;
             const buyerID = record.buyerUserID;
             const sellerID = record.sellerUserID;
             const recordObj = <TransactionRecord>JSON.parse(JSON.stringify(record));
             batch.set(this.transactionsCollection.doc(transactionID).ref, recordObj);
-            
+
             recordObj.orderType = OrderType.Sale;
-            batch.set(this.userTransactionsCollection.doc(sellerID).collection('transactions').doc(transactionID).ref, recordObj);
+            batch.set(this.userTransCollection.doc(sellerID).collection('transactions').doc(transactionID).ref, recordObj);
 
             recordObj.orderType = OrderType.Purchase;
-            batch.set(this.userTransactionsCollection.doc(buyerID).collection('transactions').doc(transactionID).ref, recordObj);
-            return batch.commit();
-        }));
+            batch.set(this.userTransCollection.doc(buyerID).collection('transactions').doc(transactionID).ref, recordObj);
+        });
+        return batch.commit();
     }
 
     // ────────────────────────────────────────────────────────────────────────────────

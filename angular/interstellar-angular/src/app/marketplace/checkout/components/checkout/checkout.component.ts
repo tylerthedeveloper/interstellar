@@ -73,7 +73,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
                     private _productService: ProductService,
                     private _formBuilder: FormBuilder,
                     private _router: Router,
-                    private location: Location) { 
+                    private location: Location) {
                         super();
                     }
 
@@ -81,8 +81,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
             this.curUserID = this.myBaseUserID;
             this.curPubKey = this.myBasePublicKey;
             this.curSeedKey = this.myBaseSeedKey;
-            this.balances = this.myBaseBalances;
-    
+            this.balances = <AssetBalance[]> JSON.parse(this.myBaseBalances);
             // this.curUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
             // this.curPubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
             // this.curSeedKey = sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key');
@@ -128,22 +127,15 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
          * @param  {MatHorizontalStepper} stepper
          */
         validateCheckoutSecretKey(secretKey: string, stepper: MatHorizontalStepper) {
-            // const currentStep: number = stepper.selectedIndex;
             if (!secretKey) {
                 alert('Please enter a secret key');
                 return;
             }
-            // console.log(secretKey)   
-            // console.log(this.curSeedKey)   
-            // console.log(this.curSeedKey)   
-            // console.log(isValidSecretKey(this.curSeedKey))   
-            // console.log(this.curUserID, this.curPubKey, this.curSeedKey);
             if (!(this.curUserID && this.curPubKey && this.curSeedKey &&
                   this.curSeedKey === secretKey &&
                   isValidSecretKey(this.curSeedKey) === this.curPubKey)) {
                     alert('there is missing information or that key is not valid or does not match');
             } else {
-                // this.stepChecker[currentStep] = true;
                 stepper.next();
             }
         }
@@ -291,7 +283,6 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
                                 // console.log(JSON.stringify(bal));
                                 sessionStorage.setItem('my_balances', JSON.stringify(bal));
                                 // console.log(sessionStorage.getItem('my_balances'));
-                                
                                 this.stepChecker[4] = true;
                                 // todo:
                                 this._cartService.batchMarkItemsPaidFor(THISGROUPITEMIDS)

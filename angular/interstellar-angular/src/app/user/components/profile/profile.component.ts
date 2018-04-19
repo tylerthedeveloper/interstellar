@@ -8,6 +8,7 @@ import { AssetBalance } from 'app/stellar';
 /** Observable */
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
+import { filter } from 'rxjs/operators';
 
 /** Services */
 import { ProductService } from 'app/core/services/product.service';
@@ -35,6 +36,8 @@ import { User } from 'app/user/user';
 import { Order } from 'app/marketplace/_market-models/order';
 import { productFormData } from 'app/marketplace/products/product.details';
 import { userFormData } from 'app/user/user.details';
+import { BaseComponent } from 'app/base.component';
+import { TransactionRecord, OrderType } from 'app/marketplace/_market-models/transaction';
 
 
 @Component({
@@ -42,7 +45,7 @@ import { userFormData } from 'app/user/user.details';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent extends BaseComponent implements OnInit {
     // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
     // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
     // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
@@ -56,6 +59,7 @@ export class ProfileComponent implements OnInit {
 
     // todo: test
     private orders: Observable<Order[]>;
+    private transactions: Observable<TransactionRecord[]>;
 
     /** Page Identifiers */
     private _userID: string;
@@ -72,6 +76,7 @@ export class ProfileComponent implements OnInit {
                 private dialog: MatDialog,
                 private _route: ActivatedRoute,
                 public router: Router) {
+                    super();
     }
 
     ngOnInit(): void {
@@ -80,7 +85,7 @@ export class ProfileComponent implements OnInit {
         // switch too this.user$ ... auto destroy / unsubscribe
         // this.user = this._userService.getCurrentUser().first();
         // this.userModel = new User('', '', '', '', '', '', 0);
-        const myUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
+        const myUserID = this.myBaseUserID; // sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         this._userID = myUserID;
         const pagePersonID = this._route.snapshot.params['id'];
         const path = this._route.snapshot.routeConfig.path;
@@ -107,8 +112,15 @@ export class ProfileComponent implements OnInit {
         this.products = this._productService.getProductsByUserID(myUserID);
         this.orders = this._orderService.Orders;
         this.balances = new Array<AssetBalance>();
-        const _balances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
+        // const _balances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
+        const _balances = this.myBaseBalances;
         if (_balances) { this.balances = <AssetBalance[]>JSON.parse(_balances); }
+
+        //            this.checkoutItemsSource = this._cartService.Cart.map(cartItems => {
+            // const arr = cartItems.filter(check => check.isInCheckout === true);
+        // this.transactions = this._orderService.Transactions.filter(t => t.orderType === OrderType.Sale);
+        // .pipe(filter((transaction: TransactionRecord) => transaction.orderType === OrderType.Sale));
+                        // ((transaction: TransactionRecord) => transaction.orderType === OrderType.Sale));
     }
 
 
