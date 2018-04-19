@@ -33,34 +33,57 @@ export class UserService {
     /**
      * @returns Observable
      */
-    getCurrentUser(publicKey: string = ''): Observable<any> {
-        //
-        // if (this.currentUser) return this.currentUser;
-        //
+    getCurrentUser(_publicKey: string = ''): Observable<any> {
         let _keyLoginId = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         if (_keyLoginId) {
-            // console.log(_keyLoginId);
+            console.log(_keyLoginId);
             return this.usersCollection.doc(_keyLoginId).valueChanges();
-        } else if (_keyLoginId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key')) {
+        } else if (_keyLoginId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key') || _publicKey) {
             return Observable.create((observer: any) => {
-                this.afs.collection('users', ref => ref.where('publicKey', '==', publicKey || _keyLoginId))
-                    .valueChanges()
-                    .first()
-                    .subscribe((user: Array<User>) => {
+                this.afs.collection('users', ref => ref.where('publicKey', '==', _publicKey || _keyLoginId))
+                .valueChanges()
+                .first()
+                .subscribe((user: Array<User>) => {
+                    console.log(user[0]);
                         if (user[0]) {
                             sessionStorage.setItem('user_doc_id', user[0].id);
-                            observer.next(user[0]);
-                            // console.log('a')
+                            console.log('a')
+                            return observer.next(user[0]);
                         } else {
-                            // console.log('b')
-                            // observer.next();
-                        observer.error('nop user')
+                            console.log('b')
+                            return observer.next('no current user');
+                            // return observer.next(observer.error('nop user'));
                         }
                     });
             });
+        } else {
+            console.log('c')            
+            return Observable.create((observer: any) => observer.error('no current user'));            
+            // return Observable.create((observer: any) => observer.next());            
         }
         // console.log('no user');
     }
+
+    // getCurrentUser2(publicKey: string): Observable<any> {
+    //         return Observable.create((observer: any) => {
+    //             console.log(observer);
+    //             this.afs.collection('users', ref => ref.where('publicKey', '==', publicKey || _keyLoginId))
+    //                 .valueChanges()
+    //                 .first()
+    //                 .subscribe((user: Array<User>) => {
+    //                     if (user[0]) {
+    //                         sessionStorage.setItem('user_doc_id', user[0].id);
+    //                         return observer.next(user[0]);
+    //                         // console.log('a')
+    //                     } else {
+    //                         // console.log('b')
+    //                         return observer.next(observer.error('nop user'));
+    //                     }
+    //                 });
+    //         });
+    //     }
+    //     // console.log('no user');
+    // }
 
     /**
      * @param  {any} user

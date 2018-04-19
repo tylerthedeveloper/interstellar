@@ -96,7 +96,7 @@ export class StellarAccountService {
      * @param  {string} secretKey
      */
     // check if key exists
-    mergeAccountWithKey (secretKey: string) {
+    public mergeAccountWithKey (secretKey: string) {
         const pubkey = isValidSecretKey(secretKey);
         if (pubkey) {
             return this.authenticate(secretKey).map(balz => balz); // .catch(e => e)

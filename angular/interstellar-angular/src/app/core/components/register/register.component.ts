@@ -62,21 +62,40 @@ export class RegisterComponent {
      */
     mergeAccountWithKey(secretKey: string): void {
         // todo: CHECK IF ACCOUNT EXISTS
-        // if (!(secretKey && _pubkey)) {
-        //     alert('Please enter a key');
-        // } else {
-        const _pubkey = isValidSecretKey(secretKey);
-        const that = this;
-        this._userService.getCurrentUser(_pubkey)
-            .subscribe(
-                account => {
-                that._isValidSecretKey = true;
-                that._stellarService.mergeAccountWithKey(secretKey)
-                    // .catch(errMsg => Observable.throw(errMsg))
-                    .subscribe(
-                    res => this.handleAuthRegistration(JSON.stringify(res)),
-                    err => alert('there was an error conducting the merge: \n' + err));
-            },
+        const _pubkey = isValidSecretKey(secretKey) || '';
+        if (!secretKey) {
+            alert('Please enter a key');
+            return;
+        }
+        if (!_pubkey) {
+            alert('Please enter a valid secret key');
+            return;
+        }
+        // const that = this;
+        // console.log(_pubkey);
+        this._userService.getCurrentUser(_pubkey).subscribe(
+            account => {
+                console.log(account)
+                this._isValidSecretKey = true;
+                if (account !== 'no current user') {
+                    alert('you already have an account!');
+                    // alert('go to the login page');
+                    this.closeSignUpNav();
+                    console.log('b')            
+                    return;
+                } else {
+                    // todo: get from horiozn
+                    console.log('c')            
+                    this._stellarService.mergeAccountWithKey(secretKey)
+                        // .catch(errMsg => Observable.throw(errMsg))
+                        .subscribe(
+                            res => {
+                                    console.log(res)
+                                    return this.handleAuthRegistration(JSON.stringify(res));
+                                },
+                                err => alert('there was an error conducting the merge: \n' + err));
+                    }
+                },
             err => console.log(err))
     }
     // ────────────────────────────────────────────────────────────────────────────────
