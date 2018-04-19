@@ -25,7 +25,8 @@ export class NavBarComponent implements OnInit {
     public currentPage: string;
     private loggedIn: boolean;
 
-    @ViewChild('sidenav') public sideNav: MatSidenav;
+    @ViewChild('sidenavSignUp') public sidenavSignUp: MatSidenav;
+    @ViewChild('sidenavLogin') public sidenavLogin: MatSidenav;
     constructor(public router: Router,
                 private _userService: UserService,
                 private _stellarAccountService: StellarAccountService,
@@ -37,10 +38,6 @@ export class NavBarComponent implements OnInit {
         this._userID = (sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id'));
         // todo: test this works with speed on callback
         this.loggedIn = (this._secretKey && this._userID) ? true : false;
-        console.log(this._secretKey);
-        console.log(this._userID);
-        console.log(this.loggedIn);
-        // console.log(sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key'))
         this.currentPage = (this.currentPage === '') ? this.currentPage : 'home';
         document.getElementById(this.currentPage || 'home').style.textDecoration = 'underline';
         this._eventEmiter.dataStr.subscribe((data: any) => {
@@ -51,6 +48,8 @@ export class NavBarComponent implements OnInit {
                     this.handleLogin();
                 } else if (data.message === 'unauthenticated') {
                     alert('You must be logged in to view your profile');
+                } else if ( data.message === 'closeSideNav') {
+                    this.sidenavSignUp.close();
                 } else {
                     alert('There was an unknown error');
                 }
@@ -98,8 +97,13 @@ export class NavBarComponent implements OnInit {
         }
         this._userService.getCurrentUser().subscribe(currentUser => {
             // console.log(currentUser);
-            this._userID = currentUser.id;
-            this.changePage('profile');
+            if (currentUser) {
+                this._userID = currentUser.id;
+                this.changePage('profile');
+            } else {
+                // todo: change to dialog
+                alert('it doesnt seem like that account exists, want to make one today?');
+            }
         });
     }
     // ────────────────────────────────────────────────────────────────────────────────
@@ -134,7 +138,8 @@ export class NavBarComponent implements OnInit {
         if (document.getElementById(this.currentPage)) {
             document.getElementById(this.currentPage).style.textDecoration = 'underline';
         }
-        if (this.sideNav.opened) { this.sideNav.close(); }
+        if (this.sidenavLogin.opened) { this.sidenavLogin.close(); }
+        if (this.sidenavSignUp.opened) { this.sidenavSignUp.close(); }
         this.router.navigate(['/' + nextPage]);
     }
     // ────────────────────────────────────────────────────────────────────────────────

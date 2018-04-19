@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
-import { User } from '@firebase/auth-types';
+import { User } from 'app/user/user';
 
 @Component({
   selector: 'app-user-card',
@@ -17,6 +17,7 @@ export class UserCardComponent implements OnInit {
     }
 
     selectPerson = (personID: string) => {
+        console.log(personID)
         this.notify.emit(personID);
     }
 

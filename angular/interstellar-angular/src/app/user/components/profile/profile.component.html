@@ -41,7 +41,7 @@
                             <div *ngIf="isMyProfile; else NotMyProfile"> My profile </div>
                             <ng-template #NotMyProfile>
                                 Not my profile
-                                <button (click)="sendMessage()">
+                                <button (click)="contactSeller()">
                                     Message
                                 </button>
                             </ng-template>
@@ -146,8 +146,8 @@
                 </div>
             </div>
         </mat-tab>
-        <mat-tab label="Transaction History">
-            <p *ngFor="let transaction of transactions | async">
+        <mat-tab label="Seller History">
+            <p *ngFor="let transaction of transactionSales | async">
                 {{ transaction | json }} 
             </p>
             <hr>

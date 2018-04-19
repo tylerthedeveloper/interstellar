@@ -25,7 +25,7 @@ export class UserListComponent implements OnInit {
     }
 
     onSelectPerson = (personID: string) => {
-      // console.log(personID);
+      console.log(personID);
       this.router.navigate([`/people/${personID}`]);
   }
 

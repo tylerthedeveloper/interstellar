@@ -1,3 +1,5 @@
+// FIXME: benefits of aux routing under mat tab
+
 /** Angular */
 import { Component, OnInit } from '@angular/core';
 
@@ -8,7 +10,6 @@ import { AssetBalance } from 'app/stellar';
 /** Observable */
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
-import { filter } from 'rxjs/operators';
 
 /** Services */
 import { ProductService } from 'app/core/services/product.service';
@@ -37,19 +38,23 @@ import { Order } from 'app/marketplace/_market-models/order';
 import { productFormData } from 'app/marketplace/products/product.details';
 import { userFormData } from 'app/user/user.details';
 import { BaseComponent } from 'app/base.component';
-import { TransactionRecord, OrderType } from 'app/marketplace/_market-models/transaction';
-
+import { TransactionRecord } from 'app/marketplace/_market-models/transaction';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
+// SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
+// SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
 export class ProfileComponent extends BaseComponent implements OnInit {
-    // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
-    // Here is your private key: SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
-    // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
-    // Here is your private key: SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
+    // fiW6kQXE0zBXTpjhVTjq
+    // SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
+    // GCL43TD6HTK3KV6JDMH4RVLJ6SI3WCPLF3MHFQZECQ2ZTGR63VRDXF62
+
+    // 7KtTK9jXBT9HaU0bZ3uC
+    // SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
+    // GBLC44ZQ322NNZUOQAPSMB67PQP63QJYLKEUKGUGPCYRTU5KF4ZSITT4
 
     /** Page Objects */
     private _userModel: User;
@@ -59,7 +64,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
     // todo: test
     private orders: Observable<Order[]>;
-    private transactions: Observable<TransactionRecord[]>;
+    private transactionSales: Observable<TransactionRecord[]>;
 
     /** Page Identifiers */
     private _userID: string;
@@ -116,9 +121,11 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         const _balances = this.myBaseBalances;
         if (_balances) { this.balances = <AssetBalance[]>JSON.parse(_balances); }
 
+// TODO
         //            this.checkoutItemsSource = this._cartService.Cart.map(cartItems => {
             // const arr = cartItems.filter(check => check.isInCheckout === true);
-        // this.transactions = this._orderService.Transactions.filter(t => t.orderType === OrderType.Sale);
+        this.transactionSales = this._orderService.TransactionSales;
+        // this.transactionSales = this._orderService.Transactions.filter(t => t.orderType === OrderType.Sale);
         // .pipe(filter((transaction: TransactionRecord) => transaction.orderType === OrderType.Sale));
                         // ((transaction: TransactionRecord) => transaction.orderType === OrderType.Sale));
     }
@@ -157,6 +164,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     /**
      * @returns void
      */
+    // todo: confirm success
     addProduct(): void {
         const dialogRef = this.dialog.open(DialogComponent, {
             data: { component: DynamicFormComponent,
@@ -196,10 +204,10 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     }
 
     /**
-     * @param  {string='new-prod-id23'} productID
+     * @param  {string} productID
      * @returns Observable
      */
-    uploadThumbnailImage(productID: string = 'new-prod-id23'): Observable<any> {
+    uploadThumbnailImage(productID: string): Observable<any> {
         const dialogRef = this.dialog.open(FileUploadDialogComponent, {
             data: { productID: productID }
         });
@@ -214,7 +222,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     // ──────────────────────────────────────────────────────────────────────────
     //
 
-    sendMessage() {
+    contactSeller(): void {
         this.router.navigate(['../chat'], { queryParams: { receiverID: this._pagePersonID } });
     }
 
@@ -268,8 +276,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             data: {
                     title: 'Add Address',
-                    content: 'It seems you have not added your address but need to in order to list an item, \n' +
-                    'would you like too now?'
+                    content: 'It seems you have not added your address but need to' +
+                             'in order to list an item. \n Would you like too now?'
             }
         });
         dialogRef.afterClosed().subscribe((result: string) => {

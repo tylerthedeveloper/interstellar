@@ -18,6 +18,8 @@ import { CartService } from './services/cart.service';
 import { OrderService } from 'app/core/services/order.service';
 import { UserService } from './services/user.service';
 import { ChatService } from './services';
+import { RegisterComponent } from './components/register/register.component';
+// import { ConfirmDialogComponent } from 'app/shared/components';
 
 @NgModule({
     imports: [
@@ -39,9 +41,13 @@ import { ChatService } from './services';
         NgbModule,
 
         // Why??? [NavBarComponent]
-        NavBarComponent
+        NavBarComponent,
+        RegisterComponent
     ],
-    declarations: [NavBarComponent],
+    declarations: [
+        NavBarComponent,
+        RegisterComponent
+    ],
     providers: [
         AuthGuardService,
         EventEmitterService,
@@ -49,7 +55,10 @@ import { ChatService } from './services';
         CartService,
         OrderService,
         ProductService,
-        UserService
+        UserService,
+    ],
+    entryComponents: [
+        // ConfirmDialogComponent
     ]
 })
 export class CoreModule {

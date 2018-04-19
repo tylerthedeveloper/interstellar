@@ -33,7 +33,7 @@ export class UserService {
     /**
      * @returns Observable
      */
-    getCurrentUser(): Observable<any> {
+    getCurrentUser(publicKey: string = ''): Observable<any> {
         //
         // if (this.currentUser) return this.currentUser;
         //
@@ -43,16 +43,23 @@ export class UserService {
             return this.usersCollection.doc(_keyLoginId).valueChanges();
         } else if (_keyLoginId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key')) {
             return Observable.create((observer: any) => {
-                this.afs.collection('users', ref => ref.where('publicKey', '==', _keyLoginId))
+                this.afs.collection('users', ref => ref.where('publicKey', '==', publicKey || _keyLoginId))
                     .valueChanges()
                     .first()
                     .subscribe((user: Array<User>) => {
-                        sessionStorage.setItem('user_doc_id', user[0].id);
-                        observer.next(user[0]);
+                        if (user[0]) {
+                            sessionStorage.setItem('user_doc_id', user[0].id);
+                            observer.next(user[0]);
+                            // console.log('a')
+                        } else {
+                            // console.log('b')
+                            // observer.next();
+                        observer.error('nop user')
+                        }
                     });
             });
         }
-        console.log('no user');
+        // console.log('no user');
     }
 
     /**

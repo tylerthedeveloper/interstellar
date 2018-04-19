@@ -25,14 +25,17 @@ export class OrderService {
     private _userID: string;
 
     /** AFS Collections */
-    public ordersCollection: AngularFirestoreCollection<Order>;
+    private ordersCollection: AngularFirestoreCollection<Order>;
     private userOrdersRef: firebase.firestore.CollectionReference;
-    public userOrderCollection: AngularFirestoreCollection<Order>;
-    public userOrderItems: Observable<Order[]>;
-    public userTransRecords: Observable<TransactionRecord[]>;
+    private userOrderCollection: AngularFirestoreCollection<Order>;
+    private userOrderItems: Observable<Order[]>;
+    private userTransRecordSales: Observable<TransactionRecord[]>;
+    private userTransRecordPurchases: Observable<TransactionRecord[]>;
 
-    public transactionsCollection: AngularFirestoreCollection<TransactionRecord>;
-    public userTransCollection: AngularFirestoreCollection<TransactionRecord>;
+    private transactionsCollection: AngularFirestoreCollection<TransactionRecord>;
+    private userTransCollection: AngularFirestoreCollection<TransactionRecord>;
+    // public userTransPurchasesCollection: AngularFirestoreCollection<TransactionRecord>;
+    // public userTransSalesCollection: AngularFirestoreCollection<TransactionRecord>;
 
     // private orderItemIDs: string[] = [];
 
@@ -47,12 +50,10 @@ export class OrderService {
         this.userOrdersRef = this.userOrderCollection.ref;
         // this.orderItemIDs = [];
         this.userOrderItems = this.userOrderCollection.doc(this._userID).collection<Order>('orderHistory').valueChanges();
-        this.userTransRecords = this.userTransCollection.doc(this._userID).collection<TransactionRecord>('transactions').valueChanges();
-                // .map(changes => {
-                //     const _ids = changes.map(a => a.orderID);
-                //     this.orderItemIDs = _ids;
-                //     return changes;
-        // });
+        this.userTransRecordSales = this.userTransCollection.doc(this._userID)
+                .collection<TransactionRecord>('sales').valueChanges();
+        this.userTransRecordPurchases = this.userTransCollection.doc(this._userID)
+                .collection<TransactionRecord>('purchases').valueChanges();
     }
 
     //
@@ -70,8 +71,15 @@ export class OrderService {
     /**
      * @returns Observable
      */
-    get Transactions(): Observable<any> {
-        return this.userTransRecords;
+    get TransactionSales(): Observable<any> {
+        return this.userTransRecordSales;
+    }
+
+    /**
+     * @returns Observable
+     */
+    get TransactionPurchases(): Observable<any> {
+        return this.userTransRecordPurchases;
     }
 
     // get OrderItemIDs(): string[] {
@@ -118,10 +126,10 @@ export class OrderService {
             batch.set(this.transactionsCollection.doc(transactionID).ref, recordObj);
 
             recordObj.orderType = OrderType.Sale;
-            batch.set(this.userTransCollection.doc(sellerID).collection('transactions').doc(transactionID).ref, recordObj);
+            batch.set(this.userTransCollection.doc(sellerID).collection('sales').doc(transactionID).ref, recordObj);
 
             recordObj.orderType = OrderType.Purchase;
-            batch.set(this.userTransCollection.doc(buyerID).collection('transactions').doc(transactionID).ref, recordObj);
+            batch.set(this.userTransCollection.doc(buyerID).collection('purchases').doc(transactionID).ref, recordObj);
         });
         return batch.commit();
     }

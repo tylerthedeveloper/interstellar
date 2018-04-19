@@ -5,13 +5,13 @@
 import { Component } from '@angular/core';
 
 /** Services */
-import { StellarAccountService } from 'app/stellar';
+import { StellarAccountService, isValidSecretKey } from 'app/stellar';
 import { EventEmitterService } from 'app/core/_helpers/event-emitter.service';
 
 /** UI */
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { ConfirmDialogComponent } from 'app/shared/components';
+import { MatDialog } from '@angular/material';
 import { UserService } from 'app/core/services';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-register',
@@ -20,6 +20,8 @@ import { UserService } from 'app/core/services';
 })
 
 export class RegisterComponent {
+
+    private _isValidSecretKey: boolean;
 
     constructor(private _stellarService: StellarAccountService,
                 private _userService: UserService,
@@ -41,11 +43,11 @@ export class RegisterComponent {
         this._stellarService.createAccount().subscribe(
                 resp => {
                     console.log(resp);
-                    const _ = sessionStorage.getItem('seed_key');
+                    const k: string = sessionStorage.getItem('seed_key');
                     alert('You are about to see your private key. \n ' +
                           'Please write it down and do not show anyone');
-                    alert('Here is your private key: \n' + _);
-                    this._stellarService.authenticate(_).subscribe(
+                    alert(` ${k}`);
+                    this._stellarService.authenticate(k).subscribe(
                         res => this.handleAuthRegistration(JSON.stringify(res)),
                         err => alert('there was an error logging you in: \n' + err)
                     );
@@ -59,10 +61,23 @@ export class RegisterComponent {
      * @returns void
      */
     mergeAccountWithKey(secretKey: string): void {
-        this._stellarService.mergeAccountWithKey(secretKey).subscribe(
-            res => this.handleAuthRegistration(JSON.stringify(res)),
-            err => alert('there was an error conducting the merge: \n' + err)
-        );
+        // todo: CHECK IF ACCOUNT EXISTS
+        // if (!(secretKey && _pubkey)) {
+        //     alert('Please enter a key');
+        // } else {
+        const _pubkey = isValidSecretKey(secretKey);
+        const that = this;
+        this._userService.getCurrentUser(_pubkey)
+            .subscribe(
+                account => {
+                that._isValidSecretKey = true;
+                that._stellarService.mergeAccountWithKey(secretKey)
+                    // .catch(errMsg => Observable.throw(errMsg))
+                    .subscribe(
+                    res => this.handleAuthRegistration(JSON.stringify(res)),
+                    err => alert('there was an error conducting the merge: \n' + err));
+            },
+            err => console.log(err))
     }
     // ────────────────────────────────────────────────────────────────────────────────
 
@@ -81,38 +96,40 @@ export class RegisterComponent {
         const _pubKey = sessionStorage.getItem('public_key');
         const _privKey = sessionStorage.getItem('seed_key');
         const _user = { publicKey : _pubKey };
-        let _localStore = false;
-        let dialogRef: MatDialogRef<ConfirmDialogComponent>;
-        dialogRef = this.dialog.open(ConfirmDialogComponent);
-        dialogRef.componentInstance.title = 'Do you want to save your private key in the browser?';
-        dialogRef.componentInstance.content = 'Private Key';
-        dialogRef.afterClosed().subscribe((result: string) => {
-            if (result) {
-                _localStore = true;
-                localStorage.setItem('public_key', _pubKey);
-                localStorage.setItem('seed_key', _privKey);
-                localStorage.setItem('my_balances', res);
-            }
-            console.log(result);
-            console.log(_localStore);
-            sessionStorage.setItem('my_balances', res);
-            this._userService.addUser(_user, _localStore);
-            this._eventEmiter.sendMessage(data);
-        });
+        // todo: decide local / cache / cookie storage ...
+        const _localStore = false;
+        // todo: get new component
+                // localStorage.setItem('public_key', _pubKey);
+                // localStorage.setItem('seed_key', _privKey);
+                // localStorage.setItem('my_balances', res);
+        sessionStorage.setItem('my_balances', res);
+        this._userService.addUser(_user, _localStore);
+        this._eventEmiter.sendMessage(data);
+
+        // let dialogRef: MatDialogRef<ConfirmDialogComponent>;
+        // dialogRef = this.dialog.open(ConfirmDialogComponent);
+        // dialogRef.componentInstance.title = 'Do you want to save your private key in the browser?';
+        // dialogRef.componentInstance.content = 'Private Key';
+        // dialogRef.afterClosed().subscribe((result: string) => {
+        //     if (result) {
+        //         _localStore = true;
+        //         localStorage.setItem('public_key', _pubKey);
+        //         localStorage.setItem('seed_key', _privKey);
+        //         localStorage.setItem('my_balances', res);
+        //     }
+        //     console.log(result);
+        //     console.log(_localStore);
+        //     sessionStorage.setItem('my_balances', res);
+        //     this._userService.addUser(_user, _localStore);
+        //     this._eventEmiter.sendMessage(data);
+        // });
+
     }
     // ────────────────────────────────────────────────────────────────────────────────
 
-    // private authenticate(secretKey: string) {
-    //     let pubkey = isValidSecretKey(secretKey);
-    //     if (pubkey) {
-    //         // this.changeLoginStatus.emit("changeStatus");
-    //         sessionStorage.setItem("my_balances", JSON.stringify(null));
-    //         this._stellarService.authenticate(secretKey).subscribe(
-    //             res => { sessionStorage.setItem("my_balances", JSON.stringify(res)); },
-    //             error => {}); ////errorMessage = <any>error;
-    //     } else {
-    //         alert("there is no account associated with that ID, please make a new one");
-    //     }
-    // }
+    closeSignUpNav() {
+        const data = { message: 'closeSideNav' };
+        this._eventEmiter.sendMessage(data);
+    }
 
 }

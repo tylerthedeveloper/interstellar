@@ -28,6 +28,11 @@ import { isValidSecretKey } from 'app/stellar/stellar.utils';
 
 declare var StellarSdk: any;
 
+const enum ErrorMessage {
+    InvalidStellarKey = 'That doesn\'t seem to be a valid stellar key',
+    StellarKeyNotFound = 'The destination account does not exist!'
+}
+
 @Injectable()
 export class StellarAccountService {
 
@@ -69,31 +74,41 @@ export class StellarAccountService {
      */
     authenticate (secretKey: string): Observable<Array<AssetBalance>> {
         const pubkey = isValidSecretKey(secretKey);
-        if (pubkey) {
+        if (!pubkey) {
+            return Observable.throw(ErrorMessage.InvalidStellarKey);
+        } else {
             sessionStorage.setItem('public_key', pubkey);
             sessionStorage.setItem('seed_key', secretKey);
+            const handleError = this.HandleError;
             return Observable.fromPromise(this._server.loadAccount(pubkey)
                 .catch(StellarSdk.NotFoundError, function (error) {
-                    throw new Error('The destination account does not exist!: \n' + error);
+                    throw new Error(ErrorMessage.StellarKeyNotFound + '\n' + error);
+                    // throw new Error('The destination account does not exist!: \n' + error);
                 })
                 .then(account => account))
                 .map((r: any) => <Array<AssetBalance>> r.balances)
-                .catch(this.HandleError);
+                .catch(handleError);
                 // .catch(e => Observable.throw(e));
-        } else {
-            return Observable.throw('That is not a valid secret key');
         }
     }
 
     /**
      * @param  {string} secretKey
      */
+    // check if key exists
     mergeAccountWithKey (secretKey: string) {
         const pubkey = isValidSecretKey(secretKey);
         if (pubkey) {
-            return this.authenticate(secretKey);
+            return this.authenticate(secretKey).map(balz => balz); // .catch(e => e)
+        //     // console.log('a')
         } else {
-            alert('That doesn\'t seem to be a valid stellar key');
+        //     console.log('b')
+        //     // alert('That doesn\'t seem to be a valid stellar key');
+        //     // return Observable.throw('That doesn\'t seem to be a valid stellar key');
+            // return Observable.throw('That doesn\'t seem to be a valid stellar key')
+            return Observable.create(observer => observer.error(ErrorMessage.InvalidStellarKey));
+
+        // //     // return Observable.of(null)
         }
     }
     // ────────────────────────────────────────────────────────────────────────────────
@@ -104,10 +119,29 @@ export class StellarAccountService {
     //   :::::: H E L P E R S : :  :   :    :     :        :          :
     // ────────────────────────────────────────────────────────────────
     //
+    checkAccountAlreadyExists (pubKey: string) {
+        // const pubkey = isValidSecretKey(secretKey);
+        // if (!pubkey) {
+        //     return Observable.throw('That is not a valid secret key');
+        // } else {
+        //     sessionStorage.setItem('public_key', pubkey);
+        //     sessionStorage.setItem('seed_key', secretKey);
+        //     const handleError = this.HandleError;
+        //     return Observable.fromPromise(this._server.loadAccount(pubkey)
+        //         .catch(StellarSdk.NotFoundError, function (error) {
+        //             throw new Error('The destination account does not exist!: \n' + error);
+        //         })
+        //         .then(account => account))
+        //         .map((r: any) => <Array<AssetBalance>> r.balances)
+        //         .catch(handleError);
+        //         // .catch(e => Observable.throw(e));
+        // }
+    }
+
+
     HandleError(error: Response) {
         // alert(error);
         return Observable.throw(error || 'Server error');
     }
     // ────────────────────────────────────────────────────────────────────────────────
-
 }
