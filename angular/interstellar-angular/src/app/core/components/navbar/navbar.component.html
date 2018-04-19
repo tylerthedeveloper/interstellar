@@ -78,44 +78,44 @@
                     </i>
                 </button>
                 <button mat-button id="people" (click)="changePage('people')" [routerLink]="['/people']" routerLinkActive="active" style="padding: .5% 1% 0% 1%;">
-                    <i class="fa fa-bars">
+                    <i class="fa fa-users">
                         People
                     </i>
                 </button>
                 <span class="example-fill-remaining-space"></span>
                 <span *ngIf="loggedIn; then isLoggedIn; else notLoggedIn"> </span>
                 <!-- <div *ngIf="loggedIn" style="display: flex; flex-direction: row; padding: 0% 0% 0% 0%"> -->
-                    
-                    <ng-template #isLoggedIn style="display: flex; flex-direction: row; margin: 0% -3% 0% 0%">
-                        <button mat-icon-button [matMenuTriggerFor]="menu">
+
+                    <ng-template #isLoggedIn style="display: flex; flex-direction: row; margin: 0% 0% 0% 0%">
+                        <button mat-button [matMenuTriggerFor]="menu">
                             Account
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">
-                            <button mat-menu-item id="chat" [routerLink]="['/chat']" (click)="changePage('chat')" 
+                            <button mat-menu-item id="chat" [routerLink]="['/chat']" (click)="changePage('chat')"
                                     routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
-                                <mat-icon>comments</mat-icon>                            
-                                <i class="fa fa-comments" style="color: black;">
+                                <mat-icon>chat</mat-icon>
+                                <i class="" style="color: black;">
                                     Chat
                                 </i>
                             </button>
-                            <button mat-menu-item id="chat" [routerLink]="['/cart']" (click)="changePage('cart')" 
+                            <button mat-menu-item id="chat" [routerLink]="['/cart']" (click)="changePage('cart')"
                                     routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
-                                <mat-icon>comments</mat-icon>                            
-                                <i class="fa fa-shopping-cart" style="color: black;">
+                                <mat-icon>shopping_cart</mat-icon>
+                                <i class="" style="color: black;">
                                         Cart {{ cartItemCount }}
                                 </i>
                             </button>
                             <button mat-menu-item id="profile" [style.display]="!loggedIn ? 'none' : 'inherit'" (click)="changePage('profile')"
                                     routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
-                                <mat-icon>comments</mat-icon>                            
-                                <i class="fa fa-user-circle" style="color: black;">
+                                <mat-icon>face</mat-icon>
+                                <i class="" style="color: black;">
                                         Profile
                                 </i>
                             </button>
                             <button mat-menu-item id="logoutButton" (click)="logout()" style="padding: 1% 0% 0% 0%;">
-                                <mat-icon>comments</mat-icon>                            
-                                <i class="fa fa-sign-out" style="color: black;">
+                                <mat-icon>highlight_off</mat-icon>
+                                <i class="" style="color: black;">
                                     Logout
                                 </i>
                             </button>
@@ -145,7 +145,7 @@
                         </div> -->
                     </ng-template>
                 <!-- </div> -->
-                
+
                 <ng-template #notLoggedIn style="float:right;">
                     <div *ngIf="!loggedIn" style="padding: 0% 0% 0% 0%;">
                         <button mat-button id="register" (click)="sidenav2.toggle()" style="padding: 1% 0% 0% 0%; height: 3.5em;">

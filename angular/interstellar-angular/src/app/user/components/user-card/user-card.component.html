@@ -1,9 +1,33 @@
-<p>
+<!-- <p>
   user-card works!
-</p>
+</p> -->
 
 <div class="card example hoverable rounded-0" style="cursor: pointer;" (click)="selectPerson(person.id)">
     <div style="width: 90%; margin: 1em auto -1em auto; overflow: hidden; white-space: nowrap;">
        <p class="text-left">{{ person | json }}</p>
     </div>
+
+    <div style="width: 90%; height: .3em; background-color: #72D0DC; margin: auto;">
+    </div>
+
+    <!--Card image-->
+    <!-- <div class="view overlay">
+        <img class="img-fluid" src="{{ category.thumbnailLink }}" alt="Card image cap" style="height: 20em; width: 20em; cursor: pointer;">
+    </div> -->
+    <!--Card image-->
+    <!--Card content-->
+    <div class="card-body" style="width: 90%; height: 3%">
+        <!--Title-->
+        <!-- <button class="btn btn-primary btn-block" disabled>{{ category.category }}</button> -->
+
+        <!--Text-->
+        <p class="card-text text-left" style="white-space: nowrap; overflow: hidden;">{{ category.description }}</p>
+
+        <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+    </div>
+    <!--Card content-->
+    <div class="view overlay" style="width: 90%; height: 10em; margin: auto; padding: .5em .5em 2em .5em;">
+        <img class="img-fluid" src="{{ category.thumbnailLink }}" alt="Card image cap" style="max-height:100%; max-width:100%; margin: auto; cursor: pointer;">
+    </div>
+
 </div>
