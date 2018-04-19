@@ -32,6 +32,7 @@ export class CartService {
 
     /** Service stored AFS collections  */
     private cartItemIDs: string[] = [];
+    private cartItemProductIDs: string[] = [];
     private assetTotals: AssetBalance[] = []; // private assetTotals: Observable<Asset[]>; // = [];
 
     // https://blog.cloudboost.io/build-simple-shopping-cart-with-angular-4-observables-subject-subscription-part-2-2d3735cde5f
@@ -47,8 +48,16 @@ export class CartService {
                 .map(changes => {
                     // const _totals = new Array<Asset>();
                     //     _ids.push(data.cartItemID);
-                    const _ids = changes.map(a => a.cartItemID);
-                    this.cartItemIDs = _ids;
+                    
+                    // const _ids = changes.map(a => a.cartItemID);
+                    // this.cartItemIDs = _ids;
+
+                    changes.map(item => {
+                        this.cartItemIDs.push(item.cartItemID); 
+                        this.cartItemProductIDs.push(item.productID); 
+                    })
+                    // this.cartItemIDs = changes.map(a => a.cartItemID);
+                    // this.cartItemProductIDs = changes.map(a => a.cartItemID);
                     // this.assetTotals = _totals;
                     return changes;
                 });
@@ -79,6 +88,13 @@ export class CartService {
     }
 
     /**
+     * @returns string
+     */
+    get CartItemProductIDs(): string[] {
+        return this.cartItemProductIDs;
+    }
+
+    /**
      */
     getCartAssetTotals() {
         return Observable.of(calcTotalsForMultipleAssets(this.assetTotals));
@@ -95,18 +111,22 @@ export class CartService {
      */
     addToCart(newCartItem: string) {
         const _cartItemData = <CartItem>JSON.parse(newCartItem);
-
-
-        // FOR COMPLETE ORDER
-        // order type
-
+        // TODO  FOR COMPLETE ORDER + order type
         const _docID = this.afs.createId();
         _cartItemData.cartItemID = _docID;
-
-        this.userCartCollection.doc(_docID).set(_cartItemData);
+        const findCartItem = this.cartItemProductIDs.find(cartItemProdID => cartItemProdID === _cartItemData.productID);
+        return new Promise((resolve, reject) => {
+            if (findCartItem) {
+                return reject('Error-message: item already in cart');
+            }
+            this.cartItemProductIDs.push(_cartItemData.productID);
+            return resolve(this.userCartCollection.doc(_docID)
+                            .set(_cartItemData)
+                            .then(() => true)
+                            .catch(this.HandleError));
+        });
 
         // this.userCartCollection.doc(this._userID).collection('cartItems').add(_cartItemData)
-        //                                 .catch(this.HandleError);
         // .then(res => res)
         // .map()
     }
@@ -123,8 +143,9 @@ export class CartService {
     /**
      * @param  {string} cartItemID
      */
-    removeCartItem(cartItemID: string) {
+    removeCartItem(cartItemID: string, cartItemProductID: string) {
         this.userCartCollection.doc(cartItemID).delete();
+        this.cartItemProductIDs.filter(_cartItemProdID => _cartItemProdID !== cartItemProductID);
         this.cartItemIDs.filter(_cartItemID => _cartItemID !== cartItemID);
     }
     // ────────────────────────────────────────────────────────────────────────────────
@@ -165,12 +186,16 @@ export class CartService {
         return batch.commit();
     }
 
-    emptyCart(): Promise<any[]> {
+    emptyCart(): Promise<any> {
         const batch = this.afs.firestore.batch();
         this.cartItemIDs.forEach(id => batch.delete(this.myCartRef.doc(id)));
         return batch.commit()
             .catch(error => console.log(error))
-            .then(() => this.cartItemIDs = []);
+            .then((res) => {
+                this.cartItemIDs = [];
+                this.cartItemProductIDs = [];
+                return Promise.resolve(res);
+            });
         // console.log(this.cartItemIDs);
     }
     // ────────────────────────────────────────────────────────────────────────────────

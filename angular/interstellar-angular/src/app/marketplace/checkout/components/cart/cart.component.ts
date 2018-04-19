@@ -39,7 +39,7 @@ export class CartComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._userService.getUserByID(this.myUserID).first()
+        this._userService.getUserByID(this.myBaseUserID).first()
             .subscribe(user => {
                 this.user = user;
                 const userTyped = <User> user;
@@ -114,7 +114,8 @@ export class CartComponent extends BaseComponent implements OnInit {
     onCartItemAction(data: string): void {
         const obj = JSON.parse(data);
         const _action = obj.action;
-        const _cartItemID =  obj.payload;
+        const _cartItemID =  obj.payloadcartItemID;
+        const _cartItemProductID =  obj.payloadCartItemProductID;
         let newCartItemData = '';
         if (obj.newData) {
             newCartItemData = obj.newData;
@@ -130,7 +131,7 @@ export class CartComponent extends BaseComponent implements OnInit {
                 this._cartService.updateCartItem(_cartItemID, newCartItemData);
                 break;
             case 'remove':
-                this._cartService.removeCartItem(_cartItemID);
+                this._cartService.removeCartItem(_cartItemID, _cartItemProductID);
                 break;
             case 'checkItem':
                 // console.log(_cartItemID);
@@ -172,7 +173,7 @@ export class CartComponent extends BaseComponent implements OnInit {
                     if (newAddressData && newAddressData !== '') {
                         console.log(newAddressData);
                         const payload = {
-                            id: this.myUserID,
+                            id: this.myBaseUserID,
                             data: newAddressData
                         };
                         if (result) {
@@ -222,7 +223,7 @@ export class CartComponent extends BaseComponent implements OnInit {
                 if (newAddressData && newAddressData !== '') {
                     console.log(newAddressData);
                     const payload = {
-                        id: this.myUserID,
+                        id: this.myBaseUserID,
                         data: newAddressData
                     };
                     if (result) {

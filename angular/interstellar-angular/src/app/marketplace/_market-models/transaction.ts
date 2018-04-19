@@ -38,6 +38,8 @@ export class TransactionRecord {
     fixedUSDAmount: number;
     productCategory: string;
 
+    orderType: OrderType;
+
     constructor(
             // trans details //
                 transactionID: string,
@@ -89,4 +91,9 @@ export class TransactionPaymentDetails {
                     this.assetBalance = assetBalance;
                     this.memo = memo;
                 }
+}
+
+export const enum OrderType {
+    'Purchase' = 'Purchase',
+    'Sale' = 'Sale'
 }

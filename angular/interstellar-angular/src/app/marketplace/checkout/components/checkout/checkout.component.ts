@@ -29,6 +29,7 @@ import { MatHorizontalStepper } from '@angular/material';
 
 /** Other */
 import { stellarKeyLength } from 'app/core/_constants/quantities';
+import { BaseComponent } from 'app/base.component';
 
 
 @Component({
@@ -36,7 +37,7 @@ import { stellarKeyLength } from 'app/core/_constants/quantities';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent extends BaseComponent implements OnInit {
 
         private checkoutItemsSource: Observable<CartItem[]>;
         private checkoutItems: CartItem[];
@@ -72,12 +73,19 @@ export class CheckoutComponent implements OnInit {
                     private _productService: ProductService,
                     private _formBuilder: FormBuilder,
                     private _router: Router,
-                    private location: Location) { }
+                    private location: Location) { 
+                        super();
+                    }
 
         ngOnInit() {
-            this.curUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-            this.curPubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
-            this.curSeedKey = sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key');
+            this.curUserID = this.myBaseUserID;
+            this.curPubKey = this.myBasePublicKey;
+            this.curSeedKey = this.myBaseSeedKey;
+            this.balances = this.myBaseBalances;
+    
+            // this.curUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
+            // this.curPubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
+            // this.curSeedKey = sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key');
 
             this.checkoutItemsSource = this._cartService.Cart.map(cartItems => {
                 const arr = cartItems.filter(check => check.isInCheckout === true);
@@ -105,7 +113,7 @@ export class CheckoutComponent implements OnInit {
             });
 
             this.initForm();
-            this.balances = <AssetBalance[]> JSON.parse(sessionStorage.getItem('my_balances') || localStorage.getItem('balances'));
+            // this.balances = <AssetBalance[]> JSON.parse(sessionStorage.getItem('my_balances') || localStorage.getItem('balances'));
             // https://stackoverflow.com/questions/46710178/material-design-stepper-how-to-remove-disable-steps?rq=1
             // https://stackoverflow.com/questions/47314219/using-separate-components-in-a-linear-mat-horizontal-stepper?rq=1
         }
@@ -125,6 +133,11 @@ export class CheckoutComponent implements OnInit {
                 alert('Please enter a secret key');
                 return;
             }
+            // console.log(secretKey)   
+            // console.log(this.curSeedKey)   
+            // console.log(this.curSeedKey)   
+            // console.log(isValidSecretKey(this.curSeedKey))   
+            // console.log(this.curUserID, this.curPubKey, this.curSeedKey);
             if (!(this.curUserID && this.curPubKey && this.curSeedKey &&
                   this.curSeedKey === secretKey &&
                   isValidSecretKey(this.curSeedKey) === this.curPubKey)) {
@@ -174,20 +187,26 @@ export class CheckoutComponent implements OnInit {
             // const memo = 'create a memo thingy...';
 
             // TURN ITEMS INTO TRANSACTIONS
+            console.log('b4 trans');
             const transactions = this._transactionRecords = this.makeTransactionRecords();
+            console.log('after trans');
 
             // COMBINE PAYMENTS .... INTO TRANS GROUPS
+            console.log('b4 groups');
             const transactionGroups = new Array<TransactionGroup>();
             Array.from(this.sellerPublicKeys).map((key: string) => {
-                // console.log(key);
+                console.log('in groups');
                 const newGroup = new TransactionGroup(key);
                 newGroup.transactionGroupID = this._orderService.getNewOrderID();
                 transactionGroups.push(newGroup);
             });
+            console.log('after groups');
 
 // this.makeTransactionGroups(transactionGroups, transactions);
             // console.log(JSON.stringify(transactionGroups));
+            console.log('b4 transloop');
             for (let i = 0; i < transactions.length; i++) {
+                console.log('in transloop');
                 const transaction = transactions[i];
                 const sellerKey = transaction.receiverPublicKey;
                 const idx = transactionGroups.findIndex(group => group.sellerPublicKey === sellerKey);
@@ -197,6 +216,7 @@ export class CheckoutComponent implements OnInit {
                 const newListAtIndex = transactionGroups[idx].transactionRecords.concat(transaction);
                 transactionGroups[idx].transactionRecords = newListAtIndex;
             }
+            console.log('in transloop');
             // console.log(JSON.stringify(transactionGroups));
 
             // this.fillTransactionGroups(transactionGroups);
@@ -266,11 +286,12 @@ export class CheckoutComponent implements OnInit {
                     TRANSGROUPNEEDTOCHANGE.isPaidFor = true;
                     const THISGROUPITEMIDS = TRANSGROUPNEEDTOCHANGE.transactionRecords.map(record => record.transactionID);
                     console.log(TRANSGROUPNEEDTOCHANGE);
+                        matStepper.next();
                             this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal => {
                                 // console.log(JSON.stringify(bal));
                                 sessionStorage.setItem('my_balances', JSON.stringify(bal));
                                 // console.log(sessionStorage.getItem('my_balances'));
-                                matStepper.next();
+                                
                                 this.stepChecker[4] = true;
                                 // todo:
                                 this._cartService.batchMarkItemsPaidFor(THISGROUPITEMIDS)
@@ -306,7 +327,7 @@ export class CheckoutComponent implements OnInit {
                             Validators.required, // ValidateFormSecretKeyLength, minLength, maxLength
                             CustomValidators.ValidateFormFieldLength(stellarKeyLength)
                             ]),
-                            [CustomValidators.ValidateFormFieldMatch(this.curPubKey)]
+                            [CustomValidators.ValidateFormFieldMatch(this.curSeedKey)]
                         ]
         });
         this.thirdFormGroup = this._formBuilder.group({

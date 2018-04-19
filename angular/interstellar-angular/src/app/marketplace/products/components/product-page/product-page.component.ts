@@ -130,33 +130,48 @@ export class ProductPageComponent implements OnInit {
     /**
      * @returns void
      */
-    public addProductAndGoToCart(): void {
-        if (this.addToCartHelper()) {
+    public addProductAndGoToCart() {
+        // if (this.addToCartHelper()) {
+        //     this.onCompleteProductAction();
+        //     this._router.navigate(['/cart']);
+        // } else {
+        //     alert('couldnt be completed');
+        // }
+        this.addToCartHelper().then((res) => {
+            console.log(res)
+            if (!res) { return; }
             this.onCompleteProductAction();
             this._router.navigate(['/cart']);
-        } else {
-            alert('couldnt be completed');
-        }
+        });
     }
 
     /**
      * @returns boolean
      */
-    public addProductToCart(): boolean {
-        if (this.addToCartHelper()) {
+    public addProductToCart(): Promise<boolean> {
+        return this.addToCartHelper().then((res) => {
+            // if (!res) { throw new Error('error: item already in cart1') }
+            console.log(res);
+            if (!res) { return false; }
             this.onCompleteProductAction();
             this.location.back();
             return true;
-        }
-        return false;
+        });
+        // .catch(() => this.errorAndAlert('error: item already in cart2'));
     }
 
-    private addToCartHelper() {
+    private addToCartHelper(): Promise<boolean> {
         if (this.onValidateProductAction()) {
             const cartItem = this.createCartItem(this.purchaseQuantity);
-            this._cartService.addToCart(JSON.stringify(cartItem));
-            this.onCompleteProductAction();
-            return true;
+            return this._cartService.addToCart(JSON.stringify(cartItem))
+                .then(res => {
+                    console.log(res)
+                    return (res) ? this.onCompleteProductAction() : false;
+                })
+                .catch(e => {
+                    return this.errorAndAlert(`There was an error:\n ${e}`);
+                    // return false;
+                });
         }
     }
 
@@ -172,8 +187,8 @@ export class ProductPageComponent implements OnInit {
      * @returns void
      */
     public deleteProduct(): void {
+        // todo:
         alert('are you sure you want to delete --> CHANGE TO MODAL ...');
-
         this._sellerShortData = null;
         this.isInStock = false;
         this.isMyProduct = false;
@@ -220,7 +235,6 @@ export class ProductPageComponent implements OnInit {
         const cartItem = this.createCartItem(purchaseQuantity, totalPurchaseAmount);
         cartItem.isInCheckout = true;
         this._cartService.addToCart(JSON.stringify(cartItem));
-
         updateBalance(this.balances, cartItem.assetPurchaseDetails);
         this.onCompleteProductAction();
         this._router.navigate(['/cart/checkout']);
@@ -280,9 +294,10 @@ export class ProductPageComponent implements OnInit {
         return true;
     }
 
-    private onCompleteProductAction() {
+    private onCompleteProductAction(): boolean {
         this.purchaseQuantity = 1;
         this.selectedAssetType = null;
+        return true;
     }
 
     // TODO: NEEDS to be a DIALOG

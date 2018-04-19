@@ -78,7 +78,7 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: string) => {
             if (result) {
-                this._chatService.createNewChatThread(this.myUserID, this.activeThreadUserID);
+                this._chatService.createNewChatThread(this.myBaseUserID, this.activeThreadUserID);
             }
         });
     }
@@ -105,7 +105,7 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
         const messageObj = new ChatMessage({
             isRead: false,
             sentAt: Date.now(),
-            sender: this.myUserID,
+            sender: this.myBaseUserID,
             reciever: this.activeThread.senderFbID,
             text: message,
             chatThreadID: this.activeThreadID

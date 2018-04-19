@@ -110,10 +110,11 @@ export class CustomValidators {
                     .distinctUntilChanged()
                     // .switchMap(value => control.value)
                     .map(data => {
-                        // console.log(isValidSecretKey(data));
+                        console.log(data);
+                        console.log(isValidSecretKey(data));
                         // console.log(isValidSecretKey(data) === varString);
                         // console.log(isValidSecretKey(data) === '' ? { invalid: true } : null);
-                        return data === varString ? { invalid: true } : null;
+                        return data === varString ? null : { invalid: true };
                     }).first();
             }
         };

@@ -28,7 +28,7 @@
 
                     </div>
                 </div>
-
+                <!-- app-register -->
             </div>
         </mat-sidenav>
         <!-- End Login Side Nav -->
@@ -111,6 +111,12 @@
                                 <mat-icon>comments</mat-icon>                            
                                 <i class="fa fa-user-circle" style="color: black;">
                                         Profile
+                                </i>
+                            </button>
+                            <button mat-menu-item id="logoutButton" (click)="logout()" style="padding: 1% 0% 0% 0%;">
+                                <mat-icon>comments</mat-icon>                            
+                                <i class="fa fa-sign-out" style="color: black;">
+                                    Logout
                                 </i>
                             </button>
                         </mat-menu>

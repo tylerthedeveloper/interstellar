@@ -16,7 +16,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
 import { Order } from '../../marketplace/_market-models/order';
-import { TransactionRecord } from '../../marketplace/_market-models/transaction';
+import { TransactionRecord, OrderType } from '../../marketplace/_market-models/transaction';
 
 
 @Injectable()
@@ -103,10 +103,16 @@ export class OrderService {
         const batch = this.afs.firestore.batch();
         return Observable.of(transactionRecords.map(record => {
             const transactionID = record.transactionID;
+            const buyerID = record.buyerUserID;
             const sellerID = record.sellerUserID;
-            const recordObj = JSON.parse(JSON.stringify(record));
+            const recordObj = <TransactionRecord>JSON.parse(JSON.stringify(record));
             batch.set(this.transactionsCollection.doc(transactionID).ref, recordObj);
+            
+            recordObj.orderType = OrderType.Sale;
             batch.set(this.userTransactionsCollection.doc(sellerID).collection('transactions').doc(transactionID).ref, recordObj);
+
+            recordObj.orderType = OrderType.Purchase;
+            batch.set(this.userTransactionsCollection.doc(buyerID).collection('transactions').doc(transactionID).ref, recordObj);
             return batch.commit();
         }));
     }

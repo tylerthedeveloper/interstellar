@@ -77,6 +77,9 @@
                         </button>
                     </div>
                     <div class="col-md-2" style="display:flex">
+                        <p style="color: red;"> Please do not reload the page during the payment </p>
+                        <!-- TODO: LOADING -->
+                        <p style="color: red;"> TODO - I AM A LOADING INDICATOR </p>
                         <mat-checkbox visible="false" hidden="hidden"  formControlName="thirdCtrlFirst"> </mat-checkbox>
                         <button class="primary" [disabled]="cnfPurBtnBool || !valBalBtnBool" [class.disabled]="cnfPurBtnBool || !valBalBtnBool"
                             (click)="completePurchase(stepper); cnfPurBtnBool = true" mat-button> Confirm Purchase</button>

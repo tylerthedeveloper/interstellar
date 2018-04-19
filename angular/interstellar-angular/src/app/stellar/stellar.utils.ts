@@ -12,7 +12,7 @@ const isValidSecretKey = (secretKey: string): string => {
         return StellarSdk.Keypair.fromSecret(secretKey).publicKey();
     } catch (e) {
         // alert("Account does not exist or key is invalid: \n " + e);
-        return e;
+        return '';
     }
 };
 

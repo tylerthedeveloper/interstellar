@@ -18,10 +18,11 @@ export class CartItemCardComponent implements OnInit {
     /**
      * @param  {string} cartItemID
      */
-    purchaseItem (cartItemID: string): void {
+    purchaseItem (cartItemID: string, cartItemProductID: string): void {
         const data = {
             action: 'purchase',
-            payload: cartItemID
+            payloadcartItemID: cartItemID,
+            payloadCartItemProductID: cartItemProductID
         };
         this.notify.emit(JSON.stringify(data));
     }
@@ -44,10 +45,11 @@ export class CartItemCardComponent implements OnInit {
      * @param  {string} cartItemID
      * @returns void
      */
-    removeItem (cartItemID: string): void  {
+    removeItem (cartItemID: string, cartItemProductID: string): void  {
         const data = {
           action: 'remove',
-          payload: cartItemID
+          payloadcartItemID: cartItemID,
+          payloadCartItemProductID: cartItemProductID
         };
         this.notify.emit(JSON.stringify(data));
     }
@@ -59,8 +61,8 @@ export class CartItemCardComponent implements OnInit {
     checkItem(cartItemID: string): void  {
         const data = {
             action: 'checkItem',
-            payload: cartItemID
-          };
-          this.notify.emit(JSON.stringify(data));
+            payloadcartItemID: cartItemID
+        };
+        this.notify.emit(JSON.stringify(data));
     }
 }
