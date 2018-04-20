@@ -56,6 +56,9 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     // SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
     // GBLC44ZQ322NNZUOQAPSMB67PQP63QJYLKEUKGUGPCYRTU5KF4ZSITT4
 
+    //     YsHuMOIGiVAQLs1Ty6Pr
+    // SBFB3TIYY7BCMHDUPQ4AISU3CT5N4KS4M45JEZFLZILVIZGHF6S4X653
+
     /** Page Objects */
     private _userModel: User;
     private user: Observable<User>;
@@ -101,7 +104,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
         this._pagePersonID = pagePersonID;
         this.isMyProfile = (pagePersonID === myUserID);
-        this._userService.getUserByID(pagePersonID).first()
+        // todo: listen for add address
+        this._userService.getUserByID(pagePersonID)
             .subscribe(user => {
                 this.user = user;
                 console.log(user);
@@ -121,9 +125,6 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         const _balances = this.myBaseBalances;
         if (_balances) { this.balances = <AssetBalance[]>JSON.parse(_balances); }
 
-// TODO
-        //            this.checkoutItemsSource = this._cartService.Cart.map(cartItems => {
-            // const arr = cartItems.filter(check => check.isInCheckout === true);
         this.transactionSales = this._orderService.TransactionSales;
         // this.transactionSales = this._orderService.Transactions.filter(t => t.orderType === OrderType.Sale);
         // .pipe(filter((transaction: TransactionRecord) => transaction.orderType === OrderType.Sale));

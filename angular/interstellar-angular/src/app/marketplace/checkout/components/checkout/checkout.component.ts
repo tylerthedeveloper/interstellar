@@ -176,7 +176,6 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
             // get seller public keys
 
             // const memo = `Order #: ${checkoutItem.}`;
-            // const memo = 'create a memo thingy...';
 
             // TURN ITEMS INTO TRANSACTIONS
             console.log('b4 trans');
@@ -261,43 +260,90 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
 
 
 // FIXME: JOIN PROMISES AND BLOCK THREAD
-                let result = Promise.resolve();
-                const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
-                const TRANSGROUPNEEDTOChangeFirstRecord = transactionGroups[0].transactionRecords[0];
-                const recordInCheckout = this.checkoutItems.find(item => item.productID === TRANSGROUPNEEDTOChangeFirstRecord.productID);
+                // let result = Promise.resolve();
+                // const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
+                // const TRANSGROUPNEEDTOChangeFirstRecord = transactionGroups[0].transactionRecords[0];
+                // const recordInCheckout = this.checkoutItems.find(item => item.productID === TRANSGROUPNEEDTOChangeFirstRecord.productID);
+                // if (recordInCheckout.isPaidFor) {
+                //     console.log(recordInCheckout);
+            //     return alert(`Error: you have already completed transaction id number: ${TRANSGROUPNEEDTOCHANGE.transactionGroupID}`);
+                // }
+                // result = result.then(() => this._stellarPaymentService.sendPayment(TRANSGROUPNEEDTOCHANGE.transactionPaymentDetails)
+                // .catch(e => {
+                //     alert(`there has been an error:\n ${e}`);
+                //     this._pageError = true;
+                // })
+                // .then(() => {
+                //     TRANSGROUPNEEDTOCHANGE.isPaidFor = true;
+                //     const THISGROUPITEMIDS = TRANSGROUPNEEDTOCHANGE.transactionRecords.map(record => record.transactionID);
+                //     console.log(TRANSGROUPNEEDTOCHANGE);
+                //         matStepper.next();
+                //             this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal => {
+                //                 // console.log(JSON.stringify(bal));
+                //                 sessionStorage.setItem('my_balances', JSON.stringify(bal));
+                //                 // console.log(sessionStorage.getItem('my_balances'));
+                //                 this.stepChecker[4] = true;
+                //                 // todo:
+                //                 this._cartService.batchMarkItemsPaidFor(THISGROUPITEMIDS)
+                //                     .catch(error => Observable.of(error))
+                //                     .then(() => {
+                //                         this.thirdFormGroup.get('thirdCtrlFirst').setValue(true);
+                //                         this.proceedToOrderConfirmation();
+                //                         return;
+                //                     });
+                //             });
+                //         })
+                //         .catch(e => {
+                //             alert(`there has been an error:\n ${e}`);
+                //             this._pageError = true;
+                //         }));
+                // const TRANSGROUPNEEDTOCHANGE = transactionGroups[0];
+            let transGroupItemIDs = new Array<string>();
+            transactionGroups.map(group => {
+                // const TRANSGROUPNEEDTOChangeFirstRecord = transactionGroups[0].transactionRecords[0];
+                const groupRecord = group.transactionRecords[0];
+                // const recordInCheckout = this.checkoutItems.find(item => item.productID === TRANSGROUPNEEDTOChangeFirstRecord.productID);
+                const recordInCheckout = this.checkoutItems.find(item => item.productID === groupRecord.productID);
+                const curGroupIds = group.transactionRecords.map(record => record.transactionID);
+                transGroupItemIDs = transGroupItemIDs.concat(curGroupIds);
                 if (recordInCheckout.isPaidFor) {
                     console.log(recordInCheckout);
-                    return alert(`Error: you have already completed transaction id number: ${TRANSGROUPNEEDTOCHANGE.transactionGroupID}`);
+                    return alert(`Error: you have already completed transaction id number: ${group.transactionGroupID}`);
                 }
-                result = result.then(() => this._stellarPaymentService.sendPayment(TRANSGROUPNEEDTOCHANGE.transactionPaymentDetails)
-                .catch(e => {
-                    alert(`there has been an error:\n ${e}`);
-                    this._pageError = true;
-                })
-                .then(() => {
-                    TRANSGROUPNEEDTOCHANGE.isPaidFor = true;
-                    const THISGROUPITEMIDS = TRANSGROUPNEEDTOCHANGE.transactionRecords.map(record => record.transactionID);
-                    console.log(TRANSGROUPNEEDTOCHANGE);
-                        matStepper.next();
-                            this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal => {
-                                // console.log(JSON.stringify(bal));
-                                sessionStorage.setItem('my_balances', JSON.stringify(bal));
-                                // console.log(sessionStorage.getItem('my_balances'));
-                                this.stepChecker[4] = true;
-                                // todo:
-                                this._cartService.batchMarkItemsPaidFor(THISGROUPITEMIDS)
-                                    .catch(error => Observable.of(error))
-                                    .then(() => {
-                                        this.thirdFormGroup.get('thirdCtrlFirst').setValue(true);
-                                        this.proceedToOrderConfirmation();
-                                        return;
-                                    });
-                            });
-                        })
+            });
+            let result = Promise.resolve();
+            result = result.then(() => this._stellarPaymentService.sendPayment(transactionGroups)
                         .catch(e => {
                             alert(`there has been an error:\n ${e}`);
                             this._pageError = true;
-                        }));
+                        })
+                        .then(() => {
+                            // for (const groupIndex of transactionGroups) {
+                            for (let j = 0; j < transactionGroups.length; j++) {
+                                transactionGroups[j].isPaidFor = true;
+                            }
+                        // const THISGROUPITEMIDS = transactionGroups.map(group => transactionRecords.map(record => record.transactionID);
+                            // console.log(TRANSGROUPNEEDTOCHANGE);
+                                matStepper.next();
+                                    this._stellarAccountService.authenticate(this.curSeedKey).subscribe(bal => {
+                                        // console.log(JSON.stringify(bal));
+                                        sessionStorage.setItem('my_balances', JSON.stringify(bal));
+                                        // console.log(sessionStorage.getItem('my_balances'));
+                                        this.stepChecker[4] = true;
+                                        // todo:
+                                        this._cartService.batchMarkItemsPaidFor(transGroupItemIDs)
+                                            .catch(error => Observable.of(error))
+                                            .then(() => {
+                                                this.thirdFormGroup.get('thirdCtrlFirst').setValue(true);
+                                                this.proceedToOrderConfirmation();
+                                                return;
+                                            });
+                                    });
+                                })
+                                .catch(e => {
+                                    alert(`there has been an error:\n ${e}`);
+                                    this._pageError = true;
+                                }));
 
     }
 

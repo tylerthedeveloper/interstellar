@@ -47,19 +47,20 @@ export class UserService {
                     console.log(user[0]);
                         if (user[0]) {
                             sessionStorage.setItem('user_doc_id', user[0].id);
-                            console.log('a')
+                            console.log('a');
                             return observer.next(user[0]);
                         } else {
-                            console.log('b')
-                            return observer.next('no current user');
+                            console.log('b');
+                            return observer.next();
+                            // return observer.next('no current user');
                             // return observer.next(observer.error('nop user'));
                         }
                     });
             });
         } else {
-            console.log('c')            
-            return Observable.create((observer: any) => observer.error('no current user'));            
-            // return Observable.create((observer: any) => observer.next());            
+            console.log('c');
+            return Observable.create((observer: any) => observer.error('no current user'));
+            // return Observable.create((observer: any) => observer.next());
         }
         // console.log('no user');
     }

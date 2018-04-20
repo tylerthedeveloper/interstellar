@@ -1,5 +1,6 @@
 // TODO: Handle errors
-
+// https://scotch.io/tutorials/angular-2-http-requests-with-observables
+// https://stackoverflow.com/questions/40511948/how-to-throw-observable-error-manually-in-angular2/40512534
 
 /** Angular */
 import { Component } from '@angular/core';
@@ -75,28 +76,29 @@ export class RegisterComponent {
         // console.log(_pubkey);
         this._userService.getCurrentUser(_pubkey).subscribe(
             account => {
-                console.log(account)
                 this._isValidSecretKey = true;
-                if (account !== 'no current user') {
+                console.log(account);
+                // if (account !== 'no current user') {
+                if (account) {
                     alert('you already have an account!');
                     // alert('go to the login page');
                     this.closeSignUpNav();
-                    console.log('b')            
+                    console.log('b');
                     return;
                 } else {
                     // todo: get from horiozn
-                    console.log('c')            
+                    console.log('c');
                     this._stellarService.mergeAccountWithKey(secretKey)
-                        // .catch(errMsg => Observable.throw(errMsg))
+                        // .catch(errMsg => Obser vable.throw(errMsg))
                         .subscribe(
                             res => {
-                                    console.log(res)
+                                    console.log(res);
                                     return this.handleAuthRegistration(JSON.stringify(res));
                                 },
                                 err => alert('there was an error conducting the merge: \n' + err));
                     }
                 },
-            err => console.log(err))
+            err => console.log(err));
     }
     // ────────────────────────────────────────────────────────────────────────────────
 

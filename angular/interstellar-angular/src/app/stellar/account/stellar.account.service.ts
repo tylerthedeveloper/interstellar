@@ -66,6 +66,22 @@ export class StellarAccountService {
           .map((response: Response) => response.json())
           .catch(this.HandleError);
           // .subscribe(() => { return this.authenticate(pair.secret() }));
+          /*
+                    transaction = new TransactionBuilder(source)
+            .addOperation(Operation.createAccount({
+                    destination: destinationA,
+                    startingBalance: "20"
+                }) // <- funds and creates destinationA
+                .addOperation(Operation.payment({
+                    destination: destinationB,
+                    amount: "100"
+                    asset: Asset.native()
+                }) // <- sends 100 XLM to destinationB
+            .build();
+
+            transaction.sign(sourceKeypair);
+
+            */
     }
 
     /**
@@ -96,7 +112,7 @@ export class StellarAccountService {
      * @param  {string} secretKey
      */
     // check if key exists
-    public mergeAccountWithKey (secretKey: string) {
+    mergeAccountWithKey (secretKey: string) {
         const pubkey = isValidSecretKey(secretKey);
         if (pubkey) {
             return this.authenticate(secretKey).map(balz => balz); // .catch(e => e)
