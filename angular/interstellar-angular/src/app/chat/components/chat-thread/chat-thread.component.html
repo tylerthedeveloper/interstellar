@@ -1,8 +1,7 @@
 
-<div class="card example hoverable rounded-0" style="cursor: pointer;" (click)="selectChat(chatThread.chatThreadID)">
-    <div style=" margin: 1em auto -1em auto; ">
-       <p class="text-left">{{ chatThread | json }}</p>
+<div class="card z-depth-0" style="cursor: pointer; max-height: 3em; margin: .2% 0% 0% 0%; overflow: hidden;" (click)="selectChat(chatThread.chatThreadID)">
+    <div style=" margin: 0em auto 0em auto; max-height: 100%; display: flex;">
+      <img src="{{_userModel?.photoUrl}}" alt="Image Here" style="border-radius: 50%; margin: 1% 4% 1% 4%; max-height: 100%; max-width: 20%; background-color: blue;" />
+       <p class="text-left">Name {{ chatThread | json }}</p>
     </div>
-    <br />
 </div>
-<br />

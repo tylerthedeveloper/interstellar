@@ -1,10 +1,10 @@
 
 
               <!-- chats
-list of 
+list of
 chat          active chat
 threads       send message box - button     -->
-<p> chat page </p>
+<!-- <p> chat page </p> -->
 <!-- style="cursor: pointer;"  -->
 <!-- <div style="text-align:center; margin: auto;">
     <div *ngFor="let thread of myChatThreads | async" id="chatThreadList">
@@ -17,26 +17,24 @@ threads       send message box - button     -->
             <ng-container *ngIf="myChatThreads | async; let chatThreadList" id="chatThreadList">
                     <div class="col-12 col-md-4">
                         <h5> My Chats <small> {{ chatThreadList.length }} </small> </h5>
-    
+
                         <div *ngFor="let thread of chatThreadList" id="chatThreadList">
                             <app-chat-thread [chatThread]="thread" (notify)="onSelectChat($event)"></app-chat-thread>
                         </div>
                     </div>
-                    <div class="col-md-8 text-nowrap" id="assetTotals" style="margin: 0% 0% 0% 0%">
+                    <div class="col-md-8 text-nowrap" id="assetTotals" style="margin: 1% 0% 0% 0%">
                         <h6 style="display: flex; margin: 0% 0em 0em 0em;"> Messages </h6>
                         <div class="card">
                             <div *ngFor="let message of activeThreadMessages | async" id="chatThreadList">
-                                <app-chat-message [chatMessage]="message" 
-                                        [style.float]="(message.sender === myBaseUserID) ? 'right' : 'left'"> 
+                                <app-chat-message [chatMessage]="message"
+                                        [style.float]="(message.sender === myBaseUserID) ? 'right' : 'left'">
                                 </app-chat-message>
                             </div>
                             <input #messageBox [disabled]="(activeThreadID === '')" placeholder="message text"/>
-                            <button [disabled]="(activeThreadID === '')" 
-                                    (click)="sendMessage(messageBox.value); messageBox.value = '';">send a message </button>
+                            <button [disabled]="(activeThreadID === '')"
+                                    (click)="sendMessage(messageBox.value); messageBox.value = '';" style="background-color: blue; color: white; width: 20%; align-items: right;">send message </button>
                         </div>
                     </div>
             </ng-container>
         </div>
     </div>
-    
-    

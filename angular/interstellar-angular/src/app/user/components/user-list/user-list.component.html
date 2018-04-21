@@ -1,9 +1,28 @@
-<p>
+<!-- <p>
   user-list works!
-</p>
+</p> -->
+<div class="card z-depth-0 rounded-0 transparent" style="margin: -1.7em auto 1em auto; width: 100%;">
 
-<div style="text-align:center; width: 90%; margin: auto; display: flex; flex-direction: row;">
-    <div *ngFor="let person of _peopleList | async" style="cursor: pointer; width: 20%; margin: 0% 0% 0% 2%;" id="indCategory">
+  <div class=row>
+
+  <!-- <div class="" style="margin: 0em 0em 0em 11.2%;">
+  <h4 style="margin: .9em 0em -5em 0em;"> {{ pageCategory }} </h4>
+  </div> -->
+
+  <div class="" style="margin: .5% 0em -5% 75%; width: 50%;">
+
+    <input matInput type="text" id="productSearchFilter" placeholder="search merchants" style="width: 40%;">
+    <!-- <button (click)="addProduct()" class="btn btn-default btn-sm"> Add Product </button> -->
+    <button (click)="allCategories()" class="btn btn-default btn-sm z-depth-0"> Search </button>
+
+  </div>
+
+  </div>
+
+</div>
+
+<div style="text-align:center; width: 90%; margin: auto;">
+    <div *ngFor="let person of _peopleList | async" style="cursor: pointer; width: 25%; margin: 0% 0% 2% 2%; display: inline-block;" id="indCategory">
         <app-user-card [person]="person" (notify)="onSelectPerson($event)"></app-user-card>
     </div>
 </div>
