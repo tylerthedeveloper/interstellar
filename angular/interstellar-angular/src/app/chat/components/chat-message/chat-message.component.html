@@ -1,13 +1,14 @@
 <!-- <div mat-card-avatar class="example-header-image"></div> -->
 <div class="card z-depth-0" style="display: flex; flex-direction: row; align-items: center;">
 
-  <div class="col-md-4" style="display: flex; flex-direction: row;">
+  <div style="display: flex; flex-direction: row; width: 100%;">
 
-      <p> {{ chatMessage.text }} at {{ chatMessage.sentAt | dateFormatterPipe }} </p>
+      <p class="col-4"> {{ chatMessage.sender}}</p> <p class="col-5" style="width: 100%; word-break: break-all; white-space: normal;"> {{ chatMessage.text }} </p> <p class="offset-1"> {{ chatMessage.sentAt | dateFormatterPipe }} </p>
 
-    <div class="offset-1 col-md-5" style="margin: 0em -2.5em 0em 0em;">
+    <!-- <div class="offset-1 col-md-5" style="margin: 0em -2.5em 0em 0em;">
       <button (click)="readMessage()" class="btn btn-primary btn-sm z-depth-0"> Mark Read </button>
-    </div>
-  
+    </div> -->
+
   </div>
-  
+
+</div>

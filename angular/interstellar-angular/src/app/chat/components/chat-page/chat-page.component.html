@@ -23,16 +23,16 @@ threads       send message box - button     -->
                         </div>
                     </div>
                     <div class="col-md-8 text-nowrap" id="assetTotals" style="margin: 1% 0% 0% 0%">
-                        <h6 style="display: flex; margin: 0% 0em 0em 0em;"> Messages </h6>
+                        <h6 style="display: flex;"> Messages </h6>
                         <div class="card">
                             <div *ngFor="let message of activeThreadMessages | async" id="chatThreadList">
                                 <app-chat-message [chatMessage]="message"
-                                        [style.float]="(message.sender === myBaseUserID) ? 'right' : 'left'">
+                                        [style.float]="(message.sender === myBaseUserID) ? 'right' : 'left'" style="width: 100%;">
                                 </app-chat-message>
                             </div>
                             <input #messageBox [disabled]="(activeThreadID === '')" placeholder="message text"/>
                             <button [disabled]="(activeThreadID === '')"
-                                    (click)="sendMessage(messageBox.value); messageBox.value = '';" style="background-color: blue; color: white; width: 20%; align-items: right;">send message </button>
+                                    (click)="sendMessage(messageBox.value); messageBox.value = '';" style="background-color: blue; color: white; width: 20%; align-items: right;">send </button>
                         </div>
                     </div>
             </ng-container>
