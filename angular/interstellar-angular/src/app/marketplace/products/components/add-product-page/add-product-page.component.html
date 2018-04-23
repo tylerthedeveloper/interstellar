@@ -1,35 +1,46 @@
-<p>
-  add-product-page works!
-</p>
+<h5 style="text-align: center;">
+  Add Product
+</h5>
 
-<div>
-  <button class="btn btn-primary btn-lg" role="button" (click)="addProductInfo()"> Enter product info</button>
-  <p> {{ productInfo | json }} </p>
-  <!-- <button class="btn btn-primary btn-lg" role="button" (click)="addProductImage()" [disabled]="!addImage"> Upload Image</button>   -->
-</div>
 
-<button class="btn btn-mdb-color btn-lg" role="button" (click)="enterShipping = !enterShipping">Enter Shipping Info</button>
-<div [hidden]="!enterShipping">
-  <form [formGroup]="shipFormGroup" > <!-- (ngSubmit)="submit()" -->
-    <input value="shipCost" type="number" placeholder="enter shipping cost" formControlName="shipCost">
-      <div *ngFor="let shipper of shipTypeOptions; let i = index" >
-          <mat-checkbox class="example-margin" (change)="onChange($event)" [value]="shipper.value" > <!-- [formControlName]="shipper.key" -->
-            {{shipper.value}}
-          </mat-checkbox>
-      </div>
-      <button class="btn btn-mdb-color btn-lg" role="button" [disabled]="!enterShipping" (click)="saveShippingInfo(shipFormGroup)">Save Shipping Info</button>
-  </form>
-  <!-- <div *ngFor="let type of shipTypeOptions">
-    <label>{{type.value}}</label>
-    <input type="checkbox" [value]="type.value">
-  </div> -->
+<div class="card" style="margin: auto; width: 50%; padding: 5%;">
+
+  <div style="margin: auto; width: 100%;">
+    <button class="btn btn-primary btn-block" role="button" (click)="addProductInfo()" style="margin: auto;"> Enter product info</button>
+    <p> {{ productInfo | json }} </p>
+    <!-- <button class="btn btn-primary btn-lg" role="button" (click)="addProductImage()" [disabled]="!addImage"> Upload Image</button>   -->
+  </div>
+
+  <div style="margin: auto; width: 100%;">
+  <button class="btn btn-blue-grey btn-block" role="button" (click)="enterShipping = !enterShipping">Shipping Information</button>
+  </div>
+
+
+  <div [hidden]="!enterShipping">
+    <form [formGroup]="shipFormGroup" > <!-- (ngSubmit)="submit()" -->
+      <input value="shipCost" type="number" placeholder="enter shipping cost" formControlName="shipCost">
+        <div *ngFor="let shipper of shipTypeOptions; let i = index" >
+            <mat-checkbox class="example-margin" (change)="onChange($event)" [value]="shipper.value" > <!-- [formControlName]="shipper.key" -->
+              {{shipper.value}}
+            </mat-checkbox>
+        </div>
+        <button class="btn btn-blue-grey btn-lg" role="button" [disabled]="!enterShipping" (click)="saveShippingInfo(shipFormGroup)">Save Shipping Info</button>
+    </form>
+    <!-- <div *ngFor="let type of shipTypeOptions">
+      <label>{{type.value}}</label>
+      <input type="checkbox" [value]="type.value">
+    </div> -->
+  </div>
+  <div>
+    <p> {{ shippingInfo | json }} </p>
+  </div>
+  <div style="margin: 0% auto 0% auto; width: 100%;">
+    <input class="btn btn-mdb-color btn-block" role="button" id="fileUpload" type="file" #fileInput (change)="renderFile($event); addImage = !addImage">
+    <button class="btn btn-mdb-color btn-block" role="button" (click)="addProductImage()" [disabled]="!addImage" style="width: 100%;"> Upload Product Image</button>
+    <img [src]="imageUrl" />
+  </div>
+  <div style="margin: 0% auto 0% auto;">
+    <button (click)="submitNewProduct()" class="btn btn-mdb-color btn-block z-depth-0"> Submit </button>
+  </div>
+
 </div>
-<div>
-  <p> {{ shippingInfo | json }} </p>
-</div>
-<div>
-  <input class="btn btn-primary btn-lg" role="button" id="fileUpload" type="file" #fileInput (change)="renderFile($event); addImage = !addImage">
-  <button class="btn btn-primary btn-lg" role="button" (click)="addProductImage()" [disabled]="!addImage"> Upload Image</button>
-  <img [src]="imageUrl" />
-</div>
-<button (click)="submitNewProduct()" class="btn btn-mdb-color btn-lg z-depth-0"> Submit New Product </button>
