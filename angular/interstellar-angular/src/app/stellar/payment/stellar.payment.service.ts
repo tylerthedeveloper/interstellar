@@ -6,10 +6,10 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { Observable } from 'rxjs/Observable';
-import { TransactionPaymentDetails, TransactionGroup } from 'app/marketplace/_market-models/transaction';
+import { TransactionGroup } from 'app/marketplace/_market-models/transaction';
 
-// declare var StellarSdk: any;
-import * as StellarSdk from 'stellar-sdk';
+// import * as StellarSdk from 'stellar-sdk';
+declare var StellarSdk: any;
 
 @Injectable()
 export class StellarPaymentService {
@@ -135,7 +135,7 @@ export class StellarPaymentService {
         // const assets = transactionRecord.assetBalance;
         // const memo: string = transactionRecord.memo;
         if (!secretKey) { return; }
-        const sourceKeys: StellarSdk.Keypair = StellarSdk.Keypair.fromSecret(secretKey);
+        const sourceKeys = StellarSdk.Keypair.fromSecret(secretKey);
         const server = this._server;
         // const handleError = this.HandleError;
         return server.loadAccount(pubKey)
@@ -145,23 +145,52 @@ export class StellarPaymentService {
             // })
             // .then(() => server.loadAccount(pubKey))
             .then(function(sourceAccount) {
+                // console.log(sourceAccount);
+                /* 
+                todo:
+
                 const paymentOps = transactionGroups.map(group => {
-                        return {
-                            destination: group.sellerPublicKey,
-                            asset: StellarSdk.Asset.native(), // todo: switch to above asset type...
-                            memo: group.transactionPaymentDetails.memo,
-                            amount: group.transactionPaymentDetails.assetBalance[0].balance
-                        };
+                    return {
+                        destination: group.sellerPublicKey,
+                        asset: StellarSdk.Asset.native(), // todo: switch to above asset type...
+                        memo: group.transactionPaymentDetails.memo,
+                        amount: group.transactionPaymentDetails.assetBalance[0].balance
+                    };
                 });
-                // assets.map(asset =>
-                    // transaction.addOperation(StellarSdk.Operation.payment({
-                    // .addOperation(StellarSdk.Operation.payment({
-                    //     destination: destinationKey,
-                    //     asset: StellarSdk.Asset.native(),
-                    //    amount: _asset.amount
-                    // }))
-                const transactionBuilder: StellarSdk.TransactionBuilder = new StellarSdk.TransactionBuilder(sourceAccount);
-                paymentOps.map(payOp => transactionBuilder.addOperation(StellarSdk.Operation.payment(payOp)));
+                // // assets.map(asset =>
+                // // transaction.addOperation(StellarSdk.Operation.payment({
+                //     // .addOperation(StellarSdk.Operation.payment({
+                //         //     destination: destinationKey,
+                //         //     asset: StellarSdk.Asset.native(),
+                //         //    amount: _asset.amount
+                //         // }))
+                // // paymentOps.map(payOp => transactionBuilder.addOperation(StellarSdk.Operation.payment(payOp)));
+                // transactionBuilder.build();
+                const transaction = new StellarSdk.TransactionBuilder(sourceAccount);
+                paymentOps.map(payOp => transaction.addOperation(StellarSdk.Operation.payment(payOp)));
+                transaction.addOperation(StellarSdk.Operation.setOptions({
+                        // Reset account back to what it was before this transaction
+                        lowThreshold: 1,
+                        medThreshold: 1,
+                        highThreshold: 1,
+                        signer: {
+                                ed25519PublicKey: pubKey,
+                                weight: 0
+                            }
+                        }));
+                // .addOperation(StellarSdk.Operation.payment({
+                //     destination: transactionGroups[0].transactionPaymentDetails.receiverPublicKey,
+                //     asset: StellarSdk.Asset.native(), // todo: switch to above asset type...
+                //     // memo: memo,
+                //     amount: transactionGroups[0].transactionPaymentDetails.assetBalance[0].balance
+                // }))
+                transaction.build();
+                // .sign(sourceKeys);
+                // transaction.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
+                */
+
+                // console.log(transactionBuilder.toEnvelope().toXDR('base64'));
+
                 // paymentOps.map(payOP => {
                 //     console.log(payOP);
                 //     const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
@@ -171,9 +200,27 @@ export class StellarPaymentService {
 
                 // });
 
-                transactionBuilder.build(); // .sign(sourceKeys);
-                transactionBuilder.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
-                return server.submitTransaction(transactionBuilder); // And finally, send it off to Stellar!
+                const group = transactionGroups[0];
+                const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
+                    .addOperation(StellarSdk.Operation.payment({
+                         destination: group.sellerPublicKey,
+                        asset: StellarSdk.Asset.native(), // todo: switch to above asset type...
+                        memo: group.transactionPaymentDetails.memo,
+                        amount: group.transactionPaymentDetails.assetBalance[0].balance
+                    }))
+                .build();
+    //             // .sign(sourceKeys);
+                transaction.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
+
+                // transactionBuilder.build(); // .sign(sourceKeys);
+                // transactionBuilder.sign(sourceKeys); // Sign the transaction to prove you are actually the person sending it.
+                // return server.submitTransaction(transactionBuilder); // And finally, send it off to Stellar!
+                return server.submitTransaction(transaction);
+                    // .then(function(transactionResult) {
+                    // console.log(JSON.stringify(transactionResult, null, 2));
+                    // console.log('\nSuccess! View the transaction at: ');
+                    // console.log(transactionResult._links.transaction.href);
+                    // })
             })
             // .catch(handleError));
             .catch(function(error) {

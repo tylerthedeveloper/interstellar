@@ -70,6 +70,18 @@ class DropdownQuestion extends MyFormElement<string> {
   }
 }
 
-export { MyFormElement, TextboxQuestion, DropdownQuestion,
-         NumberInputQuestion, FileUploadQuestion
+class CheckBoxQuestion extends MyFormElement<string> {
+  controlType = 'checkbox';
+  type = 'checkbox';
+  options: {key: string, value: string}[] = [];
+
+  constructor(options: {} = {}) {
+    super(options);
+    this.options = options['options'] || [];
+  }
+}
+
+export {
+    MyFormElement, TextboxQuestion, DropdownQuestion,
+    NumberInputQuestion, FileUploadQuestion, CheckBoxQuestion
 };

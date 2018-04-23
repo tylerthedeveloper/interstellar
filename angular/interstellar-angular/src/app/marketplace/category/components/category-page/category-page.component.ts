@@ -80,7 +80,7 @@ export class CategoryPageComponent implements OnInit {
      * @returns void
      */
     onSelectProduct(product: string): void {
-        this.router.navigate(['/products', product['id']]);
+        this.router.navigate(['/products/product', product['id']]);
     }
     // ────────────────────────────────────────────────────────────────────────────────
 }

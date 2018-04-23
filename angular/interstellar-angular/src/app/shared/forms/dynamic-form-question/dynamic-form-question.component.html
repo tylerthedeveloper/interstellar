@@ -16,6 +16,19 @@
             <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
         </select>
 
+        <!-- class="hidden question__input"  -->
+        <input *ngSwitchCase="'checkbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type"
+                [name]="question.name" 
+                [value]="question.value" >
+    
+        <div *ngSwitchCase="'checkbox-group'">
+            <div *ngFor="let item of question.options; let i=index" [formGroupName]="i">
+                    <input *ngSwitchCase="'checkbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type"
+                            [name]="question.name" 
+                            [value]="question.value" >
+            </div>
+        </div>
+
         <div *ngSwitchCase="'array'" [formArrayName]="question.key">
             <div *ngFor="let item of question.options; let i=index" [formGroupName]="i">
                 <div *ngFor="let element of item.element">

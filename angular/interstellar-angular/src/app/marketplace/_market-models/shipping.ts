@@ -18,9 +18,12 @@ export class ShippingInformation {
 
     shipCost: number;
     shipType: ShipType;
-    shipService: string;
+
+    // shipTime: string;
+
+    // shipService: string;
     trackingNumber: string;
-    validShipService: boolean;
+    // validShipService: boolean;
     isShipped: boolean;
 
 }
@@ -41,3 +44,5 @@ export const enum ShipType {
     'ups_today_express' = 'ups_today_express',
     'ups_today_standard' = 'ups_today_standard'
 }
+
+// todo: shipType --> shipTime 

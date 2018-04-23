@@ -112,8 +112,10 @@
     <mat-tab-group primary style="margin-bottom: 5%;">
         <mat-tab label="My Listings">
             <div style="align-items: center; justify-content: center;">
-                <button class="btn btn-primary z-depth-0" aria-hidden="true" (click)="addProduct()"
-                        [disabled]="!hasAddress">
+                <!-- (click)="addProduct()" -->
+                <button class="btn btn-primary z-depth-0" aria-hidden="true" 
+                        (click)="goToAddProductpage()"
+                        [disabled]="!hasAddress" style="width: 100%">
                     List New Product
                 </button>
             </div>

@@ -5,7 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 // import { CommonModule, Location } from '@angular/common';
 import { Location } from '@angular/common';
 
-import { AssetBalance, currencyAssetsMapper, getBalanceforAsset, isValidNewBalance, updateBalance, calcTotalPurchaseAmount } from 'app/stellar';
+import { AssetBalance, currencyAssetsMapper, getBalanceforAsset,
+    isValidNewBalance, updateBalance, calcTotalPurchaseAmount } from 'app/stellar';
 import { ProductService } from 'app/core/services/product.service';
 
 import { CartService } from 'app/core/services/cart.service';

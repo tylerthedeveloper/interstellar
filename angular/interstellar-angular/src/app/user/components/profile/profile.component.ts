@@ -39,6 +39,7 @@ import { productFormData } from 'app/marketplace/products/product.details';
 import { userFormData } from 'app/user/user.details';
 import { BaseComponent } from 'app/base.component';
 import { TransactionRecord } from 'app/marketplace/_market-models/transaction';
+import { shippingAddressQuestions } from 'app/marketplace/shipping/shipping.details';
 
 @Component({
   selector: 'app-profile',
@@ -161,6 +162,14 @@ export class ProfileComponent extends BaseComponent implements OnInit {
             }
         });
     }
+
+
+    goToAddProductpage(): void {
+        this.router.navigate(['../products/list-new-product']);
+        // this.router.navigate(['../products/list-new-product'], { queryParams: { user: this._userID } });
+    }
+
+
 
     /**
      * @returns void
@@ -287,7 +296,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                 const dialogRefInner = this.dialog.open(DialogComponent, {
                     data: { component: DynamicFormComponent,
                             payload: {
-                                questions: new Array(userFormData[3])
+                                // questions: new Array(userFormData[3])
+                                questions: shippingAddressQuestions
                             }
                     }
                 });
