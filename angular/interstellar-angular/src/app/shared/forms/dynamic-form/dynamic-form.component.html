@@ -1,17 +1,15 @@
-<div>
-    <form (ngSubmit)="onSubmit()" [formGroup]="form" #target>
-  
-      <div *ngFor="let question of questions" class="form-row">
-        <app-dynamic-form-question [question]="question" [form]="form"></app-dynamic-form-question>
-      </div>
-  
-      <div class="form-row">
-          <button mat-raised-button  type="submit" [disabled]="!form.valid" >
-            Save
-          </button>
-      </div>
-    </form>
+<form (ngSubmit)="onSubmit()" [formGroup]="form" #target>
+  <div *ngFor="let question of questions" class="form-row">
+    <app-dynamic-form-question [question]="question" [form]="form"></app-dynamic-form-question>
   </div>
-    <div *ngIf="payLoad" class="form-row">
+
+  <div class="form-row">
+      <button class="btn btn-primary" type="submit" [disabled]="!form.valid" >
+        Confirm
+      </button>
+  </div>
+</form>
+
+    <!-- <div *ngIf="payLoad" class="form-row">
       <strong>Saved the following values</strong><br>{{payLoad}}
-    </div>
+    </div> -->

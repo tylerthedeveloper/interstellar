@@ -1,21 +1,22 @@
 <!-- <p>{{ title }} _ {{ content }} </p>
 
-<button type="button" md-raised-button 
+<button type="button" md-raised-button
     (click)="dialogRef.close(true)">OK</button>
-<button type="button" md-button 
+<button type="button" md-button
     (click)="dialogRef.close()">Cancel</button> -->
 
-<h1 mat-dialog-title class="primary-color"> {{ title }}</h1>
-<mat-dialog-content class="accent-color">
+<h5 mat-dialog-title class="primary-color"> {{ title }}</h5>
+<mat-dialog-content class="accent-color" style=" width: 50em;">
     <!-- {{ content }} -->
     <!-- <ng-template [cdkPortalOutlet]="portal"></ng-template> -->
     <ng-template #target >
         <!-- (notify)="prp($event)" -->
     </ng-template>
-    <button mat-button mat-dialog-close>
+    <hr>
+    <button class="btn btn-mdb-color" mat-dialog-close>
         Cancel
     </button>
-    <button type="button" mat-raised-button (click)="closeWithData()" [disabled]="!canFinish">
+    <button type="button" class="btn btn-primary" (click)="closeWithData()" [disabled]="!canFinish">
         Finish
     </button>
 </mat-dialog-content>
