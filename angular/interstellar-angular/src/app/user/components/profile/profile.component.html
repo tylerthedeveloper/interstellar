@@ -48,7 +48,7 @@
 
                             <!-- *ngIf="!edit" -->
 
-                            <div style="width: 10%;">
+                            <div style="width: 10%; word-break: break-all; white-space: normal;">
 
                                 <label for="userName">Username: <h6>{{user?.userName}}</h6></label>
 
@@ -58,7 +58,7 @@
 
                             </div>
 
-                            <div style="width: 20%; margin: 0% 0% 0% 1.5%;">
+                            <div style="width: 20%; margin: 0% 0% 0% 1.5%; word-break: break-all; white-space: normal;">
 
                                 <label for="userName">Email: <h6>{{user?.email}}</h6></label>
 
@@ -121,16 +121,22 @@
     <!--Card-->
 
     <!-- Bottom section consisting of Your listings and order history -->
+
+    <button class="btn btn-primary z-depth-0" aria-hidden="true"
+            (click)="goToAddProductpage()"
+            [disabled]="!hasAddress" style="width: 100%">
+        List New Product
+    </button>
     <mat-tab-group primary style="margin-bottom: 5%;">
         <mat-tab label="My Listings">
-            <div style="align-items: center; justify-content: center;">
-                <!-- (click)="addProduct()" -->
+            <!-- <div style="align-items: center; justify-content: center;">
+                (click)="addProduct()"
                 <button class="btn btn-primary z-depth-0" aria-hidden="true"
                         (click)="goToAddProductpage()"
                         [disabled]="!hasAddress" style="width: 100%">
                     List New Product
                 </button>
-            </div>
+            </div> -->
             <div style="display: inline-block; width: 20%; height: 100%; margin: auto; cursor: pointer;" *ngFor="let prod of products | async">
                 <div class="card card-ecommerce z-depth-1" style="margin: 2% 2% 2% 2%;">
                     <!--Card image-->
@@ -161,16 +167,64 @@
             </div>
         </mat-tab>
         <mat-tab label="Seller History">
-            <p *ngFor="let transaction of transactionSales | async">
-                {{ transaction | json }}
-            </p>
+
+            <div class="card" style="margin: 1%; padding: 2%;" *ngFor="let transaction of transactionSales | async">
+
+              <h4> Order ID: {{ transaction?.transactionID }} </h4>
+              <hr>
+              <p> Product Name: {{ transaction?.productName }} </p>
+              <p> Quantity: {{ transaction?.quanitityPurchased }} </p>
+              <p> Category: {{ transaction?.productCategory }} </p>
+              <p> Price: {{ transaction?.assetPurchaseDetails.balance }} {{ transaction?.assetPurchaseDetails.coin_name }} ({{ transaction?.fixedUSDAmount }} USD) </p>
+
+            </div>
+
             <hr>
         </mat-tab>
         <mat-tab label="Order History">
-            <p *ngFor="let order of orders | async">
-                {{ order | json }} AAAA
-            </p>
+
+          <!-- <div class="card" style="margin: 1%; padding: 2%;" *ngFor="let order of orders | async">
+
+            <p> Order Number: {{ order?.orderID }} </p>
+            <p> Product Name: {{ order?.productName }} </p>
+            <p> Quantity: {{ order?.quanitityPurchased }} </p>
+            <p> Category: {{ order?.productCategory }} </p>
+            <p> Price: {{ order?.assetPurchaseDetails.balance }} {{ order?.assetPurchaseDetails.coin_name }} ({{ order?.fixedUSDAmount }} USD) </p>
+
+          </div> -->
+
+          <div class="card"*ngFor="let order of orders | async" style="margin: 2%; padding: 2%;">
+            <h4>Order ID: {{ order?.orderID }}</h4>
             <hr>
+            <div class="" style="padding: 0% 5% 0% 5%;" *ngFor="let group of order?.transactionsGroups; index as i" [attr.data-index]="i">
+              <div>
+                  <h5> Transaction Group: {{ i + 1 }}  </h5>
+                  <p> ID: {{ group?.transactionGroupID }}  </p>
+                  <p> Seller Public Key: {{ group?.sellerPublicKey }}  </p>
+
+              </div>
+              <div style="margin: auto; width: 20%;" *ngFor="let transRecord of group.transactionRecords; index as j" [attr.data-index]="j">
+                  <!-- TODO: image??? -->
+                  <!-- <img [src]="transRecord?.productName" /> -->
+                  <h6> Transaction Number: {{ j + 1 }}  </h6>
+                  <!-- <p> Transaction ID: {{ transRecord?.transactionID }}  </p> -->
+                  <p> Product Name: {{ transRecord?.productName }}  </p>
+                  <!-- <p> Product Description: {{ transRecord?.productShortDescription }}  </p> -->
+                  <!-- <p> Product ID: {{ transRecord?.productID }}  </p> -->
+                  <p> Quantity: {{ transRecord?.quantityPurchased }}  </p>
+                  <!-- <p> Memo:  {{ transRecord?.memo  }}  </p> -->
+                  <!-- <p> USD Amount:  $ {{ transRecord?.fixedUSDAmount | json }}  </p> -->
+                  <p> Price: {{ transRecord?.assetPurchaseDetails.balance }} {{ transRecord?.assetPurchaseDetails.coin_name }} (${{ transRecord?.fixedUSDAmount | json }})  </p>
+
+              </div>
+              <hr>
+            </div>
+
+          </div>
+
+            <!-- <div class="card" *ngFor="let order of orders | async">
+                {{ order | json }} AAAA
+            </div> -->
         </mat-tab>
     </mat-tab-group>
 

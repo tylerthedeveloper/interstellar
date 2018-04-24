@@ -11,10 +11,10 @@
   <hr>
 
   <div style="margin: auto; width: 100%;">
-    <button [disabled]="productInfo" class="btn btn-primary btn-block" role="button" (click)="addProductInfo()" style="margin: auto;">  
+    <!-- <button [disabled]="productInfo" class="btn btn-primary btn-block" role="button" (click)="addProductInfo()" style="margin: auto;">
       1) Enter product info
     </button>
-    <p> {{ productInfo | json }} </p>
+    <p> {{ productInfo | json }} </p> -->
     <button class="btn btn-primary btn-block" role="button" (click)="addProductInfo()" style="margin: auto;"> Enter product info</button>
 
     <div class="card" style="margin: 3% 0% 3% 0%; padding: 5%;">
@@ -42,7 +42,7 @@
   <hr>
 
   <div style="margin: auto; width: 100%;">
-    <button class="btn btn-blue-grey btn-block" role="button" (click)="enterShipping = !enterShipping"  [disabled]="!productInfo"> 
+    <button class="btn btn-blue-grey btn-block" role="button" (click)="enterShipping = !enterShipping"  [disabled]="!productInfo">
       2) Shipping Information
     </button>
   </div>
