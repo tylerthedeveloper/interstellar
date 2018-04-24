@@ -1,17 +1,45 @@
-<h5 style="text-align: center;">
+<!-- <h5 style="text-align: center;">
   Add Product
 </h5>
+ -->
 
+<div class="card" style="margin: auto; width: 50%; padding: 2% 5% 2% 5%;">
 
-<div class="card" style="margin: auto; width: 50%; padding: 5%;">
+  <h5 style="text-align: center;">
+    Add Product
+  </h5>
+  <hr>
 
   <div style="margin: auto; width: 100%;">
     <button [disabled]="productInfo" class="btn btn-primary btn-block" role="button" (click)="addProductInfo()" style="margin: auto;">  
       1) Enter product info
     </button>
     <p> {{ productInfo | json }} </p>
+    <button class="btn btn-primary btn-block" role="button" (click)="addProductInfo()" style="margin: auto;"> Enter product info</button>
+
+    <div class="card" style="margin: 3% 0% 3% 0%; padding: 5%;">
+
+      <div style="display: flex; flex-direction: row; margin: 2% 0% 0% 0%;">
+        <h6>Product Name:</h6><p style="margin: 0% 0% 0% 2%;"> {{ productInfo?.productName }} </p>
+      </div>
+
+      <div style="display: flex; flex-direction: row; margin: 2% 0% 0% 0%;">
+        <h6>Fixed USD Price:</h6><p style="margin: 0% 0% 0% 2%;"> {{ productInfo?.fixedUSDAmount }} </p>
+      </div>
+
+      <div style="display: flex; flex-direction: row; margin: 2% 0% 0% 0%;">
+        <h6>Quantity:</h6><p style="margin: 0% 0% 0% 2%;"> {{ productInfo?.quantity }} </p>
+      </div>
+
+      <div style="display: flex; flex-direction: row; margin: 2% 0% 0% 0%;">
+        <h6>Category:</h6><p style="margin: 0% 0% 0% 2%;"> {{ productInfo?.productCategory }} </p>
+      </div>
+
+    </div>
     <!-- <button class="btn btn-primary btn-lg" role="button" (click)="addProductImage()" [disabled]="!addImage"> Upload Image</button>   -->
   </div>
+
+  <hr>
 
   <div style="margin: auto; width: 100%;">
     <button class="btn btn-blue-grey btn-block" role="button" (click)="enterShipping = !enterShipping"  [disabled]="!productInfo"> 
@@ -22,32 +50,48 @@
 
   <div [hidden]="!enterShipping">
     <form [formGroup]="shipFormGroup" > <!-- (ngSubmit)="submit()" -->
-      <div>
-        <label> Ship Cost </label>
-        <input value="shipCost" type="number" placeholder="enter shipping cost" formControlName="shipCost">
+      <div style="display: flex;">
+        <h5 style="margin: 3.5% 2% 0% 0%;">Shipping Cost:</h5>
+        <input style="width: 10%; margin: 2% 0% 0% 0%" value="shipCost" type="number" placeholder="enter shipping cost" formControlName="shipCost">
       </div>
-      <div *ngFor="let shipper of shipTypeOptions; let i = index" >
-          <mat-checkbox class="example-margin" (change)="onChange($event)" [value]="shipper.value" > <!-- [formControlName]="shipper.key" -->
-            {{shipper.value}}
-          </mat-checkbox>
-      </div>
-      <button class="btn btn-blue-grey btn-lg" role="button" [disabled]="!enterShipping" (click)="saveShippingInfo(shipFormGroup)">Save Shipping Info</button>
+
+        <div *ngFor="let shipper of shipTypeOptions; let i = index" style="margin: 3% 0% 0% 0%;">
+            <mat-checkbox class="example-margin" (change)="onChange($event)" [value]="shipper.value" > <!-- [formControlName]="shipper.key" -->
+              {{shipper.value}}
+            </mat-checkbox>
+        </div>
+        <button class="btn btn-blue-grey btn-lg" role="button" [disabled]="!enterShipping" (click)="saveShippingInfo(shipFormGroup)">Save Shipping Info</button>
     </form>
     <!-- <div *ngFor="let type of shipTypeOptions">
       <label>{{type.value}}</label>
       <input type="checkbox" [value]="type.value">
     </div> -->
   </div>
-  <div>
-    <p> {{ shippingInfo | json }} </p>
+
+  <div class="card" style="margin: 3% 0% 3% 0%; padding: 5%;">
+
+    <div style="display: flex; flex-direction: row; margin: 2% 0% 0% 0%;">
+    <h6>Shipping Cost:</h6><p style="margin: 0% 0% 0% 2%;"> {{ shippingInfo?.shipCost }} </p>
+    </div>
+
+    <div style="display: flex; flex-direction: row; margin: 2% 0% 0% 0%;">
+    <h6>Shipping Options Offered:</h6><p style="margin: 0% 0% 0% 2%;"> {{ shippingInfo?.shipTypes }} </p>
+    </div>
+
   </div>
+
+  <hr>
+
   <div style="margin: 0% auto 0% auto; width: 100%;">
     <input class="btn btn-mdb-color btn-block" role="button" id="fileUpload" type="file" #fileInput (change)="renderFile($event); addImage = !addImage">
     <button class="btn btn-mdb-color btn-block" role="button" (click)="addProductImage()" [disabled]="!addImage" style="width: 100%;"> 3) Upload Product Image</button>
     <img [src]="imageUrl" />
   </div>
+
+  <hr>
+
   <div style="margin: 0% auto 0% auto;">
-    <button (click)="submitNewProduct()" class="btn btn-mdb-color btn-block z-depth-0"> Submit </button>
+    <button (click)="submitNewProduct()" class="btn btn-primary btn-block z-depth-0"> Submit </button>
   </div>
 
 </div>

@@ -1,13 +1,14 @@
 <div [formGroup]="form">
-    <label [attr.for]="question.key">{{question.label}}</label>
+
+    <h5><label [attr.for]="question.key" style="">{{question.label}}</label></h5>
 
     <div [ngSwitch]="question.controlType">
 
         <input *ngSwitchCase="'textbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type">
-        
+
         <input *ngSwitchCase="'numberbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type">
 
-        <input *ngSwitchCase="'filebox'" [formControlName]="question.key" [id]="question.key" [type]="question.type" 
+        <input *ngSwitchCase="'filebox'" [formControlName]="question.key" [id]="question.key" [type]="question.type"
                 #fileInput (change)="renderFile($event)">
         <!-- <button *ngSwitchCase="'filebox'" (click)="renderFile()"> add file </button> -->
         <img *ngSwitchCase="'filebox'" [src]="imageUrl" />
@@ -18,13 +19,13 @@
 
         <!-- class="hidden question__input"  -->
         <input *ngSwitchCase="'checkbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type"
-                [name]="question.name" 
+                [name]="question.name"
                 [value]="question.value" >
-    
+
         <div *ngSwitchCase="'checkbox-group'">
             <div *ngFor="let item of question.options; let i=index" [formGroupName]="i">
                     <input *ngSwitchCase="'checkbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type"
-                            [name]="question.name" 
+                            [name]="question.name"
                             [value]="question.value" >
             </div>
         </div>
@@ -47,5 +48,8 @@
         </div>
     </div>
 
-    <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div>
+    <h6 class="errorMessage" style="color: red;" *ngIf="!isValid">Required</h6>
+
 </div>
+
+<hr>

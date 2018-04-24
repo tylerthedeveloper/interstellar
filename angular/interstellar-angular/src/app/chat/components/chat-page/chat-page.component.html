@@ -31,8 +31,8 @@ threads       send message box - button     -->
                                 </app-chat-message>
                             </div>
                             <input #messageBox [disabled]="(activeThreadID === '')" placeholder="message text"/>
-                            <button [disabled]="(activeThreadID === '')"
-                                    (click)="sendMessage(messageBox.value); messageBox.value = '';" style="background-color: blue; color: white; width: 20%; align-items: right;">send </button>
+                            <button class="btn btn-primary" [disabled]="(activeThreadID === '')"
+                                    (click)="sendMessage(messageBox.value); messageBox.value = '';" style="color: white; width: 20%; align-items: right;">send </button>
                         </div>
                     </div>
             </ng-container>
