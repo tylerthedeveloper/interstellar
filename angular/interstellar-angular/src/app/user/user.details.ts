@@ -27,7 +27,7 @@ const userFormData = [
     new TextboxQuestion({key: 'userName', label: 'Username', value: '', required: true, order: 1 }),
     new TextboxQuestion({key: 'fullName', label: 'Full name', required: true, order: 1 }),
     new TextboxQuestion({key: 'email', label: 'email', value: '', required: false, order: 1 }),
-    new TextboxQuestion({key: 'address', label: 'address', value: '', required: false, order: 1 }),
+    // new TextboxQuestion({key: 'address', label: 'address', value: '', required: false, order: 1 }),
     new NumberInputQuestion({key: 'age', label: 'Age', type : 'number', value: 1, required: false, order: 1 }),
 ];
 

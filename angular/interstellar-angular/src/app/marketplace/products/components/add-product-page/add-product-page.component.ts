@@ -2,16 +2,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { productFormData } from '../../product.details';
 import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
 import { DialogComponent, FileUploadDialogComponent } from 'app/shared/components';
-import { Product, ShippingAddress } from 'app/marketplace/_market-models';
+import { Product } from 'app/marketplace/_market-models';
 import { areValidProductTypes } from 'app/marketplace/products/product.utils';
 import { ProductService } from 'app/core/services';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AssetBalance } from 'app/stellar';
-import { Observable } from 'rxjs/Observable';
 import { shippingTypeQuestions } from 'app/marketplace/shipping/shipping.details';
 import { shipTypes } from 'app/marketplace/shipping/ship-types';
-import { FormGroup, FormBuilder, Validators, Form, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { AngularFireStorageReference } from 'angularfire2/storage/ref';
+import { AngularFireStorage } from 'angularfire2/storage/storage';
+import { AngularFireUploadTask } from 'angularfire2/storage/task';
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-add-product-page',
@@ -35,11 +38,17 @@ export class AddProductPageComponent implements OnInit {
     secondFormGroup: FormGroup;
     thirdFormGroup: FormGroup;
 
+    ref: AngularFireStorageReference;
+    task: AngularFireUploadTask;
+
+    public title: string;
+    public content: string;
     private fileToUpload: File;
     shipTypes: any;
     constructor(private _productService: ProductService,
                 public router: Router,
                 private _formBuilder: FormBuilder,
+                private afStorage: AngularFireStorage,
                 private dialog: MatDialog) {}
 
     // https://stackblitz.com/edit/angular-tyfg2z?file=app%2Fapp.component.ts
@@ -77,7 +86,6 @@ export class AddProductPageComponent implements OnInit {
                         return;
                     }
                     // const newProductID = this._productService.getNewProductID();
-                    product.id = this._productService.getNewProductID();
                     this.productInfo = product;
                 } catch (e) {
                     alert('invalid product details:\n' + e);
@@ -200,20 +208,38 @@ export class AddProductPageComponent implements OnInit {
       }
   }
 
-  /**
-   * @returns void
-   */
-  // uploadFile(): void {
-  //   const id = this.data.productID;
-  //   this.ref = this.afStorage.ref('productThumbnails');
-  //   this.task = this.ref.child(id)
-  //       .put(this.fileToUpload)
-  //       .then((res: firebase.storage.UploadTaskSnapshot) => {
-  //           console.log(res);
-  //           if (res.state === 'success') {
-  //               this.dialogRef.close(res.downloadURL);
-  //           }
-  //       })
-  //       .catch(err => console.log('errr" \n' + err));
-  // }
+    /**
+     * @returns void
+     */
+    uploadFile(): void {
+        const _id = this._productService.getNewProductID();
+        this.productInfo.id = _id;
+        this.ref = this.afStorage.ref('productThumbnails');
+        this.task = this.ref.child(_id)
+            .put(this.fileToUpload)
+            .then((res: firebase.storage.UploadTaskSnapshot) => {
+                // console.log(res);
+                // if (res.state === 'success') {
+                    // this.dialogRef.close(res.downloadURL);
+                    console.log(res.downloadURL)
+                    this.productInfo.productThumbnailLink = res.downloadURL;
+                // }
+            })
+            .catch(err => console.log('errr" \n' + err));
+    }
+
+    submitNewProduct() {
+        if (!this.productInfo) {
+            return alert('please enter product info');
+        } else if (!this.shippingInfo) {
+            return alert('please enter shipping info');
+        } else if (!(this.fileToUpload && this.fileInput && this.imageUrl)) {
+            return alert('please add an image');
+        }
+        const _product = this.productInfo;
+
+        // todo product shipping info
+        // _product.shipingInfp = this.shippingInfo
+        // this._productService.addProduct(_product).then
+    }
 }

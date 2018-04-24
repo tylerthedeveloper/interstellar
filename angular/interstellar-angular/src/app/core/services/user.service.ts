@@ -36,7 +36,7 @@ export class UserService {
     getCurrentUser(_publicKey: string = ''): Observable<any> {
         let _keyLoginId = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         if (_keyLoginId) {
-            console.log(_keyLoginId);
+            // console.log(_keyLoginId);
             return this.usersCollection.doc(_keyLoginId).valueChanges();
         } else if (_keyLoginId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key') || _publicKey) {
             return Observable.create((observer: any) => {
@@ -44,13 +44,13 @@ export class UserService {
                 .valueChanges()
                 .first()
                 .subscribe((user: Array<User>) => {
-                    console.log(user[0]);
+                    // console.log(user[0]);
                         if (user[0]) {
                             sessionStorage.setItem('user_doc_id', user[0].id);
-                            console.log('a');
+                            // console.log('a');
                             return observer.next(user[0]);
                         } else {
-                            console.log('b');
+                            // console.log('b');
                             return observer.next();
                             // return observer.next('no current user');
                             // return observer.next(observer.error('nop user'));
@@ -58,7 +58,7 @@ export class UserService {
                     });
             });
         } else {
-            console.log('c');
+            // console.log('c');
             return Observable.create((observer: any) => observer.error('no current user'));
             // return Observable.create((observer: any) => observer.next());
         }

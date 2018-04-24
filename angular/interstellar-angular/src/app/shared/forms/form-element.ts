@@ -5,6 +5,7 @@ class MyFormElement<T> {
     required: boolean;
     order: number;
     controlType: string;
+    placeholder: string;
 
     constructor(options: {
                 value?: T,
@@ -12,7 +13,8 @@ class MyFormElement<T> {
                 label?: string,
                 required?: boolean,
                 order?: number,
-                controlType?: string
+                controlType?: string,
+                placeholder?: string
                 } = {}) {
         this.value = options.value;
         this.key = options.key || '';
@@ -20,6 +22,7 @@ class MyFormElement<T> {
         this.required = !!options.required;
         this.order = options.order === undefined ? 1 : options.order;
         this.controlType = options.controlType || '';
+        this.placeholder = options.placeholder || '';
     }
 }
 
@@ -80,6 +83,19 @@ class CheckBoxQuestion extends MyFormElement<string> {
     this.options = options['options'] || [];
   }
 }
+
+// https://github.com/philipphalder/angular2-dynamic-forms-advanced/blob/master/src/app/components/dynamic-question/dynamic-question.component.html
+
+// class CheckBoxGroupQuestion extends MyFormElement<string> {
+//   controlType = 'checkbox';
+//   type = 'checkbox';
+//   options: {key: string, value: string}[] = [];
+
+//   constructor(options: {} = {}) {
+//     super(options);
+//     this.options = options['options'] || [];
+//   }
+// }
 
 export {
     MyFormElement, TextboxQuestion, DropdownQuestion,

@@ -12,10 +12,18 @@ export class User {
 
     // stellar
     publicKey: string;
+
+
+    // todo: ...
     isValidBuyer: boolean;
     isValidSeller: boolean;
 
     // todo: ...
+    accountCreated: Date;
+    numberOfItemsSold: number;
+
+
+
     constructor(id: string,
                 publicKey: string,
                 userName: string = '',

@@ -100,7 +100,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         const path = this._route.snapshot.routeConfig.path;
         if (myUserID === pagePersonID && path !== ':id/me') {
             this.router.navigate(['/people', myUserID, 'me']);
-            console.log('its me ');
+            // console.log('its me ');
         }
 
         this._pagePersonID = pagePersonID;
@@ -109,7 +109,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         this._userService.getUserByID(pagePersonID)
             .subscribe(user => {
                 this.user = user;
-                console.log(user);
+                // console.log(user);
                 if (this.isMyProfile) {
                     const userTyped = <User> user;
                     this._userModel = userTyped;
@@ -292,7 +292,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((result: string) => {
             if (result) {
-                console.log(result);
+                // console.log(result);
                 const dialogRefInner = this.dialog.open(DialogComponent, {
                     data: { component: DynamicFormComponent,
                             payload: {
