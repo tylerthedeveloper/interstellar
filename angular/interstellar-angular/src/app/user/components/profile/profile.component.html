@@ -168,7 +168,7 @@
         </mat-tab>
         <mat-tab label="Seller History">
 
-            <div class="card" style="margin: 1%; padding: 2%;" *ngFor="let transaction of transactionSales | async">
+            <div class="card z-depth-0" style="margin: 1%; padding: 2%;" *ngFor="let transaction of transactionSales | async">
 
               <h4> Order ID: {{ transaction?.transactionID }} </h4>
               <hr>
@@ -193,7 +193,7 @@
 
           </div> -->
 
-          <div class="card"*ngFor="let order of orders | async" style="margin: 2%; padding: 2%;">
+          <div class="card z-depth-0"*ngFor="let order of orders | async" style="margin: 2%; padding: 2%;">
             <h4>Order ID: {{ order?.orderID }}</h4>
             <hr>
             <div class="" style="padding: 0% 5% 0% 5%;" *ngFor="let group of order?.transactionsGroups; index as i" [attr.data-index]="i">
