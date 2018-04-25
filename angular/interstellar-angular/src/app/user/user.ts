@@ -1,3 +1,5 @@
+import { AssetBalance } from "app/stellar";
+
 export class User {
 
     // FB
@@ -22,6 +24,8 @@ export class User {
     accountCreated: Date;
     numberOfItemsSold: number;
 
+    acceptedAssets: AssetBalance[];
+
 
 
     constructor(id: string,
@@ -30,7 +34,8 @@ export class User {
                 fullName: string = '',
                 email: string = '',
                 birthdate: string = '',
-                age: number = -1) {
+                age: number = -1,
+                acceptedAssets: AssetBalance[] = []) {
                     this.id = id,
                     this.publicKey = publicKey,
                     this.userName = userName,
@@ -38,6 +43,7 @@ export class User {
                     this.email = email,
                     this.birthdate = birthdate,
                     this.age = age;
+                    this.acceptedAssets = acceptedAssets;
                 }
 }
 

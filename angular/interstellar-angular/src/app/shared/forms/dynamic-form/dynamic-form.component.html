@@ -1,4 +1,5 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="form" #target>
+<!-- (ngSubmit)="onSubmit()" -->
+<form [formGroup]="form" #target>
   <div *ngFor="let question of questions" class="form-row">
     <app-dynamic-form-question [question]="question" [form]="form"></app-dynamic-form-question>
   </div>
@@ -8,8 +9,11 @@
     </div> -->
 
   <div class="form-row">
-      <button class="btn btn-primary" type="submit" [disabled]="!form.valid" >
-        Confirm
+      <button class="btn btn-primary" (click)="cancel()" >
+          Cancel
+        </button>
+        <button class="btn btn-primary" (click)="submitForm()" [disabled]="!form.valid" >
+          Confirm
       </button>
   </div>
 </form>

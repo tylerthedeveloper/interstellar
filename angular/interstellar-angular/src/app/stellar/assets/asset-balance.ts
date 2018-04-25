@@ -3,12 +3,13 @@ export class AssetBalance {
     asset_type: string;
     coin_name: string;
 
-    constructor(balance: string,
-                asset_type: string,
-                coin_name: string) {
-                    this.balance = balance;
-                    this.asset_type = asset_type;
-                    this.coin_name = coin_name;
+    constructor(obj?: {
+                balance?: string,
+                asset_type?: string,
+                coin_name?: string}) {
+                    this.balance = (obj.balance) ? obj.balance : '';
+                    this.asset_type = (obj.asset_type) ? obj.asset_type : '';
+                    this.coin_name = (obj.coin_name) ? obj.coin_name : '';
     }
 
 }

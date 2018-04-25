@@ -153,6 +153,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((newProfileData: string) => {
             if (newProfileData) {
+                // console.log(newProfileData)
                 this.edit = !this.edit;
                 const payload = {
                     id: this._userID,

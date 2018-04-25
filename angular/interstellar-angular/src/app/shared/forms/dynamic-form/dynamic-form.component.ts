@@ -29,11 +29,23 @@ export class DynamicFormComponent implements OnInit {
       return this._submitted.asObservable();
     }
 
+
+    // isValidWithData() {
+    //   // if (this.form.valid) {
+    //   //   this._submitted.next(true);
+    //   // }
+    //   // return this._submitted.asObservable();
+    // }
+
+    cancel() {
+      this._submitted.next(false);
+    }
+
     ngOnInit() {
       this.form = createFormGroup(this.questions, this.objectMapper);
     }
 
-    onSubmit() {
+    submitForm() {
         this.payLoad = JSON.stringify(this.form.value);
         this._submitted.next(true);
         // console.log(JSON.stringify(this.form.value));
