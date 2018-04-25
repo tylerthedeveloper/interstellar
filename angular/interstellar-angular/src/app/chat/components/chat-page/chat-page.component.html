@@ -37,7 +37,7 @@ threads       send message box - button     -->
                           </div>
 
                           <div style="display: flex; flex-direction: row;">
-                            <input #messageBox [disabled]="(activeThreadID === '')" placeholder="message text" style="width: 80%; border: 1px solid rgb(224,224,244);"/>
+                            <input #messageBox [disabled]="(activeThreadID === '')" placeholder="message text" style="width: 80%; border: 1px solid rgb(224,224,244);border-radius: 5px; padding: 1%;"/>
                             <button class="btn btn-primary z-depth-0" [disabled]="(activeThreadID === '')"
                                     (click)="sendMessage(messageBox.value); messageBox.value = '';" style="color: white; width: 20%; align-items: right;">send </button>
                           </div>
