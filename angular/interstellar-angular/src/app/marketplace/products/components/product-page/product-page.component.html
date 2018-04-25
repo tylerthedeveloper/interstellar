@@ -1,11 +1,11 @@
-<div class="jumbotron col-12 offset-2 col-md-8 white">
+<div class="jumbotron col-12 offset-2 col-md-8 white z-depth-0" style="border: 1px solid rgb(224,224,244);">
     <img src="{{ product?.productThumbnailLink }}" style="width: 10em; height: 10em" alt="alt">
     <h1 class="h1-responsive">{{ product?.productName }}</h1>
     <p class="lead">{{ product?.productLongDescription }}</p>
     <hr class="my-2">
     <p>Category: {{ product?.productCategory}} </p>
     <p>Price: ${{ product?.fixedUSDAmount }} </p>
-    <p> Quantity {{ product?.quantity }} </p>
+    <p> Quantity Left: {{ product?.quantity }} </p>
     <div *ngIf="!isMyProduct;" style="margin: 0em 0em 2em 0em;">
         <div>
             <input matInput type="number" id="purchaseQuantity" placeholder="Quantity" style="width: 20%;"
@@ -14,7 +14,7 @@
         <br/>
         <mat-select id="assetSelectionType" class="asset" placeholder="Asset Type" style="width: 20%;" [(ngModel)]="selectedAssetType">
             <mat-option *ngFor="let type of product?.productPrices" [value]="type">
-                Price: {{ type.balance }} {{ type.coin_name }} ({{ type.asset_type }})
+                {{ type.balance }} {{ type.coin_name }} ({{ type.asset_type }})
             </mat-option>
         </mat-select>
     </div>

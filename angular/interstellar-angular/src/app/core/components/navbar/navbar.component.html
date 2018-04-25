@@ -2,7 +2,7 @@
 <div style="margin: 5em 0em 0em 0em;" flex>
 
     <mat-sidenav-container style="height:100%;width:100%;" flex>
-        <!-- Signup Side Nav -->        
+        <!-- Signup Side Nav -->
         <mat-sidenav #sidenavSignUp mode="over" posiion="start" style="align-items: center; justify-content: center; overflow: hidden; position: fixed !important; width: 100%;">
             <!-- <div style="margin: 5% auto 0% auto; width: 50%; height: 20%; text-align: center;">
                 <img style="max-width:100%; max-height: 100%" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
@@ -26,11 +26,11 @@
                 </div>
             </div> -->
             <app-register></app-register>
-            
+
         </mat-sidenav>
         <!-- End Signup Side Nav -->
-        
-        <!-- Login Side Nav -->        
+
+        <!-- Login Side Nav -->
         <mat-sidenav #sidenavLogin mode="over" position="end" class="app-sidenav" style="align-items: center; justify-content: center; overflow: hidden; position: fixed !important; width: 100%;">
             <div style="margin: 5% auto 0% auto; width: 50%; height: 20%; text-align: center;">
                 <img style="max-width:100%; max-height: 100%" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
@@ -43,14 +43,14 @@
                     <h6> Stellar Wallet Secret Key: </h6>
                     <input #secretKeyLogin matInput type="password" style="width: 100%; margin: 0% auto 1% auto;" placeholder="Key" autofocus/>
                     <div style="display: flex; flex-direction: row;">
-                        <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" class="btn btn-primary">Login</button>
+                        <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" class="btn btn-primary z-depth-0">Login</button>
                         <button (click)="sidenavLogin.toggle(); secretKeyLogin.value = null;" class="btn z-depth-0" style="background-color: gray;">Close</button>
                     </div>
                 </div>
             </div>
-            
+
         </mat-sidenav>
-        <!-- End Login Side Nav -->        
+        <!-- End Login Side Nav -->
 
         <!-- Main Nav -->
         <mat-sidenav-content flex>

@@ -3,36 +3,27 @@
 <!-- {{ category.description }} -->
 <!-- <p style="text-align: center;"> Description: </p> -->
 
-<div class="card z-depth-0 rounded-0 transparent" style="margin: -1.7em auto 1em auto; width: 100%;">
+<div class="container card z-depth-0 rounded-0 transparent" style="margin: 0em auto 1em auto; width: 100%;">
 
-  <div class=row>
+  <div class="row" style="display: flex; flex-direction: row;">
 
-  <!-- <div class="" style="margin: 0em 0em 0em 11.2%;">
-  <h4 style="margin: .9em 0em -5em 0em;"> {{ pageCategory }} </h4>
-  </div> -->
+    <!-- <div class="" style="margin: 0em 0em 0em 11.2%;">
+    <h4 style="margin: .9em 0em -5em 0em;"> {{ pageCategory }} </h4>
+    </div> -->
 
-  <div class="card z-depth-0 rounded-0" style="margin: 0% auto 1em auto; width: 100%;">
-    <h5 style="margin: 1.7% 0em -10% 12.3%;"> {{ pageCategory }} </h5>
-  </div>
+    <h5 style="margin: 0% 0% 0% 1.5%;"> {{ pageCategory }} </h5>
 
-  <div class="" style="margin: .5% 0em -5% 75%; width: 50%;">
-
-    <input matInput type="text" id="productSearchFilter" placeholder="search products" style="width: 30%;">
+    <input matInput type="text" id="productSearchFilter" placeholder="search products" style="width: 13%; border: 1px solid rgb(224,224,244); margin: .3% .5% 0% 57.5%;">
     <!-- <button (click)="addProduct()" class="btn btn-default btn-sm"> Add Product </button> -->
     <button (click)="allCategories()" class="btn btn-default btn-sm z-depth-0"> Search </button>
     <button (click)="allCategories()" class="btn btn-mdb-color btn-sm z-depth-0"> Return </button>
 
   </div>
 
-  </div>
-
-</div>
-
-<div class="container">
   <div class="row">
 
     <div class="col-2">
-      <div class="card card-ecommerce example hoverable">
+      <div class="card card-ecommerce z-depth-0" style="border: 1px solid rgb(224,224,244);">
         <div class="card-body text-center">
           <h4 class="card-title">
             <strong> Filters </strong>
@@ -68,7 +59,7 @@
     </div>
 
     <div class="col-10">
-      <div *ngFor="let product of categoriedProducts | async" style="display: inline-block; margin: 0em .5em .5em 0em">
+      <div *ngFor="let product of categoriedProducts | async" style="display: inline-block; margin: 0em .5em .5em 0em; max-width: 33.33%; width: 25%">
         <app-category-product-card [product]="product" (notify)="onSelectProduct($event)"></app-category-product-card>
       </div>
     </div>

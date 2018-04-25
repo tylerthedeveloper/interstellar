@@ -9,9 +9,9 @@
   <h4 style="margin: .9em 0em -5em 0em;"> {{ pageCategory }} </h4>
   </div> -->
 
-  <div class="" style="margin: .5% 0em -5% 75%; width: 50%;">
+  <div class="" style="margin: 1% 0em -5% 74%; width: 50%;">
 
-    <input matInput type="text" id="productSearchFilter" placeholder="search merchants" style="width: 40%;">
+    <input matInput type="text" id="productSearchFilter" placeholder="search merchants" style="width: 40%; border: 1px solid rgb(224,224,244);">
     <!-- <button (click)="addProduct()" class="btn btn-default btn-sm"> Add Product </button> -->
     <button (click)="allCategories()" class="btn btn-default btn-sm z-depth-0"> Search </button>
 
@@ -22,7 +22,7 @@
 </div>
 
 <div style="text-align:center; width: 90%; margin: auto;">
-    <div *ngFor="let person of _peopleList | async" style="cursor: pointer; width: 25%; margin: 0% 0% 2% 2%; display: inline-block;" id="indCategory">
+    <div *ngFor="let person of _peopleList | async" style="cursor: pointer; width: 25%; margin: 0% 0% 1% 1%; display: inline-block;" id="indCategory">
         <app-user-card [person]="person" (notify)="onSelectPerson($event)"></app-user-card>
     </div>
 </div>
