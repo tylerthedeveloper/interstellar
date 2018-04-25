@@ -30,7 +30,7 @@
     z-index: 1;
     width: 100%  !important;
     /* fxLayoutAlign="space-around center" */
-    height: 8%;
+    height: 65px;
 }
 
 .main-nav-button {
@@ -55,13 +55,13 @@
 
 button {
     color: white;
-    height: 100%;
-    font-family: 'Kanit', sans-serif;
+    height: 65px;
+    font-family: 'Helvetica', sans-serif;
     font-size: .8em;
 }
 
 button:hover {
-  background-color: #192350;
+  /* background-color: #192350; */
 }
 
 i {
