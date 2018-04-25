@@ -54,14 +54,37 @@
 }
 
 button {
+    /* background-color: #0D082B; */
+    /* border-color: #0D082B; */
     color: white;
-    height: 65px;
+    height: 55px;
     font-family: 'Helvetica', sans-serif;
     font-size: .8em;
+    cursor: pointer;
+    /* margin: 15px 0px 0px 0px; */
+}
+
+.mainNavBut {
+
+      background-color: #0D082B;
+      border-color: #0D082B;
+      color: white;
+      height: 35px;
+      font-family: 'Helvetica', sans-serif;
+      font-size: .8em;
+      cursor: pointer;
+      margin: 15px 0px 0px 0px;
 }
 
 button:hover {
   /* background-color: #192350; */
+  /* border: 1px solid rgb(224,224,244);
+  border-radius: 3px; */
+}
+
+.mainNavBut:hover {
+  border: 1px solid rgb(224,224,244);
+  border-radius: 3px;
 }
 
 i {

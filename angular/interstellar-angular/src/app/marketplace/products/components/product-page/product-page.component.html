@@ -1,15 +1,15 @@
-<div class="jumbotron col-12 offset-2 col-md-8 white z-depth-0" style="border: 1px solid rgb(224,224,244);">
+<div class="jumbotron col-12 offset-2 col-md-8 white z-depth-0" style="border: 1px solid rgb(224,224,244); height: 565px;">
     <img src="{{ product?.productThumbnailLink }}" style="width: 10em; height: 10em" alt="alt">
     <h1 class="h1-responsive">{{ product?.productName }}</h1>
     <p class="lead">{{ product?.productLongDescription }}</p>
     <hr class="my-2">
-    <p>Category: {{ product?.productCategory}} </p>
+    <h6><p> {{ product?.productCategory}} </p></h6>
     <p>Price: ${{ product?.fixedUSDAmount }} </p>
     <p> Quantity Left: {{ product?.quantity }} </p>
     <div *ngIf="!isMyProduct;" style="margin: 0em 0em 2em 0em;">
         <div>
-            <input matInput type="number" id="purchaseQuantity" placeholder="Quantity" style="width: 20%;"
-                    [(ngModel)]="purchaseQuantity"  min="1" [max]="product?.quantity">
+             <input matInput type="number" id="purchaseQuantity" placeholder="Quantity" style="width: 20%;"
+                    [(ngModel)]="purchaseQuantity"  min="0" [max]="product?.quantity">
         </div>
         <br/>
         <mat-select id="assetSelectionType" class="asset" placeholder="Asset Type" style="width: 20%;" [(ngModel)]="selectedAssetType">
@@ -20,16 +20,19 @@
     </div>
     <div>
       <span *ngIf="!isMyProduct; then notMyProduct; else myProductBlock"> </span>
-      <ng-template #notMyProduct>
+      <ng-template #notMyProduct style="">
         <!-- <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn && isInStock" role="button" (click)="onBuyProduct()">Buy Product</button> -->
-        <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn || !isInStock" role="button" (click)="addProductToCart()">Add-to-Cart</button>
-        <button class="btn btn-mdb-color btn-lg" [disabled]="!isLoggedIn || !isInStock" role="button" (click)="addProductAndGoToCart()">Add-and-Go-to-Cart</button>
-        <button (click)="allCategories()" class="btn btn-mdb-color btn-lg z-depth-0"> Return </button>
+        <button class="btn btn-primary btn-sm" [disabled]="!isLoggedIn || !isInStock" role="button" (click)="addProductToCart()"
+        style="height: 35px;">Add-to-Cart</button>
+        <button class="btn btn-mdb-color btn-sm z-depth-0" [disabled]="!isLoggedIn || !isInStock" role="button" (click)="addProductAndGoToCart()"
+        style="height: 35px;">Add-and-Go-to-Cart</button>
+        <button class="btn btn-mdb-color btn-sm z-depth-0" (click)="allCategories()"
+        style="height: 35px;"> Return </button>
       </ng-template>
       <ng-template #myProductBlock>
-          <button (click)="editProduct()" class="btn btn-mdb-color btn-lg"> Edit </button>
-          <button (click)="deleteProduct()" class="btn btn-mdb-color btn-lg"> Delete </button>
-          <button (click)="allCategories()" class="btn btn-mdb-color btn-sm z-depth-0"> Return </button>
+          <button (click)="editProduct()" class="btn btn-mdb-color btn-sm z-depth-0" style="height: 35px;"> Edit </button>
+          <button (click)="deleteProduct()" class="btn btn-mdb-color btn-sm z-depth-0" style="height: 35px;"> Delete </button>
+          <button (click)="allCategories()" class="btn btn-mdb-color btn-sm z-depth-0" style="height: 35px;"> Return </button>
       </ng-template>
     </div>
 </div>

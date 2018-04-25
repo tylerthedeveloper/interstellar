@@ -32,7 +32,7 @@
 
                     </div>
 
-                    <div style="height: 500px; overflow: scroll;">
+                    <div style="height: 500px; overflow: scroll; border: 1px solid rgb(224,224,244); border-radius: 5px;">
                       <div *ngFor="let product of cartItemList" style="margin: 0em 0em .3% 0em;">
                           <app-cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></app-cart-item-card>
                       </div>
