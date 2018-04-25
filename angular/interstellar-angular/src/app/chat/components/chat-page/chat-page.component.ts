@@ -98,7 +98,7 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
      */
     sendMessage(message: string): void {
         if (!message || message === '') {
-            alert('uh oh, looks liek you forgot to enter text');
+            alert('uh oh, looks like you forgot to enter text');
             return;
         }
         console.log(this.activeThread);

@@ -1,22 +1,22 @@
 <!-- <div mat-card-avatar class="example-header-image"></div> -->
-<div class="card col-12 z-depth-0" style="display: flex; flex-direction: row; align-items: center;">
+<div class="card col-12 z-depth-0" style="display: flex; flex-direction: row; align-items: center; margin: 2px 0px 0px 0px;">
 
-  <div style="display: flex; flex-direction: row; width: 100%; height: 45px;">
+  <div style="display: flex; flex-direction: row; width: 100%; min-height: 45px;">
 
       <!-- <div class="col-4" style="background-color: blue;">
       <p style="padding: 1%; text-align: left;"> {{ (chatMessage.userName ? chatMessage.userName : chatMessage.sender)}}</p>
       </div> -->
 
-      <div class="col-5">
+      <div class="col-10">
       <p [style.float]="(chatMessage.sender === chatMessage.reciever) ? 'left' : 'right'"
       [style.background-color]="(chatMessage.sender === chatMessage.reciever) ? 'rgba(237,236,236,1)' : 'rgba(12,107,254,1)'"
       [style.color]="(chatMessage.sender === chatMessage.reciever) ? 'black' : 'white'"
-      style=" word-break: break-all; white-space: normal; border: 1px solid rgb(224,224,244); border-radius: 30px; padding: 10px; clear:both; ">
+      style=" word-break: break-all; white-space: normal; border-radius: 25px; padding: 9px 12px 9px 12px; clear:both; ">
                 {{ chatMessage.text }}
               </p>
       </div>
 
-      <div class="col-3" style="position: absolute; right: 0; background-color: blue;">
+      <div class="col-2" style="position: absolute; right: 0; margin-top: 5px;">
         <p class="" style="padding: 1%;"> {{ chatMessage.sentAt | dateFormatterPipe }} </p>
       </div>
     <!-- <div class="offset-1 col-md-5" style="margin: 0em -2.5em 0em 0em;">
