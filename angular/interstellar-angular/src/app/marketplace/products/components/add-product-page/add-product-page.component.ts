@@ -161,7 +161,7 @@ export class AddProductPageComponent implements OnInit {
       // todo: TEST THESE ARENT EVER NULL!!!!!!
       product.productListedAt = Date.now();
       product.productPrices = [
-          new AssetBalance('7.00000', 'native', 'Lumens')
+          new AssetBalance(obj : { balance: '7.00000', asset_type: 'native', coin_name : 'Lumens'})
       ];
       product.productSellerData = {
           productSellerID: sessionStorage.getItem('user_doc_id'),
