@@ -1,9 +1,9 @@
-<div class="jumbotron col-12 offset-2 col-md-8 white z-depth-0" style="border: 1px solid rgb(224,224,244); height: 565px;">
-    <img src="{{ product?.productThumbnailLink }}" style="width: 10em; height: 10em" alt="alt">
+<div class="jumbotron col-12 offset-2 col-md-8 white z-depth-0" style="border: 1px solid rgb(224,224,244); height: 565px; min-width: 700px;">
+    <img src="{{ product?.productThumbnailLink }}" style="width: 10em; height: 10em; border-radius: 50%; margin: -5% auto 3% auto;" alt="alt">
     <h1 class="h1-responsive">{{ product?.productName }}</h1>
+    <h6><p> {{ product?.productCategory}} </p></h6>
     <p class="lead">{{ product?.productLongDescription }}</p>
     <hr class="my-2">
-    <h6><p> {{ product?.productCategory}} </p></h6>
     <p>Price: ${{ product?.fixedUSDAmount }} </p>
     <p> Quantity Left: {{ product?.quantity }} </p>
     <div *ngIf="!isMyProduct;" style="margin: 0em 0em 2em 0em;">
@@ -18,7 +18,7 @@
             </mat-option>
         </mat-select>
     </div>
-    <div>
+    <div style="width: 440px; margin: -50px 0% 0% 0%; float: right">
       <span *ngIf="!isMyProduct; then notMyProduct; else myProductBlock"> </span>
       <ng-template #notMyProduct style="">
         <!-- <button class="btn btn-primary btn-lg" [disabled]="!isLoggedIn && isInStock" role="button" (click)="onBuyProduct()">Buy Product</button> -->
