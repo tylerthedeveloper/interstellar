@@ -13,10 +13,14 @@
 
     <h5 style="margin: 0% 0% 0% 1.5%;"> {{ pageCategory }} </h5>
 
-    <input matInput type="text" id="productSearchFilter" placeholder="search products" style="width: 13%; border: 1px solid rgb(224,224,244); margin: .3% .5% 0% 57.5%;">
-    <!-- <button (click)="addProduct()" class="btn btn-default btn-sm"> Add Product </button> -->
-    <button (click)="allCategories()" class="btn btn-default btn-sm z-depth-0"> Search </button>
-    <button (click)="allCategories()" class="btn btn-mdb-color btn-sm z-depth-0"> Return </button>
+    <div style="position: absolute; right: 0;">
+
+      <input matInput type="text" id="productSearchFilter" placeholder="search products" style="width: 42%; border: 1px solid rgb(224,224,244); margin: .3% .4% 0% 0%;">
+      <!-- <button (click)="addProduct()" class="btn btn-default btn-sm"> Add Product </button> -->
+      <button (click)="allCategories()" class="btn btn-default btn-sm z-depth-0"> Search </button>
+      <button (click)="allCategories()" class="btn btn-mdb-color btn-sm z-depth-0" style="margin: 0% 0% 0% -1%;"> Return </button>
+
+    </div>
 
   </div>
 
