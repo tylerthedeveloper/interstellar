@@ -84,7 +84,8 @@
 
   <div style="margin: 0% auto 0% auto; width: 100%;">
     <input class="btn btn-mdb-color btn-block" role="button" id="fileUpload" type="file" #fileInput (change)="renderFile($event); addImage = !addImage">
-    <button class="btn btn-mdb-color btn-block" role="button" (click)="addProductImage()" [disabled]="!addImage" style="width: 100%;"> 3) Upload Product Image</button>
+    <button class="btn btn-mdb-color btn-block" role="button" (click)="uploadFile()" [disabled]="!addImage" style="width: 100%;"> 3) Upload Product Image</button>
+    <!-- <button class="btn btn-mdb-color btn-block" role="button" (click)="addProductImage()" [disabled]="!addImage" style="width: 100%;"> 3) Upload Product Image</button> -->
     <img [src]="imageUrl" />
   </div>
 
