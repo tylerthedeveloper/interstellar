@@ -26,8 +26,6 @@ export class User {
 
     acceptedAssets: AssetBalance[];
 
-
-
     constructor(id: string,
                 publicKey: string,
                 userName: string = '',

@@ -113,14 +113,17 @@ export class UserService {
      * @param  {{}} userData
      * @returns Observable
      */
-    updateProfile(userData: {}): Observable<any> {
+    updateProfile(userData: string): Observable<any> {
         console.log(userData);
-        console.log(userData['id']);
-        console.log(userData['data']);
+        const obj = <any> JSON.parse(userData);
+        // console.log(obj);
+        const ID = obj.id;
+        const data = JSON.parse(obj.data);
+        console.log(obj.data);
         return Observable.fromPromise(
             this.usersCollection
-                .doc(userData['id'])
-                .update(userData['data']));
+                .doc(ID)
+                .set(data, {merge: true}));
     }
 
     // ────────────────────────────────────────────────────────────────────────────────

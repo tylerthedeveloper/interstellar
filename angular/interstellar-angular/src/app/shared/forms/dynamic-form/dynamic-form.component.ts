@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MyFormElement } from '../form-element';
+import { MyFormElement, CheckBoxGroupQuestion } from '../form-element';
 import { createFormGroup } from '../form.utils';
 import { Subject } from 'rxjs/Subject';
 
@@ -46,9 +46,19 @@ export class DynamicFormComponent implements OnInit {
     }
 
     submitForm() {
-        this.payLoad = JSON.stringify(this.form.value);
+      // const result = Object.assign({}, this.form.value);
+      // const checkboxQuestions = this.questions.filter(x => x instanceof CheckBoxGroupQuestion) as CheckBoxGroupQuestion[];
+      // Object.keys(this.form.value)
+      //   .filter(x => x === 'checkbox-group')
+      //   .forEach(x => {
+      //     console.log(x)
+      //     result[x] = checkboxQuestions[0].options
+      //       .filter((y, n) => result[x][n])
+      //       .map(z => z.key);
+      // });
+      // console.log(JSON.stringify(result));
+      //   this.payLoad = JSON.stringify(this.form.value);
         this._submitted.next(true);
-        // console.log(JSON.stringify(this.form.value));
     }
 
 }

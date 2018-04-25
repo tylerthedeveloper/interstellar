@@ -117,6 +117,12 @@
                 <hr>
                 <!--Quotation-->
                 <p class="dark-grey-text">Public Key: {{_userModel?.publicKey}}</p>
+                <h6>Accepted Asset Types</h6>
+                <ul>
+                    <li *ngFor="let asset of user?.acceptedAssets">
+                            {{ asset }}
+                    </li>
+                </ul>
                 <h6>My Balances</h6>
                 <ul>
                     <li *ngFor="let bal of balances">

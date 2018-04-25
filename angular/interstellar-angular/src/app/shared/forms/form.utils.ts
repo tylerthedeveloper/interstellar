@@ -1,4 +1,4 @@
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormArray } from '@angular/forms';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { isValidSecretKey } from 'app/stellar';
 import { Observable } from 'rxjs/Observable';
@@ -15,18 +15,19 @@ import { stellarKeyLength } from 'app/core/_constants/quantities';
  */
 const createFormGroup = (questions: any, objectMapper: any): FormGroup => {
     const group: any = {};
-    questions.forEach(element => {
-        const key = element.key;
-        const value = (objectMapper) ? objectMapper[key] || element.value || '' : element.value || '';
-        if (element.type === 'number') {
-            console.log(element);
-            const val: number = +(objectMapper) ? +objectMapper[key] || +element.value || 1 : +element.value || 1;
-            group[key] = element.required ? new FormControl(+val, Validators.required) : new FormControl(+val);
+    questions.forEach(question => {
+        const key = question.key;
+        const value = (objectMapper) ? objectMapper[key] || question.value || '' : question.value || '';
+        if (question.controlType === 'checkbox-group') {
+                group[question.key] = new FormArray((question as any).options
+                    .map(option => new FormControl(question.value && question.value.some(y => y === option.value) ? option.key : '')));
+        } else if (question.type === 'number') {
+            // console.log(question);
+            const val: number = +(objectMapper) ? +objectMapper[key] || +question.value || 1 : +question.value || 1;
+            group[key] = question.required ? new FormControl(+val, Validators.required) : new FormControl(+val);
         } else {
-            group[key] = element.required ? new FormControl(value, Validators.required) : new FormControl(value);
+            group[key] = question.required ? new FormControl(value, Validators.required) : new FormControl(value);
         }
-                        // console.log('+element', group[key]);
-
     });
     return new FormGroup(group);
 };

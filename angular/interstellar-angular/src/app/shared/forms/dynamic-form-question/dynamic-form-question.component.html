@@ -22,11 +22,15 @@
                 [name]="question.name"
                 [value]="question.value" >
 
+        <!-- TODO: make abstract group below as array ... handle arbitrary material type  -->
         <div *ngSwitchCase="'checkbox-group'">
-            <div *ngFor="let item of question.options; let i=index" [formGroupName]="i">
-                    <input *ngSwitchCase="'checkbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type"
-                            [name]="question.name"
-                            [value]="question.value" >
+            <div [formArrayName]="question.key" style="display:flex">
+                    <!-- <label [attr.for]="question.key">{{question?.label}}</label>  -->
+                    <!-- [type]="item.type" -->
+                    <mat-checkbox *ngFor="let item of question.options; let i=index" [formControlName]="i" 
+                                    [id]="item.key" [value]="item.value" > 
+                            {{item.value}} 
+                    </mat-checkbox>
             </div>
         </div>
 

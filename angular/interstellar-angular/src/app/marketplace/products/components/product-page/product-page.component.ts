@@ -263,7 +263,11 @@ export class ProductPageComponent implements OnInit {
      */
     private createCartItem(purchaseQuantity: number, totalPurchaseAmount: number = 0): CartItem {
         totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.balance, purchaseQuantity);
-        const asset = new AssetBalance(String(totalPurchaseAmount), this.selectedAssetType.asset_type, this.selectedAssetType.coin_name);
+        const asset = new AssetBalance({
+            balance: String(totalPurchaseAmount),
+            asset_type: this.selectedAssetType.asset_type,
+            coin_name: this.selectedAssetType.coin_name
+        });
         const cartItem: CartItem = <CartItem>{
             buyerUserID: this.myUserId,
             buyerPublicKey: this.myPubKey,

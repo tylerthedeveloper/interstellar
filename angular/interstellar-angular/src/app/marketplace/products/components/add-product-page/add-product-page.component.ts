@@ -161,7 +161,7 @@ export class AddProductPageComponent implements OnInit {
       // todo: TEST THESE ARENT EVER NULL!!!!!!
       product.productListedAt = Date.now();
       product.productPrices = [
-          new AssetBalance('7.00000', 'native', 'Lumens')
+          new AssetBalance({ balance: '7.00000', asset_type: 'native', coin_name: 'Lumens'})
       ];
       product.productSellerData = {
           productSellerID: sessionStorage.getItem('user_doc_id'),
@@ -221,7 +221,7 @@ export class AddProductPageComponent implements OnInit {
                 // console.log(res);
                 // if (res.state === 'success') {
                     // this.dialogRef.close(res.downloadURL);
-                    console.log(res.downloadURL)
+                    console.log(res.downloadURL);
                     this.productInfo.productThumbnailLink = res.downloadURL;
                 // }
             })

@@ -28,10 +28,10 @@ export class DialogComponent implements OnInit, OnDestroy  {
               (<DynamicFormComponent> this.componentRef.instance).isValid().subscribe((bool: any) => {
                   // const bool = payload.bool;
                   // const closer = payload.closer;
-                  console.log(bool)
+                  // console.log(bool)
                   this.canFinish = (bool) ? true : false;
                   if (bool) {
-                    this.dialogRef.close(this.componentRef.instance.form.value);
+                    this.dialogRef.close(JSON.stringify(this.componentRef.instance.form.value));
                   } else  {
                     this.dialogRef.close(false);
                   }

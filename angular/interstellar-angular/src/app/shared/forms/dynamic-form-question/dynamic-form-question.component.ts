@@ -9,7 +9,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class DynamicFormQuestionComponent {
 
-    @ViewChild("fileInput") fileInput; // ElementRef;
+    @ViewChild('fileInput') fileInput; // ElementRef;
     imageUrl: any;
     file: any;
 
@@ -18,7 +18,7 @@ export class DynamicFormQuestionComponent {
     get isValid() { return this.form.controls[this.question.key].valid; }
     get hasImageFileName() { return this.imageUrl; }
     get hasImageFile() { return this.fileInput; }
-    get value() { return this.file }
+    get value() { return this.file; }
 
     renderFile(e: any) {
         const fi = this.fileInput.nativeElement;

@@ -177,7 +177,7 @@ export class CartComponent extends BaseComponent implements OnInit {
                             data: newAddressData
                         };
                         if (result) {
-                            this._userService.updateProfile(payload);
+                            this._userService.updateProfile(JSON.stringify(payload));
                         }
                         this.tempAddress = newAddressData;
                         this.hasAddress = true;
@@ -227,7 +227,7 @@ export class CartComponent extends BaseComponent implements OnInit {
                         data: newAddressData
                     };
                     if (result) {
-                        this._userService.updateProfile(payload);
+                        this._userService.updateProfile(JSON.stringify(payload));
                     }
                     this.tempAddress = newAddressData;
                     this.hasAddress = true;

@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 
 /** Stellar */
 // import StellarSdk from 'stellar-sdk';
-import { AssetBalance } from 'app/stellar';
+import { AssetBalance, stellarAssetsMapper2 } from 'app/stellar';
 
 /** Observable */
 import { Observable } from 'rxjs/Observable';
@@ -151,15 +151,27 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                     }
             }
         });
+        // todo
         dialogRef.afterClosed().subscribe((newProfileData: string) => {
             if (newProfileData) {
-                // console.log(newProfileData)
+                const formObject = <any> JSON.parse(newProfileData);
+                const acceptedAssetsTempArray = new Array<string>();
+                const acceptedAssetsTemp = {};
+                const acceptedAssets = (formObject.acceptedAssets as Array<string>)
+                    // .filter(asset => (asset) ? console.log(asset) : null)
+                    .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarAssetsMapper2[i].asset_type) : null);
+                    // .map((asset, i) => (asset) ? acceptedAssetsTemp[stellarAssetsMapper2[i].asset_type] = true : null);
+                // stellarAssetsMapper2
+                // console.log(acceptedAssetsTemp);
+                formObject.acceptedAssets = acceptedAssetsTempArray;
+                // formObject.acceptedAssets = JSON.stringify(acceptedAssetsTemp);
+                // console.log(formObject.acceptedAssets)
                 this.edit = !this.edit;
                 const payload = {
                     id: this._userID,
-                    data: newProfileData
+                    data: JSON.stringify(formObject)
                 };
-                return this._userService.updateProfile(payload);
+                return this._userService.updateProfile(JSON.stringify(payload));
             }
         });
     }
@@ -261,7 +273,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         // todo: TEST THESE ARENT EVER NULL!!!!!!
         product.productListedAt = Date.now();
         product.productPrices = [
-            new AssetBalance('7.00000', 'native', 'Lumens')
+            new AssetBalance({ balance: '7.00000', asset_type: 'native', coin_name: 'Lumens'})
         ];
         product.productSellerData = {
             productSellerID: sessionStorage.getItem('user_doc_id'),
@@ -309,7 +321,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                             id: this._userModel.id,
                             data: newAddressData
                         };
-                        return this._userService.updateProfile(payload);
+                        return this._userService.updateProfile(JSON.stringify(payload));
                     }
                 });
             }

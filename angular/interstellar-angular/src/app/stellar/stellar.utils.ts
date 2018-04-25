@@ -7,6 +7,11 @@ const currencyAssetsMapper = {
     'Tycoin' : 'TyCoins'
 };
 
+const stellarAssetsMapper2 = [
+    {asset_type: 'Native', coin_name: 'Lumens'},
+    {asset_type: 'Tycoin', coin_name: 'TyCoins'}
+];
+
 const isValidSecretKey = (secretKey: string): string => {
     try {
         return StellarSdk.Keypair.fromSecret(secretKey).publicKey();
@@ -126,5 +131,5 @@ const areValidNewBalances = (newBalances: Array<AssetBalance>): boolean => {
 export { isValidSecretKey, currencyAssetsMapper,
         getBalanceforAsset, updateBalance, isValidNewBalance, areValidNewBalances,
         calcTotalPurchaseAmount, calcTotalsForMultipleAssets, calcDifferenceForMultipleAssets,
-        StellarLumensMinimum, TyCoinMinimum
+        StellarLumensMinimum, TyCoinMinimum, stellarAssetsMapper2
 };

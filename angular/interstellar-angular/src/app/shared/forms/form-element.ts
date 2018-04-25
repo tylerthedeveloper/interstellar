@@ -86,18 +86,19 @@ class CheckBoxQuestion extends MyFormElement<string> {
 
 // https://github.com/philipphalder/angular2-dynamic-forms-advanced/blob/master/src/app/components/dynamic-question/dynamic-question.component.html
 
-// class CheckBoxGroupQuestion extends MyFormElement<string> {
-//   controlType = 'checkbox';
-//   type = 'checkbox';
-//   options: {key: string, value: string}[] = [];
+class CheckBoxGroupQuestion extends MyFormElement<string> {
+  controlType = 'checkbox-group';
+  type = 'checkbox';
+  options: {key: string, value: string}[] = [];
 
-//   constructor(options: {} = {}) {
-//     super(options);
-//     this.options = options['options'] || [];
-//   }
-// }
+  constructor(options: {} = {}) {
+    super(options);
+    this.options = options['options'] || [];
+  }
+}
 
 export {
     MyFormElement, TextboxQuestion, DropdownQuestion,
-    NumberInputQuestion, FileUploadQuestion, CheckBoxQuestion
+    NumberInputQuestion, FileUploadQuestion, CheckBoxQuestion,
+    CheckBoxGroupQuestion
 };
