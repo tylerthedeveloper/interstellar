@@ -2,7 +2,7 @@
 <div style="margin: 5em 0em 0em 0em;" flex>
 
     <mat-sidenav-container style="height:100%;width:100%;" flex>
-        <!-- Signup Side Nav -->        
+        <!-- Signup Side Nav -->
         <mat-sidenav #sidenavSignUp mode="over" posiion="start" style="align-items: center; justify-content: center; overflow: hidden; position: fixed !important; width: 100%;">
             <!-- <div style="margin: 5% auto 0% auto; width: 50%; height: 20%; text-align: center;">
                 <img style="max-width:100%; max-height: 100%" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
@@ -26,11 +26,11 @@
                 </div>
             </div> -->
             <app-register></app-register>
-            
+
         </mat-sidenav>
         <!-- End Signup Side Nav -->
-        
-        <!-- Login Side Nav -->        
+
+        <!-- Login Side Nav -->
         <mat-sidenav #sidenavLogin mode="over" position="end" class="app-sidenav" style="align-items: center; justify-content: center; overflow: hidden; position: fixed !important; width: 100%;">
             <div style="margin: 5% auto 0% auto; width: 50%; height: 20%; text-align: center;">
                 <img style="max-width:100%; max-height: 100%" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
@@ -43,38 +43,38 @@
                     <h6> Stellar Wallet Secret Key: </h6>
                     <input #secretKeyLogin matInput type="password" style="width: 100%; margin: 0% auto 1% auto;" placeholder="Key" autofocus/>
                     <div style="display: flex; flex-direction: row;">
-                        <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" class="btn btn-primary">Login</button>
-                        <button (click)="sidenavLogin.toggle(); secretKeyLogin.value = null;" class="btn z-depth-0" style="background-color: gray;">Close</button>
+                        <button (click)="login(secretKeyLogin.value); secretKeyLogin.value = null;" class="btn btn-primary z-depth-0" style="max-height: 35px;">Login</button>
+                        <button (click)="sidenavLogin.toggle(); secretKeyLogin.value = null;" class="btn z-depth-0" style="background-color: gray; max-height: 35px;">Close</button>
                     </div>
                 </div>
             </div>
-            
+
         </mat-sidenav>
-        <!-- End Login Side Nav -->        
+        <!-- End Login Side Nav -->
 
         <!-- Main Nav -->
         <mat-sidenav-content flex>
 
             <mat-toolbar class="main-nav" flex>
                 <img style="width: 10%; height: 100%; margin: 0em 0em 0em -1%;" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-                <button mat-button id="home" [routerLink]="['/home']" (click)="changePage('home')" routerLinkActive="active" style="padding: .5% 1% 0% 1%;">
+                <button id="home" class="mainNavBut" [routerLink]="['/home']" (click)="changePage('home')" routerLinkActive="active" style="padding: 0% 1% 0% 1%;">
                     <i class="fa fa-home">
                         Home
                     </i>
                 </button>
-                <button mat-button id="categories" (click)="changePage('categories')" [routerLink]="['/categories']" routerLinkActive="active"
-                    style="padding: .5% 1% 0% 1%;">
+                <button id="categories" class="mainNavBut" (click)="changePage('categories')" [routerLink]="['/categories']" routerLinkActive="active"
+                    style="padding: 0% 1% 0% 1%;">
                     <i class="fa fa-map-signs">
                         Categories
                     </i>
                 </button>
-                <button mat-button id="products" (click)="changePage('products')" [routerLink]="['/products']" routerLinkActive="active"
-                    style="padding: .5% 1% 0% 1%;">
+                <button id="products" class="mainNavBut" (click)="changePage('products')" [routerLink]="['/products']" routerLinkActive="active"
+                    style="padding: 0% 1% 0% 1%;">
                     <i class="fa fa-bars">
                         Products
                     </i>
                 </button>
-                <button mat-button id="people" (click)="changePage('people')" [routerLink]="['/people']" routerLinkActive="active" style="padding: .5% 1% 0% 1%;">
+                <button id="people" class="mainNavBut" (click)="changePage('people')" [routerLink]="['/people']" routerLinkActive="active" style="padding: 0% 1% 0% 1%;">
                     <i class="fa fa-users">
                         People
                     </i>
@@ -83,34 +83,34 @@
                 <span *ngIf="loggedIn; then isLoggedIn; else notLoggedIn"> </span>
                 <!-- <div *ngIf="loggedIn" style="display: flex; flex-direction: row; padding: 0% 0% 0% 0%"> -->
 
-                    <ng-template #isLoggedIn style="display: flex; flex-direction: row; margin: 0% 0% 0% 0%">
-                        <button mat-button [matMenuTriggerFor]="menu">
-                            Account
-                            <mat-icon>more_vert</mat-icon>
+                    <ng-template #isLoggedIn style="display: flex; flex-direction: row;">
+                        <button class="mainNavBut" [matMenuTriggerFor]="menu" style="display: flex;">
+                            <p style="margin: 0px 0px 10px 0px;">Account</p>
+                            <mat-icon style="margin: 3px 0px 0px 0px;">more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">
                             <button mat-menu-item id="chat" [routerLink]="['/chat']" (click)="changePage('chat')"
-                                    routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
+                                    routerLinkActive="active" style="">
                                 <mat-icon>chat</mat-icon>
                                 <i class="" style="color: black;">
                                     Chat
                                 </i>
                             </button>
                             <button mat-menu-item id="chat" [routerLink]="['/cart']" (click)="changePage('cart')"
-                                    routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
+                                    routerLinkActive="active" style="">
                                 <mat-icon>shopping_cart</mat-icon>
                                 <i class="" style="color: black;">
                                         Cart {{ cartItemCount }}
                                 </i>
                             </button>
                             <button mat-menu-item id="profile" [style.display]="!loggedIn ? 'none' : 'inherit'" (click)="changePage('profile')"
-                                    routerLinkActive="active" style="padding: 1% 0% 0% 0%; height: 3.5em;">
+                                    routerLinkActive="active" style="">
                                 <mat-icon>face</mat-icon>
                                 <i class="" style="color: black;">
                                         Profile
                                 </i>
                             </button>
-                            <button mat-menu-item id="logoutButton" (click)="logout()" style="padding: 1% 0% 0% 0%;">
+                            <button mat-menu-item id="logoutButton" (click)="logout()" style="">
                                 <mat-icon>highlight_off</mat-icon>
                                 <i class="" style="color: black;">
                                     Logout
@@ -145,13 +145,13 @@
 
                 <ng-template #notLoggedIn style="float:right;">
                     <div *ngIf="!loggedIn" style="padding: 0% 0% 0% 0%;">
-                        <button mat-button id="register" (click)="sidenavSignUp.toggle()" style="padding: 1% 0% 0% 0%; height: 3.5em;">
+                        <button id="register" class="mainNavBut" (click)="sidenavSignUp.toggle()" style="">
                             <!-- (click)="changePage('register')"  [routerLink]="['/register']" routerLinkActive="active" -->
                             <i class="fa fa-money">
                                 Signup
                             </i>
                         </button>
-                        <button mat-button *ngIf="!loggedIn" (click)="sidenavLogin.toggle()" style="padding: 1% 0% 0% 0%; height: 3.5em;">
+                        <button *ngIf="!loggedIn" class="mainNavBut" (click)="sidenavLogin.toggle()" style="">
                             <i class="fa fa-sign-in">
                                 Login
                             </i>

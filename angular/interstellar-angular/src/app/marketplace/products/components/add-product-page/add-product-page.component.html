@@ -11,10 +11,10 @@
   <hr>
 
   <div style="margin: auto; width: 100%;">
-    <button [disabled]="productInfo" class="btn btn-primary btn-block" role="button" (click)="addProductInfo()" style="margin: auto;">  
+    <!-- <button [disabled]="productInfo" class="btn btn-primary btn-block" role="button" (click)="addProductInfo()" style="margin: auto;">
       1) Enter product info
     </button>
-    <p> {{ productInfo | json }} </p>
+    <p> {{ productInfo | json }} </p> -->
     <button class="btn btn-primary btn-block" role="button" (click)="addProductInfo()" style="margin: auto;"> Enter product info</button>
 
     <div class="card" style="margin: 3% 0% 3% 0%; padding: 5%;">
@@ -42,7 +42,7 @@
   <hr>
 
   <div style="margin: auto; width: 100%;">
-    <button class="btn btn-blue-grey btn-block" role="button" (click)="enterShipping = !enterShipping"  [disabled]="!productInfo"> 
+    <button class="btn btn-blue-grey btn-block" role="button" (click)="enterShipping = !enterShipping"  [disabled]="!productInfo">
       2) Shipping Information
     </button>
   </div>
@@ -76,6 +76,7 @@
 
     <div style="display: flex; flex-direction: row; margin: 2% 0% 0% 0%;">
     <h6>Shipping Options Offered:</h6><p style="margin: 0% 0% 0% 2%;"> {{ shippingInfo?.shipTypes }} </p>
+    <!-- <p style="margin: 0% 0% 0% 2%;" *ngFor="let _shipType of shippingInfo?.shipTypes"> {{ _shipType }} </p> -->
     </div>
 
   </div>

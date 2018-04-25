@@ -2,12 +2,10 @@
   <div *ngFor="let question of questions" class="form-row">
     <app-dynamic-form-question [question]="question" [form]="form"></app-dynamic-form-question>
   </div>
-<<<<<<< HEAD
-  
+
     <!-- <div *ngIf="payLoad" class="form-row">
       <strong>Saved the following values</strong><br>{{payLoad}}
     </div> -->
-=======
 
   <div class="form-row">
       <button class="btn btn-primary" type="submit" [disabled]="!form.valid" >
@@ -19,4 +17,3 @@
     <!-- <div *ngIf="payLoad" class="form-row">
       <strong>Saved the following values</strong><br>{{payLoad}}
     </div> -->
->>>>>>> cd9748b07dc795b0b35b4380dd166799d0feef43

@@ -4,177 +4,258 @@
 
 <!--Grid column-->
 
-<div class="col-12 col-md-9" style="margin: auto;">
+<div class="container">
+  <div class="row">
 
-    <!--Card-->
-    <div class="card testimonial-card z-depth-0">
+    <div class="col-12 col-md-11" style="margin: auto;">
 
-
-        <!--Background color-->
-        <div class="card-up info-color"></div>
-
-        <!--Avatar-->
-        <!-- <div class="avatar mx-auto white">
-            <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(9).jpg" class="rounded-circle img-fluid">
-        </div> -->
-
-        <div class="card-body">
-
-            <div style="background-color: white;" class="card">
-
-                <h4 class="font-weight-bold py-5" style="text-align: center; margin: 0em 0em -.5em 0em;">Merchant Profile</h4>
-
-                <div class="container">
-
-                    <div class="row">
-
-                        <div style="margin: auto; display: flex; flex-direction: row; align-items: middle;">
+        <!--Card-->
+        <div class="card testimonial-card z-depth-0" style="border: 1px solid rgb(224,224,244);">
 
 
-                            <div class="profile-image" style="background-color: grey; width: 15em; height: 15em; margin: 0em 5% 5% 13%;">
-                                <img class="main-profile-pic" style="width: 15em; height: 15em;" src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png" alt="" />
+            <!--Background color-->
+            <div class="card-up info-color"></div>
+
+            <!--Avatar-->
+            <!-- <div class="avatar mx-auto white">
+                <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(9).jpg" class="rounded-circle img-fluid">
+            </div> -->
+
+            <div class="card-body">
+
+                <div style="background-color: white;" class="card">
+
+                    <h4 class="font-weight-bold py-5" style="text-align: center; margin: 0em 0em -.5em 0em;">Merchant Profile</h4>
+
+                    <div class="container">
+
+                        <div class="row">
+
+                            <div style="margin: auto; display: flex; flex-direction: row; align-items: middle; width: 100%;">
+
+
+                                <div class="profile-image" style="width: 15em; height: 15em; margin: 0em 5% 5% 13%;">
+                                    <img class="main-profile-pic" style="width: 15em; height: 15em; border-radius: 50%;" src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png" alt="" />
+                                </div>
+                                <div class="profile-image-two">
+
+
+                                </div>
+                                <!-- <div *ngIf="isMyProfile; else NotMyProfile" style="text-align: center;"></div> -->
+
+                                <!-- <ng-template #NotMyProfile>
+                                    <button (click)="contactSeller()">
+                                        Message
+                                    </button>
+                                </ng-template> -->
+
+                                <!-- *ngIf="!edit" -->
+
+                                <div style="width: 20%; word-break: break-all; white-space: normal;">
+
+                                    <label for="userName">Username:</label><h6>{{user?.userName}}</h6>
+                                    <br>
+
+                                    <label for="name">Name: </label><h6 class="" aria-hidden="true"> {{user?.fullName}}</h6>
+                                    <br>
+
+                                    <label for="userName">Age: </label><h6>{{user?.age}}</h6>
+                                    <br>
+
+                                </div>
+
+                                <div style="width: 30%; margin: 0% 0% 0% 1.5%; word-break: break-all; white-space: normal;">
+
+                                    <label for="userName">Email: </label><h6>{{user?.email}}</h6>
+                                    <br>
+
+                                    <label for="userName">Address: </label><h6>{{user?.address}}</h6>
+                                    <br>
+
+                                    <div *ngIf="isMyProfile; else NotMyProfile" style="text-align: center;"></div>
+                                    <ng-template #NotMyProfile>
+                                        <button class="btn btn-sm btn-primary z-depth-0" style="height: 11%;" (click)="contactSeller()">
+                                            Message
+                                        </button>
+                                    </ng-template>
+                                    <br>
+
+                                    <button class="btn btn-sm btn-mdb-color z-depth-0" style="height: 11%;" aria-hidden="true" (click)="updateProfile()">Edit</button>
+
+
+                                </div>
+
+
+                                <!-- <div *ngIf="edit" style="">
+                                    <form [formGroup]="profileForm">
+                                        <div class="form-group">
+                                            <label for="userName">Username:</label>
+
+                                            <input matInput type="text" id="userName" formControlName="userName" [(ngModel)]="_userModel.userName" style="max-width: 100%; max-height: 100%;">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name">Name:</label>
+
+                                            <input matInput type="text" id="fullName" formControlName="fullName" [(ngModel)]="_userModel.fullName" name="fullName" style="max-width: 100%; max-height: 100%;">
+
+                                        </div>
+                                        <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" class="btn btn-default">Submit</button>
+                                    </form>
+                                </div> -->
+                                <!-- <div *ngIf="!edit"> -->
+                                <!-- </div> -->
                             </div>
-                            <div class="profile-image-two">
 
-
-                            </div>
-                            <!-- <div *ngIf="isMyProfile; else NotMyProfile" style="text-align: center;"></div> -->
-
-                            <!-- <ng-template #NotMyProfile>
-                                <button (click)="contactSeller()">
-                                    Message
-                                </button>
-                            </ng-template> -->
-
-                            <!-- *ngIf="!edit" -->
-
-                            <div style="width: 10%;">
-
-                                <label for="userName">Username: <h6>{{user?.userName}}</h6></label>
-
-                                <label for="name">Name: <h6 class="" aria-hidden="true"> {{user?.fullName}}</h6></label>
-
-                                <label for="userName">Age: <h6>{{user?.age}}</h6></label>
-
-                            </div>
-
-                            <div style="width: 20%; margin: 0% 0% 0% 1.5%;">
-
-                                <label for="userName">Email: <h6>{{user?.email}}</h6></label>
-
-                                <label for="userName">Address: <h6>{{user?.address}}</h6></label>
-
-
-                            </div>
-
-                            <div *ngIf="isMyProfile; else NotMyProfile" style="text-align: center;"></div>
-
-                            <ng-template #NotMyProfile>
-                                <button class="btn btn-sm btn-mdb-color z-depth-0" style="height: 11%;" (click)="contactSeller()">
-                                    Message
-                                </button>
-                            </ng-template>
-
-                            <button class="btn btn-sm btn-mdb-color z-depth-0" style="height: 11%;" aria-hidden="true" (click)="updateProfile()">Edit</button>
-                            <!-- <div *ngIf="edit" style="">
-                                <form [formGroup]="profileForm">
-                                    <div class="form-group">
-                                        <label for="userName">Username:</label>
-
-                                        <input matInput type="text" id="userName" formControlName="userName" [(ngModel)]="_userModel.userName" style="max-width: 100%; max-height: 100%;">
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Name:</label>
-
-                                        <input matInput type="text" id="fullName" formControlName="fullName" [(ngModel)]="_userModel.fullName" name="fullName" style="max-width: 100%; max-height: 100%;">
-
-                                    </div>
-                                    <button (click)="$event.preventDefault(); updateProfile(profileForm.value)" class="btn btn-default">Submit</button>
-                                </form>
-                            </div> -->
-                            <!-- <div *ngIf="!edit"> -->
-                            <!-- </div> -->
                         </div>
 
                     </div>
 
                 </div>
 
+
+                <hr>
+                <!--Quotation-->
+                <p class="dark-grey-text">Public Key: {{_userModel?.publicKey}}</p>
+                <h6>My Balances</h6>
+                <ul>
+                    <li *ngFor="let bal of balances">
+                        {{ bal?.balance }} {{ bal?.asset_type }}
+                    </li>
+                </ul>
             </div>
 
-
-            <hr>
-            <!--Quotation-->
-            <p class="dark-grey-text">Public Key: {{_userModel?.publicKey}}</p>
-            <h4>My Balances</h4>
-            <ul>
-                <li *ngFor="let bal of balances">
-                    {{ bal?.balance }} {{ bal?.asset_type }}
-                </li>
-            </ul>
         </div>
 
-    </div>
+        <hr>
+        <!--Card-->
 
-    <hr>
-    <!--Card-->
+        <!-- Bottom section consisting of Your listings and order history -->
 
-    <!-- Bottom section consisting of Your listings and order history -->
-    <mat-tab-group primary style="margin-bottom: 5%;">
-        <mat-tab label="My Listings">
-            <div style="align-items: center; justify-content: center;">
-                <!-- (click)="addProduct()" -->
-                <button class="btn btn-primary z-depth-0" aria-hidden="true"
-                        (click)="goToAddProductpage()"
-                        [disabled]="!hasAddress" style="width: 100%">
-                    List New Product
-                </button>
-            </div>
-            <div style="display: inline-block; width: 20%; height: 100%; margin: auto; cursor: pointer;" *ngFor="let prod of products | async">
-                <div class="card card-ecommerce z-depth-1" style="margin: 2% 2% 2% 2%;">
-                    <!--Card image-->
-                    <div class="view overlay z-depth-1">
-                        <a><img src="{{ (prod) ? prod?.productThumbnailLink : '' }}" class="img-fluid" alt="missing imagfwe"
-                          style="max-width:100%; max-height: 100%; width: 10em; height: 10em; margin: auto; display: block;"></a>
-                    </div>
-                    <!--/.Card image-->
-                    <!--Card content-->
-                    <div class="card-body text-center">
-                        <!--Category & Title-->
-                        <h4 class="card-title">
-                            <strong>{{ prod?.productName }}</strong>
-                        </h4>
-                        <!--Description-->
-                        <p class="card-text">
-                            {{ prod?.productShortDescription }}
-                        </p>
-                        <!--Card footer-->
-                        <div class="card-footer" style="height: 3em; width: 100%;">
-                            <span class="float-left">Price ${{ product?.fixedUSDAmount }}
-                                <span class="discount">Quantity: {{ product?.quantity }}</span>
-                            </span>
-                        </div>
-                    </div>
-                    <!--/.Card content-->
+        <button class="btn btn-primary z-depth-0" aria-hidden="true"
+                (click)="goToAddProductpage()"
+                [disabled]="!hasAddress" style="width: 100%; margin: 0% 0% 2% 0%;">
+            List New Product
+        </button>
+        <div style="z-index: -1">
+        <mat-tab-group style="margin-bottom: 5%;">
+            <mat-tab label="My Listings" style="">
+                <!-- <div style="align-items: center; justify-content: center;">
+                    (click)="addProduct()"
+                    <button class="btn btn-primary z-depth-0" aria-hidden="true"
+                            (click)="goToAddProductpage()"
+                            [disabled]="!hasAddress" style="width: 100%">
+                        List New Product
+                    </button>
+                </div> -->
+                <div style="height: 400px; overflow: scroll;">
+
+                  <div style="display: inline-block; width: 33.33%; height: 100%; margin: auto; cursor: pointer;" *ngFor="let prod of products | async">
+                      <div class="card card-ecommerce z-depth-0" style="margin: 2% 2% 2% 2%; border: 1px solid rgb(224,224,244);">
+                          <!--Card image-->
+                          <div class="view overlay z-depth-0">
+                              <a><img src="{{ (prod) ? prod?.productThumbnailLink : '' }}" class="img-fluid" alt="missing image"
+                                style="max-width:100%; max-height: 100%; width: 20em; height: 15em; margin: auto; display: block;"></a>
+                          </div>
+                          <!--/.Card image-->
+                          <!--Card content-->
+                          <div class="card-body text-center">
+                              <!--Category & Title-->
+                              <h4 class="card-title">
+                                  <strong>{{ prod?.productName }}</strong>
+                              </h4>
+                              <!--Description-->
+                              <p class="card-text">
+                                  {{ prod?.productShortDescription }}
+                              </p>
+                              <!--Card footer-->
+                              <hr>
+                              <div style="width: 100%; display: flex; flex-direction: row;">
+
+                                  <p style="margin: 0% 0% 0% 15%;">Price: ${{ product?.fixedUSDAmount }} </p>
+                                  <p style="margin: 0% 0% 0% 20%;">Quantity: {{ product?.quantity }}</p>
+
+                              </div>
+                          </div>
+                          <!--/.Card content-->
+                      </div>
+                  </div>
+
                 </div>
-            </div>
-        </mat-tab>
-        <mat-tab label="Seller History">
-            <p *ngFor="let transaction of transactionSales | async">
-                {{ transaction | json }}
-            </p>
-            <hr>
-        </mat-tab>
-        <mat-tab label="Order History">
-            <p *ngFor="let order of orders | async">
-                {{ order | json }} AAAA
-            </p>
-            <hr>
-        </mat-tab>
-    </mat-tab-group>
 
+            </mat-tab>
+            <mat-tab label="Seller History">
 
+              <div style="height: 400px; overflow: scroll;">
+
+                <div *ngFor="let transaction of transactionSales | async">
+                  <div class="card z-depth-0" style="margin: 1%; padding: 2%; border: 1px solid rgb(224,224,244);">
+
+                    <h4> Order ID: {{ transaction?.transactionID }} </h4>
+                    <hr>
+                    <p> Product Name: {{ transaction?.productName }} </p>
+                    <p> Quantity: {{ transaction?.quanitityPurchased }} </p>
+                    <p> Category: {{ transaction?.productCategory }} </p>
+                    <p> Price: {{ transaction?.assetPurchaseDetails.balance }} {{ transaction?.assetPurchaseDetails.coin_name }} ({{ transaction?.fixedUSDAmount }} USD) </p>
+
+                  </div>
+                </div>
+
+              </div>
+
+                <hr>
+            </mat-tab>
+            <mat-tab label="Order History">
+
+              <!-- <div class="card" style="margin: 1%; padding: 2%;" *ngFor="let order of orders | async">
+
+                <p> Order Number: {{ order?.orderID }} </p>
+                <p> Product Name: {{ order?.productName }} </p>
+                <p> Quantity: {{ order?.quanitityPurchased }} </p>
+                <p> Category: {{ order?.productCategory }} </p>
+                <p> Price: {{ order?.assetPurchaseDetails.balance }} {{ order?.assetPurchaseDetails.coin_name }} ({{ order?.fixedUSDAmount }} USD) </p>
+
+              </div> -->
+              <div style="height: 400px; overflow: scroll;">
+
+                <div class="card z-depth-0"*ngFor="let order of orders | async" style="margin: 1%; padding: 2%; border: 1px solid rgb(224,224,244);">
+                  <h4>Order ID: {{ order?.orderID }}</h4>
+                  <hr>
+                  <div class="" style="padding: 0% 5% 0% 5%;" *ngFor="let group of order?.transactionsGroups; index as i" [attr.data-index]="i">
+                    <div>
+                        <h5> Transaction Group: {{ i + 1 }}  </h5>
+                        <p> ID: {{ group?.transactionGroupID }}  </p>
+                        <p> Seller Public Key: {{ group?.sellerPublicKey }}  </p>
+
+                    </div>
+                    <div style="margin: auto; width: 20%;" *ngFor="let transRecord of group.transactionRecords; index as j" [attr.data-index]="j">
+                        <!-- TODO: image??? -->
+                        <!-- <img [src]="transRecord?.productName" /> -->
+                        <h6> Transaction Number: {{ j + 1 }}  </h6>
+                        <!-- <p> Transaction ID: {{ transRecord?.transactionID }}  </p> -->
+                        <p> Product Name: {{ transRecord?.productName }}  </p>
+                        <!-- <p> Product Description: {{ transRecord?.productShortDescription }}  </p> -->
+                        <!-- <p> Product ID: {{ transRecord?.productID }}  </p> -->
+                        <p> Quantity: {{ transRecord?.quantityPurchased }}  </p>
+                        <!-- <p> Memo:  {{ transRecord?.memo  }}  </p> -->
+                        <!-- <p> USD Amount:  $ {{ transRecord?.fixedUSDAmount | json }}  </p> -->
+                        <p> Price: {{ transRecord?.assetPurchaseDetails.balance }} {{ transRecord?.assetPurchaseDetails.coin_name }} (${{ transRecord?.fixedUSDAmount | json }})  </p>
+
+                    </div>
+                    <hr>
+                  </div>
+
+                </div>
+              </div>
+
+                <!-- <div class="card" *ngFor="let order of orders | async">
+                    {{ order | json }} AAAA
+                </div> -->
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+  </div>
+  </div>
 
 
     <!--Grid column-->

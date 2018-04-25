@@ -3,7 +3,9 @@
 
   <div style="display: flex; flex-direction: row; width: 100%;">
 
-      <p class="col-4"> {{ chatMessage.sender}}</p> <p class="col-5" style="width: 100%; word-break: break-all; white-space: normal;"> {{ chatMessage.text }} </p> <p class="offset-1"> {{ chatMessage.sentAt | dateFormatterPipe }} </p>
+      <p class="col-4" style="padding: 1%;"> {{ chatMessage.sender}}</p> <p class="col-5"
+      style="width: 100%; word-break: break-all; white-space: normal; border: 1px solid rgb(224,224,244); border-radius: 5px; padding: 1%; background-color: rgba(44,145,251,.1);"> {{ chatMessage.text }} </p> <p
+      class="offset-1" style="padding: 1%;"> {{ chatMessage.sentAt | dateFormatterPipe }} </p>
 
     <!-- <div class="offset-1 col-md-5" style="margin: 0em -2.5em 0em 0em;">
       <button (click)="readMessage()" class="btn btn-primary btn-sm z-depth-0"> Mark Read </button>
