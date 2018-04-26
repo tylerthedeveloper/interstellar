@@ -114,12 +114,14 @@ export class UserService {
      * @returns Observable
      */
     updateProfile(userData: string): Observable<any> {
-        console.log(userData);
-        const obj = <any> JSON.parse(userData);
+        // console.log(userData);
+        const obj = JSON.parse(userData);
         // console.log(obj);
         const ID = obj.id;
-        const data = JSON.parse(obj.data);
-        console.log(obj.data);
+        const data = obj.data;
+        // console.log(ID);
+        // console.log(obj.data);
+        // console.log(data)
         return Observable.fromPromise(
             this.usersCollection
                 .doc(ID)

@@ -1,4 +1,4 @@
-import { DropdownQuestion, TextboxQuestion, CheckBoxQuestion, NumberInputQuestion } from '../../shared/forms/form-element';
+import { DropdownQuestion, TextboxQuestion, CheckBoxQuestion, NumberInputQuestion, CheckBoxGroupQuestion } from '../../shared/forms/form-element';
 import { unitedStates } from './states';
 import { shipTypes } from './ship-types';
 import { countries } from './countries';
@@ -66,11 +66,21 @@ const shippingAddressQuestions = [
 ];
 
 const shippingTypeQuestions = [
-    new NumberInputQuestion({key: 'shipCost', label: 'Ship Cost', value: 1, required: true, order: 1, type: 'number' }),
-    new DropdownQuestion({ key: 'shipType', label: 'Shipping Options', required: true, order: 3,
-        options: shipTypes.map(method => ({key: method.type,  value: method.value})),
-    }),
-    new NumberInputQuestion({key: 'shipTime', label: 'Est Time', value: 1, required: true, order: 1, type: 'number' }),
+    // new NumberInputQuestion({key: 'shipCost', label: 'Ship Cost', value: 1, required: true, order: 1, type: 'number' }),
+    // new DropdownQuestion({ key: 'shipType', label: 'Shipping Options', required: true, order: 3,
+    //     options: shipTypes.map(method => ({key: method.type,  value: method.value})),
+    // }),
+    // new NumberInputQuestion({key: 'shipTime', label: 'Est Time', value: 1, required: true, order: 1, type: 'number' }),
+    new CheckBoxGroupQuestion({
+        key: 'shipTypes',
+        label: 'Accepted Ship Assets',
+        options: shipTypes.map(shipper => ({key: shipper.type,  value: shipper.value})),
+        // options: [
+        //   {key: 'one',  value: 'One'},
+        //   {key: 'two',  value: 'Two'},
+        //   {key: 'three',   value: 'Three'},
+        // ],
+        order: 4}),
 ];
 
 export {

@@ -77,8 +77,10 @@ export class AddProductPageComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result: string) => {
             if (result) {
-                const product = <Product> JSON.parse(JSON.stringify(result));
+                const product = <Product> JSON.parse(result);
                 try {
+                    console.log(product.quantity)
+                    console.log(product.fixedUSDAmount)
                     product.quantity = Number(product.quantity);
                     product.fixedUSDAmount = Number(product.fixedUSDAmount);
                     if (!areValidProductTypes(product)) {
@@ -119,6 +121,23 @@ export class AddProductPageComponent implements OnInit {
             if (result) {
                 // const product = <Product> JSON.parse(JSON.stringify(result));
                 console.log(result);
+                /*
+                                const formObject = <any> JSON.parse(newProfileData);
+                const acceptedAssetsTempArray = new Array<string>();
+                const acceptedAssetsTemp = {};
+                const acceptedAssets = (formObject.acceptedAssets as Array<string>)
+                    // .filter(asset => (asset) ? console.log(asset) : null)
+                    .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarAssetsMapper2[i].asset_type) : null);
+                    // .map((asset, i) => (asset) ? acceptedAssetsTemp[stellarAssetsMapper2[i].asset_type] = true : null);
+                // stellarAssetsMapper2
+                // console.log(acceptedAssetsTemp);
+                formObject.acceptedAssets = acceptedAssetsTempArray;
+                */
+
+
+
+
+
                 // try {
                 //     product.quantity = Number(product.quantity);
                 //     product.fixedUSDAmount = Number(product.fixedUSDAmount);

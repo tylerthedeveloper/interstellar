@@ -22,9 +22,10 @@
                 [name]="question.name"
                 [value]="question.value" >
 
+                <!-- TODO: JONNY STYLE CHECK BOXES -->
         <!-- TODO: make abstract group below as array ... handle arbitrary material type  -->
         <div *ngSwitchCase="'checkbox-group'">
-            <div [formArrayName]="question.key" style="display:flex">
+            <div [formArrayName]="question.key">
                     <!-- <label [attr.for]="question.key">{{question?.label}}</label>  -->
                     <!-- [type]="item.type" -->
                     <mat-checkbox *ngFor="let item of question.options; let i=index" [formControlName]="i" 

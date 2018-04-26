@@ -317,11 +317,16 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                 dialogRefInner.afterClosed().subscribe((newAddressData: string) => {
                     if (newAddressData) {
                         console.log(newAddressData);
-                        const payload = {
+                        const addObj = JSON.parse(newAddressData);
+                        const addr: any = {};
+                        addr.address = addObj;
+                        // Object.keys(addObj).map(attr => Object.assign(attr, addr.address));
+                        console.log(addr)
+                        const payload = JSON.stringify({
                             id: this._userModel.id,
-                            data: newAddressData
-                        };
-                        return this._userService.updateProfile(JSON.stringify(payload));
+                            data: addr // {address: addr.address}
+                        });
+                        return this._userService.updateProfile(payload);
                     }
                 });
             }

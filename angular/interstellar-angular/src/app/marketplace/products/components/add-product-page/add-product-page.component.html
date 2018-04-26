@@ -42,7 +42,8 @@
   <hr>
 
   <div style="margin: auto; width: 100%;">
-    <button class="btn btn-blue-grey btn-block" role="button" (click)="enterShipping = !enterShipping"  [disabled]="!productInfo">
+    <!-- enterShipping = !enterShipping -->
+    <button class="btn btn-blue-grey btn-block" role="button" (click)="addShippingInfo(); "  [disabled]="!productInfo">
       2) Shipping Information
     </button>
   </div>

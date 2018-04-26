@@ -1,4 +1,4 @@
-import { AssetBalance } from "app/stellar";
+import { AssetBalance } from 'app/stellar';
 
 export class User {
 

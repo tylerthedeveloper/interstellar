@@ -101,12 +101,13 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
             alert('uh oh, looks like you forgot to enter text');
             return;
         }
-        console.log(this.activeThread);
+        console.log(this.myBaseUserID);
+        console.log(this.activeThread.receiverFbID);
         const messageObj = new ChatMessage({
             isRead: false,
             sentAt: Date.now(),
             sender: this.myBaseUserID,
-            reciever: this.activeThread.senderFbID,
+            receiver: this.activeThread.receiverFbID,
             text: message,
             chatThreadID: this.activeThreadID
         });
@@ -140,10 +141,12 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
         if (activeChatThread) {
             this.activeThread = activeChatThread;
         }
+        console.log(this.activeThreadUserID);
         console.log(this.activeThread);
         // TODO: make ordered by timestamp
         this.activeThreadMessages = this._chatService.getMessagesForChat(chatID);
-        if (!this._route.snapshot.queryParams['receiverID']) {
+        const currentRouteParam = this._route.snapshot.queryParams['receiverID'] || '';
+        if (!currentRouteParam || (currentRouteParam !== this.activeThreadUserID)) {
             this.location.go('/chat', `?receiverID=${this.activeThreadUserID}`);
         }
     }
