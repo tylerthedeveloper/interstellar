@@ -1,31 +1,34 @@
 <!-- <div mat-card-avatar class="example-header-image"></div> -->
-<div class="card z-depth-0" style="display: flex; flex-direction: row; align-items: center;">
+<div class="card z-depth-0"
+style="width: 102.2%; display: flex; flex-direction: row; align-items: center; height: 100px; padding: 3px; margin: 1px 1px 1px -10px; border: 1px solid rgb(224,224,244);">
 
-  <div class="col-12 col-md-2" style="display: block; margin: auto; padding: 1em;">
-    <img src="{{ cartItem?.productThumbnailLink }}" style="max-width: 100%; max-height: 100%;" alt="alt">
+  <div class="col-2" style="display: block; margin: auto; height: 90%;">
+    <img src="{{ cartItem?.productThumbnailLink }}" style="max-width: 100%; max-height: 100%; width: 100%; height: 100%;" alt="alt">
   </div>
 
-  <div class="col-md-4" style="display: flex; flex-direction: row;">
+  <div class="col-4" style="display: flex; flex-direction: row; max-height: 100%;">
 
-    <div style="width: 40%; max-height: 100%;">
-      <p style="text-align: left;"> {{ cartItem?.productName }} </p>
+    <div style="width: 33.33%; overflow: hidden; padding-right: 2px;">
+      <p style="margin: 0% 0% 0% 0% ;"> {{ cartItem?.productName }} </p>
     </div>
     <!-- <p> {{ cartItem?.productID }} </p>
     <p> {{ cartItem?.cartItemID }} </p> -->
-    <div style="width: 30%; max-height: 100%">
-      <p class="offset-2" style="text-align: left;">{{ cartItem?.quantityPurchased }}</p>
+    <div style="width: 33.33%">
+    <p class="" style="margin: 0% 0% 0% 0%">{{ cartItem?.quantityPurchased }}</p>
     </div>
-    <div style="width: 30%; max-height: 100%">
-      <p class="offset-1" style="text-align: left;">{{ cartItem?.assetPurchaseDetails.balance }} {{ cartItem?.assetPurchaseDetails.asset_type }}</p>
+
+    <div style="width: 33.33%">
+      <p class="" style="margin: 0% 0% 0% 0%">{{ cartItem?.assetPurchaseDetails.balance }} {{ cartItem?.assetPurchaseDetails.asset_type }}</p>
     </div>
+
     <!-- <p> {{ cartItem?.description }} </p> -->
   </div>
 
-  <div class="offset-1 col-md-5" style="margin: 0em -2.5em 0em 0em;">
+  <div class="col-6" style="margin: 0em 0em 0em 0%; float: right; display: flex; flex-direction: row;">
     <button (click)="purchaseItem(cartItem.cartItemID, cartItem.productID)" class="btn btn-primary btn-sm z-depth-0"> Buy </button>
     <button (click)="editItem(cartItem)" class="btn btn-blue-grey btn-sm z-depth-0"> Edit </button>
     <button (click)="removeItem(cartItem.cartItemID, cartItem.productID)" class="btn btn-mdb-color btn-sm z-depth-0"> Remove </button>
-    <mat-checkbox (change)="checkItem(cartItem.cartItemID)" style="margin: 0em 0em 0em 63%;">Select</mat-checkbox>
+    <mat-checkbox (change)="checkItem(cartItem.cartItemID)" style="margin: 10px 0em 0em 0%;">Select</mat-checkbox>
   </div>
 
 </div>
