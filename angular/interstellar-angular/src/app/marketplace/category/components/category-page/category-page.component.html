@@ -15,7 +15,7 @@
 
     <div style="position: absolute; right: 0;">
 
-      <input matInput type="text" id="productSearchFilter" placeholder="search products" style="width: 42%; border: 1px solid rgb(224,224,244); margin: .3% .4% 0% 0%;">
+      <input matInput type="text" id="productSearchFilter" placeholder="search products" style="width: 42%; border: 1px solid rgb(224,224,244); border-radius: 3px; padding: 5px; margin: .4% 2px 0% 0%;">
       <!-- <button (click)="addProduct()" class="btn btn-default btn-sm"> Add Product </button> -->
       <button (click)="allCategories()" class="btn btn-default btn-sm z-depth-0"> Search </button>
       <button (click)="allCategories()" class="btn btn-mdb-color btn-sm z-depth-0" style="margin: 0% 0% 0% -1%;"> Return </button>
@@ -27,7 +27,7 @@
   <div class="row">
 
     <div class="col-2">
-      <div class="card card-ecommerce z-depth-0" style="border: 1px solid rgb(224,224,244);">
+      <div class="card card-ecommerce z-depth-0" style="border: 1px solid rgb(224,224,244); overflow: hidden;">
         <div class="card-body text-center">
           <h4 class="card-title">
             <strong> Filters </strong>
@@ -62,7 +62,7 @@
       </div>
     </div>
 
-    <div class="col-10">
+    <div class="col-10" style="">
       <div *ngFor="let product of categoriedProducts | async" style="display: inline-block; margin: 0em .5em .5em 0em; max-width: 33.33%; width: 25%">
         <app-category-product-card [product]="product" (notify)="onSelectProduct($event)"></app-category-product-card>
       </div>

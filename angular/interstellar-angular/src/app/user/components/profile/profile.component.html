@@ -154,7 +154,7 @@
                         List New Product
                     </button>
                 </div> -->
-                <div style="height: 400px; overflow: scroll;">
+                <div style="height: 420px; overflow: scroll; background-color: rgb(244,244,244); border: 1px solid rgb(224,224,244); border-radius: 0px 0px 3px 3px; border-top: none;">
 
                   <div style="display: inline-block; width: 33.33%; height: 100%; margin: auto; cursor: pointer;" *ngFor="let prod of products | async">
                       <div class="card card-ecommerce z-depth-0" style="margin: 2% 2% 2% 2%; border: 1px solid rgb(224,224,244);">
@@ -192,7 +192,7 @@
             </mat-tab>
             <mat-tab label="Seller History">
 
-              <div style="height: 400px; overflow: scroll;">
+              <div style="height: 420px; overflow: scroll; background-color: rgb(244,244,244); border: 1px solid rgb(224,224,244); border-radius: 0px 0px 3px 3px; border-top: none;">
 
                 <div *ngFor="let transaction of transactionSales | async">
                   <div class="card z-depth-0" style="margin: 1%; padding: 2%; border: 1px solid rgb(224,224,244);">
@@ -209,7 +209,6 @@
 
               </div>
 
-                <hr>
             </mat-tab>
             <mat-tab label="Order History">
 
@@ -222,7 +221,7 @@
                 <p> Price: {{ order?.assetPurchaseDetails.balance }} {{ order?.assetPurchaseDetails.coin_name }} ({{ order?.fixedUSDAmount }} USD) </p>
 
               </div> -->
-              <div style="height: 400px; overflow: scroll;">
+              <div style="height: 420px; overflow: scroll; background-color: rgb(244,244,244); border: 1px solid rgb(224,224,244); border-radius: 0px 0px 3px 3px; border-top: none;">
 
                 <div class="card z-depth-0"*ngFor="let order of orders | async" style="margin: 1%; padding: 2%; border: 1px solid rgb(224,224,244);">
                   <h4>Order ID: {{ order?.orderID }}</h4>
