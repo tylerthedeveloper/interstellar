@@ -7,7 +7,7 @@
 <div class="container">
   <div class="row">
 
-    <div class="col-12 col-md-11" style="margin: auto;">
+    <div class="col-12 col-md-12" style="margin: auto;">
 
         <!--Card-->
         <div class="card testimonial-card z-depth-0" style="border: 1px solid rgb(224,224,244);">
@@ -51,37 +51,41 @@
 
                                 <!-- *ngIf="!edit" -->
 
-                                <div style="width: 20%; word-break: break-all; white-space: normal;">
 
+                                <div style="width: 100%; word-break: break-all; white-space: normal; display: flex; flex-direction: row;">
+
+
+                                  <div>
                                     <label for="userName">Username:</label><h6>{{user?.userName}}</h6>
                                     <br>
 
-                                    <label for="name">Name: </label><h6 class="" aria-hidden="true"> {{user?.fullName}}</h6>
+                                    <div style="text-align: center;"></div>
+
+                                    <label [hidden]="!hasAddress" for="name">Name: </label><h6 class="" aria-hidden="true"> {{user?.fullName}}</h6>
                                     <br>
 
-                                    <label for="userName">Age: </label><h6>{{user?.age}}</h6>
+                                    <label [hidden]="!hasAddress" for="userName">Age: </label><h6>{{user?.age}}</h6>
                                     <br>
+                                  </div>
+
+                                  <div style="margin: 0% 0% 0% 1.5%; word-break: break-all; white-space: normal;">
+
+                                    <label [hidden]="!hasAddress" for="userName">Email: </label><h6>{{user?.email}}</h6>
+                                    <br>
+
+                                    <label [hidden]="!hasAddress" for="userName">Address: </label><h6>{{user?.address}}</h6>
+                                    <br>
+
+                                    <button [hidden]="hasAddress" class="btn btn-sm btn-primary z-depth-0" style="height: 11%;" (click)="contactSeller()">Message</button>
+
+                                    <button [hidden]="!hasAddress" class="btn btn-sm btn-mdb-color z-depth-0" style="height: 11%;" aria-hidden="true" (click)="updateProfile()">Edit</button>
+
+                                  </div>
+
 
                                 </div>
 
-                                <div style="width: 30%; margin: 0% 0% 0% 1.5%; word-break: break-all; white-space: normal;">
-
-                                    <label for="userName">Email: </label><h6>{{user?.email}}</h6>
                                     <br>
-
-                                    <label for="userName">Address: </label><h6>{{user?.address}}</h6>
-                                    <br>
-
-                                    <div *ngIf="isMyProfile; else NotMyProfile" style="text-align: center;"></div>
-                                    <ng-template #NotMyProfile>
-                                        <button class="btn btn-sm btn-primary z-depth-0" style="height: 11%;" (click)="contactSeller()">
-                                            Message
-                                        </button>
-                                    </ng-template>
-                                    <br>
-
-                                    <button class="btn btn-sm btn-mdb-color z-depth-0" style="height: 11%;" aria-hidden="true" (click)="updateProfile()">Edit</button>
-
 
                                 </div>
 
@@ -116,35 +120,38 @@
 
                 <hr>
                 <!--Quotation-->
-                <p class="dark-grey-text">Public Key: {{_userModel?.publicKey}}</p>
-                <h6>Accepted Asset Types</h6>
-                <ul>
-                    <li *ngFor="let asset of user?.acceptedAssets">
-                            {{ asset }}
-                    </li>
-                </ul>
-                <h6>My Balances</h6>
-                <ul>
-                    <li *ngFor="let bal of balances">
-                        {{ bal?.balance }} {{ bal?.asset_type }}
-                    </li>
-                </ul>
+                <!-- <p class="dark-grey-text">Public Key: {{_userModel?.publicKey}}</p> -->
+                <div style="margin: 0px 0px 0px 10px;">
+                  <h6>Accepted Asset Types</h6>
+                  <ul>
+                      <li *ngFor="let asset of user?.acceptedAssets">
+                              {{ asset }}
+                      </li>
+                  </ul>
+                </div>
+
             </div>
 
         </div>
 
         <hr>
         <!--Card-->
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-12" style="margin: auto;">
 
         <!-- Bottom section consisting of Your listings and order history -->
 
+
         <button class="btn btn-primary z-depth-0" aria-hidden="true"
                 (click)="goToAddProductpage()"
-                [disabled]="!hasAddress" style="width: 100%; margin: 0% 0% 2% 0%;">
+                [hidden]="!hasAddress" style="width: 100%; margin: 0% 0% 2% 0%;">
             List New Product
         </button>
-        <div style="z-index: -1">
-        <mat-tab-group style="margin-bottom: 5%;">
+
+
+      <div style="z-index: -1">
+        <mat-tab-group style="margin-bottom: 2%;">
             <mat-tab label="My Listings" style="">
                 <!-- <div style="align-items: center; justify-content: center;">
                     (click)="addProduct()"
@@ -258,9 +265,11 @@
                 </div> -->
             </mat-tab>
         </mat-tab-group>
+      </div>
     </div>
   </div>
-  </div>
+</div>
+
 
 
     <!--Grid column-->
