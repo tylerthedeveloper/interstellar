@@ -151,6 +151,10 @@ export class ProductPageComponent implements OnInit {
         });
     }
 
+    allCategories() {
+      this.location.back();
+    }
+
     /**
      * @returns boolean
      */
@@ -327,4 +331,3 @@ export class ProductPageComponent implements OnInit {
   GCEDZY5CHDSTH5GT67DEHORK23ZLJQAVQTHNG7XBK5JWX675JQ4SOMH7
   10000.0000000 native
 */
-

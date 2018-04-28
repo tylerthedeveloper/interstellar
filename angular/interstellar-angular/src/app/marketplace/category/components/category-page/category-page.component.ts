@@ -71,7 +71,7 @@ export class CategoryPageComponent implements OnInit {
     /**
      * @returns void
      */
-    allCategories(): void {
+    allCategories() {
         this.location.back();
     }
 

@@ -1,28 +1,29 @@
+
 <button (click)="returnToCart()"> Return to Cart </button>
 
-
-<mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper">
+<mat-vertical-stepper class="col-md-10" style="border: 1px solid rgb(224,224,244); border-radius: 3px; margin: auto;" [linear]="true" #stepper="matVerticalStepper">
     <!-- Step One -->
     <mat-step [stepControl]="firstFormGroup" #stepOne editable="false">
         <ng-template matStepLabel> Review product details </ng-template>
         <div>
-            <mat-card *ngFor="let product of checkoutItemsSource | async">
-                <img mat-card-image src="{{ cartItem?.productThumbnailLink }}" alt="alt">
-                <mat-card-content>
+            <div *ngFor="let product of checkoutItemsSource | async">
+                <img src="{{ cartItem?.productThumbnailLink }}" alt="alt">
+                <div>
                     <p> Product Name: {{ product.productName }} </p>
                     <p> Fixed USD Amount ($): {{ product.fixedUSDAmount }} </p>
                     <p> Quantity: {{ product.quantityPurchased }} </p>
                     <p> Current Asset Value: {{ product.assetPricePerItem }} </p>
                     <p> Total Asset Value: {{ product.assetPurchaseDetails.balance }} {{ product.assetPurchaseDetails.asset_type
                         }} </p>
-                </mat-card-content>
-            </mat-card>
+                </div>
+            </div>
             <form [formGroup]="firstFormGroup">
                 <!-- (change)="checkItem()" -->
                 <mat-checkbox formControlName="firstCtrl"> Confirm </mat-checkbox>
                 <!-- <button mat-button [disabled]="!hasItems" (click)="updateStep(stepper.selectedIndex)" matStepperNext> -->
+                <!-- [disabled]="!firstFormGroup.valid" -->
                 <button mat-button [disabled]="!firstFormGroup.valid" (click)="updateStep(stepper.selectedIndex)" matStepperNext>
-                    Next
+                    Confirm
                 </button>
             </form>
         </div>
@@ -33,13 +34,13 @@
         <div>
             <ng-template matStepLabel> Confirm secret key </ng-template>
             <form [formGroup]="secondFormGroup">
-                <mat-form-field hintLabel="must be 56 characters">
-                    <input type="password" class="form-control" matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey formControlName="secondCtrl">
-                    <!-- <div *ngIf="secondCtrl.errors.minlength">
-                            Secret key must be 56 characters long.
-                    </div> -->
-                    <mat-hint align="end">{{checkoutSecretKey.value?.length || 0}}/56</mat-hint>
-                </mat-form-field>
+
+                <input type="password" class="form-control" matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey formControlName="secondCtrl">
+                <!-- <div *ngIf="secondCtrl.errors.minlength">
+                        Secret key must be 56 characters long.
+                </div> -->
+                <mat-hint align="end">must be 56 characters: {{checkoutSecretKey.value?.length || 0}}/56</mat-hint>
+
             </form>
             <button mat-button (click)="validateCheckoutSecretKey(checkoutSecretKey.value, stepper)"> Validate Key </button>
         </div>
@@ -52,37 +53,37 @@
         <div class="col-md-12">
             <form [formGroup]="thirdFormGroup">
                 <div class="row">
-                    <div class="col-md-5">
-                        Your Asset Totals Before:
-                        <mat-card *ngFor="let balance of balances; index as i" [attr.data-index]="i">
-                            <mat-card-content>
+                    <div class="col-md-4">
+                        Wallet Balance Before:
+                        <div *ngFor="let balance of balances; index as i" [attr.data-index]="i">
+                            <div class="card z-depth-0">
                                 <p> Asset {{ i + 1 }}: {{ balance.balance }} {{ balance.asset_type }} </p>
-                            </mat-card-content>
-                        </mat-card>
-                        <button [class.disabled]="calBalBtnBool" [disabled]="calBalBtnBool" mat-button
+                            </div>
+                        </div>
+                        <button [class.disabled]="calBalBtnBool" [hidden]="calBalBtnBool" mat-button
                                 (click)="calculateFundsForPurchase(stepper.selectedIndex); calBalBtnBool = true" value="calcBal">
-                            Calculate new balances 
+                            Show Final Balance
                         </button>
                     </div>
-                    <div class="col-md-5">
-                        Your Asset Totals After
-                        <mat-card *ngFor="let balance of updatedBalances; index as i" [attr.data-index]="i">
-                            <mat-card-content>
+                    <div class="col-md-4">
+                        Wallet Balance After
+                        <div *ngFor="let balance of updatedBalances; index as i" [attr.data-index]="i">
+                            <div class="card z-depth-0">
                                 <p> Asset {{ i + 1 }}: {{ balance.balance }} {{ balance.asset_type }} </p>
-                            </mat-card-content>
-                        </mat-card>
-                        <button [class.disabled]="valBalBtnBool || !calBalBtnBool" [disabled]="valBalBtnBool || !calBalBtnBool" mat-button 
+                            </div>
+                        </div>
+                        <button [class.disabled]="valBalBtnBool || !calBalBtnBool" [hidden]="valBalBtnBool || !calBalBtnBool" mat-button
                                 (click)="validateFundsForPurchase(stepper.selectedIndex); valBalBtnBool = true">
-                            Validate Funds 
+                            Confirm
                         </button>
                     </div>
-                    <div class="col-md-2" style="display:flex">
-                        <p style="color: red;"> Please do not reload the page during the payment </p>
+                    <div class="col-md-4" style="display:flex">
+                        <p style="color: red;"> Don't reload page</p>
                         <!-- TODO: LOADING -->
-                        <p style="color: red;"> TODO - I AM A LOADING INDICATOR </p>
+                        <p style="color: red;"> *loading indicator* </p>
                         <mat-checkbox visible="false" hidden="hidden"  formControlName="thirdCtrlFirst"> </mat-checkbox>
                         <button class="primary" [disabled]="cnfPurBtnBool || !valBalBtnBool" [class.disabled]="cnfPurBtnBool || !valBalBtnBool"
-                            (click)="completePurchase(stepper); cnfPurBtnBool = true" mat-button> Confirm Purchase</button>
+                            (click)="completePurchase(stepper); cnfPurBtnBool = true" mat-button> Finalize Purchase</button>
                     </div>
                 </div>
             </form>
@@ -98,4 +99,4 @@
             <button mat-button (click)="checkoutLogout()"> Logout </button>
         </div>
     </mat-step>
-</mat-horizontal-stepper>
+</mat-vertical-stepper>

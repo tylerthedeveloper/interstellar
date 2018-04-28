@@ -26,6 +26,7 @@ import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from '
 
 /** UI */
 import { MatHorizontalStepper } from '@angular/material';
+import { MatVerticalStepper } from '@angular/material';
 
 /** Other */
 import { stellarKeyLength } from 'app/core/_constants/quantities';
