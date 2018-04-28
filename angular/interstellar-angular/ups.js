@@ -1,16 +1,16 @@
 
-1. create label
-2. add tracking number to the order -> transaction group
-3. display on order page after API treacking request ...
-	-> say if is shipped or not
+// 1. create label
+// 2. add tracking number to the order -> transaction group
+// 3. display on order page after API treacking request ...
+// 	-> say if is shipped or not
 
--------
-after add to cart go to all products
-handle error for stellar payment
-handle navigation for sub categories
-add and product edit form
-profile edit form
-filters
+// -------
+// after add to cart go to all products
+// handle error for stellar payment
+// handle navigation for sub categories
+// add and product edit form
+// profile edit form
+// filters
 
 // https://docs.postmen.com/ups.html
 
