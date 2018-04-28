@@ -91,21 +91,21 @@
                         <mat-menu #menu="matMenu">
                             <button mat-menu-item id="profile" [style.display]="!loggedIn ? 'none' : 'inherit'" (click)="changePage('profile')"
                                     routerLinkActive="active" style="">
-                                <mat-icon>face</mat-icon>
+                                <mat-icon style="color: black;">face</mat-icon>
                                 <i class="" style="color: black;">
                                         Profile
                                 </i>
                             </button>
                             <button mat-menu-item id="chat" [routerLink]="['/cart']" (click)="changePage('cart')"
                                     routerLinkActive="active" style="">
-                                <mat-icon>shopping_cart</mat-icon>
+                                <mat-icon style="color: rgb(84,85,115);">shopping_cart</mat-icon>
                                 <i class="" style="color: black;">
                                         Cart {{ cartItemCount }}
                                 </i>
                             </button>
                             <button mat-menu-item id="chat" [routerLink]="['/chat']" (click)="changePage('chat')"
                                     routerLinkActive="active" style="">
-                                <mat-icon>chat</mat-icon>
+                                <mat-icon style="color: rgb(10,96,254)">chat</mat-icon>
                                 <i class="" style="color: black;">
                                     Chat
                                 </i>
