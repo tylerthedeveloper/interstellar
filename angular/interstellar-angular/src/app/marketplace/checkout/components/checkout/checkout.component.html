@@ -7,9 +7,9 @@
     <!-- Step One -->
     <mat-step [stepControl]="firstFormGroup" #stepOne editable="false">
         <ng-template matStepLabel> Review Purchase Details </ng-template>
-        <div>
+        <div style="" >
             <div *ngFor="let product of checkoutItemsSource | async">
-                <div class="card z-depth-0" style="padding: 10px; border: 1px solid rgb(224,224,244); border-radius: 3px; max-width: 90%;">
+                <div class="card z-depth-0" style="padding: 10px; border: 1px solid rgb(224,224,244); border-radius: 3px; max-width: 90%;margin: 10px 0px 0px 0px;">
                     <img src="{{ cartItem?.productThumbnailLink }}" alt="alt" style="max-width: 100px; max-height: 100px; width: 100px; height: 100px; border-radius: 100%; background-color: rgb(244,244,244); margin: auto;">
 
                     <h5 style="margin: 20px 0px 0px 0px; text-align: center;"> {{ product.productName }} </h5>
@@ -68,41 +68,48 @@
         <div class="col-md-12">
             <form [formGroup]="thirdFormGroup">
                 <div class="row" style="display: block;">
-                    <div class="col-md-12">
-                        <h6>Current Wallet Balance</h6>
-                        <hr>
+                    <div class="col-md-12" [hidden]="calBalBtnBool">
+                        <!-- <h6>Current Wallet Balance(s)</h6>
+                        <hr> -->
                         <div *ngFor="let balance of balances; index as i" [attr.data-index]="i">
                             <div class="card z-depth-0">
+                              <h6><strong>Current Wallet Balance(s)</strong></h6>
                                 <p>{{ balance.balance }} {{ balance.asset_type }} </p>
                             </div>
                         </div>
+                        <hr>
 
-                        <button [class.disabled]="calBalBtnBool" [hidden]="calBalBtnBool" class="btn btn-mdb-color z-depth-0"
+                        <button [class.disabled]="calBalBtnBool" class="btn btn-mdb-color z-depth-0"
                                 (click)="calculateFundsForPurchase(stepper.selectedIndex); calBalBtnBool = true" value="calcBal">
                             Final Balance
                         </button>
                     </div>
                     <div class="col-md-12" [hidden]="!calBalBtnBool">
-                        <h6>New Wallet Balance</h6>
-                        <hr>
+                        <!-- <h6>New Wallet Balance(s):</h6> -->
+                        <!-- <hr> -->
                         <div *ngFor="let balance of updatedBalances; index as i" [attr.data-index]="i">
                             <div class="card z-depth-0">
+                              <h6><strong>New Wallet Balance(s):</strong></h6>
                                 <p>{{ balance.balance }} {{ balance.asset_type }} </p>
                             </div>
                         </div>
+                        <hr>
                         <button [class.disabled]="valBalBtnBool || !calBalBtnBool" [hidden]="valBalBtnBool || !calBalBtnBool" class="btn btn-mdb-color z-depth-0"
                                 (click)="validateFundsForPurchase(stepper.selectedIndex); valBalBtnBool = true">
                             Confirm
                         </button>
                     </div>
                     <div class="col-md-12" style="" [hidden]="cnfPurBtnBool || !valBalBtnBool">
-                        <p style="color: red;"> Don't reload page</p>
+                        <!-- <p style="color: red;"> Don't reload page</p> -->
                         <!-- TODO: LOADING -->
-                        <p style="color: red;"> *loading indicator* </p>
                         <mat-checkbox visible="false" hidden="hidden"  formControlName="thirdCtrlFirst"> </mat-checkbox>
+
                         <button class="primary" [hidden]="cnfPurBtnBool || !valBalBtnBool" [class.disabled]="cnfPurBtnBool || !valBalBtnBool"
                             (click)="completePurchase(stepper); cnfPurBtnBool = true" class="btn btn-primary z-depth-0"> Submit Transaction</button>
+                            <p style="color: red;"><small><i> Don't reload page while transaction processes.</i></small></p>
+
                     </div>
+                    <div class="loader" [hidden]="!cnfPurBtnBool"></div>
                 </div>
             </form>
         </div>

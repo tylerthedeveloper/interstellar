@@ -1,7 +1,7 @@
 
-<div class="card z-depth-0" *ngFor="let group of transactionGroups; index as i" [attr.data-index]="i"
-style="margin: auto; max-width: 40%; overflow: hidden; padding: 20px; background-color: rgb(244,244,244); border: 1px solid rgb(224,224,244); border-radius: 0px 0px 3px 3px; border-radius: 3px;">
-    <div>
+<div style="max-width: 40%; margin: auto;">
+    <div class="card z-depth-0" *ngFor="let group of transactionGroups; index as i" [attr.data-index]="i"
+    style="margin: 10px auto 0px auto; overflow: hidden; padding: 20px; background-color: white; border: 1px solid rgb(224,224,244); border-radius: 0px 0px 3px 3px; border-radius: 3px;">
       <div>
           <h5> Transaction Group: {{ i + 1 }}  </h5>
           <p> <small>ID: {{ group?.transactionGroupID }}</small>  </p>
@@ -23,5 +23,5 @@ style="margin: auto; max-width: 40%; overflow: hidden; padding: 20px; background
           <hr>
       </div>
     </div>
-  <br />
+<button class="btn btn-mdb-color z-depth-0" (click)="returnHome()"> Return Home </button>
 </div>
