@@ -1,6 +1,6 @@
 
 <div class="col-md-5" style="margin: auto;">
-  <button class="btn btn-mdb-color z-depth-0" (click)="returnToCart()"> Return to Cart </button>
+  <button class="btn btn-outline-mdb-color btn-sm z-depth-0" (click)="returnToCart()" style="border: 1px solid rgb(84,85,125);"> Return </button>
 </div>
 
 <mat-vertical-stepper class="col-md-5" style="border: 1px solid rgb(224,224,244); border-radius: 3px; margin: auto;" [linear]="true" #stepper="matVerticalStepper">
@@ -33,7 +33,7 @@
                   <mat-checkbox formControlName="firstCtrl" [hidden]="firstFormGroup.valid"> Items Correct? </mat-checkbox>
                   <!-- <button mat-button [disabled]="!hasItems" (click)="updateStep(stepper.selectedIndex)" matStepperNext> -->
                   <!-- [disabled]="!firstFormGroup.valid" -->
-                  <button class="btn btn-primary z-depth-0" [hidden]="!firstFormGroup.valid" (click)="updateStep(stepper.selectedIndex)" matStepperNext>
+                  <button class="btn btn-outline-primary btn-sm z-depth-0" [hidden]="!firstFormGroup.valid" (click)="updateStep(stepper.selectedIndex)" matStepperNext>
                       Proceed
                   </button>
               </form>
@@ -50,14 +50,14 @@
                 <input type="password" class="form-control"
                 matInput placeholder="Secret Key" id="outSecretKey" #checkoutSecretKey
                 formControlName="secondCtrl"
-                style="width: 65%; border: 1px solid rgb(224,224,244); border-top: 1px solid rgb(224,224,244); border-radius: 3px; padding: 10px; margin: 10px;">
+                style="width: 65%; border: 1px solid rgb(224,224,244); border-top: 1px solid rgb(224,224,244); border-radius: 3px; padding: 10px; margin: 10px; background-color: rgb(244,244,244);">
                 <!-- <div *ngIf="secondCtrl.errors.minlength">
                         Secret key must be 56 characters long.
                 </div> -->
-                <mat-hint align="end">{{checkoutSecretKey.value?.length || 0}}/56</mat-hint>
+                <mat-hint align="end" style="margin: 0px 0px 0px 10px;"><small>Characters: {{checkoutSecretKey.value?.length || 0}}/56</small></mat-hint>
 
             </form>
-            <button class="btn btn-primary z-depth-0" (click)="validateCheckoutSecretKey(checkoutSecretKey.value, stepper)"> Validate Key </button>
+            <button class="btn btn-outline-primary btn-sm z-depth-0" (click)="validateCheckoutSecretKey(checkoutSecretKey.value, stepper)"> Validate Key </button>
         </div>
     </mat-step>
     <!-- End Step Two -->
@@ -79,7 +79,7 @@
                         </div>
                         <hr>
 
-                        <button [class.disabled]="calBalBtnBool" class="btn btn-mdb-color z-depth-0"
+                        <button [class.disabled]="calBalBtnBool" class="btn btn-outline-mdb-color btn-sm z-depth-0"
                                 (click)="calculateFundsForPurchase(stepper.selectedIndex); calBalBtnBool = true" value="calcBal">
                             Final Balance
                         </button>
@@ -94,7 +94,7 @@
                             </div>
                         </div>
                         <hr>
-                        <button [class.disabled]="valBalBtnBool || !calBalBtnBool" [hidden]="valBalBtnBool || !calBalBtnBool" class="btn btn-mdb-color z-depth-0"
+                        <button [class.disabled]="valBalBtnBool || !calBalBtnBool" [hidden]="valBalBtnBool || !calBalBtnBool" class="btn btn-outline-mdb-color btn-sm z-depth-0"
                                 (click)="validateFundsForPurchase(stepper.selectedIndex); valBalBtnBool = true">
                             Confirm
                         </button>
@@ -105,7 +105,7 @@
                         <mat-checkbox visible="false" hidden="hidden"  formControlName="thirdCtrlFirst"> </mat-checkbox>
 
                         <button class="primary" [hidden]="cnfPurBtnBool || !valBalBtnBool" [class.disabled]="cnfPurBtnBool || !valBalBtnBool"
-                            (click)="completePurchase(stepper); cnfPurBtnBool = true" class="btn btn-primary z-depth-0"> Submit Transaction</button>
+                            (click)="completePurchase(stepper); cnfPurBtnBool = true" class="btn btn-primary btn-sm z-depth-0"> Submit Transaction</button>
                             <p style="color: red;"><small><i> Don't reload page while transaction processes.</i></small></p>
 
                     </div>

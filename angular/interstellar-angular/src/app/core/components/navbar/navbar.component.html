@@ -84,16 +84,16 @@
                 <!-- <div *ngIf="loggedIn" style="display: flex; flex-direction: row; padding: 0% 0% 0% 0%"> -->
 
                     <ng-template #isLoggedIn style="display: flex; flex-direction: row;">
-                        <button class="mainNavBut" [matMenuTriggerFor]="menu" style="display: flex;">
-                            <p style="margin: 0px 0px 10px 0px;">Account</p>
-                            <mat-icon style="margin: 3px 0px 0px 0px;">more_vert</mat-icon>
+                        <button class="mainNavBut" [matMenuTriggerFor]="menu" style="display: flex; width: 40px;">
+                            <p style="margin: 0px 0px 10px 0px;"></p>
+                            <mat-icon style="margin: 3px 0px 0px 0px; width: 35px;">more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">
-                            <button mat-menu-item id="chat" [routerLink]="['/chat']" (click)="changePage('chat')"
+                            <button mat-menu-item id="profile" [style.display]="!loggedIn ? 'none' : 'inherit'" (click)="changePage('profile')"
                                     routerLinkActive="active" style="">
-                                <mat-icon>chat</mat-icon>
+                                <mat-icon>face</mat-icon>
                                 <i class="" style="color: black;">
-                                    Chat
+                                        Profile
                                 </i>
                             </button>
                             <button mat-menu-item id="chat" [routerLink]="['/cart']" (click)="changePage('cart')"
@@ -103,14 +103,28 @@
                                         Cart {{ cartItemCount }}
                                 </i>
                             </button>
-                            <button mat-menu-item id="profile" [style.display]="!loggedIn ? 'none' : 'inherit'" (click)="changePage('profile')"
+                            <button mat-menu-item id="chat" [routerLink]="['/chat']" (click)="changePage('chat')"
+                                    routerLinkActive="active" style="">
+                                <mat-icon>chat</mat-icon>
+                                <i class="" style="color: black;">
+                                    Chat
+                                </i>
+                            </button>
+                            <!-- <button mat-menu-item id="chat" [routerLink]="['/cart']" (click)="changePage('cart')"
+                                    routerLinkActive="active" style="">
+                                <mat-icon>shopping_cart</mat-icon>
+                                <i class="" style="color: black;">
+                                        Cart {{ cartItemCount }}
+                                </i>
+                            </button> -->
+                            <!-- <button mat-menu-item id="profile" [style.display]="!loggedIn ? 'none' : 'inherit'" (click)="changePage('profile')"
                                     routerLinkActive="active" style="">
                                 <mat-icon>face</mat-icon>
                                 <i class="" style="color: black;">
                                         Profile
                                 </i>
-                            </button>
-                            <button mat-menu-item id="logoutButton" (click)="logout()" style="">
+                            </button> -->
+                            <button mat-menu-item id="logoutButton" (click)="logout()" style="border-top: 1px solid rgb(230,230,230)">
                                 <mat-icon>highlight_off</mat-icon>
                                 <i class="" style="color: black;">
                                     Logout

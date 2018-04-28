@@ -2,8 +2,17 @@ button {
   height: 35px;
 }
 
+.btn-outline-primary:hover {
+  background-color: white;
+}
+
+.btn-outline-mdb-color {
+  border: 1px solid rgb(84,85,125);
+}
+
 /deep/ .mat-step-header .mat-step-icon {
-  background-color: rgb(244,244,244);
+  /* background-color: rgb(244,244,244); */
+  background-color: white;
   height: 35px;
   width: 35px;
   border: 2px solid rgb(10,96,254);
