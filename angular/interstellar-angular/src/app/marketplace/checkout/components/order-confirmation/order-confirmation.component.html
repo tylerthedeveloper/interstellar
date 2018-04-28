@@ -1,24 +1,25 @@
 
-<div class="card" *ngFor="let group of transactionGroups; index as i" [attr.data-index]="i" style="margin: auto; width: 80%;">
+<div class="card z-depth-0" *ngFor="let group of transactionGroups; index as i" [attr.data-index]="i"
+style="margin: auto; max-width: 40%; overflow: hidden; padding: 20px; background-color: rgb(244,244,244); border: 1px solid rgb(224,224,244); border-radius: 0px 0px 3px 3px; border-radius: 3px;">
     <div>
       <div>
-          <p> Transaction Group: {{ i + 1 }}  </p>
-          <p> Transaction ID: {{ group?.transactionGroupID }}  </p>
-          <p> Seller Public Key: {{ group?.sellerPublicKey }}  </p>
+          <h5> Transaction Group: {{ i + 1 }}  </h5>
+          <p> <small>ID: {{ group?.transactionGroupID }}</small>  </p>
+          <!-- <p> Seller Public Key: {{ group?.sellerPublicKey }}  </p> -->
           <hr>
       </div>
       <div *ngFor="let transRecord of group.transactionRecords; index as j" [attr.data-index]="j">
           <!-- TODO: image??? -->
           <!-- <img [src]="transRecord?.productName" /> -->
-          <p> Transaction Number: {{ j + 1 }}  </p>
-          <p> Transaction ID: {{ transRecord?.transactionID }}  </p>
+          <h6 style="text-align: center;"> <strong> Transaction Number: {{ j + 1 }}</strong>  </h6>
+          <!-- <p> Transaction ID: {{ transRecord?.transactionID }}  </p> -->
           <p> Product Name: {{ transRecord?.productName }}  </p>
           <p> Product Description: {{ transRecord?.productShortDescription }}  </p>
-          <p> Product ID: {{ transRecord?.productID }}  </p>
+          <!-- <p> Product ID: {{ transRecord?.productID }}  </p> -->
           <p> Quantity: {{ transRecord?.quantityPurchased }}  </p>
-          <p> Memo:  {{ transRecord?.memo  }}  </p>
-          <p> USD Amount:  ${{ transRecord?.fixedUSDAmount | json }}  </p>
-          <p> Assets Transferred: {{ transRecord?.assetPurchaseDetails | json }}  </p>
+          <!-- <p> Memo:  {{ transRecord?.memo  }}  </p> -->
+          <!-- <p> USD Amount:  ${{ transRecord?.fixedUSDAmount | json }}  </p> -->
+          <p> Total: {{ transRecord?.assetPurchaseDetails.balance }} {{ transRecord?.assetPurchaseDetails.asset_type }} (${{ transRecord?.fixedUSDAmount }})  </p>
           <hr>
       </div>
     </div>

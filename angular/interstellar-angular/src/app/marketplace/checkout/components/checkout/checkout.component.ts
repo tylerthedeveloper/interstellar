@@ -125,9 +125,9 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
         //
         /**
          * @param  {string} secretKey
-         * @param  {MatHorizontalStepper} stepper
+         * @param  {MatVerticalStepper} stepper
          */
-        validateCheckoutSecretKey(secretKey: string, stepper: MatHorizontalStepper) {
+        validateCheckoutSecretKey(secretKey: string, stepper: MatVerticalStepper) {
             if (!secretKey) {
                 alert('Please enter a secret key');
                 return;
@@ -168,10 +168,10 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
 
 
         /**
-         * @param  {MatHorizontalStepper} matStepper
+         * @param  {MatVerticalStepper} matStepper
          */
 // TODO: --> put all into helper
-        completePurchase(matStepper: MatHorizontalStepper) {
+        completePurchase(matStepper: MatVerticalStepper) {
             // const sellerKeys = this.
             // get user secret key
             // get seller public keys

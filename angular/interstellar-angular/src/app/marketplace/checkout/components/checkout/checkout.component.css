@@ -1,0 +1,11 @@
+button {
+  height: 35px;
+}
+
+/deep/ .mat-step-header .mat-step-icon {
+  background-color: rgb(244,244,244);
+  height: 35px;
+  width: 35px;
+  border: 2px solid rgb(10,96,254);
+  color: rgb(10,96,254);
+}

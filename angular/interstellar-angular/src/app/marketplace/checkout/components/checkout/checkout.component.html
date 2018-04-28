@@ -1,89 +1,107 @@
 
-<button (click)="returnToCart()"> Return to Cart </button>
+<div class="col-md-5" style="margin: auto;">
+  <button class="btn btn-mdb-color z-depth-0" (click)="returnToCart()"> Return to Cart </button>
+</div>
 
-<mat-vertical-stepper class="col-md-10" style="border: 1px solid rgb(224,224,244); border-radius: 3px; margin: auto;" [linear]="true" #stepper="matVerticalStepper">
+<mat-vertical-stepper class="col-md-5" style="border: 1px solid rgb(224,224,244); border-radius: 3px; margin: auto;" [linear]="true" #stepper="matVerticalStepper">
     <!-- Step One -->
     <mat-step [stepControl]="firstFormGroup" #stepOne editable="false">
-        <ng-template matStepLabel> Review product details </ng-template>
+        <ng-template matStepLabel> Review Purchase Details </ng-template>
         <div>
             <div *ngFor="let product of checkoutItemsSource | async">
-                <img src="{{ cartItem?.productThumbnailLink }}" alt="alt">
-                <div>
-                    <p> Product Name: {{ product.productName }} </p>
-                    <p> Fixed USD Amount ($): {{ product.fixedUSDAmount }} </p>
+                <div class="card z-depth-0" style="padding: 10px; border: 1px solid rgb(224,224,244); border-radius: 3px; max-width: 90%;">
+                    <img src="{{ cartItem?.productThumbnailLink }}" alt="alt" style="max-width: 100px; max-height: 100px; width: 100px; height: 100px; border-radius: 100%; background-color: rgb(244,244,244); margin: auto;">
+
+                    <h5 style="margin: 20px 0px 0px 0px; text-align: center;"> {{ product.productName }} </h5>
+                    <hr>
+
+                    <!-- <p> Fixed USD Amount ($): {{ product.fixedUSDAmount }} </p> -->
+
                     <p> Quantity: {{ product.quantityPurchased }} </p>
-                    <p> Current Asset Value: {{ product.assetPricePerItem }} </p>
-                    <p> Total Asset Value: {{ product.assetPurchaseDetails.balance }} {{ product.assetPurchaseDetails.asset_type
-                        }} </p>
+
+                    <p> Price: {{ product.assetPricePerItem }} {{ product.assetPurchaseDetails.asset_type
+                        }} (${{ product.fixedUSDAmount }}) </p>
+
+                    <p> Total: {{ product.assetPurchaseDetails.balance }} {{ product.assetPurchaseDetails.asset_type
+                    }} </p>
                 </div>
             </div>
-            <form [formGroup]="firstFormGroup">
-                <!-- (change)="checkItem()" -->
-                <mat-checkbox formControlName="firstCtrl"> Confirm </mat-checkbox>
-                <!-- <button mat-button [disabled]="!hasItems" (click)="updateStep(stepper.selectedIndex)" matStepperNext> -->
-                <!-- [disabled]="!firstFormGroup.valid" -->
-                <button mat-button [disabled]="!firstFormGroup.valid" (click)="updateStep(stepper.selectedIndex)" matStepperNext>
-                    Confirm
-                </button>
-            </form>
+            <div style="display: inline-block; width: 90%;">
+              <hr style="">
+              <form [formGroup]="firstFormGroup">
+                  <!-- (change)="checkItem()" -->
+                  <mat-checkbox formControlName="firstCtrl" [hidden]="firstFormGroup.valid"> Items Correct? </mat-checkbox>
+                  <!-- <button mat-button [disabled]="!hasItems" (click)="updateStep(stepper.selectedIndex)" matStepperNext> -->
+                  <!-- [disabled]="!firstFormGroup.valid" -->
+                  <button class="btn btn-primary z-depth-0" [hidden]="!firstFormGroup.valid" (click)="updateStep(stepper.selectedIndex)" matStepperNext>
+                      Proceed
+                  </button>
+              </form>
+            </div>
         </div>
     </mat-step>
     <!-- End Step One -->
     <!-- Step Two -->
     <mat-step [stepControl]="secondFormGroup" #stepTwo editable="false">
         <div>
-            <ng-template matStepLabel> Confirm secret key </ng-template>
+            <ng-template matStepLabel> Confirm Secret Key </ng-template>
             <form [formGroup]="secondFormGroup">
 
-                <input type="password" class="form-control" matInput placeholder="Secret Key" id="checkoutSecretKey" #checkoutSecretKey formControlName="secondCtrl">
+                <input type="password" class="form-control"
+                matInput placeholder="Secret Key" id="outSecretKey" #checkoutSecretKey
+                formControlName="secondCtrl"
+                style="width: 65%; border: 1px solid rgb(224,224,244); border-top: 1px solid rgb(224,224,244); border-radius: 3px; padding: 10px; margin: 10px;">
                 <!-- <div *ngIf="secondCtrl.errors.minlength">
                         Secret key must be 56 characters long.
                 </div> -->
-                <mat-hint align="end">must be 56 characters: {{checkoutSecretKey.value?.length || 0}}/56</mat-hint>
+                <mat-hint align="end">{{checkoutSecretKey.value?.length || 0}}/56</mat-hint>
 
             </form>
-            <button mat-button (click)="validateCheckoutSecretKey(checkoutSecretKey.value, stepper)"> Validate Key </button>
+            <button class="btn btn-primary z-depth-0" (click)="validateCheckoutSecretKey(checkoutSecretKey.value, stepper)"> Validate Key </button>
         </div>
     </mat-step>
     <!-- End Step Two -->
     <!-- Step Three -->
     <mat-step #stepThree editable="false" [stepControl]="thirdFormGroup">
         <!-- (click)="$event.preventDefault(); alert('jkk');" -->
-        <ng-template matStepLabel> Validate Funds </ng-template>
+        <ng-template matStepLabel> Submit Transaction </ng-template>
         <div class="col-md-12">
             <form [formGroup]="thirdFormGroup">
-                <div class="row">
-                    <div class="col-md-4">
-                        Wallet Balance Before:
+                <div class="row" style="display: block;">
+                    <div class="col-md-12">
+                        <h6>Current Wallet Balance</h6>
+                        <hr>
                         <div *ngFor="let balance of balances; index as i" [attr.data-index]="i">
                             <div class="card z-depth-0">
-                                <p> Asset {{ i + 1 }}: {{ balance.balance }} {{ balance.asset_type }} </p>
+                                <p>{{ balance.balance }} {{ balance.asset_type }} </p>
                             </div>
                         </div>
-                        <button [class.disabled]="calBalBtnBool" [hidden]="calBalBtnBool" mat-button
+
+                        <button [class.disabled]="calBalBtnBool" [hidden]="calBalBtnBool" class="btn btn-mdb-color z-depth-0"
                                 (click)="calculateFundsForPurchase(stepper.selectedIndex); calBalBtnBool = true" value="calcBal">
-                            Show Final Balance
+                            Final Balance
                         </button>
                     </div>
-                    <div class="col-md-4">
-                        Wallet Balance After
+                    <div class="col-md-12" [hidden]="!calBalBtnBool">
+                        <h6>New Wallet Balance</h6>
+                        <hr>
                         <div *ngFor="let balance of updatedBalances; index as i" [attr.data-index]="i">
                             <div class="card z-depth-0">
-                                <p> Asset {{ i + 1 }}: {{ balance.balance }} {{ balance.asset_type }} </p>
+                                <p>{{ balance.balance }} {{ balance.asset_type }} </p>
                             </div>
                         </div>
-                        <button [class.disabled]="valBalBtnBool || !calBalBtnBool" [hidden]="valBalBtnBool || !calBalBtnBool" mat-button
+                        <button [class.disabled]="valBalBtnBool || !calBalBtnBool" [hidden]="valBalBtnBool || !calBalBtnBool" class="btn btn-mdb-color z-depth-0"
                                 (click)="validateFundsForPurchase(stepper.selectedIndex); valBalBtnBool = true">
                             Confirm
                         </button>
                     </div>
-                    <div class="col-md-4" style="display:flex">
+                    <div class="col-md-12" style="" [hidden]="cnfPurBtnBool || !valBalBtnBool">
                         <p style="color: red;"> Don't reload page</p>
                         <!-- TODO: LOADING -->
                         <p style="color: red;"> *loading indicator* </p>
                         <mat-checkbox visible="false" hidden="hidden"  formControlName="thirdCtrlFirst"> </mat-checkbox>
-                        <button class="primary" [disabled]="cnfPurBtnBool || !valBalBtnBool" [class.disabled]="cnfPurBtnBool || !valBalBtnBool"
-                            (click)="completePurchase(stepper); cnfPurBtnBool = true" mat-button> Finalize Purchase</button>
+                        <button class="primary" [hidden]="cnfPurBtnBool || !valBalBtnBool" [class.disabled]="cnfPurBtnBool || !valBalBtnBool"
+                            (click)="completePurchase(stepper); cnfPurBtnBool = true" class="btn btn-primary z-depth-0"> Submit Transaction</button>
                     </div>
                 </div>
             </form>
@@ -91,12 +109,12 @@
     </mat-step>
     <!-- End Step Three -->
     <mat-step editable="false" #stepFour>
-        <ng-template matStepLabel> Confirm </ng-template>
+        <ng-template matStepLabel> Receipt </ng-template>
         <h3 > You are now done. Thanks for shopping!</h3>
         <p > Below is your order receipt</p>
         <div>
-            <button mat-button (click)="returnHome()"> Return Home </button>
-            <button mat-button (click)="checkoutLogout()"> Logout </button>
+            <button class="btn btn-primary z-depth-0" (click)="returnHome()"> Return Home </button>
+            <button class="btn btn-primary z-depth-0" (click)="checkoutLogout()"> Logout </button>
         </div>
     </mat-step>
 </mat-vertical-stepper>

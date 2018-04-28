@@ -240,7 +240,7 @@
                     <div>
                         <h5> Transaction Group: {{ i + 1 }}  </h5>
                         <p> ID: {{ group?.transactionGroupID }}  </p>
-                        <p> Seller Public Key: {{ group?.sellerPublicKey }}  </p>
+                        <!-- <p> Seller Public Key: {{ group?.sellerPublicKey }}  </p> -->
 
                     </div>
                     <div style="margin: auto; width: 20%;" *ngFor="let transRecord of group.transactionRecords; index as j" [attr.data-index]="j">
