@@ -146,7 +146,7 @@ export class StellarPaymentService {
             // .then(() => server.loadAccount(pubKey))
             .then(function(sourceAccount) {
                 // console.log(sourceAccount);
-                /* 
+                /*
                 todo:
 
                 const paymentOps = transactionGroups.map(group => {

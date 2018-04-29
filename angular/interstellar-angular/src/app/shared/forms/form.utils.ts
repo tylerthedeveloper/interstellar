@@ -84,7 +84,7 @@ const ValidateFormSecretKey = (control: AbstractControl) => {
 
 export { createFormGroup, ValidateFormUrl, ValidateFormSecretKeyLength, ValidateFormSecretKey };
 
-
+// https://stackoverflow.com/questions/37395599/angular2-best-way-to-use-formbuilder-validators-required-with-a-checkbox-group
 // https://alligator.io/angular/async-validators/
 // https://stackoverflow.com/questions/36756159/angular-2-custom-validator-with-parameters
 export class CustomValidators {

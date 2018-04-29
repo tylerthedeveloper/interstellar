@@ -40,6 +40,7 @@ import { userFormData } from 'app/user/user.details';
 import { BaseComponent } from 'app/base.component';
 import { TransactionRecord } from 'app/marketplace/_market-models/transaction';
 import { shippingAddressQuestions } from 'app/marketplace/shipping/shipping.details';
+import { ShipperService } from 'app/core/services/shipper.service';
 
 @Component({
   selector: 'app-profile',
@@ -84,6 +85,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                 private _orderService: OrderService,
                 private dialog: MatDialog,
                 private _route: ActivatedRoute,
+                private _shipperService: ShipperService,
                 public router: Router) {
                     super();
     }
@@ -143,37 +145,38 @@ export class ProfileComponent extends BaseComponent implements OnInit {
      */
     // updateProfile(): Observable<any> {
     updateProfile() {
-        const dialogRef = this.dialog.open(DialogComponent, {
-            data: { component: DynamicFormComponent,
-                    payload: {
-                        questions: userFormData,
-                        objectMapper: this._userModel
-                    }
-            }
-        });
-        // todo
-        dialogRef.afterClosed().subscribe((newProfileData: string) => {
-            if (newProfileData) {
-                const formObject = <any> JSON.parse(newProfileData);
-                const acceptedAssetsTempArray = new Array<string>();
-                const acceptedAssetsTemp = {};
-                const acceptedAssets = (formObject.acceptedAssets as Array<string>)
-                    // .filter(asset => (asset) ? console.log(asset) : null)
-                    .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarAssetsMapper2[i].asset_type) : null);
-                    // .map((asset, i) => (asset) ? acceptedAssetsTemp[stellarAssetsMapper2[i].asset_type] = true : null);
-                // stellarAssetsMapper2
-                // console.log(acceptedAssetsTemp);
-                formObject.acceptedAssets = acceptedAssetsTempArray;
-                // formObject.acceptedAssets = JSON.stringify(acceptedAssetsTemp);
-                // console.log(formObject.acceptedAssets)
-                this.edit = !this.edit;
-                const payload = {
-                    id: this._userID,
-                    data: JSON.stringify(formObject)
-                };
-                return this._userService.updateProfile(JSON.stringify(payload));
-            }
-        });
+        this._shipperService.createAddress();
+        // const dialogRef = this.dialog.open(DialogComponent, {
+        //     data: { component: DynamicFormComponent,
+        //             payload: {
+        //                 questions: userFormData,
+        //                 objectMapper: this._userModel
+        //             }
+        //     }
+        // });
+        // // todo
+        // dialogRef.afterClosed().subscribe((newProfileData: string) => {
+        //     if (newProfileData) {
+        //         const formObject = <any> JSON.parse(newProfileData);
+        //         const acceptedAssetsTempArray = new Array<string>();
+        //         const acceptedAssetsTemp = {};
+        //         const acceptedAssets = (formObject.acceptedAssets as Array<string>)
+        //             // .filter(asset => (asset) ? console.log(asset) : null)
+        //             .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarAssetsMapper2[i].asset_type) : null);
+        //             // .map((asset, i) => (asset) ? acceptedAssetsTemp[stellarAssetsMapper2[i].asset_type] = true : null);
+        //         // stellarAssetsMapper2
+        //         // console.log(acceptedAssetsTemp);
+        //         formObject.acceptedAssets = acceptedAssetsTempArray;
+        //         // formObject.acceptedAssets = JSON.stringify(acceptedAssetsTemp);
+        //         // console.log(formObject.acceptedAssets)
+        //         this.edit = !this.edit;
+        //         const payload = {
+        //             id: this._userID,
+        //             data: JSON.stringify(formObject)
+        //         };
+        //         return this._userService.updateProfile(JSON.stringify(payload));
+        //     }
+        // });
     }
 
 
