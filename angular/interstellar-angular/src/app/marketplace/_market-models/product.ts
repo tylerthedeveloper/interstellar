@@ -1,4 +1,5 @@
 import { AssetBalance } from '../../stellar';
+import { ShippingInformation } from './shipping';
 
 export class Product {
 
@@ -24,11 +25,12 @@ export class Product {
         productSellerPublicKey: string;
     };
 
-    productListedAt: Date;
+    productListedAt: number;
 
     // some day
     productRating: number;
     productReviews: string[];
 
+    shippingInfo: ShippingInformation; //  = new ShippingInformation();
 }
 

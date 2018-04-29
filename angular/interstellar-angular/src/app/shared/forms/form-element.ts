@@ -83,7 +83,7 @@ class CheckBoxQuestion extends MyFormElement<string> {
     this.options = options['options'] || [];
   }
 }
-
+// https://stackoverflow.com/questions/48501420/how-to-get-value-in-formgroup-using-formarray
 // https://github.com/philipphalder/angular2-dynamic-forms-advanced/blob/master/src/app/components/dynamic-question/dynamic-question.component.html
 
 class CheckBoxGroupQuestion extends MyFormElement<string> {

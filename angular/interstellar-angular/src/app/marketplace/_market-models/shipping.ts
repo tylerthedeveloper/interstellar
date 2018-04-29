@@ -18,15 +18,21 @@ export class ShippingInformation {
 
     shipCost: number;
     shipType: ShipType;
+    shipTypes: Array<string>;
+    shipTime: string;
 
-    // shipTime: string;
-
-    // shipService: string;
+    shipService: string; // = 'UPS';
     trackingNumber: string;
     // validShipService: boolean;
     isShipped: boolean;
 
+    constructor(shipTypes: Array<string>) {
+        this.shipTypes = shipTypes;
+    }
+
 }
+
+// todo: shipType --> shipTime
 
 export const enum ShipType {
     'ups_2nd_day_air' = 'ups_2nd_day_air',
@@ -45,4 +51,3 @@ export const enum ShipType {
     'ups_today_standard' = 'ups_today_standard'
 }
 
-// todo: shipType --> shipTime 

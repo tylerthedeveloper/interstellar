@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // firebase
@@ -42,6 +43,7 @@ import { BaseComponent } from './base.component';
   imports: [
       // angular
       BrowserModule,
+      HttpClientModule,
       HttpModule,
       FormsModule,
       ReactiveFormsModule,
