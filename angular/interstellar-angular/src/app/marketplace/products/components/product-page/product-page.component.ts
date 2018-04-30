@@ -33,6 +33,7 @@ export class ProductPageComponent implements OnInit {
 
 //  Set to default???
     private selectedAssetType: AssetBalance;
+    // private selectedAssetType: string;
     private purchaseQuantity = 1;
     private _sellerShortData: { productSellerID: string, productSellerName: string, productSellerPublicKey: string };
 
@@ -125,10 +126,10 @@ export class ProductPageComponent implements OnInit {
     public onBuyProduct(): void {
         const purchaseQuantity = this.purchaseQuantity;
         if (this.onValidateProductAction()) {
-            const totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.balance, purchaseQuantity);
-            if (this.validateTransaction(purchaseQuantity, totalPurchaseAmount)) {
-                this.goToCheckout(purchaseQuantity, totalPurchaseAmount);
-            }
+            // const totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.balance, purchaseQuantity);
+            // if (this.validateTransaction(purchaseQuantity, totalPurchaseAmount)) {
+                this.goToCheckout(purchaseQuantity);
+            // }
         }
     }
 
@@ -164,7 +165,8 @@ export class ProductPageComponent implements OnInit {
             console.log(res);
             if (!res) { return false; }
             this.onCompleteProductAction();
-            this.location.back();
+//  todo
+            // this.location.back();
             return true;
         });
         // .catch(() => this.errorAndAlert('error: item already in cart2'));
@@ -243,7 +245,7 @@ export class ProductPageComponent implements OnInit {
      * @param  {number} totalPurchaseAmount
      * @returns void
      */
-    private goToCheckout(purchaseQuantity: number, totalPurchaseAmount: number): void {
+    private goToCheckout(purchaseQuantity: number, totalPurchaseAmount: number = 0): void {
         const cartItem = this.createCartItem(purchaseQuantity, totalPurchaseAmount);
         cartItem.isInCheckout = true;
         this._cartService.addToCart(JSON.stringify(cartItem));
@@ -266,13 +268,13 @@ export class ProductPageComponent implements OnInit {
      * @returns CartItem
      */
     private createCartItem(purchaseQuantity: number, totalPurchaseAmount: number = 0): CartItem {
-        totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.balance, purchaseQuantity);
+        // totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.balance, purchaseQuantity);
         const asset = new AssetBalance({
             balance: String(totalPurchaseAmount),
             asset_type: this.selectedAssetType.asset_type,
             coin_name: this.selectedAssetType.coin_name
         });
-        const cartItem: CartItem = <CartItem>{
+        const cartItem: CartItem = <CartItem> {
             buyerUserID: this.myUserId,
             buyerPublicKey: this.myPubKey,
 
@@ -288,7 +290,8 @@ export class ProductPageComponent implements OnInit {
             productShortDescription: this.product.productShortDescription,
             assetPricePerItem: this.selectedAssetType.balance,
             assetPurchaseDetails: asset,
-            productCategory: this.product.productCategory
+            productCategory: this.product.productCategory,
+            // selectedAsset: this.selectedAssetType
         };
         return cartItem;
     }

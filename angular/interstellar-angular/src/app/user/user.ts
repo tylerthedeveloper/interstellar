@@ -24,8 +24,8 @@ export class User {
     accountCreated: Date;
     numberOfItemsSold: number;
 
-    // acceptedAssets: AssetBalance[];
-    acceptedAssets: string[];
+    acceptedAssets: AssetBalance[];
+    // acceptedAssets: string[];
 
     constructor(id: string,
                 publicKey: string,
@@ -35,7 +35,7 @@ export class User {
                 birthdate: string = '',
                 age: number = -1,
                 // acceptedAssets: AssetBalance[] = []) {
-                acceptedAssets: string[] = []) {
+                acceptedAssets: AssetBalance[] = []) {
                     this.id = id,
                     this.publicKey = publicKey,
                     this.userName = userName,

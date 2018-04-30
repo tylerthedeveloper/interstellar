@@ -12,6 +12,8 @@ import { MatDialog } from '@angular/material';
 import { BaseComponent } from 'app/base.component';
 import { User } from 'app/user/user';
 import { UserService } from 'app/core/services';
+import { StellarTermService } from 'app/core/services/stellar-term.service';
+import { stellarTermAssets } from 'app/stellar/stellar-term/asset.mappers';
 
 
 @Component({
@@ -30,26 +32,56 @@ export class CartComponent extends BaseComponent implements OnInit {
     private hasAddress = false;
 
     private tempAddress = '';
+    private loading;
+
+    private currentAssetValues: AssetBalance[];
+    private currentAssetValuesDict: {} = {};
 
     constructor(private _cartService: CartService,
                 private _router: Router,
                 private _userService: UserService,
+                private _stellarTermService: StellarTermService,
                 private dialog: MatDialog) {
                     super();
-    }
+                }
 
     ngOnInit() {
-        this._userService.getUserByID(this.myBaseUserID).first()
-            .subscribe(user => {
-                this.user = user;
-                const userTyped = <User> user;
-                this.hasAddress = (userTyped.address) ? true : false;
+        this.loading = false;
+        this._userService.getUserByID(this.myBaseUserID).first().subscribe(user => {
+            this.user = user;
+            const userTyped = <User> user;
+            this.hasAddress = (userTyped.address) ? true : false;
         });
-        this.cartItemsSource = this._cartService.Cart.map(cartItems => {
-            this.cartItemIDs = cartItems.map((c: CartItem) => c.cartItemID);
-            this.assetTotals = calcTotalsForMultipleAssets(cartItems.map(CIT => CIT.assetPurchaseDetails));
-            return cartItems;
+        this.calcTotals(new Set(stellarTermAssets)).then(() => {
+            this.cartItemsSource = this._cartService.Cart.map(cartItems => {
+                // TODO: Map only one time
+                this.cartItemIDs = cartItems.map((c: CartItem) => c.cartItemID);
+                // this.calcTotals(diffAssets);
+                // console.log(this.currentAssetValues)
+                // const diffAssets = new Set(cartItems.map((c: CartItem) => c.assetPurchaseDetails.asset_type));
+                // todo: decide which asset values ...
+                // todo: how to handle asset values if not in original list ...
+                // todo: how to handle recalculations ...
+                // todo: how to round
+
+                const updatedCartItems = cartItems.map(item => {
+                    const curAssetValue = this.currentAssetValuesDict[item.assetPurchaseDetails.asset_type];
+                    const newAssetValue = item.fixedUSDAmount / curAssetValue;
+                    const newAssetBalance = new AssetBalance({
+                        asset_type: item.assetPurchaseDetails.asset_type,
+                        coin_name: item.assetPurchaseDetails.coin_name,
+                        balance: String(newAssetValue)
+                    });
+                    const newCartItem = item;
+                    newCartItem.assetPurchaseDetails = newAssetBalance;
+                    return newCartItem;
+                });
+                this.assetTotals = calcTotalsForMultipleAssets(updatedCartItems.map(CIT => CIT.assetPurchaseDetails));
+                setTimeout(() => this.loading = true, 2000);
+                return updatedCartItems;
+            });
         });
+
     }
 
     //
@@ -107,6 +139,14 @@ export class CartComponent extends BaseComponent implements OnInit {
     // ──────────────────────────────────────────────────────────────────────────────
     //
 
+    calcTotals(assetTypes: Set<string>) {
+        return Promise.resolve(this._stellarTermService.getPriceForAssets(assetTypes)
+            .subscribe((asset: any) => {
+                this.currentAssetValuesDict[asset.asset_type] = asset.balance;
+                // this.loading = false;
+                // setTimeout(() => this.loading = true, 2000);
+            }));
+    }
     /**
      * @param  {string} data
      * @returns void
@@ -200,7 +240,7 @@ export class CartComponent extends BaseComponent implements OnInit {
         }
     }
 
-    handleMissingAddress() {
+    handleMissingAddress()  {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             data: {
                     title: 'Add Address',

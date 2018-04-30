@@ -15,6 +15,7 @@ import { AngularFireStorageReference } from 'angularfire2/storage/ref';
 import { AngularFireStorage } from 'angularfire2/storage/storage';
 import { AngularFireUploadTask } from 'angularfire2/storage/task';
 import * as firebase from 'firebase/app';
+import { stellarTermAssets2 } from '../../../stellar-term/asset.mappers';
 
 @Component({
   selector: 'app-add-product-page',
@@ -161,11 +162,22 @@ export class AddProductPageComponent implements OnInit {
         // todo: TEST THESE ARENT EVER NULL!!!!!!
         const product = this.productInfo;
         product.productListedAt = Date.now();
-        console.log(this._route.snapshot.queryParams['acceptedAssets']);
-        product.productAssetOptions = this._route.snapshot.queryParams['acceptedAssets'];
-        product.productPrices = [
-            new AssetBalance({ balance: '7.00000', asset_type: 'native', coin_name: 'Lumens'})
-        ];
+        const acceptedAssets = this._route.snapshot.queryParams['acceptedAssets'];
+        console.log(acceptedAssets);
+        product.productAssetOptions = acceptedAssets;
+        const assetBalances: Array<AssetBalance> = acceptedAssets.map(asset_type => {
+            const asset = stellarTermAssets2.find(STA => STA.asset_type === asset_type);
+            const assetObj = {
+                asset_type: asset.asset_type,
+                coin_name: asset.coin_name,
+                balance: '0.0000'
+            };
+            return new AssetBalance(assetObj);
+        });
+        product.productPrices = assetBalances;
+        // product.productPrices = [
+        //     new AssetBalance({ balance: '7.00000', asset_type: 'native', coin_name: 'Lumens'})
+        // ];
         product.productSellerData = {
             productSellerID: sessionStorage.getItem('user_doc_id'),
             productSellerName: sessionStorage.getItem('user_name') || '', // TODO: store user data in session storage!!!
