@@ -12,7 +12,6 @@
 
 
 import { Injectable } from '@angular/core';
-import {Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
 
 // Import RxJs required methods
 import { Observable } from 'rxjs/Observable';
@@ -22,9 +21,11 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/fromPromise';
 
 
-import * as StellarSDK from 'stellar-sdk';
+// import * as StellarSDK from 'stellar-sdk';
 import { AssetBalance } from '..';
 import { isValidSecretKey } from 'app/stellar/stellar.utils';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
 
 declare var StellarSdk: any;
 
@@ -59,9 +60,19 @@ export class StellarAccountService {
         sessionStorage.setItem('seed_key', pair.secret()); // SDYNRKS26KECW72663P6XD7N4SDKH5QERBIKYOTEH2TY25NLKW5QBBHL
         const params = new URLSearchParams();
         params.set('addr', pair.publicKey());
+        const httpOptions = {
+            headers: new HttpHeaders({
+              'Content-Type':  'application/json',
+            //   'Authorization': 'my-auth-token'
+                // 'params': params
+            })
+          };
         const options = new RequestOptions({
           params: params
         });
+        // const options = {
+        //   params: params
+        // };
         return this._http.get(apiUrl, options)
           .map((response: Response) => response.json())
           .catch(this.HandleError);

@@ -19,6 +19,7 @@ import { OrderService } from 'app/core/services/order.service';
 import { UserService } from './services/user.service';
 import { ChatService } from './services';
 import { RegisterComponent } from './components/register/register.component';
+import { ShipperService } from 'app/core/services/shipper.service';
 // import { ConfirmDialogComponent } from 'app/shared/components';
 
 @NgModule({
@@ -55,6 +56,7 @@ import { RegisterComponent } from './components/register/register.component';
         CartService,
         OrderService,
         ProductService,
+        ShipperService,
         UserService,
     ],
     entryComponents: [
