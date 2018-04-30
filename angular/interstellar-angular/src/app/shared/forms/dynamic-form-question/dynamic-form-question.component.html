@@ -29,8 +29,8 @@
                     <!-- <label [attr.for]="question.key">{{question?.label}}</label>  -->
                     <!-- [type]="item.type" -->
                     <mat-checkbox *ngFor="let item of question.options; let i=index" [formControlName]="i" 
-                                    [id]="item.key" [value]="item.value" > 
-                            {{item.value}} 
+                                    [id]="item.key" [value]="item.value" [ngModel]="item.checked" [class.disabled]="item.disabled"> 
+                            {{item.value}}  
                     </mat-checkbox>
             </div>
         </div>

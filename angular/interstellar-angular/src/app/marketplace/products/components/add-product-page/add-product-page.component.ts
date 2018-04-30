@@ -6,7 +6,7 @@ import { Product, ShippingInformation } from 'app/marketplace/_market-models';
 import { areValidProductTypes } from 'app/marketplace/products/product.utils';
 import { ProductService } from 'app/core/services';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AssetBalance } from 'app/stellar';
 import { shippingTypeQuestions } from 'app/marketplace/shipping/shipping.details';
 import { shipTypes } from 'app/marketplace/shipping/ship-types';
@@ -47,7 +47,8 @@ export class AddProductPageComponent implements OnInit {
     private fileToUpload: File;
     shipTypes: any;
     constructor(private _productService: ProductService,
-                public router: Router,
+                private router: Router,
+                private _route: ActivatedRoute,
                 private _formBuilder: FormBuilder,
                 private afStorage: AngularFireStorage,
                 private dialog: MatDialog) {}
@@ -62,6 +63,8 @@ export class AddProductPageComponent implements OnInit {
         // });
         // const formArray = this.shipFormGroup.get('shipTypes') as FormArray;
         // this.shipTypes.forEach(x => formArray.push(new FormControl(x)));
+        // console.log(this._route.snapshot.queryParams['acceptedAssets']);
+
     }
 
     /**
@@ -158,6 +161,8 @@ export class AddProductPageComponent implements OnInit {
         // todo: TEST THESE ARENT EVER NULL!!!!!!
         const product = this.productInfo;
         product.productListedAt = Date.now();
+        console.log(this._route.snapshot.queryParams['acceptedAssets']);
+        product.productAssetOptions = this._route.snapshot.queryParams['acceptedAssets'];
         product.productPrices = [
             new AssetBalance({ balance: '7.00000', asset_type: 'native', coin_name: 'Lumens'})
         ];

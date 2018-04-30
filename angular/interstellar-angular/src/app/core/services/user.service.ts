@@ -121,7 +121,7 @@ export class UserService {
         const data = obj.data;
         // console.log(ID);
         // console.log(obj.data);
-        // console.log(data)
+        console.log(data)
         return Observable.fromPromise(
             this.usersCollection
                 .doc(ID)

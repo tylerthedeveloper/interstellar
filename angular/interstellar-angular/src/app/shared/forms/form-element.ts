@@ -1,3 +1,4 @@
+
 class MyFormElement<T> {
     value: T;
     key: string;
@@ -6,6 +7,7 @@ class MyFormElement<T> {
     order: number;
     controlType: string;
     placeholder: string;
+    disabled: boolean;
 
     constructor(options: {
                 value?: T,
@@ -15,6 +17,7 @@ class MyFormElement<T> {
                 order?: number,
                 controlType?: string,
                 placeholder?: string
+                disabled?: boolean
                 } = {}) {
         this.value = options.value;
         this.key = options.key || '';
@@ -23,6 +26,7 @@ class MyFormElement<T> {
         this.order = options.order === undefined ? 1 : options.order;
         this.controlType = options.controlType || '';
         this.placeholder = options.placeholder || '';
+        this.disabled = options.disabled || false;
     }
 }
 
@@ -84,12 +88,13 @@ class CheckBoxQuestion extends MyFormElement<string> {
   }
 }
 // https://stackoverflow.com/questions/48501420/how-to-get-value-in-formgroup-using-formarray
+// tslint:disable-next-line:max-line-length
 // https://github.com/philipphalder/angular2-dynamic-forms-advanced/blob/master/src/app/components/dynamic-question/dynamic-question.component.html
 
 class CheckBoxGroupQuestion extends MyFormElement<string> {
   controlType = 'checkbox-group';
   type = 'checkbox';
-  options: {key: string, value: string}[] = [];
+  options: {key: string, value: string, checked: boolean}[] = [];
 
   constructor(options: {} = {}) {
     super(options);
