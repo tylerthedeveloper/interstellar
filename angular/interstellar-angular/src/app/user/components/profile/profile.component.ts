@@ -46,6 +46,7 @@ import { shippingAddressQuestions } from 'app/marketplace/shipping/shipping.deta
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
+
 // SBF3AGT4ZUWWPE53NRZLNTBWGHT7KTNA4TS3VN43THHWFOAZVTV7RPFP
 // SA5BD2TGFY47SHJOPYXWJMWZ5NI6F7QICMH43PWCJAFBSNOXBVBZAGMC
 export class ProfileComponent extends BaseComponent implements OnInit {
