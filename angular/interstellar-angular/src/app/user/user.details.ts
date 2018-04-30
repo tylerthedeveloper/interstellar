@@ -1,5 +1,6 @@
 import { TextboxQuestion, NumberInputQuestion, CheckBoxQuestion, CheckBoxGroupQuestion } from '../shared/forms/form-element';
 import { stellarAssetsMapper2 } from 'app/stellar';
+import { stellarTermAssets } from 'app/marketplace/stellar-term/asset.mappers';
 
 const requiredPublicUserDataTyped: Array<{ key: string, type: string}> = [
     // { key: 'productName', type: 'string'},
@@ -47,7 +48,8 @@ const userFormData = [
     new CheckBoxGroupQuestion({
         key: 'acceptedAssets',
         label: 'Accepted Assets',
-        options: stellarAssetsMapper2.map(asset => ({key: asset.asset_type,  value: asset.coin_name})),
+        // options: stellarAssetsMapper2.map(asset => ({key: asset.asset_type,  value: asset.coin_name})),
+        options: stellarTermAssets.map(asset => ({key: asset,  value: asset})),
         // options: [
         //   {key: 'one',  value: 'One'},
         //   {key: 'two',  value: 'Two'},

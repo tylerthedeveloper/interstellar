@@ -41,6 +41,7 @@ import { BaseComponent } from 'app/base.component';
 import { TransactionRecord } from 'app/marketplace/_market-models/transaction';
 import { shippingAddressQuestions } from 'app/marketplace/shipping/shipping.details';
 import { ShipperService } from 'app/core/services/shipper.service';
+import { stellarTermAssets } from 'app/marketplace/stellar-term/asset.mappers';
 
 @Component({
   selector: 'app-profile',
@@ -100,13 +101,14 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         this._userID = myUserID;
         const pagePersonID = this._route.snapshot.params['id'];
         const path = this._route.snapshot.routeConfig.path;
+        this._pagePersonID = pagePersonID;
+        this.isMyProfile = (pagePersonID === myUserID);
+        // console.log(this._pagePersonID + ' ' + myUserID)
         if (myUserID === pagePersonID && path !== ':id/me') {
             this.router.navigate(['/people', myUserID, 'me']);
             // console.log('its me ');
         }
 
-        this._pagePersonID = pagePersonID;
-        this.isMyProfile = (pagePersonID === myUserID);
         // todo: listen for add address
         this._userService.getUserByID(pagePersonID)
             .subscribe(user => {
@@ -145,38 +147,40 @@ export class ProfileComponent extends BaseComponent implements OnInit {
      */
     // updateProfile(): Observable<any> {
     updateProfile() {
-        this._shipperService.createAddress();
-        // const dialogRef = this.dialog.open(DialogComponent, {
-        //     data: { component: DynamicFormComponent,
-        //             payload: {
-        //                 questions: userFormData,
-        //                 objectMapper: this._userModel
-        //             }
-        //     }
-        // });
-        // // todo
-        // dialogRef.afterClosed().subscribe((newProfileData: string) => {
-        //     if (newProfileData) {
-        //         const formObject = <any> JSON.parse(newProfileData);
-        //         const acceptedAssetsTempArray = new Array<string>();
-        //         const acceptedAssetsTemp = {};
-        //         const acceptedAssets = (formObject.acceptedAssets as Array<string>)
-        //             // .filter(asset => (asset) ? console.log(asset) : null)
-        //             .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarAssetsMapper2[i].asset_type) : null);
-        //             // .map((asset, i) => (asset) ? acceptedAssetsTemp[stellarAssetsMapper2[i].asset_type] = true : null);
-        //         // stellarAssetsMapper2
-        //         // console.log(acceptedAssetsTemp);
-        //         formObject.acceptedAssets = acceptedAssetsTempArray;
-        //         // formObject.acceptedAssets = JSON.stringify(acceptedAssetsTemp);
-        //         // console.log(formObject.acceptedAssets)
-        //         this.edit = !this.edit;
-        //         const payload = {
-        //             id: this._userID,
-        //             data: JSON.stringify(formObject)
-        //         };
-        //         return this._userService.updateProfile(JSON.stringify(payload));
-        //     }
-        // });
+        // this._shipperService.createAddress();
+        const dialogRef = this.dialog.open(DialogComponent, {
+            data: { component: DynamicFormComponent,
+                    payload: {
+                        questions: userFormData,
+                        objectMapper: this._userModel
+                    }
+            }
+        });
+        // todo
+        dialogRef.afterClosed().subscribe((newProfileData: string) => {
+            if (newProfileData) {
+                const formObject = <any> JSON.parse(newProfileData);
+                const acceptedAssetsTempArray = new Array<string>();
+                const acceptedAssetsTemp = {};
+                const acceptedAssets = (formObject.acceptedAssets as Array<string>)
+                    // .map((asset, i) => (asset) ? console.log(stellarTermAssets[i]) : null)
+                    // .map((asset, i) => console.log(asset + ' ' + i))
+                    .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarTermAssets[i]) : null);
+                    // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarAssetsMapper2[i].asset_type) : null);
+                    // .map((asset, i) => (asset) ? acceptedAssetsTemp[stellarAssetsMapper2[i].asset_type] = true : null);
+                // stellarAssetsMapper2
+                // console.log(acceptedAssetsTemp);
+                formObject.acceptedAssets = acceptedAssetsTempArray;
+                // formObject.acceptedAssets = JSON.stringify(acceptedAssetsTemp);
+                console.log(formObject.acceptedAssets)
+                this.edit = !this.edit;
+                const payload = {
+                    id: this._userID,
+                    data: JSON.stringify(formObject)
+                };
+                return this._userService.updateProfile(JSON.stringify(payload));
+            }
+        });
     }
 
 
@@ -324,7 +328,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                         const addr: any = {};
                         addr.address = addObj;
                         // Object.keys(addObj).map(attr => Object.assign(attr, addr.address));
-                        console.log(addr)
+                        console.log(addr);
                         const payload = JSON.stringify({
                             id: this._userModel.id,
                             data: addr // {address: addr.address}
