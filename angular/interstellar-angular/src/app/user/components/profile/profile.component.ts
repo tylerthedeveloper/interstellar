@@ -81,6 +81,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     private edit = false;
     private hasAddress = false;
 
+    private _acceptedAssets: string[];
+
     constructor(private _userService: UserService,
                 private _productService: ProductService,
                 private _orderService: OrderService,
@@ -117,6 +119,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                 if (this.isMyProfile) {
                     const userTyped = <User> user;
                     this._userModel = userTyped;
+                    this._acceptedAssets = (userTyped.acceptedAssets) ? userTyped.acceptedAssets : new Array<string>('XLM');
                     this.hasAddress = (userTyped.address) ? true : false;
                     if (!this.hasAddress) {
                         this.handleUpdateAddress();
@@ -156,27 +159,27 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                     }
             }
         });
-        // todo
+        // todo MARK DEFAULT ON VALUE
         dialogRef.afterClosed().subscribe((newProfileData: string) => {
             if (newProfileData) {
                 const formObject = <any> JSON.parse(newProfileData);
                 const acceptedAssetsTempArray = new Array<string>();
-                const acceptedAssetsTemp = {};
-                const acceptedAssets = (formObject.acceptedAssets as Array<string>)
+                acceptedAssetsTempArray.push(stellarTermAssets[0]);
+                (formObject.acceptedAssets as Array<string>)
                     // .map((asset, i) => (asset) ? console.log(stellarTermAssets[i]) : null)
-                    // .map((asset, i) => console.log(asset + ' ' + i))
-                    .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarTermAssets[i]) : null);
+                    .map((asset, i) => {
+                        // console.log(asset + ' ' + i)
+                        return (asset) ? acceptedAssetsTempArray.push(stellarTermAssets[i + 1]) : null;
+                    })
+                    // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarTermAssets[i]) : null);
                     // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarAssetsMapper2[i].asset_type) : null);
-                    // .map((asset, i) => (asset) ? acceptedAssetsTemp[stellarAssetsMapper2[i].asset_type] = true : null);
-                // stellarAssetsMapper2
-                // console.log(acceptedAssetsTemp);
                 formObject.acceptedAssets = acceptedAssetsTempArray;
-                // formObject.acceptedAssets = JSON.stringify(acceptedAssetsTemp);
+                this._acceptedAssets = acceptedAssetsTempArray;
                 console.log(formObject.acceptedAssets)
                 this.edit = !this.edit;
                 const payload = {
                     id: this._userID,
-                    data: JSON.stringify(formObject)
+                    data: formObject
                 };
                 return this._userService.updateProfile(JSON.stringify(payload));
             }
@@ -185,7 +188,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
 
     goToAddProductpage(): void {
-        this.router.navigate(['../products/list-new-product']);
+        const acceptedAssetQueryParams = { queryParams: { acceptedAssets: this._acceptedAssets } };
+        this.router.navigate(['../products/list-new-product'], acceptedAssetQueryParams);
         // this.router.navigate(['../products/list-new-product'], { queryParams: { user: this._userID } });
     }
 

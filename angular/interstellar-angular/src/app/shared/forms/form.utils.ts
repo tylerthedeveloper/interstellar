@@ -20,7 +20,11 @@ const createFormGroup = (questions: any, objectMapper: any): FormGroup => {
         const value = (objectMapper) ? objectMapper[key] || question.value || '' : question.value || '';
         if (question.controlType === 'checkbox-group') {
                 group[question.key] = new FormArray((question as any).options
-                    .map(option => new FormControl(question.value && question.value.some(y => y === option.value) ? option.key : '')));
+                    .map(option => {
+                        const _disabled = option.disabled;
+                        const _value = question.value && question.value.some(y => y === option.value) ? option.key : '';
+                        return new FormControl({value: _value, disabled: _disabled});
+                    }));
         } else if (question.type === 'number') {
             // console.log(question);
             const val: number = +(objectMapper) ? +objectMapper[key] || +question.value || 1 : +question.value || 1;

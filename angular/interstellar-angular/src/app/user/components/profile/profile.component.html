@@ -124,7 +124,7 @@
                 <div style="margin: 0px 0px 0px 10px;">
                   <h6>Accepted Asset Types</h6>
                   <ul>
-                      <li *ngFor="let asset of user?.acceptedAssets">
+                      <li *ngFor="let asset of user?.acceptedAssets || _acceptedAssets">
                               {{ asset }}
                       </li>
                   </ul>
