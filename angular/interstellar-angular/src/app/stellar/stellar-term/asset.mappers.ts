@@ -18,6 +18,8 @@ export const stellarTermAssetsMapper2 = {
     'TARI': 'TARI-GD7UVDDJHJYKUXB4SJFIC6VJDQ4YADQCMRN3KLHJFV4H6NIUAEREVCO7'
 };
 
+// StellarSdk.Asset.native() ...
+// StellarSdk.Asset(asset.code) ...
 export const stellarTermAssets = [
     'XLM',
     'CNY',

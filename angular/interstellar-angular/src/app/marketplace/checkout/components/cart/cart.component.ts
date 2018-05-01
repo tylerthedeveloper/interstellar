@@ -90,7 +90,12 @@ export class CartComponent extends BaseComponent implements OnInit {
 
                 const updatedCartItems = cartItems.map(item => {
                     const curAssetValue = this.currentAssetValuesDict[item.assetPurchaseDetails.asset_type];
-                    const newAssetValue = item.fixedUSDAmount / curAssetValue;
+                    console.log(item)
+                    console.log(item.fixedUSDAmount)
+                    console.log(curAssetValue)
+                    console.log(item.fixedUSDAmount / curAssetValue)
+                    const newAssetValue = (item.fixedUSDAmount / curAssetValue).toFixed(7);
+                    console.log(newAssetValue)
                     const newAssetBalance = new AssetBalance({
                         asset_type: item.assetPurchaseDetails.asset_type,
                         coin_name: item.assetPurchaseDetails.coin_name,
@@ -102,6 +107,10 @@ export class CartComponent extends BaseComponent implements OnInit {
                 });
                 this.assetTotals = calcTotalsForMultipleAssets(updatedCartItems.map(CIT => CIT.assetPurchaseDetails));
                 this.cartItems = updatedCartItems;
+                // todo: send pair of {id : asset}
+                const idAssetPairs: { id: string, assetBalance: AssetBalance}[] =
+                    updatedCartItems.map(CIT => ({id: CIT.cartItemID, assetBalance: CIT.assetPurchaseDetails}));
+                this._cartService.batchUpdateTickerPrices(idAssetPairs); // .then(() => updatedCartItems);
                 return updatedCartItems;
             });
         }).then(() => setTimeout(() => this.loading = true, 1000));
@@ -171,7 +180,7 @@ export class CartComponent extends BaseComponent implements OnInit {
         return Promise.resolve(this._stellarTermService.getPriceForAssets(assetTypes)
             .subscribe((asset: any) => {
                 this.currentAssetValuesDict[asset.asset_type] = asset.balance;
-                console.log(asset);
+                // console.log(asset);
                 // this.loading = false;
                 // setTimeout(() => this.loading = true, 2000);
             }));
@@ -286,16 +295,18 @@ export class CartComponent extends BaseComponent implements OnInit {
         });
 
 // todo: TEST THESE BREAK WHEN FALSE -> IF NOT, TRAD LOOP
-        const parsedBalances = <Array<AssetBalance>> JSON.parse(this.myBaseBalances);
-        // console.log(this.assetTotals)
+        const parsedBalObj = JSON.parse(this.myBaseBalances);
+        const parsedBalances = (parsedBalObj.length) ? parsedBalObj as AssetBalance[] : new Array<AssetBalance>(parsedBalObj);
+        // console.log(parsedBalances.length)
+        // console.log(pbArray)
         this.assetTotals.map(assetTotal => {
-            console.log(this.myBaseBalances);
-            console.log(assetTotal);
+            // console.log(this.myBaseBalances);
+            // console.log(assetTotal);
             // todo: confirm not null, confirm balance
             const curBalance = Number(getBalanceforAsset(parsedBalances, assetTotal.asset_type));
             console.log(curBalance);
-            console.log(Number(assetTotal.balance));
-            console.log(isValidNewBalance(assetTotal.asset_type, curBalance, Number(assetTotal.balance)));
+            // console.log(Number(assetTotal.balance));
+            // console.log(isValidNewBalance(assetTotal.asset_type, curBalance, Number(assetTotal.balance)));
             if (!isValidNewBalance(assetTotal.asset_type, curBalance, Number(assetTotal.balance))) {
                 return this.errorAndAlert(ErrorMessage.InsufficientFoundsOrThreshold);
             }

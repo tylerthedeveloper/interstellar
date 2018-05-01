@@ -82,7 +82,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
             this.curUserID = this.myBaseUserID;
             this.curPubKey = this.myBasePublicKey;
             this.curSeedKey = this.myBaseSeedKey;
-            this.balances = <AssetBalance[]> JSON.parse(this.myBaseBalances);
+            this.balances = new Array<AssetBalance>(JSON.parse(this.myBaseBalances));
             // this.curUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
             // this.curPubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
             // this.curSeedKey = sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key');

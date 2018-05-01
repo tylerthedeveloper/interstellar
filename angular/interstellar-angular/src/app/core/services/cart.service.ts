@@ -178,10 +178,27 @@ export class CartService {
             .then(() => this.cartItemIDs.filter(_cartItemID => cartItemIdArray.find(c => c === _cartItemID)));
     }
 
-    batchMarkItemsPaidFor(cartItemIdArray: string[]): any {
+    batchMarkItemsPaidFor(cartItemIdArray: string[]): Promise<void> {
         console.log(cartItemIdArray);
         const batch = this.afs.firestore.batch();
         cartItemIdArray.map(id => batch.update(this.myCartRef.doc(id), { isPaidFor: true }));
+        return batch.commit();
+    }
+
+    batchUpdateTickerPrices(cartItemPairArray: any[]) {
+        // console.log(cartItemIdArray);
+        const batch = this.afs.firestore.batch();
+        console.log('any');
+        cartItemPairArray.map((itemPair: any) => {
+            const _id = itemPair.id;
+            const _updatedAssetBalance: any = {
+                asset_type: itemPair.assetBalance.asset_type,
+                balance: itemPair.assetBalance.balance,
+                coin_name: itemPair.assetBalance.coin_name
+            }
+            console.log(_updatedAssetBalance);
+            batch.update(this.myCartRef.doc(_id), { assetPurchaseDetails: _updatedAssetBalance });
+        });
         return batch.commit();
     }
 
