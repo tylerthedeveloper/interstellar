@@ -1,5 +1,5 @@
 import { TextboxQuestion, NumberInputQuestion, CheckBoxGroupQuestion } from '../shared/forms/form-element';
-import { stellarTermAssets, stellarTermAssets2 } from 'app/marketplace/stellar-term/asset.mappers';
+import { stellarTermAssets2 } from 'app/stellar/stellar-term/asset.mappers';
 
 const requiredPublicUserDataTyped: Array<{ key: string, type: string}> = [
     // { key: 'productName', type: 'string'},

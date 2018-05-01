@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { MatSidenav } from '@angular/material';
 
-import { StellarAccountService } from 'app/stellar';
+import { StellarAccountService, AssetBalance } from 'app/stellar';
 import { EventEmitterService } from 'app/core/_helpers/event-emitter.service';
 import { Router } from '@angular/router';
 import { UserService } from 'app/core/services';
@@ -92,8 +92,19 @@ export class NavBarComponent implements OnInit {
     handleLogin = (payload: string = ''): void => {
         this.loggedIn = true;
         if (payload) {
-            console.log(payload);
-            sessionStorage.setItem('my_balances', payload);
+
+
+
+// !!! WHAT DO WE DO WITH NATIVE --> XLM
+
+// asset_type === native , coin_name = XLM / Lumens!!!!!!
+
+            const parsedBalances = <Array<any>> JSON.parse(payload);
+            // console.log(parsedBalances);
+            const nativeXLM: AssetBalance = parsedBalances.find(asset => asset.asset_type === 'native');
+            nativeXLM.asset_type = 'XLM';
+            // console.log(nativeXLM);
+            sessionStorage.setItem('my_balances', JSON.stringify(nativeXLM));
         }
         this._userService.getCurrentUser().subscribe(currentUser => {
             // console.log(currentUser);

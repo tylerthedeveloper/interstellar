@@ -1,19 +1,31 @@
+/** Angular */
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { Router } from '@angular/router';
-import { AssetBalance, calcTotalsForMultipleAssets } from 'app/stellar';
+
+/** Material / UI */
+import { MatDialog } from '@angular/material';
+import { ConfirmDialogComponent, DialogComponent } from 'app/shared/components';
+
+/** shared */
+import { BaseComponent } from 'app/base.component';
+import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
+
+/** Cart */
 import { CartService } from 'app/core/services/cart.service';
 import { CartItem } from 'app/marketplace/_market-models/cart-item';
-import { ConfirmDialogComponent, DialogComponent } from 'app/shared/components';
-import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
-import { userFormData } from 'app/user/user.details';
-import { MatDialog } from '@angular/material';
-import { BaseComponent } from 'app/base.component';
+
+/** User */
 import { User } from 'app/user/user';
-import { UserService } from 'app/core/services';
+import { UserService, ProductService } from 'app/core/services';
+import { userFormData } from 'app/user/user.details';
+
+/** Stellar */
+import { AssetBalance, calcTotalsForMultipleAssets, getBalanceforAsset, isValidNewBalance } from 'app/stellar';
 import { StellarTermService } from 'app/core/services/stellar-term.service';
 import { stellarTermAssets } from 'app/stellar/stellar-term/asset.mappers';
+import { Subscription } from 'rxjs/Subscription';
+import { validateNewQuantity } from 'app/marketplace/products/product.utils';
 
 
 @Component({
@@ -23,36 +35,48 @@ import { stellarTermAssets } from 'app/stellar/stellar-term/asset.mappers';
 })
 export class CartComponent extends BaseComponent implements OnInit {
 
+    /** Page Items */
     private cartItemsSource: Observable<CartItem[]>;
+    private cartItems: CartItem[];
     private cartItemIDs: string[] = [];
     private _checkedCartItemIDs: string[] = [];
     private assetTotals: AssetBalance[];
-
+    // private currentAssetValues: AssetBalance[];
+    private currentAssetValuesDict: {} = {};
     private user: Observable<User>;
-    private hasAddress = false;
 
+    /** Page helpers */
+    private hasAddress = false;
     private tempAddress = '';
     private loading;
 
-    private currentAssetValues: AssetBalance[];
-    private currentAssetValuesDict: {} = {};
-
+    /**
+     * @param  {CartService} private_cartService
+     * @param  {Router} private_router
+     * @param  {UserService} private_userService
+     * @param  {StellarTermService} private_stellarTermService
+     * @param  {MatDialog} privatedialog
+     */
     constructor(private _cartService: CartService,
                 private _router: Router,
+                private _productService: ProductService,
                 private _userService: UserService,
                 private _stellarTermService: StellarTermService,
                 private dialog: MatDialog) {
                     super();
                 }
 
-    ngOnInit() {
+    /**
+     * @returns void
+     */
+    ngOnInit(): void {
         this.loading = false;
         this._userService.getUserByID(this.myBaseUserID).first().subscribe(user => {
             this.user = user;
             const userTyped = <User> user;
             this.hasAddress = (userTyped.address) ? true : false;
         });
-        this.calcTotals(new Set(stellarTermAssets)).then(() => {
+        this.pullCurrentTickerValues(new Set(stellarTermAssets)).then(() => {
             this.cartItemsSource = this._cartService.Cart.map(cartItems => {
                 // TODO: Map only one time
                 this.cartItemIDs = cartItems.map((c: CartItem) => c.cartItemID);
@@ -77,10 +101,10 @@ export class CartComponent extends BaseComponent implements OnInit {
                     return newCartItem;
                 });
                 this.assetTotals = calcTotalsForMultipleAssets(updatedCartItems.map(CIT => CIT.assetPurchaseDetails));
-                setTimeout(() => this.loading = true, 2000);
+                this.cartItems = updatedCartItems;
                 return updatedCartItems;
             });
-        });
+        }).then(() => setTimeout(() => this.loading = true, 1000));
 
     }
 
@@ -90,6 +114,7 @@ export class CartComponent extends BaseComponent implements OnInit {
     // ──────────────────────────────────────────────────────────────────────────
     //
 
+    // todo: Combine onCartBatchAction
     /**
      * @returns void
      */
@@ -132,21 +157,26 @@ export class CartComponent extends BaseComponent implements OnInit {
     // ────────────────────────────────────────────────────────────────────────────────
 
 
-
     //
     // ──────────────────────────────────────────────────────────────────── I ──────────
     //   :::::: H E L P E R   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────────
     //
 
-    calcTotals(assetTypes: Set<string>) {
+    /**
+     * @param  {Set<string>} assetTypes
+     * @returns Promise
+     */
+    pullCurrentTickerValues(assetTypes: Set<string>): Promise<any> {
         return Promise.resolve(this._stellarTermService.getPriceForAssets(assetTypes)
             .subscribe((asset: any) => {
                 this.currentAssetValuesDict[asset.asset_type] = asset.balance;
+                console.log(asset);
                 // this.loading = false;
                 // setTimeout(() => this.loading = true, 2000);
             }));
     }
+
     /**
      * @param  {string} data
      * @returns void
@@ -160,9 +190,6 @@ export class CartComponent extends BaseComponent implements OnInit {
         if (obj.newData) {
             newCartItemData = obj.newData;
         }
-
-        console.log(obj);
-
         switch (_action) {
             case 'purchase':
                 this.updateAddToCheckout(new Array<string>(_cartItemID));
@@ -174,14 +201,12 @@ export class CartComponent extends BaseComponent implements OnInit {
                 this._cartService.removeCartItem(_cartItemID, _cartItemProductID);
                 break;
             case 'checkItem':
-                // console.log(_cartItemID);
                 this._checkedCartItemIDs.push(_cartItemID);
                 break;
             default:
                 return;
         }
     }
-
 
     /**
      * @param  {string[]} cartItemIDs
@@ -201,7 +226,6 @@ export class CartComponent extends BaseComponent implements OnInit {
                 }
             });
             dialogRef.afterClosed().subscribe((result: string) => {
-                // console.log(result);
                 const dialogRefInner = this.dialog.open(DialogComponent, {
                     data: { component: DynamicFormComponent,
                             payload: {
@@ -222,25 +246,67 @@ export class CartComponent extends BaseComponent implements OnInit {
                         this.tempAddress = newAddressData;
                         this.hasAddress = true;
                         if (this.hasAddress && this.tempAddress) {
-                            this._cartService.addToCheckout(cartItemIDs)
+                            if (this.validateTransaction(cartItemIDs)) {
+                                this._cartService.addToCheckout(cartItemIDs)
                                 .catch(err => console.log(err))
                                 .then(() => this._router.navigate(['/cart/checkout']));
+                            }
                         }
                     }
                 });
             });
         }
-        // console.log(this.hasAddress)
-        // console.log(this.tempAddress)
-        // if (this.hasAddress && this.tempAddress) {
-        if (this.hasAddress) {
+        if (this.validateTransaction(cartItemIDs)) {
             this._cartService.addToCheckout(cartItemIDs)
-                .catch(err => console.log(err))
-                .then(() => this._router.navigate(['/cart/checkout']));
+            .catch(err => console.log(err))
+            .then(() => this._router.navigate(['/cart/checkout']));
         }
     }
 
-    handleMissingAddress()  {
+    /**
+     * @param  {number} purchaseQuantity
+     * @param  {number} totalPurchaseAmount
+     * @returns boolean
+     */
+    // private validateTransaction(purchaseQuantity: number, totalPurchaseAmount: number): boolean {
+    private validateTransaction(cartItemIDs: string[]): boolean {
+        if (this.myBaseBalances) { console.log(this.myBaseBalances); }
+        if (!this.myBaseBalances) {
+            return this.errorAndAlert(ErrorMessage.InactiveBalances);
+        }
+
+        this.cartItems.filter(item => cartItemIDs.some(CIT => item.cartItemID === CIT) === true)
+            .map(currentCheckedOutItem => {
+                // console.log(currentCheckedOutItem);
+// !!! todo GET FROM SERVER FOR CURRENT QUANTITY!!!!!
+                const curQuant = this._productService.getProductQuantity(currentCheckedOutItem.productID);
+                if (!(validateNewQuantity(currentCheckedOutItem.oldQuantity, currentCheckedOutItem.quantityPurchased))) {
+                    return this.errorAndAlert(ErrorMessage.InvalidPurchaseQuantity);
+                }
+        });
+
+// todo: TEST THESE BREAK WHEN FALSE -> IF NOT, TRAD LOOP
+        const parsedBalances = <Array<AssetBalance>> JSON.parse(this.myBaseBalances);
+        // console.log(this.assetTotals)
+        this.assetTotals.map(assetTotal => {
+            console.log(this.myBaseBalances);
+            console.log(assetTotal);
+            // todo: confirm not null, confirm balance
+            const curBalance = Number(getBalanceforAsset(parsedBalances, assetTotal.asset_type));
+            console.log(curBalance);
+            console.log(Number(assetTotal.balance));
+            console.log(isValidNewBalance(assetTotal.asset_type, curBalance, Number(assetTotal.balance)));
+            if (!isValidNewBalance(assetTotal.asset_type, curBalance, Number(assetTotal.balance))) {
+                return this.errorAndAlert(ErrorMessage.InsufficientFoundsOrThreshold);
+            }
+        });
+        return true;
+    }
+
+    /**
+     * @returns Subscription
+     */
+    handleMissingAddress(): Subscription  {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             data: {
                     title: 'Add Address',
@@ -295,9 +361,20 @@ export class CartComponent extends BaseComponent implements OnInit {
     // }
 
     // ────────────────────────────────────────────────────────────────────────────────
-
+  // TODO: NEEDS to be a DIALOG
+    private errorAndAlert(errorMessage: string): boolean {
+        alert(errorMessage);
+        return false;
+    }
 }
 
+
+const enum ErrorMessage {
+    InactiveBalances = 'You dont seem to have any active balances, please check your account',
+    InvalidPurchaseQuantity = 'That is an invalid purchase quantity',
+    InsufficientFoundsOrThreshold =
+        'You don\'t seem to have sufficient funds or\n the purchase amount goes below the minimum required holding threshold'
+}
 
 // import { filter } from 'rxjs/operators';
 // For example on regular and observable piping + filtering

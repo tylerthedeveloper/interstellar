@@ -48,14 +48,13 @@ export class CartService {
                 .map(changes => {
                     // const _totals = new Array<Asset>();
                     //     _ids.push(data.cartItemID);
-                    
                     // const _ids = changes.map(a => a.cartItemID);
                     // this.cartItemIDs = _ids;
 
                     changes.map(item => {
-                        this.cartItemIDs.push(item.cartItemID); 
-                        this.cartItemProductIDs.push(item.productID); 
-                    })
+                        this.cartItemIDs.push(item.cartItemID);
+                        this.cartItemProductIDs.push(item.productID);
+                    });
                     // this.cartItemIDs = changes.map(a => a.cartItemID);
                     // this.cartItemProductIDs = changes.map(a => a.cartItemID);
                     // this.assetTotals = _totals;

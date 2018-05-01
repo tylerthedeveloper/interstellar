@@ -1,18 +1,22 @@
 //  TODO: NEEDS TO RETURN CONFIRMATION / TRUE --> for all helpers
 
+/** Angular */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { CommonModule, Location } from '@angular/common';
 import { Location } from '@angular/common';
 
-import { AssetBalance, currencyAssetsMapper, getBalanceforAsset,
-    isValidNewBalance, updateBalance, calcTotalPurchaseAmount } from 'app/stellar';
-import { ProductService } from 'app/core/services/product.service';
+/** Stellar */
+import { AssetBalance, currencyAssetsMapper } from 'app/stellar';
 
+/** Shared */
+import { BaseComponent } from '../../../../base.component';
+
+/** Services */
+import { ProductService } from 'app/core/services/product.service';
 import { CartService } from 'app/core/services/cart.service';
+
+/** Models: Cart / Product  */
 import { Product } from 'app/marketplace/_market-models/product';
-import { ProductCategoryEnum } from 'app/marketplace/_market-models/product-category';
-import { validateNewQuantity } from 'app/marketplace/products/product.utils';
 import { CartItem } from 'app/marketplace/_market-models/cart-item';
 
 @Component({
@@ -20,29 +24,25 @@ import { CartItem } from 'app/marketplace/_market-models/cart-item';
     templateUrl: './product-page.component.html',
     styleUrls: ['./product-page.component.css']
 })
-export class ProductPageComponent implements OnInit {
+export class ProductPageComponent extends BaseComponent implements OnInit {
 
     /** User Info */
-    private myUserId: string;
-    private myPubKey: string;
-    private mySeedKey: string;
+    // See Basecomponent
 
     /** Page product information */
     private product: Product;
     private assetTypes: any = [];
+    private balances: AssetBalance[];
 
-//  Set to default???
-    private selectedAssetType: AssetBalance;
     // private selectedAssetType: string;
+    private selectedAssetType: AssetBalance;
     private purchaseQuantity = 1;
     private _sellerShortData: { productSellerID: string, productSellerName: string, productSellerPublicKey: string };
 
-
     /** Boolean Checks for Page */
-    private isMyProduct: boolean;
-    private balances: AssetBalance[];
-    private isLoggedIn = false;
-    private isInStock = true;
+    isMyProduct: boolean;
+    isLoggedIn = false;
+    isInStock = true;
 
     /**
      * @param  {ProductService} private_productService
@@ -54,19 +54,16 @@ export class ProductPageComponent implements OnInit {
         private _route: ActivatedRoute,
         private _cartService: CartService,
         private _router: Router,
-        private location: Location) { }
+        private location: Location) {
+            super();
+         }
 
-    ngOnInit() {
-        // this.curUserID = this.myBaseUserID;
-        // this.curPubKey = this.myBasePublicKey;
-        // this.curSeedKey = this.myBaseSeedKey;
-        // this.balances = this.myBaseBalances;
-
-        this.myUserId = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-        this.myPubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
-        this.mySeedKey = sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key');
-        this.isLoggedIn = (this.myUserId != null && this.myPubKey != null);
-        const curBalances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
+    /**
+     * @returns void
+     */
+    ngOnInit(): void {
+        this.isLoggedIn = (this.myBaseUserID != null && this.myBasePublicKey != null);
+        const curBalances = this.myBaseBalances || sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
         this.balances = <Array<AssetBalance>>JSON.parse(curBalances);
         this.assetTypes = Object.keys(currencyAssetsMapper).map((type: any) => <Array<AssetBalance>>type);
         this._productService
@@ -77,43 +74,10 @@ export class ProductPageComponent implements OnInit {
                 if (product) {
                     this._sellerShortData = product.productSellerData;
                     this.isInStock = (product.quantity > 0);
-                    this.isMyProduct = (product.productSellerData.productSellerID === this.myUserId);
+                    this.isMyProduct = (product.productSellerData.productSellerID === this.myBaseUserID);
                 }
             });
     }
-
-    /**
-     * !!! TODO: Remove
-     */
-    addProduct2() {
-        if (!(this.myPubKey && this.myUserId && this.isLoggedIn && this.mySeedKey)) {
-            alert('You must be logged in order to post a new product');
-            return;
-        }
-        const productData = {
-            productName: 'super fast GPU',
-            productShortDescription: 'short des',
-            productLongDescription: 'looooooooooooong des',
-
-            publicKey: this.myPubKey,
-            price: 10,
-            quantity: 15,
-            productCategory: ProductCategoryEnum.Electronics,
-            productPrices: [
-                // new Asset ()
-                { asset_type: 'native', balance: 5 },
-                { asset_type: 'tycoin', balance: 7 },
-            ],
-
-            productSellerData: {
-                productSellerID: sessionStorage.getItem('user_doc_id'),
-                productSellerName: sessionStorage.getItem('user_name'),
-                productSellerPublicKey: sessionStorage.getItem('public_key')
-            }
-        };
-        this._productService.addProduct(JSON.stringify(productData));
-    }
-
     //
     // ────────────────────────────────────────────────────────────────────────────── I ──────────
     //   :::::: P U B L I C   M A I N   M E T H O D S : :  :   :    :     :        :          :
@@ -126,10 +90,7 @@ export class ProductPageComponent implements OnInit {
     public onBuyProduct(): void {
         const purchaseQuantity = this.purchaseQuantity;
         if (this.onValidateProductAction()) {
-            // const totalPurchaseAmount = calcTotalPurchaseAmount(this.selectedAssetType.balance, purchaseQuantity);
-            // if (this.validateTransaction(purchaseQuantity, totalPurchaseAmount)) {
                 this.goToCheckout(purchaseQuantity);
-            // }
         }
     }
 
@@ -138,12 +99,6 @@ export class ProductPageComponent implements OnInit {
      * @returns void
      */
     public addProductAndGoToCart() {
-        // if (this.addToCartHelper()) {
-        //     this.onCompleteProductAction();
-        //     this._router.navigate(['/cart']);
-        // } else {
-        //     alert('couldnt be completed');
-        // }
         this.addToCartHelper().then((res) => {
             console.log(res);
             if (!res) { return; }
@@ -164,12 +119,13 @@ export class ProductPageComponent implements OnInit {
             // if (!res) { throw new Error('error: item already in cart1') }
             console.log(res);
             if (!res) { return false; }
+            //  todo
+            alert('success: this item has been added to your cart');
             this.onCompleteProductAction();
-//  todo
             // this.location.back();
             return true;
-        });
-        // .catch(() => this.errorAndAlert('error: item already in cart2'));
+        })
+        .catch(() => this.errorAndAlert('error: item already in cart2'));
     }
 
     private addToCartHelper(): Promise<boolean> {
@@ -181,8 +137,8 @@ export class ProductPageComponent implements OnInit {
                     return (res) ? this.onCompleteProductAction() : false;
                 })
                 .catch(e => {
-                    return this.errorAndAlert(`There was an error:\n ${e}`);
                     // return false;
+                    return this.errorAndAlert(`There was an error:\n ${e}`);
                 });
         } else {
             return Promise.resolve(false);
@@ -198,18 +154,16 @@ export class ProductPageComponent implements OnInit {
     }
 
     /**
+     // todo:
      * @returns void
      */
     public deleteProduct(): void {
-        // todo:
         alert('are you sure you want to delete --> CHANGE TO MODAL ...');
         this._sellerShortData = null;
-        this.isInStock = false;
-        this.isMyProduct = false;
-        this._router.navigate(['../profile']);
-        this._productService.deleteProduct(this.product.id, this.product.productCategory);
+        this.isInStock = this.isMyProduct = false;
+        this._router.navigate(['../profile']).then(() =>
+            this._productService.deleteProduct(this.product.id, this.product.productCategory));
     }
-
     // ────────────────────────────────────────────────────────────────────────────────
 
 
@@ -223,22 +177,22 @@ export class ProductPageComponent implements OnInit {
      * @param  {number} purchaseQuantity
      * @param  {number} totalPurchaseAmount
      * @returns boolean
-     */
-    private validateTransaction(purchaseQuantity: number, totalPurchaseAmount: number): boolean {
-        if (this.balances) { console.log(this.balances); }
-        if (!this.balances) {
-            return this.errorAndAlert('You dont seem to have any active balances, please check your account');
-        }
-        if (!(validateNewQuantity(this.product.quantity, purchaseQuantity))) {
-            return this.errorAndAlert('That is an invalid purchase quantity');
-        }
-        const curBalance = Number(getBalanceforAsset(this.balances, this.selectedAssetType.asset_type));
-        if (!isValidNewBalance(this.selectedAssetType.asset_type, curBalance, totalPurchaseAmount)) {
-            return this.errorAndAlert('You don\'t seem to have sufficient funds or \n ' +
+     private validateTransaction(purchaseQuantity: number, totalPurchaseAmount: number): boolean {
+         if (this.balances) { console.log(this.balances); }
+         if (!this.balances) {
+             return this.errorAndAlert('You dont seem to have any active balances, please check your account');
+            }
+            if (!(validateNewQuantity(this.product.quantity, purchaseQuantity))) {
+                return this.errorAndAlert('That is an invalid purchase quantity');
+            }
+            const curBalance = Number(getBalanceforAsset(this.balances, this.selectedAssetType.asset_type));
+            if (!isValidNewBalance(this.selectedAssetType.asset_type, curBalance, totalPurchaseAmount)) {
+                return this.errorAndAlert('You don\'t seem to have sufficient funds or \n ' +
                 'the purchase amount goes below the minimum required holding threshold');
+            }
+            return true;
         }
-        return true;
-    }
+       */
 
     /**
      * @param  {number} purchaseQuantity
@@ -248,10 +202,11 @@ export class ProductPageComponent implements OnInit {
     private goToCheckout(purchaseQuantity: number, totalPurchaseAmount: number = 0): void {
         const cartItem = this.createCartItem(purchaseQuantity, totalPurchaseAmount);
         cartItem.isInCheckout = true;
-        this._cartService.addToCart(JSON.stringify(cartItem));
-        updateBalance(this.balances, cartItem.assetPurchaseDetails);
-        this.onCompleteProductAction();
-        this._router.navigate(['/cart/checkout']);
+        this._cartService.addToCart(JSON.stringify(cartItem))
+            .then(() => {
+                this.onCompleteProductAction();
+                this._router.navigate(['/cart/checkout']);
+        });
     }
 
     // private validateSellerStatus(amount: number): boolean {
@@ -275,8 +230,8 @@ export class ProductPageComponent implements OnInit {
             coin_name: this.selectedAssetType.coin_name
         });
         const cartItem: CartItem = <CartItem> {
-            buyerUserID: this.myUserId,
-            buyerPublicKey: this.myPubKey,
+            buyerUserID: this.myBaseUserID,
+            buyerPublicKey: this.myBasePublicKey,
 
             sellerUserID: this._sellerShortData.productSellerID,
             sellerPublicKey: this._sellerShortData.productSellerPublicKey,
@@ -305,10 +260,10 @@ export class ProductPageComponent implements OnInit {
     //
     private onValidateProductAction(): boolean {
         if (!this.purchaseQuantity) {
-            return this.errorAndAlert('Please select a valid quantity');
+            return this.errorAndAlert(ErrorMessage.MissingQuantity);
         }
         if (!this.selectedAssetType) {
-            return this.errorAndAlert('Please select purchase asset type');
+            return this.errorAndAlert(ErrorMessage.MissingAsset);
         }
         return true;
     }
@@ -328,6 +283,12 @@ export class ProductPageComponent implements OnInit {
 
 }
 
+const enum ErrorMessage {
+    MissingQuantity = 'Please select a valid quantity',
+    MissingAsset = 'Please select purchase asset type',
+    InsufficientFoundsOrThreshold =
+        'You don\'t seem to have sufficient funds or\n the purchase amount goes below the minimum required holding threshold'
+}
 
 /*
   SBXVQZTXNZCHYPE3PF43IOFH6E3VOH47ZZKRW6MTZLZL5VIO5QZCP7KQ

@@ -27,9 +27,19 @@ const updateBalance = (balanceArray: Array<AssetBalance>, asset: AssetBalance): 
     balanceArray[index].balance = String(newbal);
 };
 
+// TODO: add in new assets into session
 const getBalanceforAsset = (balanceArray: Array<AssetBalance>, assetType: string): number => {
-    const index = balanceArray.findIndex(bal => bal.asset_type === assetType);
-    return parseInt(balanceArray[index].balance, 10);
+    for (let index = 0; index < balanceArray.length; index++) {
+        const asset = balanceArray[index];
+        if (asset.asset_type === assetType) {
+            return parseInt(balanceArray[index].balance, 10);
+        }
+    }
+
+    // const index = balanceArray.findIndex(bal => bal.asset_type === assetType);
+    // if (index && index !== -1) {
+    //     return parseInt(balanceArray[index].balance, 10);
+    // }
 };
 
 // const isValidNewBalance = (currentBalance: number, outlay: string): boolean => {

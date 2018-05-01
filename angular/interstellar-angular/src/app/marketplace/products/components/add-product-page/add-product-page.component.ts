@@ -1,21 +1,31 @@
+/** Angular */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { productFormData } from '../../product.details';
-import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
-import { DialogComponent, FileUploadDialogComponent } from 'app/shared/components';
-import { Product, ShippingInformation } from 'app/marketplace/_market-models';
-import { areValidProductTypes } from 'app/marketplace/products/product.utils';
-import { ProductService } from 'app/core/services';
-import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AssetBalance } from 'app/stellar';
-import { shippingTypeQuestions } from 'app/marketplace/shipping/shipping.details';
-import { shipTypes } from 'app/marketplace/shipping/ship-types';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+
+/** firebase */
+import * as firebase from 'firebase/app';
 import { AngularFireStorageReference } from 'angularfire2/storage/ref';
 import { AngularFireStorage } from 'angularfire2/storage/storage';
 import { AngularFireUploadTask } from 'angularfire2/storage/task';
-import * as firebase from 'firebase/app';
-import { stellarTermAssets2 } from '../../../stellar-term/asset.mappers';
+
+/** Shared */
+import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
+import { DialogComponent } from 'app/shared/components';
+
+/** stellar */
+import { AssetBalance } from 'app/stellar';
+import { stellarTermAssets2 } from 'app/stellar/stellar-term/asset.mappers';
+
+/** product */
+import { ProductService } from 'app/core/services';
+import { productFormData } from '../../product.details';
+import { Product, ShippingInformation } from 'app/marketplace/_market-models';
+import { areValidProductTypes } from 'app/marketplace/products/product.utils';
+
+/** Shipping */
+import { shippingTypeQuestions } from 'app/marketplace/shipping/shipping.details';
+import { shipTypes } from 'app/marketplace/shipping/ship-types';
 
 @Component({
   selector: 'app-add-product-page',
@@ -23,34 +33,24 @@ import { stellarTermAssets2 } from '../../../stellar-term/asset.mappers';
   styleUrls: ['./add-product-page.component.css']
 })
 export class AddProductPageComponent implements OnInit {
+
+    /** Form holders on front end */
     private productInfo: Product;
     private shippingInfo: Array<string>;
 
-    // private productImage: any;
-    // shipTypeOptions: any;
+    /** Image / file */
+    @ViewChild('fileInput') private fileInput;
     private imageUrl = '';
-
-    @ViewChild('fileInput') fileInput;
-
-    // ref: AngularFireStorageReference;
-    // task: AngularFireUploadTask;
-
-
-    // shipFormGroup: FormGroup;
-    // secondFormGroup: FormGroup;
-    // thirdFormGroup: FormGroup;
-
-    ref: AngularFireStorageReference;
-    task: AngularFireUploadTask;
-
-    public title: string;
-    public content: string;
     private fileToUpload: File;
-    shipTypes: any;
+
+    /** Angular fire helpers */
+    private ref: AngularFireStorageReference;
+    private task: AngularFireUploadTask;
+
     constructor(private _productService: ProductService,
                 private router: Router,
                 private _route: ActivatedRoute,
-                private _formBuilder: FormBuilder,
+                // private _formBuilder: FormBuilder,
                 private afStorage: AngularFireStorage,
                 private dialog: MatDialog) {}
 
@@ -68,6 +68,11 @@ export class AddProductPageComponent implements OnInit {
 
     }
 
+    //
+    // ──────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────
+    //
     /**
      * @returns void
      */
@@ -156,6 +161,82 @@ export class AddProductPageComponent implements OnInit {
     */
 
     /**
+     * @returns void
+     */
+    submitNewProduct(): void {
+        if (!this.productInfo) {
+            return alert('please enter product info');
+        } else if (!this.shippingInfo) {
+            return alert('please enter shipping info');
+        } else if (!(this.fileToUpload && this.fileInput && this.imageUrl)) {
+            return alert('please add an image');
+        }
+
+        if (this.handleNewProduct()) {
+            this._productService.addProduct(JSON.stringify(this.productInfo))
+                        .catch(err => console.log(err))
+                        .then(res => this.router.navigate(['/products/product', res]));
+
+        }
+    }
+    // ────────────────────────────────────────────────────────────────────────────────
+
+    //
+    // ────────────────────────────────────────────────────── I ──────────
+    //   :::::: H E L P E R S : :  :   :    :     :        :          :
+    // ────────────────────────────────────────────────────────────────
+    //
+
+    // onChange(event) {
+    //     const _shipTypes = <FormArray>this.shipFormGroup.get('shipTypes') as FormArray;
+
+    //     if (event.checked) {
+    //         _shipTypes.push(new FormControl(event.source.value));
+    //     } else {
+    //       const i = _shipTypes.controls.findIndex(x => x.value === event.source.value);
+    //       _shipTypes.removeAt(i);
+    //     }
+    // }
+
+    /**
+     * @returns void
+     */
+    renderFile(): void {
+        const files = this.fileInput.nativeElement.files;
+        if (files && files[0]) {
+            const reader = new FileReader();
+            const fileToUpload = files[0];
+            reader.readAsDataURL(fileToUpload);
+            reader.onloadend = () => {
+                this.imageUrl = reader.result;
+                this.fileToUpload = fileToUpload;
+            };
+        }
+    }
+
+    /**
+     * @returns void
+     */
+    uploadFile(): void {
+        console.log(this.imageUrl);
+        console.log(this.fileToUpload);
+        const _id = this._productService.getNewProductID();
+        this.productInfo.id = _id;
+        this.ref = this.afStorage.ref('productThumbnails');
+        this.task = this.ref.child(_id)
+            .put(this.fileToUpload)
+            .then((res: firebase.storage.UploadTaskSnapshot) => {
+                // console.log(res);
+                // if (res.state === 'success') {
+                    // this.dialogRef.close(res.downloadURL);
+                    console.log(res.downloadURL);
+                    this.productInfo.productThumbnailLink = res.downloadURL;
+                // }
+            })
+            .catch(err => console.log('errr" \n' + err));
+    }
+
+    /**
      * @returns boolean
      */
     handleNewProduct(): boolean {
@@ -192,82 +273,6 @@ export class AddProductPageComponent implements OnInit {
                 return false;
       }
       return true;
-
-    }
-    /**
-     * @returns void
-     */
-    submitNewProduct(): void {
-        if (!this.productInfo) {
-            return alert('please enter product info');
-        } else if (!this.shippingInfo) {
-            return alert('please enter shipping info');
-        } else if (!(this.fileToUpload && this.fileInput && this.imageUrl)) {
-            return alert('please add an image');
-        }
-
-        if (this.handleNewProduct()) {
-            // const p = JSON.stringify(this.productInfo);
-            this._productService.addProduct(JSON.stringify(this.productInfo))
-                        .catch(err => console.log(err))
-                        .then(res => this.router.navigate(['/products/product', res]));
-
-        }
-    }
-    //
-    // ────────────────────────────────────────────────────── I ──────────
-    //   :::::: H E L P E R S : :  :   :    :     :        :          :
-    // ────────────────────────────────────────────────────────────────
-    //
-
-    // onChange(event) {
-    //     const _shipTypes = <FormArray>this.shipFormGroup.get('shipTypes') as FormArray;
-
-    //     if (event.checked) {
-    //         _shipTypes.push(new FormControl(event.source.value));
-    //     } else {
-    //       const i = _shipTypes.controls.findIndex(x => x.value === event.source.value);
-    //       _shipTypes.removeAt(i);
-    //     }
-    // }
-
-
-    /**
-     * @returns void
-     */
-    renderFile(): void {
-      const files = this.fileInput.nativeElement.files;
-      if (files && files[0]) {
-          const reader = new FileReader();
-          const fileToUpload = files[0];
-          reader.readAsDataURL(fileToUpload);
-          reader.onloadend = () => {
-              this.imageUrl = reader.result;
-              this.fileToUpload = fileToUpload;
-          };
-      }
-  }
-
-    /**
-     * @returns void
-     */
-    uploadFile(): void {
-        console.log(this.imageUrl);
-        console.log(this.fileToUpload);
-        const _id = this._productService.getNewProductID();
-        this.productInfo.id = _id;
-        this.ref = this.afStorage.ref('productThumbnails');
-        this.task = this.ref.child(_id)
-            .put(this.fileToUpload)
-            .then((res: firebase.storage.UploadTaskSnapshot) => {
-                // console.log(res);
-                // if (res.state === 'success') {
-                    // this.dialogRef.close(res.downloadURL);
-                    console.log(res.downloadURL);
-                    this.productInfo.productThumbnailLink = res.downloadURL;
-                // }
-            })
-            .catch(err => console.log('errr" \n' + err));
     }
     // ────────────────────────────────────────────────────────────────────────────────
 
