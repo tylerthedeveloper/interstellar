@@ -256,6 +256,7 @@ export class AddProductPageComponent implements OnInit {
             return new AssetBalance(assetObj);
         });
         product.productPrices = assetBalances;
+        console.log(assetBalances);
         // product.productPrices = [
         //     new AssetBalance({ balance: '7.00000', asset_type: 'native', coin_name: 'Lumens'})
         // ];

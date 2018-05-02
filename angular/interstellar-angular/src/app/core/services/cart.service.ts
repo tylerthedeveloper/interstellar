@@ -159,11 +159,11 @@ export class CartService {
     /**
      * @param  {string[]} cartItemIDs
      */
-    addToCheckout(cartItemIDs: string[]) {
+    addToCheckout(cartItemIDs: string[]): Promise<boolean> {
         console.log(cartItemIDs);
         const batch = this.afs.firestore.batch();
         cartItemIDs.forEach(id => batch.update(this.myCartRef.doc(id), { isInCheckout: true }));
-        return batch.commit();
+        return batch.commit().then(() => true).catch(() => false);
     }
 
     /**
@@ -178,19 +178,20 @@ export class CartService {
             .then(() => this.cartItemIDs.filter(_cartItemID => cartItemIdArray.find(c => c === _cartItemID)));
     }
 
-    batchMarkItemsPaidFor(cartItemIdArray: string[]): Promise<void> {
+    batchMarkItemsPaidFor(cartItemIdArray: string[]): Promise<boolean> {
         console.log(cartItemIdArray);
         const batch = this.afs.firestore.batch();
         cartItemIdArray.map(id => batch.update(this.myCartRef.doc(id), { isPaidFor: true }));
-        return batch.commit();
+        return batch.commit().then(() => true).catch(() => false);
     }
 
-    batchUpdateTickerPrices(cartItemPairArray: any[]) {
+    batchUpdateTickerPrices(cartItemPairArray: any[]): Promise<boolean> {
         // console.log(cartItemIdArray);
         const batch = this.afs.firestore.batch();
         console.log('any');
         cartItemPairArray.map((itemPair: any) => {
             const _id = itemPair.id;
+            console.log(itemPair);
             const _updatedAssetBalance: any = {
                 asset_type: itemPair.assetBalance.asset_type,
                 balance: itemPair.assetBalance.balance,
@@ -199,7 +200,7 @@ export class CartService {
             console.log(_updatedAssetBalance);
             batch.update(this.myCartRef.doc(_id), { assetPurchaseDetails: _updatedAssetBalance });
         });
-        return batch.commit();
+        return batch.commit().then(() => true).catch(() => false);
     }
 
     emptyCart(): Promise<any> {

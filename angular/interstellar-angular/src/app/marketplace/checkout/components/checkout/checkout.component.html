@@ -80,11 +80,11 @@
                         <hr>
 
                         <button [class.disabled]="calBalBtnBool" class="btn btn-outline-mdb-color btn-sm z-depth-0"
-                                (click)="calculateFundsForPurchase(stepper.selectedIndex); calBalBtnBool = true" value="calcBal">
+                                (click)="calculateFundsForPurchase(stepper.selectedIndex);" value="calcBal"> <!-- calBalBtnBool = true -->
                             Final Balance
                         </button>
                     </div>
-                    <div class="col-md-12" [hidden]="!calBalBtnBool">
+                    <div class="col-md-12" [hidden]="!this.updatedBalances"> <!-- !calBalBtnBool -->
                         <!-- <h6>New Wallet Balance(s):</h6> -->
                         <!-- <hr> -->
                         <div *ngFor="let balance of updatedBalances; index as i" [attr.data-index]="i">
@@ -94,17 +94,17 @@
                             </div>
                         </div>
                         <hr>
-                        <button [class.disabled]="valBalBtnBool || !calBalBtnBool" [hidden]="valBalBtnBool || !calBalBtnBool" class="btn btn-outline-mdb-color btn-sm z-depth-0"
-                                (click)="validateFundsForPurchase(stepper.selectedIndex); valBalBtnBool = true">
+                        <button [class.disabled]="!this.updatedBalances" [hidden]="!this.updatedBalances" class="btn btn-outline-mdb-color btn-sm z-depth-0"
+                                (click)="validateFundsForPurchase(stepper.selectedIndex);"> <!-- valBalBtnBool = true" -->
                             Confirm
                         </button>
                     </div>
-                    <div class="col-md-12" style="" [hidden]="cnfPurBtnBool || !valBalBtnBool">
+                    <div class="col-md-12" style="" [hidden]="!validNewBalances">
                         <!-- <p style="color: red;"> Don't reload page</p> -->
                         <!-- TODO: LOADING -->
                         <mat-checkbox visible="false" hidden="hidden"  formControlName="thirdCtrlFirst"> </mat-checkbox>
 
-                        <button class="primary" [hidden]="cnfPurBtnBool || !valBalBtnBool" [class.disabled]="cnfPurBtnBool || !valBalBtnBool"
+                        <button class="primary" [hidden]="!validNewBalances" [class.disabled]="!validNewBalances || (validNewBalances && cnfPurBtnBool)"
                             (click)="completePurchase(stepper); cnfPurBtnBool = true" class="btn btn-primary btn-sm z-depth-0"> Submit Transaction</button>
                             <p style="color: red;"><small><i> Don't reload page while transaction processes.</i></small></p>
 

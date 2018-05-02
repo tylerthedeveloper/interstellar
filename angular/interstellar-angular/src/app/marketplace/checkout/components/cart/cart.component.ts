@@ -44,7 +44,7 @@ export class CartComponent extends BaseComponent implements OnInit {
     // private currentAssetValues: AssetBalance[];
     private currentAssetValuesDict: {} = {};
     private user: Observable<User>;
-
+    private idAssetPairs: { id: string, assetBalance: AssetBalance}[];
     /** Page helpers */
     private hasAddress = false;
     private tempAddress = '';
@@ -76,44 +76,85 @@ export class CartComponent extends BaseComponent implements OnInit {
             const userTyped = <User> user;
             this.hasAddress = (userTyped.address) ? true : false;
         });
-        this.pullCurrentTickerValues(new Set(stellarTermAssets)).then(() => {
-            this.cartItemsSource = this._cartService.Cart.map(cartItems => {
-                // TODO: Map only one time
-                this.cartItemIDs = cartItems.map((c: CartItem) => c.cartItemID);
-                // this.calcTotals(diffAssets);
-                // console.log(this.currentAssetValues)
-                // const diffAssets = new Set(cartItems.map((c: CartItem) => c.assetPurchaseDetails.asset_type));
-                // todo: decide which asset values ...
-                // todo: how to handle asset values if not in original list ...
-                // todo: how to handle recalculations ...
-                // todo: how to round
-
-                const updatedCartItems = cartItems.map(item => {
-                    const curAssetValue = this.currentAssetValuesDict[item.assetPurchaseDetails.asset_type];
-                    console.log(item)
-                    console.log(item.fixedUSDAmount)
-                    console.log(curAssetValue)
-                    console.log(item.fixedUSDAmount / curAssetValue)
-                    const newAssetValue = (item.fixedUSDAmount / curAssetValue).toFixed(7);
-                    console.log(newAssetValue)
-                    const newAssetBalance = new AssetBalance({
-                        asset_type: item.assetPurchaseDetails.asset_type,
-                        coin_name: item.assetPurchaseDetails.coin_name,
-                        balance: String(newAssetValue)
+        // todo: promise -> promise -> promise
+        Promise.resolve(this.pullCurrentTickerValues(new Set(stellarTermAssets)))
+            .then(() =>
+            // return new Promise(() =>
+                this.cartItemsSource = this._cartService.Cart.map(cartItems => {
+                    // this.calcTotals(diffAssets);
+                    // console.log(this.currentAssetValues)
+                    // const diffAssets = new Set(cartItems.map((c: CartItem) => c.assetPurchaseDetails.asset_type));
+                    // todo: decide which asset values ...
+                    // todo: how to handle asset values if not in original list ...
+                    // todo: how to handle recalculations ...
+                    // todo: how to round
+                    console.log(this.currentAssetValuesDict);
+                    this.cartItemIDs = new Array<string>(); // cartItems.map((c: CartItem) => c.cartItemID);
+                    const updatedCartItems = cartItems.map(item => {
+                        this.cartItemIDs.push(item.cartItemID);
+                        const curAssetValue = this.currentAssetValuesDict[item.assetPurchaseDetails.asset_type];
+                        console.log(item);
+                        console.log(item.fixedUSDAmount);
+                        console.log(curAssetValue);
+                        console.log(item.fixedUSDAmount / curAssetValue);
+                        const newAssetValue = (item.fixedUSDAmount / curAssetValue).toFixed(7);
+                        console.log(newAssetValue);
+                        const newAssetBalance = new AssetBalance({
+                            asset_type: item.assetPurchaseDetails.asset_type,
+                            coin_name: item.assetPurchaseDetails.coin_name,
+                            balance: String(newAssetValue)
+                        });
+                        const newCartItem = item;
+                        newCartItem.assetPurchaseDetails = newAssetBalance;
+                        return newCartItem;
                     });
-                    const newCartItem = item;
-                    newCartItem.assetPurchaseDetails = newAssetBalance;
-                    return newCartItem;
-                });
-                this.assetTotals = calcTotalsForMultipleAssets(updatedCartItems.map(CIT => CIT.assetPurchaseDetails));
-                this.cartItems = updatedCartItems;
-                // todo: send pair of {id : asset}
-                const idAssetPairs: { id: string, assetBalance: AssetBalance}[] =
-                    updatedCartItems.map(CIT => ({id: CIT.cartItemID, assetBalance: CIT.assetPurchaseDetails}));
-                this._cartService.batchUpdateTickerPrices(idAssetPairs); // .then(() => updatedCartItems);
-                return updatedCartItems;
-            });
-        }).then(() => setTimeout(() => this.loading = true, 1000));
+                    // TODO: Map only one time
+                    this.assetTotals = calcTotalsForMultipleAssets(updatedCartItems.map(CIT => CIT.assetPurchaseDetails));
+                    this.idAssetPairs = updatedCartItems.map(CIT => ({id: CIT.cartItemID, assetBalance: CIT.assetPurchaseDetails}));
+                    this.cartItems = updatedCartItems;
+                    // this._cartService.batchUpdateTickerPrices(idAssetPairs); // .then(() => updatedCartItems);
+                    return updatedCartItems;
+            })).then(() => setTimeout(() => this.loading = true, 3000));
+
+        // .then(() => this.loading = true);
+
+
+        // Promise.resolve(this.pullCurrentTickerValues(new Set(stellarTermAssets)).then(() => {
+        //     Promise.resolve(this.cartItemsSource = this._cartService.Cart.map(cartItems => {
+        //         // TODO: Map only one time
+        //         this.cartItemIDs = cartItems.map((c: CartItem) => c.cartItemID);
+        //         // this.calcTotals(diffAssets);
+        //         // console.log(this.currentAssetValues)
+        //         // const diffAssets = new Set(cartItems.map((c: CartItem) => c.assetPurchaseDetails.asset_type));
+        //         // todo: decide which asset values ...
+        //         // todo: how to handle asset values if not in original list ...
+        //         // todo: how to handle recalculations ...
+        //         // todo: how to round
+        //         console.log(this.currentAssetValuesDict)
+        //         const updatedCartItems = cartItems.map(item => {
+        //             const curAssetValue = this.currentAssetValuesDict[item.assetPurchaseDetails.asset_type];
+        //             console.log(item);
+        //             console.log(item.fixedUSDAmount);
+        //             console.log(curAssetValue);
+        //             console.log(item.fixedUSDAmount / curAssetValue);
+        //             const newAssetValue = (item.fixedUSDAmount / curAssetValue).toFixed(7);
+        //             console.log(newAssetValue);
+        //             const newAssetBalance = new AssetBalance({
+        //                 asset_type: item.assetPurchaseDetails.asset_type,
+        //                 coin_name: item.assetPurchaseDetails.coin_name,
+        //                 balance: String(newAssetValue)
+        //             });
+        //             const newCartItem = item;
+        //             newCartItem.assetPurchaseDetails = newAssetBalance;
+        //             return newCartItem;
+        //         });
+        //         this.assetTotals = calcTotalsForMultipleAssets(updatedCartItems.map(CIT => CIT.assetPurchaseDetails));
+        //         this.cartItems = updatedCartItems;
+        //         this.idAssetPairs = updatedCartItems.map(CIT => ({id: CIT.cartItemID, assetBalance: CIT.assetPurchaseDetails}));
+        //         // this._cartService.batchUpdateTickerPrices(idAssetPairs); // .then(() => updatedCartItems);
+        //         return updatedCartItems;
+        //     })).then(() => setTimeout(() => this.loading = true, 1000));
+        // })); // .then(() => setTimeout(() => this.loading = true, 1000));
 
     }
 
@@ -179,7 +220,8 @@ export class CartComponent extends BaseComponent implements OnInit {
     pullCurrentTickerValues(assetTypes: Set<string>): Promise<any> {
         return Promise.resolve(this._stellarTermService.getPriceForAssets(assetTypes)
             .subscribe((asset: any) => {
-                this.currentAssetValuesDict[asset.asset_type] = asset.balance;
+                const _assetType = (asset.asset_type === 'XLM') ? 'native' : asset.asset_type;
+                this.currentAssetValuesDict[_assetType] = asset.balance;
                 // console.log(asset);
                 // this.loading = false;
                 // setTimeout(() => this.loading = true, 2000);
@@ -256,9 +298,14 @@ export class CartComponent extends BaseComponent implements OnInit {
                         this.hasAddress = true;
                         if (this.hasAddress && this.tempAddress) {
                             if (this.validateTransaction(cartItemIDs)) {
-                                this._cartService.addToCheckout(cartItemIDs)
-                                .catch(err => console.log(err))
-                                .then(() => this._router.navigate(['/cart/checkout']));
+                                const tickerUpdatePromise = new Promise(() => this._cartService.batchUpdateTickerPrices(this.idAssetPairs));
+                                const addToCheckoutPromise = new Promise(() => this._cartService.addToCheckout(cartItemIDs));
+                                // this._cartService.addToCheckout(cartItemIDs)
+                                Promise.all([tickerUpdatePromise, addToCheckoutPromise])
+                                    .then(values => console.log(values))
+                                    .catch(err => console.log(err))
+                                    .then(() => this._router.navigate(['/cart/checkout']));
+                                console.log('after promise');
                             }
                         }
                     }
@@ -266,9 +313,19 @@ export class CartComponent extends BaseComponent implements OnInit {
             });
         }
         if (this.validateTransaction(cartItemIDs)) {
-            this._cartService.addToCheckout(cartItemIDs)
-            .catch(err => console.log(err))
-            .then(() => this._router.navigate(['/cart/checkout']));
+            // const tickerUpdatePromise = new Promise(() => this._cartService.batchUpdateTickerPrices(this.idAssetPairs));
+            // const addToCheckoutPromise = new Promise(() => this._cartService.addToCheckout(cartItemIDs));
+            // this._cartService.addToCheckout(cartItemIDs)
+            // Promise.all([new Promise(() => this._cartService.batchUpdateTickerPrices(this.idAssetPairs)),
+            //             new Promise(() => this._cartService.addToCheckout(cartItemIDs))])
+            Promise.resolve(this._cartService.batchUpdateTickerPrices(this.idAssetPairs))
+                .then(() => Promise.resolve(this._cartService.addToCheckout(cartItemIDs)))
+                .then(values => console.log(values))
+                .catch(err => console.log(err))
+                .then(() => this._router.navigate(['/cart/checkout']));
+            console.log('after promise');
+        } else {
+            console.log('unvalidated');
         }
     }
 
@@ -284,15 +341,16 @@ export class CartComponent extends BaseComponent implements OnInit {
             return this.errorAndAlert(ErrorMessage.InactiveBalances);
         }
 
-        this.cartItems.filter(item => cartItemIDs.some(CIT => item.cartItemID === CIT) === true)
-            .map(currentCheckedOutItem => {
+        const filteredCartItems = this.cartItems.filter(item => cartItemIDs.some(CIT => item.cartItemID === CIT) === true);
+        for (const currentCheckedOutItem of filteredCartItems)  {
+            // .map(currentCheckedOutItem => {
                 // console.log(currentCheckedOutItem);
 // !!! todo GET FROM SERVER FOR CURRENT QUANTITY!!!!!
                 const curQuant = this._productService.getProductQuantity(currentCheckedOutItem.productID);
                 if (!(validateNewQuantity(currentCheckedOutItem.oldQuantity, currentCheckedOutItem.quantityPurchased))) {
                     return this.errorAndAlert(ErrorMessage.InvalidPurchaseQuantity);
                 }
-        });
+        }
 
 // todo: TEST THESE BREAK WHEN FALSE -> IF NOT, TRAD LOOP
         const parsedBalObj = JSON.parse(this.myBaseBalances);

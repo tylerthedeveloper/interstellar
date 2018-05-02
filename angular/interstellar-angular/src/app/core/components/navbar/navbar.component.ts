@@ -99,13 +99,15 @@ export class NavBarComponent implements OnInit {
 
 // asset_type === native , coin_name = XLM / Lumens!!!!!!
 
-            const parsedBalances = <Array<any>> JSON.parse(payload);
+            // const parsedBalances = <Array<any>> JSON.parse(payload);
             // console.log(parsedBalances);
-            const nativeXLM: AssetBalance = parsedBalances.find(asset => asset.asset_type === 'native');
-            nativeXLM.asset_type = 'XLM';
+            // const nativeXLM: AssetBalance = parsedBalances.find(asset => asset.asset_type === 'native');
+            // nativeXLM.asset_type = 'XLM';
             // console.log(nativeXLM);
-            sessionStorage.setItem('my_balances', JSON.stringify(nativeXLM));
+            console.log(payload);
+            sessionStorage.setItem('my_balances', payload);
         }
+        // sessionStorage.setItem('my_balances', JSON.stringify(nativeXLM));
         this._userService.getCurrentUser().subscribe(currentUser => {
             // console.log(currentUser);
             if (currentUser) {
@@ -138,7 +140,7 @@ export class NavBarComponent implements OnInit {
         } else if (nextPage === 'profile' && this.loggedIn) {
             nextPage = `people/${this._userID}/me`;
         }
-        console.log(nextPage);
+        // console.log(nextPage);
         if (document.getElementById(this.currentPage)) {
             document.getElementById(this.currentPage).style.textDecoration = 'none';
         }

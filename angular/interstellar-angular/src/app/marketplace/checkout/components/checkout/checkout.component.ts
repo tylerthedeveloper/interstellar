@@ -7,25 +7,22 @@ import { Router } from '@angular/router';
 /** RxJS and forms */
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/forkJoin';
 import { CustomValidators } from 'app/shared/forms/form.utils';
+import 'rxjs/add/observable/forkJoin';
 
 /** Stellar */
 import { isValidSecretKey, AssetBalance, calcTotalsForMultipleAssets,
         calcDifferenceForMultipleAssets, areValidNewBalances,
         StellarPaymentService, StellarAccountService } from 'app/stellar';
 
-// import { OrderService } from 'app/core/services/order.service';
-// import {  } from 'app/core/services';
 /** Services */
 import { CartService, OrderService, ProductService } from 'app/core/services';
+
 /** Models */
 import { CartItem, Order } from 'app/marketplace/_market-models/';
-// import {  } from 'app/marketplace/_market-models/order';
 import { TransactionPaymentDetails, TransactionRecord, TransactionGroup } from 'app/marketplace/_market-models/transaction';
 
 /** UI */
-import { MatHorizontalStepper } from '@angular/material';
 import { MatVerticalStepper } from '@angular/material';
 
 /** Other */
@@ -48,8 +45,9 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
         private sellerIDs: string[] = [];
         private sellerPublicKeys;
 
-        private balances: AssetBalance[] = [];
-        private updatedBalances: AssetBalance[] = [];
+        private balances: AssetBalance[];
+        private updatedBalances: AssetBalance[];
+        private validNewBalances = false;
 
         private stepChecker: Array<boolean> = [false, false, false, false, false]; // page nav step checking
 
@@ -82,11 +80,8 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
             this.curUserID = this.myBaseUserID;
             this.curPubKey = this.myBasePublicKey;
             this.curSeedKey = this.myBaseSeedKey;
-            this.balances = new Array<AssetBalance>(JSON.parse(this.myBaseBalances));
-            // this.curUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-            // this.curPubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
-            // this.curSeedKey = sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key');
-
+            this.balances = <Array<AssetBalance>> (JSON.parse(this.myBaseBalances));
+            console.log(this.balances)
             this.checkoutItemsSource = this._cartService.Cart.map(cartItems => {
                 const arr = cartItems.filter(check => check.isInCheckout === true);
                 if (!arr || arr.length === 0) {
@@ -108,7 +103,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
                     cartPurchaseDetailsArray.push(CIT.assetPurchaseDetails);
                 });
                 this.sellerPublicKeys = new Set(_sellerPublicKeys);
-                this.assetTotals = calcTotalsForMultipleAssets(cartPurchaseDetailsArray);
+                this.assetTotals = <Array<AssetBalance>> calcTotalsForMultipleAssets(cartPurchaseDetailsArray);
                 return arr;
             });
 
@@ -145,21 +140,25 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
          * @param  {number} currentStep
          */
         calculateFundsForPurchase() {
+            console.log(this.balances)
+            console.log(this.assetTotals)
             const _updatedBalances = calcDifferenceForMultipleAssets(this.balances, this.assetTotals);
             if (!_updatedBalances) {
                 return;
             } else {
                 this.updatedBalances = _updatedBalances;
-                // this.stepChecker[currentStep] = true;
             }
         }
 
         /**
          * @param  {number} currentStep
          */
+        // todo: confirm valid balances
         validateFundsForPurchase() {
             if (areValidNewBalances(this.updatedBalances)) {
                 // this.stepChecker[3] = true;
+                this.validNewBalances = true;
+                // return true;
             } else {
                 return alert('You don\'t seem to have sufficient funds or \n ' +
                       'the purchase amount goes below the minimum required holding threshold');

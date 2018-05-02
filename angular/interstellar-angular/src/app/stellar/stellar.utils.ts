@@ -84,12 +84,21 @@ const calcTotalsForMultipleAssets = (assets: AssetBalance[]): AssetBalance[] => 
 
 const calcDifferenceForMultipleAssets = (balances: AssetBalance[], assetPriceTotals: AssetBalance[]): AssetBalance[] => {
     const updatedAssets: AssetBalance[] = new Array<AssetBalance>();
-    balances.forEach(asset => {
+    console.log(balances[0])
+    for (const asset of balances) {
+    // balances.map(sset => {
+        // let ass = asset as AssetBalance;
+        // console.log(ass)
+        // console.log(ass.asset_type)
+        // console.log(asset)
+        // console.log(asset.asset_type)
+        // console.log(assetPriceTotals[0].asset_type)
+        // console.log(asset.asset_type === assetPriceTotals[0].asset_type)
         const idx = assetPriceTotals.findIndex(CIT => CIT.asset_type === asset.asset_type);
         const assetPriceOutlay = assetPriceTotals[idx].balance;
         const newAssAmount = (Number(asset.balance) - Number(assetPriceOutlay));
         updatedAssets.push({ balance: String(newAssAmount), asset_type: asset.asset_type, coin_name: asset.coin_name });
-    });
+    }
     return updatedAssets;
 };
 
