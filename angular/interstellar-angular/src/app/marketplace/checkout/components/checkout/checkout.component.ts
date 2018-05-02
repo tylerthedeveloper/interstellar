@@ -81,7 +81,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
             this.curPubKey = this.myBasePublicKey;
             this.curSeedKey = this.myBaseSeedKey;
             this.balances = <Array<AssetBalance>> (JSON.parse(this.myBaseBalances));
-            console.log(this.balances)
+            console.log(this.balances);
             this.checkoutItemsSource = this._cartService.Cart.map(cartItems => {
                 const arr = cartItems.filter(check => check.isInCheckout === true);
                 if (!arr || arr.length === 0) {
@@ -140,8 +140,8 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
          * @param  {number} currentStep
          */
         calculateFundsForPurchase() {
-            console.log(this.balances)
-            console.log(this.assetTotals)
+            console.log(this.balances);
+            console.log(this.assetTotals);
             const _updatedBalances = calcDifferenceForMultipleAssets(this.balances, this.assetTotals);
             if (!_updatedBalances) {
                 return;

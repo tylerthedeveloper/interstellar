@@ -27,6 +27,7 @@ import { stellarTermAssets } from 'app/stellar/stellar-term/asset.mappers';
 import { Subscription } from 'rxjs/Subscription';
 import { validateNewQuantity } from 'app/marketplace/products/product.utils';
 
+import 'rxjs/operator/toPromise';
 
 @Component({
   selector: 'app-cart',
@@ -77,44 +78,49 @@ export class CartComponent extends BaseComponent implements OnInit {
             this.hasAddress = (userTyped.address) ? true : false;
         });
         // todo: promise -> promise -> promise
-        Promise.resolve(this.pullCurrentTickerValues(new Set(stellarTermAssets)))
-            .then(() =>
-            // return new Promise(() =>
-                this.cartItemsSource = this._cartService.Cart.map(cartItems => {
-                    // this.calcTotals(diffAssets);
-                    // console.log(this.currentAssetValues)
-                    // const diffAssets = new Set(cartItems.map((c: CartItem) => c.assetPurchaseDetails.asset_type));
-                    // todo: decide which asset values ...
-                    // todo: how to handle asset values if not in original list ...
-                    // todo: how to handle recalculations ...
-                    // todo: how to round
-                    console.log(this.currentAssetValuesDict);
-                    this.cartItemIDs = new Array<string>(); // cartItems.map((c: CartItem) => c.cartItemID);
-                    const updatedCartItems = cartItems.map(item => {
-                        this.cartItemIDs.push(item.cartItemID);
-                        const curAssetValue = this.currentAssetValuesDict[item.assetPurchaseDetails.asset_type];
-                        console.log(item);
-                        console.log(item.fixedUSDAmount);
-                        console.log(curAssetValue);
-                        console.log(item.fixedUSDAmount / curAssetValue);
-                        const newAssetValue = (item.fixedUSDAmount / curAssetValue).toFixed(7);
-                        console.log(newAssetValue);
-                        const newAssetBalance = new AssetBalance({
-                            asset_type: item.assetPurchaseDetails.asset_type,
-                            coin_name: item.assetPurchaseDetails.coin_name,
-                            balance: String(newAssetValue)
-                        });
-                        const newCartItem = item;
-                        newCartItem.assetPurchaseDetails = newAssetBalance;
-                        return newCartItem;
-                    });
-                    // TODO: Map only one time
-                    this.assetTotals = calcTotalsForMultipleAssets(updatedCartItems.map(CIT => CIT.assetPurchaseDetails));
-                    this.idAssetPairs = updatedCartItems.map(CIT => ({id: CIT.cartItemID, assetBalance: CIT.assetPurchaseDetails}));
-                    this.cartItems = updatedCartItems;
-                    // this._cartService.batchUpdateTickerPrices(idAssetPairs); // .then(() => updatedCartItems);
-                    return updatedCartItems;
-            })).then(() => setTimeout(() => this.loading = true, 3000));
+        this.pullCurrentTickerValues();
+        // const tickerPromise = new Promise(async (res, rej) =>
+        // await  res(this.pullCurrentTickerValues(new Set(stellarTermAssets))));
+        // const cartRetrievalPromise = new Promise((res, rej) => {
+        //     this.cartItemsSource = this._cartService.Cart.map(cartItems => {
+        //         // this.calcTotals(diffAssets);
+        //         // console.log(this.currentAssetValues)
+        //         // const diffAssets = new Set(cartItems.map((c: CartItem) => c.assetPurchaseDetails.asset_type));
+        //         // todo: decide which asset values ...
+        //             // todo: how to handle asset values if not in original list ...
+        //             // todo: how to handle recalculations ...
+        //             // todo: how to round
+        //             console.log(this.currentAssetValuesDict);
+        //             this.cartItemIDs = new Array<string>(); // cartItems.map((c: CartItem) => c.cartItemID);
+        //             const updatedCartItems = cartItems.map(item => {
+        //                 this.cartItemIDs.push(item.cartItemID);
+        //                 const curAssetValue = this.currentAssetValuesDict[item.assetPurchaseDetails.asset_type];
+        //                 console.log(item);
+        //                 console.log(item.fixedUSDAmount);
+        //                 console.log(curAssetValue);
+        //                 console.log(item.fixedUSDAmount / curAssetValue);
+        //                 const newAssetValue = (item.fixedUSDAmount / curAssetValue).toFixed(7);
+        //                 console.log(newAssetValue);
+        //                 const newAssetBalance = new AssetBalance({
+        //                     asset_type: item.assetPurchaseDetails.asset_type,
+        //                     coin_name: item.assetPurchaseDetails.coin_name,
+        //                     balance: String(newAssetValue)
+        //                 });
+        //                 const newCartItem = item;
+        //                 newCartItem.assetPurchaseDetails = newAssetBalance;
+        //                 return newCartItem;
+        //             });
+        //             // TODO: Map only one time
+        //             this.assetTotals = calcTotalsForMultipleAssets(updatedCartItems.map(CIT => CIT.assetPurchaseDetails));
+        //             this.idAssetPairs = updatedCartItems.map(CIT => ({id: CIT.cartItemID, assetBalance: CIT.assetPurchaseDetails}));
+        //             this.cartItems = updatedCartItems;
+        //             // this._cartService.batchUpdateTickerPrices(idAssetPairs); // .then(() => updatedCartItems);
+        //             return updatedCartItems;
+        //         });
+        //     });
+        //     console.log('lost promise');
+        //     this.pullCurrentTickerValues(new Set(stellarTermAssets))
+        //             .then(() => cartRetrievalPromise.then(() => setTimeout(() => this.loading = true, 3000)));
 
         // .then(() => this.loading = true);
 
@@ -217,15 +223,44 @@ export class CartComponent extends BaseComponent implements OnInit {
      * @param  {Set<string>} assetTypes
      * @returns Promise
      */
-    pullCurrentTickerValues(assetTypes: Set<string>): Promise<any> {
-        return Promise.resolve(this._stellarTermService.getPriceForAssets(assetTypes)
-            .subscribe((asset: any) => {
-                const _assetType = (asset.asset_type === 'XLM') ? 'native' : asset.asset_type;
-                this.currentAssetValuesDict[_assetType] = asset.balance;
-                // console.log(asset);
-                // this.loading = false;
-                // setTimeout(() => this.loading = true, 2000);
-            }));
+    pullCurrentTickerValues(assetTypes: Set<string> = new Set()) {
+        if (!assetTypes || assetTypes.size === 0) {
+            assetTypes = new Set(stellarTermAssets);
+            console.log('em,pty')
+        }
+        this._stellarTermService.getPriceForAssets(assetTypes)
+            .subscribe((assets: any) => {
+                assets.map(asset => {
+                    const _assetType = (asset.asset_type === 'XLM') ? 'native' : asset.asset_type;
+                    this.currentAssetValuesDict[_assetType] = asset.balance;
+                });
+                    console.log(this.currentAssetValuesDict);
+                    this.cartItemsSource = this._cartService.Cart.map(cartItems => {
+                        const updatedCartItems = cartItems.map(item => {
+                                this.cartItemIDs.push(item.cartItemID);
+                                const curAssetValue = this.currentAssetValuesDict[item.assetPurchaseDetails.asset_type];
+                                console.log(item);
+                                console.log(item.fixedUSDAmount);
+                                console.log(curAssetValue);
+                                console.log(item.fixedUSDAmount / curAssetValue);
+                                const newAssetValue = (item.fixedUSDAmount / curAssetValue).toFixed(7);
+                                console.log(newAssetValue);
+                                const newAssetBalance = new AssetBalance({
+                                    asset_type: item.assetPurchaseDetails.asset_type,
+                                    coin_name: item.assetPurchaseDetails.coin_name,
+                                    balance: String(newAssetValue)
+                                });
+                                const newCartItem = item;
+                                newCartItem.assetPurchaseDetails = newAssetBalance;
+                                return newCartItem;
+                            });
+                            return updatedCartItems;
+                    });
+                    console.log('tear');
+                    this.loading = true;
+                }); // .toPromise().then(() => console.log('tear'))
+                   // this.loading = false;
+                    // setTimeout(() => this.loading = true, 2000);
     }
 
     /**
@@ -343,11 +378,9 @@ export class CartComponent extends BaseComponent implements OnInit {
 
         const filteredCartItems = this.cartItems.filter(item => cartItemIDs.some(CIT => item.cartItemID === CIT) === true);
         for (const currentCheckedOutItem of filteredCartItems)  {
-            // .map(currentCheckedOutItem => {
-                // console.log(currentCheckedOutItem);
 // !!! todo GET FROM SERVER FOR CURRENT QUANTITY!!!!!
                 const curQuant = this._productService.getProductQuantity(currentCheckedOutItem.productID);
-                if (!(validateNewQuantity(currentCheckedOutItem.oldQuantity, currentCheckedOutItem.quantityPurchased))) {
+                if (!(validateNewQuantity(curQuant, currentCheckedOutItem.quantityPurchased))) {
                     return this.errorAndAlert(ErrorMessage.InvalidPurchaseQuantity);
                 }
         }

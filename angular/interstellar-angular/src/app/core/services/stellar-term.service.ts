@@ -35,8 +35,8 @@ export class StellarTermService {
     }
 
     getPriceForAssets(assetTypes: Set<string>) {
-        return Observable.create((observer: any) => {
-            this._httpClient.get(this._stellarTermURL).subscribe((payload: StellarTermObject) => {
+        // return Observable.create((observer: any) => {
+            return this._httpClient.get(this._stellarTermURL).map((payload: StellarTermObject) => {
                     const updatedOn = payload._meta.start;
                     const assets = payload.assets as Array<StellarTermAsset>;
                     const assetBalances = new Array<AssetBalance>();
@@ -48,14 +48,15 @@ export class StellarTermService {
                                 balance: String(asset.price_USD)
                             }));
                             // console.log(asset)
-                            observer.next(new AssetBalance({
+                            // observer.next(
+                            const curBalance = new AssetBalance({
                                 asset_type: asset.code,
                                 coin_name: asset.code, // todO: resolve coin_name
                                 balance: String(asset.price_USD)
-                            }));
+                            });
                         }
                     }
+                    return assetBalances;
             });
-        });
     }
 }
