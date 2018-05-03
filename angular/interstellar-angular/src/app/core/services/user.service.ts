@@ -41,21 +41,21 @@ export class UserService {
         } else if (_keyLoginId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key') || _publicKey) {
             return Observable.create((observer: any) => {
                 this.afs.collection('users', ref => ref.where('publicKey', '==', _publicKey || _keyLoginId))
-                .valueChanges()
-                .first()
-                .subscribe((user: Array<User>) => {
-                    // console.log(user[0]);
-                        if (user[0]) {
-                            sessionStorage.setItem('user_doc_id', user[0].id);
-                            // console.log('a');
-                            return observer.next(user[0]);
-                        } else {
-                            // console.log('b');
-                            return observer.next();
-                            // return observer.next('no current user');
-                            // return observer.next(observer.error('nop user'));
-                        }
-                    });
+                    .valueChanges()
+                    .first()
+                    .subscribe((user: Array<User>) => {
+                        // console.log(user[0]);
+                            if (user[0]) {
+                                sessionStorage.setItem('user_doc_id', user[0].id);
+                                // console.log('a');
+                                return observer.next(user[0]);
+                            } else {
+                                // console.log('b');
+
+                                // return observer.next('no current user');
+                                // return observer.next(observer.error('nop user'));
+                            }
+                        });
             });
         } else {
             // console.log('c');
@@ -121,7 +121,7 @@ export class UserService {
         const data = obj.data;
         // console.log(ID);
         // console.log(obj.data);
-        console.log(data)
+        console.log(data);
         return Observable.fromPromise(
             this.usersCollection
                 .doc(ID)

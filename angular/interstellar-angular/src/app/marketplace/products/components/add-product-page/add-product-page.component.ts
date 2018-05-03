@@ -1,20 +1,31 @@
+/** Angular */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { productFormData } from '../../product.details';
-import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
-import { DialogComponent, FileUploadDialogComponent } from 'app/shared/components';
-import { Product, ShippingInformation } from 'app/marketplace/_market-models';
-import { areValidProductTypes } from 'app/marketplace/products/product.utils';
-import { ProductService } from 'app/core/services';
-import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AssetBalance } from 'app/stellar';
-import { shippingTypeQuestions } from 'app/marketplace/shipping/shipping.details';
-import { shipTypes } from 'app/marketplace/shipping/ship-types';
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+
+/** firebase */
+import * as firebase from 'firebase/app';
 import { AngularFireStorageReference } from 'angularfire2/storage/ref';
 import { AngularFireStorage } from 'angularfire2/storage/storage';
 import { AngularFireUploadTask } from 'angularfire2/storage/task';
-import * as firebase from 'firebase/app';
+
+/** Shared */
+import { DynamicFormComponent } from 'app/shared/forms/dynamic-form/dynamic-form.component';
+import { DialogComponent } from 'app/shared/components';
+
+/** stellar */
+import { AssetBalance } from 'app/stellar';
+import { stellarTermAssets2 } from 'app/stellar/stellar-term/asset.mappers';
+
+/** product */
+import { ProductService } from 'app/core/services';
+import { productFormData } from '../../product.details';
+import { Product, ShippingInformation } from 'app/marketplace/_market-models';
+import { areValidProductTypes } from 'app/marketplace/products/product.utils';
+
+/** Shipping */
+import { shippingTypeQuestions } from 'app/marketplace/shipping/shipping.details';
+import { shipTypes } from 'app/marketplace/shipping/ship-types';
 
 @Component({
   selector: 'app-add-product-page',
@@ -22,34 +33,24 @@ import * as firebase from 'firebase/app';
   styleUrls: ['./add-product-page.component.css']
 })
 export class AddProductPageComponent implements OnInit {
+
+    /** Form holders on front end */
     private productInfo: Product;
     private shippingInfo: Array<string>;
 
-    // private productImage: any;
-    // shipTypeOptions: any;
+    /** Image / file */
+    @ViewChild('fileInput') private fileInput;
     private imageUrl = '';
-
-    @ViewChild('fileInput') fileInput;
-
-    // ref: AngularFireStorageReference;
-    // task: AngularFireUploadTask;
-
-
-    // shipFormGroup: FormGroup;
-    // secondFormGroup: FormGroup;
-    // thirdFormGroup: FormGroup;
-
-    ref: AngularFireStorageReference;
-    task: AngularFireUploadTask;
-
-    public title: string;
-    public content: string;
     private fileToUpload: File;
-    shipTypes: any;
+
+    /** Angular fire helpers */
+    private ref: AngularFireStorageReference;
+    private task: AngularFireUploadTask;
+
     constructor(private _productService: ProductService,
                 private router: Router,
                 private _route: ActivatedRoute,
-                private _formBuilder: FormBuilder,
+                // private _formBuilder: FormBuilder,
                 private afStorage: AngularFireStorage,
                 private dialog: MatDialog) {}
 
@@ -67,6 +68,11 @@ export class AddProductPageComponent implements OnInit {
 
     }
 
+    //
+    // ──────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: M A I N   M E T H O D S : :  :   :    :     :        :          :
+    // ──────────────────────────────────────────────────────────────────────────
+    //
     /**
      * @returns void
      */
@@ -155,34 +161,6 @@ export class AddProductPageComponent implements OnInit {
     */
 
     /**
-     * @returns boolean
-     */
-    handleNewProduct(): boolean {
-        // todo: TEST THESE ARENT EVER NULL!!!!!!
-        const product = this.productInfo;
-        product.productListedAt = Date.now();
-        console.log(this._route.snapshot.queryParams['acceptedAssets']);
-        product.productAssetOptions = this._route.snapshot.queryParams['acceptedAssets'];
-        product.productPrices = [
-            new AssetBalance({ balance: '7.00000', asset_type: 'native', coin_name: 'Lumens'})
-        ];
-        product.productSellerData = {
-            productSellerID: sessionStorage.getItem('user_doc_id'),
-            productSellerName: sessionStorage.getItem('user_name') || '', // TODO: store user data in session storage!!!
-            productSellerPublicKey: sessionStorage.getItem('public_key')
-        };
-
-        if (!(product.productPrices &&
-                product.productSellerData.productSellerID &&
-            //   product.productSellerData.productSellerName
-                product.productSellerData.productSellerPublicKey && product.productThumbnailLink)) {
-                alert('invalid product error');
-                return false;
-      }
-      return true;
-
-    }
-    /**
      * @returns void
      */
     submitNewProduct(): void {
@@ -195,13 +173,14 @@ export class AddProductPageComponent implements OnInit {
         }
 
         if (this.handleNewProduct()) {
-            // const p = JSON.stringify(this.productInfo);
             this._productService.addProduct(JSON.stringify(this.productInfo))
                         .catch(err => console.log(err))
                         .then(res => this.router.navigate(['/products/product', res]));
 
         }
     }
+    // ────────────────────────────────────────────────────────────────────────────────
+
     //
     // ────────────────────────────────────────────────────── I ──────────
     //   :::::: H E L P E R S : :  :   :    :     :        :          :
@@ -219,22 +198,21 @@ export class AddProductPageComponent implements OnInit {
     //     }
     // }
 
-
     /**
      * @returns void
      */
     renderFile(): void {
-      const files = this.fileInput.nativeElement.files;
-      if (files && files[0]) {
-          const reader = new FileReader();
-          const fileToUpload = files[0];
-          reader.readAsDataURL(fileToUpload);
-          reader.onloadend = () => {
-              this.imageUrl = reader.result;
-              this.fileToUpload = fileToUpload;
-          };
-      }
-  }
+        const files = this.fileInput.nativeElement.files;
+        if (files && files[0]) {
+            const reader = new FileReader();
+            const fileToUpload = files[0];
+            reader.readAsDataURL(fileToUpload);
+            reader.onloadend = () => {
+                this.imageUrl = reader.result;
+                this.fileToUpload = fileToUpload;
+            };
+        }
+    }
 
     /**
      * @returns void
@@ -256,6 +234,46 @@ export class AddProductPageComponent implements OnInit {
                 // }
             })
             .catch(err => console.log('errr" \n' + err));
+    }
+
+    /**
+     * @returns boolean
+     */
+    handleNewProduct(): boolean {
+        // todo: TEST THESE ARENT EVER NULL!!!!!!
+        const product = this.productInfo;
+        product.productListedAt = Date.now();
+        const acceptedAssets = this._route.snapshot.queryParams['acceptedAssets'];
+        console.log(acceptedAssets);
+        product.productAssetOptions = acceptedAssets;
+        const assetBalances: Array<AssetBalance> = acceptedAssets.map(asset_type => {
+            const asset = stellarTermAssets2.find(STA => STA.asset_type === asset_type);
+            const assetObj = {
+                asset_type: asset.asset_type,
+                coin_name: asset.coin_name,
+                balance: '0.0000'
+            };
+            return new AssetBalance(assetObj);
+        });
+        product.productPrices = assetBalances;
+        console.log(assetBalances);
+        // product.productPrices = [
+        //     new AssetBalance({ balance: '7.00000', asset_type: 'native', coin_name: 'Lumens'})
+        // ];
+        product.productSellerData = {
+            productSellerID: sessionStorage.getItem('user_doc_id'),
+            productSellerName: sessionStorage.getItem('user_name') || '', // TODO: store user data in session storage!!!
+            productSellerPublicKey: sessionStorage.getItem('public_key')
+        };
+
+        if (!(product.productPrices &&
+                product.productSellerData.productSellerID &&
+            //   product.productSellerData.productSellerName
+                product.productSellerData.productSellerPublicKey && product.productThumbnailLink)) {
+                alert('invalid product error');
+                return false;
+      }
+      return true;
     }
     // ────────────────────────────────────────────────────────────────────────────────
 

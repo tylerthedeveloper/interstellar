@@ -144,6 +144,19 @@ export class ProductService {
         });
     }
 
+    getProductQuantity(productID: string) {
+        return Observable.create((observer: any) => {
+            // this.productsCollection
+            this.afs.collection('products', ref => ref.where('id', '==', productID))
+                .valueChanges()
+                .subscribe(prod => {
+                    // const _product = prod as Product;
+                    console.log(prod);
+                    observer.next(prod[0]);
+                });
+        });
+    }
+
     /**
      * @param  {string} userID
      * @returns Observable

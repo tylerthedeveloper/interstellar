@@ -20,6 +20,7 @@ import { UserService } from './services/user.service';
 import { ChatService } from './services';
 import { RegisterComponent } from './components/register/register.component';
 import { ShipperService } from 'app/core/services/shipper.service';
+import { StellarTermService } from './services/stellar-term.service';
 // import { ConfirmDialogComponent } from 'app/shared/components';
 
 @NgModule({
@@ -57,6 +58,7 @@ import { ShipperService } from 'app/core/services/shipper.service';
         OrderService,
         ProductService,
         ShipperService,
+        StellarTermService,
         UserService,
     ],
     entryComponents: [

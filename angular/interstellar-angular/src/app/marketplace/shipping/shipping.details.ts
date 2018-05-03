@@ -1,4 +1,4 @@
-import { DropdownQuestion, TextboxQuestion, CheckBoxQuestion, NumberInputQuestion, CheckBoxGroupQuestion } from '../../shared/forms/form-element';
+import { TextboxQuestion, DropdownQuestion, CheckBoxGroupQuestion } from '../../shared/forms/form-element';
 import { unitedStates } from './states';
 import { shipTypes } from './ship-types';
 import { countries } from './countries';

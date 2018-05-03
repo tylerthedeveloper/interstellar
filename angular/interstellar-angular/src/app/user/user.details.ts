@@ -1,5 +1,5 @@
 import { TextboxQuestion, NumberInputQuestion, CheckBoxGroupQuestion } from '../shared/forms/form-element';
-import { stellarTermAssets } from 'app/marketplace/stellar-term/asset.mappers';
+import { stellarTermAssets2 } from 'app/stellar/stellar-term/asset.mappers';
 
 const requiredPublicUserDataTyped: Array<{ key: string, type: string}> = [
     // { key: 'productName', type: 'string'},
@@ -36,13 +36,13 @@ const userFormData = [
         key: 'acceptedAssets',
         label: 'Accepted Assets',
         // options: stellarAssetsMapper2.map(asset => ({key: asset.asset_type,  value: asset.coin_name})),
-        options: stellarTermAssets.map(asset => {
-            if (asset === 'XLM') {
+        options: stellarTermAssets2.map(asset => {
+            if (asset.asset_type === 'XLM') {
                 // console.log(asset);
                 // FIXME: DO WE HAVE TO ENFORCE XLM???
-                return {key: asset,  value: asset, checked: true, disabled: true};
+                return { key: asset.asset_type,  value: asset.coin_name, checked: true, disabled: true };
             }
-            return {key: asset,  value: asset};
+            return { key: asset.asset_type,  value: asset.coin_name };
         }),
         order: 4}),
     new NumberInputQuestion({key: 'age', label: 'Age', type : 'number', value: 1, required: false, order: 1 }),

@@ -1,3 +1,5 @@
+import { Asset } from 'app/stellar/assets/asset';
+
 export const stellarTermAssetsMapper1 = [
     {code: 'XLM', id: 'XLM-native'},
     {code: 'CNY', id: 'CNY-GAREELUB43IRHWEASCFBLKHURCGMHE5IF6XSE7EXDLACYHGRHM43RFOX'},
@@ -16,6 +18,8 @@ export const stellarTermAssetsMapper2 = {
     'TARI': 'TARI-GD7UVDDJHJYKUXB4SJFIC6VJDQ4YADQCMRN3KLHJFV4H6NIUAEREVCO7'
 };
 
+// StellarSdk.Asset.native() ...
+// StellarSdk.Asset(asset.code) ...
 export const stellarTermAssets = [
     'XLM',
     'CNY',
@@ -23,4 +27,13 @@ export const stellarTermAssets = [
     'RMT',
     'REPO',
     'TARI',
+];
+
+export const stellarTermAssets2: Array<Asset> = [
+    {asset_type: 'native', coin_name: 'XLM-native'},
+    {asset_type: 'CNY', coin_name: 'CNY-coin'},
+    {asset_type: 'MOBI', coin_name: 'Mobius tokens'},
+    {asset_type: 'RMT', coin_name: 'RMT-coins'},
+    {asset_type: 'REPO', coin_name: 'REPO-coins'},
+    {asset_type: 'TARI', coin_name: 'TARI-coins'}
 ];

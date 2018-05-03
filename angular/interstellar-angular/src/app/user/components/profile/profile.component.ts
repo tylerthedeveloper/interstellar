@@ -41,7 +41,9 @@ import { BaseComponent } from 'app/base.component';
 import { TransactionRecord } from 'app/marketplace/_market-models/transaction';
 import { shippingAddressQuestions } from 'app/marketplace/shipping/shipping.details';
 import { ShipperService } from 'app/core/services/shipper.service';
-import { stellarTermAssets } from 'app/marketplace/stellar-term/asset.mappers';
+import { Asset } from 'app/stellar/assets/asset';
+import { stellarTermAssets2 } from 'app/stellar/stellar-term/asset.mappers';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-profile',
@@ -81,7 +83,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     private edit = false;
     private hasAddress = false;
 
-    private _acceptedAssets: string[];
+    private _acceptedAssets: Asset[];
 
     constructor(private _userService: UserService,
                 private _productService: ProductService,
@@ -119,7 +121,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                 if (this.isMyProfile) {
                     const userTyped = <User> user;
                     this._userModel = userTyped;
-                    this._acceptedAssets = (userTyped.acceptedAssets) ? userTyped.acceptedAssets : new Array<string>('XLM');
+                    this._acceptedAssets = (userTyped.acceptedAssets) ? userTyped.acceptedAssets : new Array(stellarTermAssets2[0]);
                     this.hasAddress = (userTyped.address) ? true : false;
                     if (!this.hasAddress) {
                         this.handleUpdateAddress();
@@ -163,19 +165,19 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         dialogRef.afterClosed().subscribe((newProfileData: string) => {
             if (newProfileData) {
                 const formObject = <any> JSON.parse(newProfileData);
-                const acceptedAssetsTempArray = new Array<string>();
-                acceptedAssetsTempArray.push(stellarTermAssets[0]);
+                const acceptedAssetsTempArray = new Array<Asset>();
+                acceptedAssetsTempArray.push(stellarTermAssets2[0]);
                 (formObject.acceptedAssets as Array<string>)
                     // .map((asset, i) => (asset) ? console.log(stellarTermAssets[i]) : null)
                     .map((asset, i) => {
                         // console.log(asset + ' ' + i)
-                        return (asset) ? acceptedAssetsTempArray.push(stellarTermAssets[i + 1]) : null;
-                    })
+                        return (asset) ? acceptedAssetsTempArray.push(stellarTermAssets2[i + 1]) : null;
+                    });
                     // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarTermAssets[i]) : null);
                     // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarAssetsMapper2[i].asset_type) : null);
                 formObject.acceptedAssets = acceptedAssetsTempArray;
                 this._acceptedAssets = acceptedAssetsTempArray;
-                console.log(formObject.acceptedAssets)
+                console.log(formObject.acceptedAssets);
                 this.edit = !this.edit;
                 const payload = {
                     id: this._userID,
@@ -186,13 +188,12 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         });
     }
 
-
     goToAddProductpage(): void {
-        const acceptedAssetQueryParams = { queryParams: { acceptedAssets: this._acceptedAssets } };
+        const acceptedAssetKeys = this._acceptedAssets.map(asset => asset.asset_type);
+        const acceptedAssetQueryParams = { queryParams: { acceptedAssets: acceptedAssetKeys } };
         this.router.navigate(['../products/list-new-product'], acceptedAssetQueryParams);
         // this.router.navigate(['../products/list-new-product'], { queryParams: { user: this._userID } });
     }
-
 
 
     /**
@@ -255,31 +256,11 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     //   :::::: P A G E   H E L P E R S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
-
     contactSeller(): void {
         this.router.navigate(['../chat'], { queryParams: { receiverID: this._pagePersonID } });
     }
 
     handleNewProduct(product: any) {
-        /*
-        const _product = <Product> {
-            productName: 'super fast GPU22222222',
-            productShortDescription: 'shawrty',
-            productLongDescription: 'looooooooooooong des',
-            fixedUSDAmount: 10,
-            quantity: 15,
-            productCategory: 'Electronics',
-            productPrices: [
-                new AssetBalance('7.00000', 'tycoin', 'Tycoins')
-            ],
-            productThumbnailLink: 'https://images10.newegg.com/productimage/14-487-290-01.jpg',
-            productSellerData: {
-                productSellerID: sessionStorage.getItem('user_doc_id'),
-                productSellerName: sessionStorage.getItem('user_name'),
-                productSellerPublicKey: sessionStorage.getItem('public_key')
-            }
-        };
-        */
 
         // todo: TEST THESE ARENT EVER NULL!!!!!!
         product.productListedAt = Date.now();
@@ -306,7 +287,10 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                     .then(res => this.router.navigate(['/products', res]));
     }
 
-    handleUpdateAddress(): void {
+    /**
+     * @returns Subscription
+     */
+    handleUpdateAddress(): Subscription {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             data: {
                     title: 'Add Address',
@@ -314,24 +298,21 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                              'in order to list an item. \n Would you like too now?'
             }
         });
-        dialogRef.afterClosed().subscribe((result: string) => {
+        return dialogRef.afterClosed().subscribe((result: string) => {
             if (result) {
-                // console.log(result);
                 const dialogRefInner = this.dialog.open(DialogComponent, {
                     data: { component: DynamicFormComponent,
                             payload: {
-                                // questions: new Array(userFormData[3])
                                 questions: shippingAddressQuestions
                             }
                     }
                 });
-                dialogRefInner.afterClosed().subscribe((newAddressData: string) => {
+                return dialogRefInner.afterClosed().subscribe((newAddressData: string) => {
                     if (newAddressData) {
                         console.log(newAddressData);
                         const addObj = JSON.parse(newAddressData);
                         const addr: any = {};
                         addr.address = addObj;
-                        // Object.keys(addObj).map(attr => Object.assign(attr, addr.address));
                         console.log(addr);
                         const payload = JSON.stringify({
                             id: this._userModel.id,
@@ -343,14 +324,6 @@ export class ProfileComponent extends BaseComponent implements OnInit {
             }
         });
     }
-
-
-    // /**
-    //  * @returns void
-    //  */
-    // editProfile(): void {
-    //     this.edit = !this.edit;
-    // }
     // ────────────────────────────────────────────────────────────────────────────────
 }
 

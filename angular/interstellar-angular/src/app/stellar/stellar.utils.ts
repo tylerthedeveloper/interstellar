@@ -1,3 +1,5 @@
+// !!! parseInt ----> parseFloat
+
 import { StellarLumensMinimum, TyCoinMinimum } from 'app/core/_constants/quantities';
 import { AssetBalance } from 'app/stellar';
 
@@ -27,9 +29,31 @@ const updateBalance = (balanceArray: Array<AssetBalance>, asset: AssetBalance): 
     balanceArray[index].balance = String(newbal);
 };
 
-const getBalanceforAsset = (balanceArray: Array<AssetBalance>, assetType: string): number => {
-    const index = balanceArray.findIndex(bal => bal.asset_type === assetType);
-    return parseInt(balanceArray[index].balance, 10);
+// TODO: add in new assets into session
+const getBalanceforAsset = (balanceArray: AssetBalance[], assetType: string): number => {
+    // if (!balanceArray.length) {
+    //     // const _asset = balanceArray as AssetBalance;
+    //     const balance = Number(balanceArray[0].balance);
+    //     console.log(balance)
+    //     return parseInt(balanceArray[0].balance, 10);
+    // } else {
+        // todo: make sure XLM !== stronghold
+        for (let index = 0; index < balanceArray.length; index++) {
+            const asset = balanceArray[index];
+            console.log('in looop');
+            console.log(asset);
+            if (asset.asset_type === assetType) {
+                const balance = balanceArray[index].balance;
+                // console.log(parseFloat(balanceArray[index].balance));
+                return parseFloat(balance);
+            }
+        // }
+    }
+
+    // const index = balanceArray.findIndex(bal => bal.asset_type === assetType);
+    // if (index && index !== -1) {
+    //     return parseInt(balanceArray[index].balance, 10);
+    // }
 };
 
 // const isValidNewBalance = (currentBalance: number, outlay: string): boolean => {
@@ -60,19 +84,28 @@ const calcTotalsForMultipleAssets = (assets: AssetBalance[]): AssetBalance[] => 
 
 const calcDifferenceForMultipleAssets = (balances: AssetBalance[], assetPriceTotals: AssetBalance[]): AssetBalance[] => {
     const updatedAssets: AssetBalance[] = new Array<AssetBalance>();
-    balances.forEach(asset => {
+    console.log(balances[0])
+    for (const asset of balances) {
+    // balances.map(sset => {
+        // let ass = asset as AssetBalance;
+        // console.log(ass)
+        // console.log(ass.asset_type)
+        // console.log(asset)
+        // console.log(asset.asset_type)
+        // console.log(assetPriceTotals[0].asset_type)
+        // console.log(asset.asset_type === assetPriceTotals[0].asset_type)
         const idx = assetPriceTotals.findIndex(CIT => CIT.asset_type === asset.asset_type);
         const assetPriceOutlay = assetPriceTotals[idx].balance;
         const newAssAmount = (Number(asset.balance) - Number(assetPriceOutlay));
         updatedAssets.push({ balance: String(newAssAmount), asset_type: asset.asset_type, coin_name: asset.coin_name });
-    });
+    }
     return updatedAssets;
 };
 
 const isValidNewBalance = (assetType: string, currentBalance: number, totalAssetAmount: number): boolean => {
     const newBalance = (currentBalance - totalAssetAmount);
     if (newBalance >= 0) {
-        if (assetType === 'native') {
+        if (assetType === 'native' || assetType === 'XLM') {
             return (newBalance > StellarLumensMinimum);
         } else if (assetType === 'tycoin') {
             return (newBalance > TyCoinMinimum);
@@ -86,7 +119,7 @@ const isValidNewBalance2 = (asset: AssetBalance): boolean => {
     const _balance: number = Number(asset.balance);
     const _asset_type: string = asset.asset_type;
     if (_balance >= 0) {
-        if (_asset_type === 'native') {
+        if (_asset_type === 'native' || _asset_type === 'XLM') {
             return (_balance > StellarLumensMinimum);
         } else if (_asset_type === 'tycoin') {
             return (_balance > TyCoinMinimum);

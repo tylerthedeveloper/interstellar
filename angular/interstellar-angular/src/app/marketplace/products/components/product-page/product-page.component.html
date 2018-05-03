@@ -16,12 +16,12 @@
                     style="width: 20%; border: 1px solid rgb(224,224,244); border-radius: 3px; padding: 5px; 
                            background-color: rgb(244,244,244);" 
                     [(ngModel)]="selectedAssetType">
-            <mat-option *ngFor="let asset of product?.productAssetOptions" [value]="asset">
+            <!-- <mat-option *ngFor="let asset of product?.productAssetOptions" [value]="asset">
                 {{ asset }}
-            </mat-option>
-            <!-- <mat-option *ngFor="let type of product?.productPrices" [value]="type">
-                {{ type.balance }} {{ type.coin_name }}
             </mat-option> -->
+            <mat-option *ngFor="let type of product?.productPrices" [value]="type">
+                {{ type.coin_name }} <i>({{ type.asset_type }})</i>
+            </mat-option>
         </mat-select>
     </div>
     <div style="width: 440px; margin: -70px 0% 0% 0%; float: right">

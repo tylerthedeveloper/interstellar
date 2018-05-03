@@ -77,6 +77,17 @@ class DropdownQuestion extends MyFormElement<string> {
   }
 }
 
+
+// https://netbasal.com/handling-multiple-checkboxes-in-angular-forms-57eb8e846d21
+// https://stackblitz.com/edit/angular-tyfg2z?file=app%2Fapp.component.html
+// https://stackoverflow.com/questions/46749251/angular-material-how-to-handle-multiple-checkboxes-with-formgroup
+// https://stackoverflow.com/questions/40927167/angular-2-reactive-forms-array-of-checkbox-values
+// https://angular.io/api/forms/FormArray
+// https://malcoded.com/posts/angular-file-upload-component-with-express
+// https://alligator.io/angular/reactive-forms-formarray-dynamic-fields/
+// https://github.com/udos86/ng-dynamic-forms#form-arrays
+// https://github.com/udos86/ng-dynamic-forms
+// https://github.com/udos86/ng-dynamic-forms#related-form-controls
 class CheckBoxQuestion extends MyFormElement<string> {
   controlType = 'checkbox';
   type = 'checkbox';

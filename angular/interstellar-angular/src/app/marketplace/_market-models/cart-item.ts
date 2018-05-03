@@ -23,6 +23,7 @@ export class CartItem {
 
 
     fixedUSDAmount: number;
+    selectedAsset: string;
     isInCheckout: boolean;
     isPaidFor: boolean;
 
@@ -40,7 +41,8 @@ export class CartItem {
                 assetPricePerItem: string,
                 assetPurchaseDetails: AssetBalance,
                 productCategory: string,
-                oldQuantity: number) {
+                oldQuantity: number,
+                selectedAsset: string) {
                         this.buyerUserID = buyerUserID,
                         this.buyerPublicKey = buyerPublicKey,
                         this.sellerUserID = sellerUserID,
@@ -57,5 +59,6 @@ export class CartItem {
 
                         this.productCategory = productCategory;
                         this.oldQuantity = oldQuantity;
+                        this.selectedAsset = selectedAsset;
                 }
 }
