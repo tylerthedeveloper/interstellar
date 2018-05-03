@@ -229,38 +229,52 @@ export class CartComponent extends BaseComponent implements OnInit {
             console.log('em,pty')
         }
         this._stellarTermService.getPriceForAssets(assetTypes)
+            // .toPromise()
+            // .then((res) =>
+            // // console.log(res)
+            //     // new Promise((resr, rej) => {
+            //         this._cartService.Cart.toPromise()
+            //         .then(cartItems => console.log(cartItems)).then(() => console.log('inner tear'))
+            //         // console.log('opre res')
+            //         // resr();
+            //         // console.log('opre res')
+            //     .then(() => console.log('tear'))
+            // );
             .subscribe((assets: any) => {
                 assets.map(asset => {
                     const _assetType = (asset.asset_type === 'XLM') ? 'native' : asset.asset_type;
                     this.currentAssetValuesDict[_assetType] = asset.balance;
                 });
-                    console.log(this.currentAssetValuesDict);
-                    this.cartItemsSource = this._cartService.Cart.map(cartItems => {
-                        const updatedCartItems = cartItems.map(item => {
-                                this.cartItemIDs.push(item.cartItemID);
-                                const curAssetValue = this.currentAssetValuesDict[item.assetPurchaseDetails.asset_type];
-                                console.log(item);
-                                console.log(item.fixedUSDAmount);
-                                console.log(curAssetValue);
-                                console.log(item.fixedUSDAmount / curAssetValue);
-                                const newAssetValue = (item.fixedUSDAmount / curAssetValue).toFixed(7);
-                                console.log(newAssetValue);
-                                const newAssetBalance = new AssetBalance({
-                                    asset_type: item.assetPurchaseDetails.asset_type,
-                                    coin_name: item.assetPurchaseDetails.coin_name,
-                                    balance: String(newAssetValue)
-                                });
-                                const newCartItem = item;
-                                newCartItem.assetPurchaseDetails = newAssetBalance;
-                                return newCartItem;
-                            });
-                            return updatedCartItems;
+                    // console.log(this.currentAssetValuesDict);
+                this.cartItemsSource = this._cartService.Cart.map(cartItems => {
+                    const updatedCartItems = cartItems.map(item => {
+                        this.cartItemIDs.push(item.cartItemID);
+                        const curAssetValue = this.currentAssetValuesDict[item.assetPurchaseDetails.asset_type];
+                        // console.log(item);
+                        // console.log(item.fixedUSDAmount);
+                        // console.log(curAssetValue);
+                        // console.log(item.fixedUSDAmount / curAssetValue);
+                        const newAssetValue = (item.fixedUSDAmount / curAssetValue).toFixed(7);
+                        // console.log(newAssetValue);
+                        const newAssetBalance = new AssetBalance({
+                            asset_type: item.assetPurchaseDetails.asset_type,
+                            coin_name: item.assetPurchaseDetails.coin_name,
+                            balance: String(newAssetValue)
+                        });
+                        const newCartItem = item;
+                        newCartItem.assetPurchaseDetails = newAssetBalance;
+                        return newCartItem;
                     });
-                    console.log('tear');
-                    this.loading = true;
-                }); // .toPromise().then(() => console.log('tear'))
-                   // this.loading = false;
-                    // setTimeout(() => this.loading = true, 2000);
+                    // TODO: Map only one time
+                    this.assetTotals = calcTotalsForMultipleAssets(updatedCartItems.map(CIT => CIT.assetPurchaseDetails));
+                    this.idAssetPairs = updatedCartItems.map(CIT => ({id: CIT.cartItemID, assetBalance: CIT.assetPurchaseDetails}));
+                    this.cartItems = updatedCartItems;
+                    return updatedCartItems;
+                });
+
+                // console.log('tear');
+                setTimeout(() => this.loading = true, 2000);
+            }); // .toPromise().then(() => console.log('tear'))
     }
 
     /**

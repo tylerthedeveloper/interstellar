@@ -196,7 +196,7 @@ export class CartService {
                 asset_type: itemPair.assetBalance.asset_type,
                 balance: itemPair.assetBalance.balance,
                 coin_name: itemPair.assetBalance.coin_name
-            }
+            };
             console.log(_updatedAssetBalance);
             batch.update(this.myCartRef.doc(_id), { assetPurchaseDetails: _updatedAssetBalance });
         });
