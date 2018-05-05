@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { MatSidenav } from '@angular/material';
 
-import { StellarAccountService, AssetBalance } from 'app/stellar';
+import { StellarAccountService } from 'app/stellar';
 import { EventEmitterService } from 'app/core/_helpers/event-emitter.service';
 import { Router } from '@angular/router';
 import { UserService } from 'app/core/services';
