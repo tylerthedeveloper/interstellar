@@ -201,6 +201,9 @@ export class StellarPaymentService {
                 // });
 
                 const group = transactionGroups[0];
+                console.log(group.transactionPaymentDetails)
+                console.log(group.transactionPaymentDetails.assetBalance[0])
+                console.log(group.transactionPaymentDetails.assetBalance[0].balance)
                 const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
                     .addOperation(StellarSdk.Operation.payment({
                          destination: group.sellerPublicKey,

@@ -9,9 +9,8 @@
                     <h5> My Cart <small> ({{ cartItemList.length }} item{{ cartItemList.length > 0 ? 's' : '' }})</small> </h5>
                   </div>
 
-                  <div class="row row-bottom-margin">
-
-                    <div class="card col-12 z-depth-0"
+                  <div class="row row-bottom-margin" >
+                    <div class="card col-12 z-depth-0" 
                         style="width: 102.2%; display: inline-flex; flex-direction: row;
                                 align-items: center; margin: 0em 0em .1em 0em; border: 1px solid rgb(224,224,244);
                                 border-radius: 3px 3px 0px 0px">
@@ -19,39 +18,37 @@
                       <div class="col-2" style="display: block; margin: auto; height: 90%;">
                       </div>
 
-                      <div class="col-4" style="display: flex; flex-direction: row; margin: 0% 0em 0em 0%;">
+                      <div class="col-6" style="display: flex; flex-direction: row; margin: 0% 0em 0em 0%;">
 
-                        <div style="width: 33.33%">
-                          <h6 style="margin: 0% 0% 0% -10px;">Product</h6>
+                        <div style="width: 25%">
+                          <h6 style="margin: 0% 0% 0% -10px;"> Title</h6>
                         </div>
-                        <!-- <p> {{ cartItem?.productID }} </p>
-                        <p> {{ cartItem?.cartItemID }} </p> -->
 
-                        <div style="width: 33.33%">
+                        <div style="width: 25%">
                           <h6 class="" style="margin: 0% 0% 0% 0%;">Quantity</h6>
                         </div>
 
-                        <div style="width: 33.33%">
-                          <h6 class="" style="margin: 0% 0% 0% 0%;">Price</h6>
+                        <div style="width: 25%">
+                          <h6 class="" style="margin: 0% 0% 0% 0%;">$USD</h6>
                         </div>
-                        <!-- <p> {{ cartItem?.description }} </p> -->
+
+                        <div style="width: 25%">
+                            <h6 class="" style="margin: 0% 0% 0% 0%;"> Asset</h6>
+                            </div>
                       </div>
 
-                      <div class="col-6" style="">
-                      </div>
-
+                      <div class="col-3"> Actions</div>
                     </div>
                   </div>
 
                   <div class="row row-bottom-margin">
-
-                    <div class="col-12 card z-depth-0"
-                    style="height: 500px; background-color: rgb(244,244,244); border: 1px solid rgb(224,224,244); border-radius: 0px 0px 3px 3px; border-top: none;">
+                    <mat-spinner [hidden]="loading"></mat-spinner>
+                    <div class="col-12 card z-depth-0" [style.visibility]="(loading) ? 'visible' : 'hidden'"
+                            style="height: 500px; background-color: rgb(244,244,244); border: 1px solid rgb(224,224,244); border-radius: 0px 0px 3px 3px; border-top: none;">
                       <div *ngFor="let product of cartItemList" style="margin: 0em 0em 0px 0em;">
                           <app-cart-item-card [cartItem]="product" (notify)="onCartItemAction($event)"></app-cart-item-card>
                       </div>
                     </div>
-
                   </div>
                 </div>
 

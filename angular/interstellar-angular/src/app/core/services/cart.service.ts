@@ -48,14 +48,13 @@ export class CartService {
                 .map(changes => {
                     // const _totals = new Array<Asset>();
                     //     _ids.push(data.cartItemID);
-                    
                     // const _ids = changes.map(a => a.cartItemID);
                     // this.cartItemIDs = _ids;
 
                     changes.map(item => {
-                        this.cartItemIDs.push(item.cartItemID); 
-                        this.cartItemProductIDs.push(item.productID); 
-                    })
+                        this.cartItemIDs.push(item.cartItemID);
+                        this.cartItemProductIDs.push(item.productID);
+                    });
                     // this.cartItemIDs = changes.map(a => a.cartItemID);
                     // this.cartItemProductIDs = changes.map(a => a.cartItemID);
                     // this.assetTotals = _totals;
@@ -160,11 +159,11 @@ export class CartService {
     /**
      * @param  {string[]} cartItemIDs
      */
-    addToCheckout(cartItemIDs: string[]) {
+    addToCheckout(cartItemIDs: string[]): Promise<boolean> {
         console.log(cartItemIDs);
         const batch = this.afs.firestore.batch();
         cartItemIDs.forEach(id => batch.update(this.myCartRef.doc(id), { isInCheckout: true }));
-        return batch.commit();
+        return batch.commit().then(() => true).catch(() => false);
     }
 
     /**
@@ -179,11 +178,29 @@ export class CartService {
             .then(() => this.cartItemIDs.filter(_cartItemID => cartItemIdArray.find(c => c === _cartItemID)));
     }
 
-    batchMarkItemsPaidFor(cartItemIdArray: string[]): any {
+    batchMarkItemsPaidFor(cartItemIdArray: string[]): Promise<boolean> {
         console.log(cartItemIdArray);
         const batch = this.afs.firestore.batch();
         cartItemIdArray.map(id => batch.update(this.myCartRef.doc(id), { isPaidFor: true }));
-        return batch.commit();
+        return batch.commit().then(() => true).catch(() => false);
+    }
+
+    batchUpdateTickerPrices(cartItemPairArray: any[]): Promise<boolean> {
+        // console.log(cartItemIdArray);
+        const batch = this.afs.firestore.batch();
+        console.log('any');
+        cartItemPairArray.map((itemPair: any) => {
+            const _id = itemPair.id;
+            console.log(itemPair);
+            const _updatedAssetBalance: any = {
+                asset_type: itemPair.assetBalance.asset_type,
+                balance: itemPair.assetBalance.balance,
+                coin_name: itemPair.assetBalance.coin_name
+            };
+            console.log(_updatedAssetBalance);
+            batch.update(this.myCartRef.doc(_id), { assetPurchaseDetails: _updatedAssetBalance });
+        });
+        return batch.commit().then(() => true).catch(() => false);
     }
 
     emptyCart(): Promise<any> {

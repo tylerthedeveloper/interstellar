@@ -75,10 +75,10 @@
 
                                     <label [hidden]="!hasAddress" for="userName">Address: </label><h6>{{user?.address}}</h6>
                                     <br>
-
-                                    <button [hidden]="hasAddress" class="btn btn-sm btn-primary z-depth-0" style="height: 11%;" (click)="contactSeller()">Message</button>
-
-                                    <button [hidden]="!hasAddress" class="btn btn-sm btn-mdb-color z-depth-0" style="height: 11%;" aria-hidden="true" (click)="updateProfile()">Edit</button>
+<!-- [hidden]="hasAddress" -->
+                                    <button  class="btn btn-sm btn-primary z-depth-0" style="height: 11%;" (click)="contactSeller()">Message</button>
+<!-- [hidden]="!hasAddress" -->
+                                    <button  class="btn btn-sm btn-mdb-color z-depth-0" style="height: 11%;" aria-hidden="true" (click)="updateProfile()">Edit</button>
 
                                   </div>
 
@@ -124,8 +124,8 @@
                 <div style="margin: 0px 0px 0px 10px;">
                   <h6>Accepted Asset Types</h6>
                   <ul>
-                      <li *ngFor="let asset of user?.acceptedAssets">
-                              {{ asset }}
+                      <li *ngFor="let asset of user?.acceptedAssets || _acceptedAssets">
+                            {{ asset.coin_name }} <i> ({{ asset.asset_type }})</i>
                       </li>
                   </ul>
 
@@ -155,7 +155,7 @@
 
       <div style="z-index: -1">
         <mat-tab-group style="margin-bottom: 2%;">
-            <mat-tab label="My Listings" style="">
+            <mat-tab label="My Listings" >
                 <!-- <div style="align-items: center; justify-content: center;">
                     (click)="addProduct()"
                     <button class="btn btn-primary z-depth-0" aria-hidden="true"

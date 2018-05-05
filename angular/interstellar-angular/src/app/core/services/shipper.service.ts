@@ -141,17 +141,17 @@ export class ShipperService {
 
 
         // const urlEndpoint = 'https://api.easypost.com/v2/addresses';
-        const urlEndpoint = 'https://api.easypost.com/v2/addresses ';
+        const urlEndpoint = 'https://api.easypost.com/v2/addresses';
         const options = {
             'headers': headers,
             'body': toAddress,
             // 'body': fromAddress
             // tracking_code: "EZ4000000004",
             // carrier: "UPS"
-        }
+        };
         const reqOptions = {
             headers : headers
-        }
+        };
         this._http.post(urlEndpoint, toAddress, reqOptions).subscribe(a => console.log(a));
         // shippo.setApiKey()
     }

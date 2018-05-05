@@ -11,6 +11,7 @@ export class Product {
     fixedUSDAmount: number;
     quantity: number;
     productPrices: Array<AssetBalance>;
+    productAssetOptions: string[];
 
     productThumbnailLink: string;
     productImages: string[];
