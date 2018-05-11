@@ -1,9 +1,13 @@
 // https://coursetro.com/posts/code/84/Setting-up-an-Angular-4-MEAN-Stack-(Tutorial)
+/** express */
 const express = require('express');
-// import * as express from 'express';
-
 const router = express.Router();
 
+/** Helpers */
+const sendError = require('./utils').sendError;
+const response = require('./utils').response;
+
+/** Firebase */
 // firebase Connect ... 
 // todo: wtf is clousre
 // const connection = (closure) => {
@@ -14,31 +18,12 @@ const router = express.Router();
 //     });
 // };
 
-// Error handling
-const sendError = (err, res) => {
-    response.status = 501;
-    response.message = (typeof err == 'object') ? err.message : err;
-    res.status(501).json(response);
-};
 
-// Response handling
-const response = {
-    status: 200,
-    data: [],
-    message: null
-};
+/** Import Routes */
+const userRoute = require('./users').default;
 
-// Get docs
-// const docs = ../documentation
-router.get('/docs', (req, res) => {
-    //res.json(users);
-});
+/** Assign Routes */
+router.use('/users', userRoute)
 
-
-// Get users
-const users = ['tito', 'jon-A'];
-router.get('/users', (req, res) => {
-    res.json(users);
-});
-
+/** Exports */
 module.exports = router;

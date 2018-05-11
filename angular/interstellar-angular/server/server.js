@@ -16,7 +16,7 @@ const http = require('http');
 const app = express();
 
 // Root path
-const root = '../';
+const root = './';
 
 // API file 
 const api = require('./routes/api.js');
@@ -31,13 +31,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 
 // Angular DIST output folder
-app.use(express.static(path.join('../', 'dist')));
+app.use(express.static(path.join(root, 'dist')));
 
 // API location
 app.use('/api', api);
 
 // Docs location
-// express.static(docs);
 app.use('/documentation', express.static(path.join(root, 'documentation')))
 
 
