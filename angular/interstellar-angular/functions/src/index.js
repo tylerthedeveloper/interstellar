@@ -4,18 +4,17 @@
 /** Firebase */
 // https://firebase.google.com/docs/functions/typescript
 // import * as functions from 'firebase-functions';
-import { https } from "firebase-functions";
+const functioos = require("firebase-functions");
 
 // The Firebase Admin SDK to access the Firebase Realtime Database.
-import { initializeApp } from "firebase-admin";
-initializeApp();
+const initializeApp = require("firebase-admin").initializeApp();
 
 /** Express */
-import expressImport from "express";
+const expressImport = require("express");
 const expressEngine = expressImport()
 
 /** Cors */
-import cors from "cors";
+const cors = require("cors");
 
 expressEngine.use(cors({ origin: true }))
 
@@ -23,7 +22,7 @@ expressEngine.use(cors({ origin: true }))
 //     response.send("Hello from Firebase!");
 // });
 
-export const showDocumentation = https.onRequest((request, response) => {
+ modules.showDocumentation = https.onRequest((request, response) => {
     //response.send("Checkout the docs");
     expressEngine.static('../documentation')
 });

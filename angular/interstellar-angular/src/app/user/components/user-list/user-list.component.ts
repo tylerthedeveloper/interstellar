@@ -22,6 +22,7 @@ export class UserListComponent implements OnInit {
         this._peopleList = this._userService.getAllUsers()
             .valueChanges()
             .map(users => users.filter((user: User) => user.id !== myUserID));
+            this._userService.getAllUsers2().then(res => console.log(res));
     }
 
     onSelectPerson = (personID: string) => {

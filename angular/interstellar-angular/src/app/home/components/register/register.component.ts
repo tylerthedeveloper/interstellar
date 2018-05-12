@@ -1,5 +1,5 @@
 // TODO: Handle errors
-
+// TODO use dialog not alerts
 
 /** Angular */
 import { Component } from '@angular/core';
@@ -21,6 +21,10 @@ import { UserService } from 'app/core/services';
 
 export class RegisterComponent {
 
+    /**
+     * @param  {StellarAccountService} private_stellarService
+     * @returns StellarAccountService
+     */
     constructor(private _stellarService: StellarAccountService,
                 private _userService: UserService,
                 private _eventEmiter: EventEmitterService,
@@ -42,15 +46,14 @@ export class RegisterComponent {
                 resp => {
                     console.log(resp);
                     const _ = sessionStorage.getItem('seed_key');
-                    alert('You are about to see your private key. \n ' +
-                          'Please write it down and do not show anyone');
+                    alert(AlertMessages.SeePrivateKey);
                     alert('Here is your private key: \n' + _);
                     this._stellarService.authenticate(_).subscribe(
                         res => this.handleAuthRegistration(JSON.stringify(res)),
-                        err => alert('there was an error logging you in: \n' + err)
+                        err => alert(AlertMessages.MergeError + err)
                     );
                 },
-                err => alert('there was an error creating your account: \n' + err)
+                err => alert(AlertMessages.CreateAccountError + err)
         );
     }
 
@@ -61,7 +64,7 @@ export class RegisterComponent {
     mergeAccountWithKey(secretKey: string): void {
         this._stellarService.mergeAccountWithKey(secretKey).subscribe(
             res => this.handleAuthRegistration(JSON.stringify(res)),
-            err => alert('there was an error conducting the merge: \n' + err)
+            err => alert( + err)
         );
     }
     // ────────────────────────────────────────────────────────────────────────────────
@@ -84,7 +87,7 @@ export class RegisterComponent {
         let _localStore = false;
         let dialogRef: MatDialogRef<ConfirmDialogComponent>;
         dialogRef = this.dialog.open(ConfirmDialogComponent);
-        dialogRef.componentInstance.title = 'Do you want to save your private key in the browser?';
+        dialogRef.componentInstance.title = AlertMessages.LocalStore;
         dialogRef.componentInstance.content = 'Private Key';
         dialogRef.afterClosed().subscribe((result: string) => {
             if (result) {
@@ -116,3 +119,10 @@ export class RegisterComponent {
     // }
 
 }
+
+const AlertMessages = {
+    CreateAccountError: 'there was an error creating your account: \n',
+    LocalStore: 'Do you want to save your private key in the browser?',
+    MergeError: 'there was an error conducting the merge: \n',
+    SeePrivateKey: 'You are about to see your private key. \n Please write it down and do not show anyone'
+};

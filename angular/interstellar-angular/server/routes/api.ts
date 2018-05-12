@@ -4,8 +4,8 @@ const express = require('express');
 const router = express.Router();
 
 /** Helpers */
-const sendError = require('./utils').sendError;
-const response = require('./utils').response;
+const sendError = require('./utils.js').sendError;
+const response = require('./utils.js').response;
 
 /** Firebase */
 // firebase Connect ... 
@@ -20,10 +20,10 @@ const response = require('./utils').response;
 
 
 /** Import Routes */
-const userRoute = require('./users').default;
+const userRoute = require('./users.js');
 
 /** Assign Routes */
-router.use('/users', userRoute)
+router.use('/users', userRoute);
 
 /** Exports */
 module.exports = router;

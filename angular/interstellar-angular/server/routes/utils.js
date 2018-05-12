@@ -1,3 +1,4 @@
+const firebaseDbURL =  'https://firestore.googleapis.com/v1beta1/projects/galactic-storage/databases/(default)/documents';
 // Error handling
 const sendError = (err, res) => {
     response.status = 501;
@@ -12,4 +13,10 @@ const response = {
     message: null
 };
 
-export { sendError, response };
+const utils = {
+    firebaseDbURL: firebaseDbURL,
+    response: response,
+    sendError: sendError
+};
+
+module.exports = utils;

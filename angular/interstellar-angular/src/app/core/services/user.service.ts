@@ -6,15 +6,18 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/observable/fromPromise';
 import { User } from 'app/user/user';
+import { HttpService } from './http.service';
 
 @Injectable()
 export class UserService {
 
+    private _userRouteAPIUrl = 'api/users';
     public currentUser: User;
     private usersCollection: AngularFirestoreCollection<User>;
 
-    constructor(private afs: AngularFirestore) {
-        this.usersCollection = afs.collection<User>('users');
+    constructor(private afs: AngularFirestore,
+                private _httpService: HttpService) {
+                    this.usersCollection = afs.collection<User>('users');
     }
 
     //
@@ -26,8 +29,13 @@ export class UserService {
     /**
      * @returns AngularFirestoreCollection
      */
-    getAllUsers(): AngularFirestoreCollection<User> {
+    getAllUsers() { // : AngularFirestoreCollection<User>
         return this.usersCollection;
+        // return this._httpService.httpGetRequest(this._userRouteAPIUrl).toPromise();
+    }
+
+    getAllUsers2() { // : AngularFirestoreCollection<User>
+        return this._httpService.httpGetRequest(this._userRouteAPIUrl); // then(res => console.log(res));
     }
 
     /**
