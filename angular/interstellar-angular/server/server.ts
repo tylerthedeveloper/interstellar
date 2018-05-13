@@ -1,8 +1,7 @@
 /* app/server.ts */
 
 // Import everything from express and assign it to the express variable
-import * as express from 'express';
-
+import express = require('express');
 
 // Create a new express application instance
 const app: express.Application = express();
@@ -16,7 +15,7 @@ const http = require('http');
 
 /** Paths */
 const root = './'; // Root path
-const api = require('./routes/api.ts'); // API file
+const api = require('./routes/api.js'); // API file
 const docsPath = 'app/documentation'; // Docs Path
 
 
@@ -38,3 +37,4 @@ app.listen(port, () => {
     // Success callback
     console.log(`Listening at http://localhost:${port}/`);
 });
+// new end comment 33

@@ -5,10 +5,15 @@
     "noImplicitReturns": true,
     "outDir": "lib",
     "sourceMap": true,
-    "target": "es6"
+    "target": "es6",
+    "strict": true,
+    "esModuleInterop": true
   },
   "compileOnSave": true,
+  "files": [
+    "server.ts"
+  ],
   "include": [
-    "routes/**"
+    "routes/*.ts"
   ]
 }

@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 /** RxJS and forms */
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
-import { CustomValidators } from 'app/shared/forms/form.utils';
 import 'rxjs/add/observable/forkJoin';
 
 /** Stellar */
@@ -28,6 +27,7 @@ import { MatVerticalStepper } from '@angular/material';
 /** Other */
 import { stellarKeyLength } from 'app/core/_constants/quantities';
 import { BaseComponent } from 'app/base.component';
+import { CustomValidators } from 'app/shared/forms/form.utils';
 
 
 @Component({

@@ -30,6 +30,7 @@
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.2",
+    "@types/express": "^4.11.1",
     "angular-bootstrap-md": "^5.2.3",
     "angularfire2": "^5.0.0-rc.6.0",
     "body-parser": "^1.18.2",

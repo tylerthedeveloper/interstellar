@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MyFormElement, CheckBoxGroupQuestion } from '../form-element';
+import { MyFormElement } from '../form-element';
 import { createFormGroup } from '../form.utils';
 import { Subject } from 'rxjs/Subject';
 
