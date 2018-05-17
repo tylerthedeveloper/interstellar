@@ -1,0 +1,1 @@
+{"version":3,"file":"_firebase.js","sourceRoot":"","sources":["../_firebase.ts"],"names":[],"mappings":";AAAA,MAAM,cAAc,GAAG;IACnB,MAAM,EAAE,yCAAyC;IACjD,UAAU,EAAE,kCAAkC;IAC9C,WAAW,EAAE,yCAAyC;IACtD,SAAS,EAAE,kBAAkB;IAC7B,aAAa,EAAE,8BAA8B;IAC7C,iBAAiB,EAAE,aAAa;CACjC,CAAC;AAEJ,MAAM,CAAC,OAAO,GAAG,cAAc,CAAC"}

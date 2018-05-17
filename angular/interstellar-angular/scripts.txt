@@ -1,0 +1,8 @@
+run scripts
+npm run proxy-serve
+
+node lib/server.js
+
+tsc
+tsc -p
+tsc --p tsconfig ...

@@ -8,6 +8,8 @@ import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { EventEmitterService } from './event-emitter.service';
 import { isValidSecretKey } from 'app/stellar';
+import * as CryptoJS from 'crypto-js';
+import { decryptKeyPair } from './key-resolver.utils';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
@@ -36,7 +38,9 @@ export class AuthGuardService implements CanActivate {
 
         /// MAYEB CHECK IF PUBLIC KEY IS IN DB AND IS REAL ....???
         const _key = sessionStorage.getItem('seed_key') || localStorage.getItem('seed_key');
-        return  (_key !== null && isValidSecretKey(_key) != null);
+        const pubKey = sessionStorage.getItem('public_key') || localStorage.getItem('public_key');
+        const plaintext = decryptKeyPair(_key.toString(), pubKey);
+        return  (_key !== null && isValidSecretKey(plaintext) != null);
         ////////////////////////////////////////////////////
     }
 }

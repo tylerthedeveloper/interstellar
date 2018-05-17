@@ -93,8 +93,6 @@ export class NavBarComponent implements OnInit {
         this.loggedIn = true;
         if (payload) {
 
-
-
 // !!! WHAT DO WE DO WITH NATIVE --> XLM
 
 // asset_type === native , coin_name = XLM / Lumens!!!!!!
@@ -111,9 +109,11 @@ export class NavBarComponent implements OnInit {
         this._userService.getCurrentUser().subscribe(currentUser => {
             // console.log(currentUser);
             if (currentUser) {
+                console.log(currentUser);
                 this._userID = currentUser.id;
                 this.changePage('profile');
             } else {
+                console.log('no current user');
                 // todo: change to dialog
                 alert('it doesnt seem like that account exists, want to make one today?');
             }

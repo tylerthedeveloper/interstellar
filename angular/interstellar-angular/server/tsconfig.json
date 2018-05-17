@@ -2,6 +2,7 @@
   "compilerOptions": {
     "lib": ["es6"],
     "module": "commonjs",
+    "rootDir": ".",
     "noImplicitReturns": true,
     "outDir": "lib",
     "sourceMap": true,
@@ -11,9 +12,20 @@
   },
   "compileOnSave": true,
   "files": [
-    "server.ts"
+    "server.ts",
+    "_firebase.ts"
   ],
   "include": [
-    "routes/*.ts"
+    "routes/*.ts",
+    "models/*.ts"
+  ],
+  // "extends": "../tsconfig.json",
+  "exclude": [
+    "../node_modules",
+    "../../node_modules",
+    "../../../node_modules",
+    "node_modules",
+    "functions",
+    "../src"
   ]
 }

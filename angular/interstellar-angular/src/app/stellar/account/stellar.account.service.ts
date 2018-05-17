@@ -27,6 +27,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
 import { AssetBalance } from '../assets/asset-balance';
 
+import * as CryptoJS from 'crypto-js';
+import { encryptKeyPair } from '../../core/_helpers/key-resolver.utils';
+
 declare var StellarSdk: any;
 
 const enum ErrorMessage {
@@ -100,14 +103,17 @@ export class StellarAccountService {
      * @returns Observable
      */
     authenticate (secretKey: string): Observable<Array<AssetBalance>> {
-        const pubkey = isValidSecretKey(secretKey);
-        if (!pubkey) {
+        const _pubKey = isValidSecretKey(secretKey);
+        if (!_pubKey) {
             return Observable.throw(ErrorMessage.InvalidStellarKey);
         } else {
-            sessionStorage.setItem('public_key', pubkey);
-            sessionStorage.setItem('seed_key', secretKey);
+
+            const ciphertext = encryptKeyPair(secretKey, _pubKey);
+            sessionStorage.setItem('public_key', _pubKey);
+            sessionStorage.setItem('seed_key', ciphertext.toString());
+            // sessionStorage.setItem('seed_key', secretKey);
             const handleError = this.HandleError;
-            return Observable.fromPromise(this._server.loadAccount(pubkey)
+            return Observable.fromPromise(this._server.loadAccount(_pubKey)
                 .catch(StellarSdk.NotFoundError, function (error) {
                     throw new Error(ErrorMessage.StellarKeyNotFound + '\n' + error);
                     // throw new Error('The destination account does not exist!: \n' + error);
@@ -164,7 +170,6 @@ export class StellarAccountService {
         //         // .catch(e => Observable.throw(e));
         // }
     }
-
 
     HandleError(error: Response) {
         // alert(error);
