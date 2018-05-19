@@ -37,8 +37,6 @@ export class OrderService {
     // public userTransPurchasesCollection: AngularFirestoreCollection<TransactionRecord>;
     // public userTransSalesCollection: AngularFirestoreCollection<TransactionRecord>;
 
-    // private orderItemIDs: string[] = [];
-
     // https://blog.cloudboost.io/build-simple-shopping-order-with-angular-4-observables-subject-subscription-part-2-2d3735cde5f
 
     constructor(private afs: AngularFirestore) {
@@ -48,7 +46,6 @@ export class OrderService {
         this.userTransCollection = afs.collection<TransactionRecord>('user-transactions');
         this.userOrderCollection = afs.collection('user-orders');
         this.userOrdersRef = this.userOrderCollection.ref;
-        // this.orderItemIDs = [];
         this.userOrderItems = this.userOrderCollection.doc(this._userID).collection<Order>('orderHistory').valueChanges();
         this.userTransRecordSales = this.userTransCollection.doc(this._userID)
                 .collection<TransactionRecord>('sales').valueChanges();
@@ -58,7 +55,7 @@ export class OrderService {
 
     //
     // ──────────────────────────────────────────────────────────────── I ──────────
-    //   :::::: P U B L I C  C R U D   M E T H O D S : :  :   :    :     :        :          :
+    //   :::::: M Y P U B L I C  C R U D   M E T H O D S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
     /**
@@ -132,6 +129,20 @@ export class OrderService {
             batch.set(this.userTransCollection.doc(buyerID).collection('purchases').doc(transactionID).ref, recordObj);
         });
         return batch.commit();
+    }
+    // ────────────────────────────────────────────────────────────────────────────────
+
+    //
+    // ────────────────────────────────────────────────────────────────── I ──────────
+    //   :::::: Q U E R Y   M E T H O D S : :  :   :    :     :        :          :
+    // ────────────────────────────────────────────────────────────────────────────
+    //
+    getOrdersByUserID(userID: string) {
+        return this.ordersCollection.doc(userID).valueChanges().map(o => <Order> o);
+    }
+
+    getTransactionSalesByUserID(userID: string): Observable<TransactionRecord[]> {
+        return this.userTransCollection.doc(userID).collection<TransactionRecord>('sales').valueChanges();
     }
 
     // ────────────────────────────────────────────────────────────────────────────────

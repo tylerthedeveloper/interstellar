@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 
 /** Stellar */
 // import StellarSdk from 'stellar-sdk';
-import { AssetBalance, stellarAssetsMapper2 } from 'app/stellar';
+import { AssetBalance } from 'app/stellar';
 
 /** Observable */
 import { Observable } from 'rxjs/Observable';
@@ -40,7 +40,7 @@ import { userFormData } from 'app/user/user.details';
 import { BaseComponent } from 'app/base.component';
 import { TransactionRecord } from 'app/marketplace/_market-models/transaction';
 import { shippingAddressQuestions } from 'app/marketplace/shipping/shipping.details';
-import { ShipperService } from 'app/core/services/shipper.service';
+// import { ShipperService } from 'app/core/services/shipper.service';
 import { Asset } from 'app/stellar/assets/asset';
 import { stellarTermAssets2 } from 'app/stellar/stellar-term/asset.mappers';
 import { Subscription } from 'rxjs/Subscription';
@@ -100,7 +100,6 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
         // User Init //
         // switch too this.user$ ... auto destroy / unsubscribe
-        // this.user = this._userService.getCurrentUser().first();
         // this.userModel = new User('', '', '', '', '', '', 0);
         const myUserID = this.myBaseUserID; // sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         this._userID = myUserID;
@@ -114,34 +113,30 @@ export class ProfileComponent extends BaseComponent implements OnInit {
             // console.log('its me ');
         }
 
-        console.log('prof');
+        console.log('myUserID ' + myUserID );
         // todo: listen for add address
         this._userService.getUserByID(pagePersonID)
             .then(user => {
                 console.log(user);
                 this.user = user;
                 // console.log(user);
+                const userTyped = <User> user;
+                this._userModel = userTyped;
+                this._acceptedAssets = (userTyped.acceptedAssets) ? userTyped.acceptedAssets : new Array(stellarTermAssets2[0]);
                 if (this.isMyProfile) {
-                    const userTyped = <User> user;
-                    this._userModel = userTyped;
-                    this._acceptedAssets = (userTyped.acceptedAssets) ? userTyped.acceptedAssets : new Array(stellarTermAssets2[0]);
                     this.hasAddress = (userTyped.address) ? true : false;
+                    // todo: ORDERS AND TRANSACTIONS FOR CURRENT USER ...
+                    this.orders = this._orderService.Orders;
                     if (!this.hasAddress) {
                         this.handleUpdateAddress();
                     }
                 }
         });
-        this.products = this._productService.getProductsByUserID(myUserID);
-        this.orders = this._orderService.Orders;
+        this.products = this._productService.getProductsByUserID(pagePersonID);
         this.balances = new Array<AssetBalance>();
-        // const _balances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
         const _balances = this.myBaseBalances;
         if (_balances) { this.balances = <AssetBalance[]>JSON.parse(_balances); }
-
-        this.transactionSales = this._orderService.TransactionSales;
-        // this.transactionSales = this._orderService.Transactions.filter(t => t.orderType === OrderType.Sale);
-        // .pipe(filter((transaction: TransactionRecord) => transaction.orderType === OrderType.Sale));
-                        // ((transaction: TransactionRecord) => transaction.orderType === OrderType.Sale));
+        this.transactionSales = this._orderService.getTransactionSalesByUserID(this._pagePersonID);
     }
 
 
@@ -189,6 +184,11 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                 return this._userService.updateProfile(JSON.stringify(payload));
             }
         });
+    }
+
+    // todo: BEG USER NOT TOO
+    deleteMe() {
+        this._userService.deleteUser(this._pagePersonID).then(() => this.router.navigate(['home']));
     }
 
     goToAddProductpage(): void {

@@ -27,72 +27,38 @@ export class UserService {
     //
 
     /**
-     * @returns AngularFirestoreCollection
+     * @returns Promise
      */
-    getAllUsers() { // : AngularFirestoreCollection<User>
-        return this.usersCollection;
-        // return this._httpService.httpGetRequest(this._userRouteAPIUrl).toPromise();
-    }
-
-    getAllUsers2(): Promise<string> { // : AngularFirestoreCollection<User>
+    getAllUsers(): Promise<string> {
+        // return this.usersCollection;
         return this._httpService.httpGetRequest(this._userRouteAPIUrl); // then(res => console.log(res));
     }
 
     /**
      * @returns Observable
      */
+    // todo: TEST INVALID USER
     getCurrentUser(_publicKey: string = ''): Observable<any> {
         let _keyLoginId = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         if (_keyLoginId) {
-            console.log(_keyLoginId);
-            return this.usersCollection.doc(_keyLoginId).valueChanges();
+            return Observable.fromPromise(this.getUserByID(_keyLoginId));
         } else if (_keyLoginId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key') || _publicKey) {
-            return Observable.create((observer: any) => {
-                this.afs.collection('users', ref => ref.where('publicKey', '==', _publicKey || _keyLoginId))
-                    .valueChanges()
-                    .first()
-                    .subscribe((user: Array<User>) => {
-                        // console.log(user[0]);
-                            if (user[0]) {
-                                sessionStorage.setItem('user_doc_id', user[0].id);
-                                // console.log('a');
-                                return observer.next(user[0]);
-                            } else {
-                                // console.log('b');
-
-                                // return observer.next('no current user');
-                                // return observer.next(observer.error('nop user'));
-                            }
-                });
-            });
+            const urlString = `${this._userRouteAPIUrl}/pkeys/${_keyLoginId}`;
+            return Observable.fromPromise(this._httpService.httpGetRequestWithArgs(urlString)
+                .then((res: any) => JSON.parse(res))
+                .then((res: object) => {
+                    // return observer.next('no current user');
+                    // return observer.next(observer.error('nop user'));
+                    const id = res['id'];
+                    sessionStorage.setItem('user_doc_id', id);
+                    return res;
+                }
+            ));
         } else {
-            // console.log('c');
+            console.log('no user');
             return Observable.create((observer: any) => observer.error('no current user'));
-            // return Observable.create((observer: any) => observer.next());
         }
-        // console.log('no user');
     }
-
-    // getCurrentUser2(publicKey: string): Observable<any> {
-    //         return Observable.create((observer: any) => {
-    //             console.log(observer);
-    //             this.afs.collection('users', ref => ref.where('publicKey', '==', publicKey || _keyLoginId))
-    //                 .valueChanges()
-    //                 .first()
-    //                 .subscribe((user: Array<User>) => {
-    //                     if (user[0]) {
-    //                         sessionStorage.setItem('user_doc_id', user[0].id);
-    //                         return observer.next(user[0]);
-    //                         // console.log('a')
-    //                     } else {
-    //                         // console.log('b')
-    //                         return observer.next(observer.error('nop user'));
-    //                     }
-    //                 });
-    //         });
-    //     }
-    //     // console.log('no user');
-    // }
 
     /**
      * @param  {any} user
@@ -114,8 +80,9 @@ export class UserService {
      * @param  {User} user
      * @returns Observable
      */
-    deleteUser(user: User): Observable<any> {
-        return Observable.fromPromise(this.usersCollection.doc(user.id).delete());
+    deleteUser(userID: string) { // : Observable<any>
+        const urlString = `${this._userRouteAPIUrl}/${userID}`;
+        return this._httpService.httpDeleteRequest(urlString); // then(res => console.log(res));
     }
 
     /**
@@ -154,10 +121,6 @@ export class UserService {
         const urlString = `${this._userRouteAPIUrl}/${userID}`;
         // return this.usersCollection.doc(userID).valueChanges(); // .map(user => <User>user);
         return this._httpService.httpGetRequest(urlString);
-        // .then(res => {
-        //     console.log(res)
-        //     return res;
-        // });
     }
 
     /**

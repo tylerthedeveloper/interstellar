@@ -38,11 +38,9 @@ userRouter.get('/', (req: any, res: any) => {
     firedb.collection('users').get()
         .then((collectionSnapshot: any) => {
             const docs = collectionSnapshot.docs.map((documentSnapshot: any) => documentSnapshot.data());
-            // console.log(res.statusCode);
             res.status(res.statusCode).send(docs);
         })
         .catch((err: any) => {
-            // res.send('Error getting documents', err);
             res.status(res.statusCode).json({ error: err.toString() });
         });
 });
@@ -58,6 +56,21 @@ userRouter.get('/:id', (req: any, res: any) => {
             res.status(res.statusCode).send(err);
         });
 });
+
+userRouter.get('/pkeys/:pubkey', (req: any, res: any) => {
+    const publicKey = req.params['pubkey'];
+    firedb.collection('users')
+        .where('publicKey', '==', publicKey)
+        .get()
+        .then((QuerySnapshot: any) => {
+            const userSnapShot = QuerySnapshot.docs[0].data();
+            res.status(res.statusCode).send(userSnapShot);
+        })
+        .catch((err: any) => {
+            res.status(res.statusCode).send(err);
+        });
+});
+
 
 userRouter.post('/', (req: any, res: any) => {
     console.log('post user');
@@ -75,28 +88,15 @@ userRouter.post('/', (req: any, res: any) => {
         });
 });
 
-// userRouter.get('/', (req: any, res: any) => {
-//     // console.log(users);
-//     // res.json(userRouter.get('https://firestore.googleapis.com/v1beta1/projects/galactic-storage/databases/(default)/documents/users'))
-//     // res.json(usersCollection);
-//     request(`${userUtils.firebaseDbURL}/users/.json`, function (error: any, response: any, body: any) {
-//       console.log(body)
-//       console.log('error:', error); // Print the error if one occurred and handle it
-//       console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-//       const arr = JSON.parse(body);
-//       const docs: Array<FbObject> = arr['documents'];
-//       const _users = docs.map(doc => {
-//         // console.log(doc.fields)
-//           const _doc = JSON.stringify(doc);
-//           console.log(doc.fields + '\n')
-//           console.log('\n')
-//           // console.log('\n')
-//           // console.log(doc.fields)
-//           return doc.fields;
-//       });
-//       // console.log(_users)
-//       res.send(_users);
-//     });
-// });
+userRouter.delete('/:id', (req: any, res: any) => {
+    const id = req.params['id'];
+    firedb.collection('users').doc(id).delete()
+        .then((documentSnapshot: any) => {
+            res.status(res.statusCode).send(res.statusCode);
+        })
+        .catch((err: any) => {
+            res.status(res.statusCode).send(err);
+        });
+});
 
 module.exports = userRouter;
