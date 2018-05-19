@@ -115,7 +115,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
         // todo: listen for add address
         this._userService.getUserByID(pagePersonID)
-            .subscribe(user => {
+            .then(user => {
                 this.user = user;
                 // console.log(user);
                 if (this.isMyProfile) {
