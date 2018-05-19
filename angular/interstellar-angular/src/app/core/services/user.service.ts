@@ -6,15 +6,18 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/observable/fromPromise';
 import { User } from 'app/user/user';
+import { HttpService } from './http.service';
 
 @Injectable()
 export class UserService {
 
+    private _userRouteAPIUrl = 'api/users';
     public currentUser: User;
     private usersCollection: AngularFirestoreCollection<User>;
 
-    constructor(private afs: AngularFirestore) {
-        this.usersCollection = afs.collection<User>('users');
+    constructor(private afs: AngularFirestore,
+                private _httpService: HttpService) {
+                    this.usersCollection = afs.collection<User>('users');
     }
 
     //
@@ -26,8 +29,13 @@ export class UserService {
     /**
      * @returns AngularFirestoreCollection
      */
-    getAllUsers(): AngularFirestoreCollection<User> {
+    getAllUsers() { // : AngularFirestoreCollection<User>
         return this.usersCollection;
+        // return this._httpService.httpGetRequest(this._userRouteAPIUrl).toPromise();
+    }
+
+    getAllUsers2(): Promise<string> { // : AngularFirestoreCollection<User>
+        return this._httpService.httpGetRequest(this._userRouteAPIUrl); // then(res => console.log(res));
     }
 
     /**
@@ -36,7 +44,7 @@ export class UserService {
     getCurrentUser(_publicKey: string = ''): Observable<any> {
         let _keyLoginId = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         if (_keyLoginId) {
-            // console.log(_keyLoginId);
+            console.log(_keyLoginId);
             return this.usersCollection.doc(_keyLoginId).valueChanges();
         } else if (_keyLoginId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key') || _publicKey) {
             return Observable.create((observer: any) => {
@@ -55,7 +63,7 @@ export class UserService {
                                 // return observer.next('no current user');
                                 // return observer.next(observer.error('nop user'));
                             }
-                        });
+                });
             });
         } else {
             // console.log('c');
@@ -141,8 +149,10 @@ export class UserService {
      * @param  {string} userID
      * @returns Observable
      */
-    getUserByID(userID: string): Observable<any> {
-        return this.usersCollection.doc(userID).valueChanges(); // .map(user => <User>user);
+    getUserByID(userID: string): Promise<any> {
+        // const query = `/:userID`
+        return this._httpService.httpGetRequest(`${this._userRouteAPIUrl}/${userID}`); // then(res => console.log(res));
+        // return this.usersCollection.doc(userID).valueChanges(); // .map(user => <User>user);
     }
 
     /**
