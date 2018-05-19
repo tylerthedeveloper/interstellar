@@ -17,7 +17,7 @@ export class UserCardComponent implements OnInit {
     }
 
     selectPerson = (personID: string) => {
-        console.log(personID)
+        // console.log(personID);
         this.notify.emit(personID);
     }
 

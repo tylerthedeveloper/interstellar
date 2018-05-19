@@ -99,14 +99,15 @@ export class UserService {
      * @param  {boolean} localStore
      * @returns Observable
      */
-    addUser(user: any, localStore: boolean): Observable<any> {
+    addUser(user: any, localStore: boolean) {
         const _docID = this.afs.createId();
         if (localStore) {
             localStorage.setItem('user_doc_id', _docID);
         }
         sessionStorage.setItem('user_doc_id', _docID);
         user.id = _docID;
-        return Observable.fromPromise(this.usersCollection.doc(_docID).set(user));
+        return this._httpService.httpPostRequest(this._userRouteAPIUrl, user);
+        // return Observable.fromPromise(this.usersCollection.doc(_docID).set(user));
     }
 
     /**
@@ -150,9 +151,13 @@ export class UserService {
      * @returns Observable
      */
     getUserByID(userID: string): Promise<any> {
-        // const query = `/:userID`
-        return this._httpService.httpGetRequest(`${this._userRouteAPIUrl}/${userID}`); // then(res => console.log(res));
+        const urlString = `${this._userRouteAPIUrl}/${userID}`;
         // return this.usersCollection.doc(userID).valueChanges(); // .map(user => <User>user);
+        return this._httpService.httpGetRequest(urlString);
+        // .then(res => {
+        //     console.log(res)
+        //     return res;
+        // });
     }
 
     /**

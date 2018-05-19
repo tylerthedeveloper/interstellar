@@ -1,95 +1,77 @@
 // https://coursetro.com/posts/code/84/Setting-up-an-Angular-4-MEAN-Stack-(Tutorial)
 // The Firebase Admin SDK to access the Firebase Realtime Database.
-/** Firesbase */
+
+// /** Firesbase */
+// require('firebase');
 const firebase = require('firebase');
 const admin = require('firebase-admin');
-const config = require('../_firebase.js').firebaseConfig;
-// admin.initializeApp(config);
-
+// const config = require('../_firebase.js').firebaseConfig;
+// // admin.initializeApp(config);
 const serviceAccount = require('../galactic-storage-firebase-adminsdk-hvsjj-29f8ca05ab.json');
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: 'https://galactic-storage.firebaseio.com'
-  });
-
-const db = admin.firestore();
-
+});
+// const db = admin.firestore();
+// const firedb = require('firebase').db;
+const firedb = admin.firestore();
 
 const userUtils = require('./utils.js');
 
 /** Express */
 const expressImport = require('express');
 const expressEngine = expressImport();
+const userRouter = require('express').Router();
 
 /** Cors */
 const cors = require('cors');
 expressEngine.use(cors({ origin: true }));
 
-// const helloWorld = functions.https.onRequest((request, response) => {
-//     response.send("Hello from Firebase!");
-// });
-// const showDocumentation = functions.https.onCall((request, response) => {
-//     response.json("Hello from Firebase!");
-// });
-
-const userRouter = require('express').Router();
-
-// Get users
-const users = ['tito', 'jon-A'];
-// userRouter.get('/', (req, res) => {
-//     res.json(users);
-// });
-
 // ────────────────────────────────────────────────────────────────────────────────
 // import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-const afs = require('angularfire2/firestore').AngularFirestore;
+// const afs = require('angularfire2/firestore').AngularFirestore;
 // const usersCollection = afs.collection('users');
 // res.json(usersCollection);
-
-
-
-// const request = require('request');
-// const FbObj = require('../models/fb.object.js');
-
-
-// const Firestore = require('@google-cloud/firestore');
-// const firestore = new Firestore({
-//   projectId: 'galactic-storage',
-//   keyFilename: '/path/to/keyfile.json',
-// });
-
-// require("firebase/firestore");
-// firebase.initializeApp({
-//   apiKey: 'AIzaSyBthCwhwO2SHLFMaY_V2aFIMJxRC23QFpI',
-//   authDomain: 'galactic-storage.firebaseapp.com',
-//   projectId: 'galactic-storage'
-// });
-
-// const db = firebase.firestore(config);
+// ────────────────────────────────────────────────────────────────────────────────
 
 userRouter.get('/', (req: any, res: any) => {
-    console.log('without user id')
-    console.log(req.params)
-    db.collection('users').get()
-    .then((snapshot: any) => {
-        const docs = snapshot.docs.map((documentSnapshot: any) => documentSnapshot.data());
-        res.send(docs);
-    })
-    .catch((err: any) => {
-        console.log('Error getting documents', err);
-    });
+    firedb.collection('users').get()
+        .then((collectionSnapshot: any) => {
+            const docs = collectionSnapshot.docs.map((documentSnapshot: any) => documentSnapshot.data());
+            // console.log(res.statusCode);
+            res.status(res.statusCode).send(docs);
+        })
+        .catch((err: any) => {
+            // res.send('Error getting documents', err);
+            res.status(res.statusCode).json({ error: err.toString() });
+        });
 });
 
 userRouter.get('/:id', (req: any, res: any) => {
-    console.log('wiyth id')
-    console.log(req.params)
-    db.collection('users').get()
-        .then((snapshot: any) => {
-            const docs = snapshot.docs.map((documentSnapshot: any) => documentSnapshot.data());
-            res.send(docs);
+    const id = req.params['id'];
+    firedb.collection('users').doc(id).get()
+        .then((documentSnapshot: any) => {
+            console.log(documentSnapshot.data());
+            res.status(res.statusCode).send(documentSnapshot.data());
         })
         .catch((err: any) => {
-        console.log('Error getting documents', err);
+            res.status(res.statusCode).send(err);
+        });
+});
+
+userRouter.post('/', (req: any, res: any) => {
+    console.log('post user');
+    const user = req.body;
+    const id = req.body['id'];
+    // console.log(req.body);
+    // console.log(req.body.id);
+    firedb.collection('users').doc(id).set(user)
+        .then((documentSnapshot: any) => {
+            console.log(documentSnapshot.data());
+            res.status(res.statusCode).send(documentSnapshot.data());
+        })
+        .catch((err: any) => {
+            res.status(res.statusCode).send(err);
         });
 });
 

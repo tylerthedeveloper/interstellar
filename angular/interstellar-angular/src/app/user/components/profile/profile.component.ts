@@ -90,12 +90,13 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                 private _orderService: OrderService,
                 private dialog: MatDialog,
                 private _route: ActivatedRoute,
-                private _shipperService: ShipperService,
+                // private _shipperService: ShipperService,
                 public router: Router) {
                     super();
     }
 
     ngOnInit(): void {
+        console.log('prof');
 
         // User Init //
         // switch too this.user$ ... auto destroy / unsubscribe
@@ -113,9 +114,11 @@ export class ProfileComponent extends BaseComponent implements OnInit {
             // console.log('its me ');
         }
 
+        console.log('prof');
         // todo: listen for add address
         this._userService.getUserByID(pagePersonID)
             .then(user => {
+                console.log(user);
                 this.user = user;
                 // console.log(user);
                 if (this.isMyProfile) {
