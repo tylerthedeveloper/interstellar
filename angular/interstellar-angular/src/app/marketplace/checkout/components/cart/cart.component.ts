@@ -74,7 +74,7 @@ export class CartComponent extends BaseComponent implements OnInit {
      */
     ngOnInit(): void {
         this.loading = false;
-        this._userService.getUserByID(this.myBaseUserID).first().subscribe(user => {
+        this._userService.getUserByID(this.myBaseUserID).then(user => {
             this.user = user;
             const userTyped = <User> user;
             this.hasAddress = (userTyped.address) ? true : false;

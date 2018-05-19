@@ -34,7 +34,7 @@ export class UserService {
         // return this._httpService.httpGetRequest(this._userRouteAPIUrl).toPromise();
     }
 
-    getAllUsers2() { // : AngularFirestoreCollection<User>
+    getAllUsers2(): Promise<string> { // : AngularFirestoreCollection<User>
         return this._httpService.httpGetRequest(this._userRouteAPIUrl); // then(res => console.log(res));
     }
 
@@ -149,8 +149,10 @@ export class UserService {
      * @param  {string} userID
      * @returns Observable
      */
-    getUserByID(userID: string): Observable<any> {
-        return this.usersCollection.doc(userID).valueChanges(); // .map(user => <User>user);
+    getUserByID(userID: string): Promise<any> {
+        // const query = `/:userID`
+        return this._httpService.httpGetRequest(`${this._userRouteAPIUrl}/${userID}`); // then(res => console.log(res));
+        // return this.usersCollection.doc(userID).valueChanges(); // .map(user => <User>user);
     }
 
     /**

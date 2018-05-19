@@ -9,7 +9,12 @@ export class HttpService {
     constructor(private _httpClient: HttpClient) { }
 
     httpGetRequest(url: string) {
-        // return this._httpClient.get(url).map(response => response.json());
+        return this._httpClient.get(url).toPromise().then(response => JSON.stringify(response));
+    }
+
+    httpGetRequestWithArgs(url: string, args: any = {}) {
+        // const key = args.key;
+        // const param = args.param;
         return this._httpClient.get(url).toPromise().then(response => JSON.stringify(response));
     }
 }

@@ -19,13 +19,10 @@ export class UserListComponent implements OnInit {
 
     ngOnInit() {
         const myUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-        // this._peopleList = this._userService.getAllUsers()
         this._peopleList = Observable.fromPromise(this._userService.getAllUsers2()
-          // .then(res => JSON.stringify(res))
           .then(users => JSON.parse(users))
           .then(users => {
             const _users = new Array(users);
-            console.log(_users['0'])
             return _users['0'].filter((user: User) => user.id !== myUserID);
           }));
     }
@@ -33,6 +30,6 @@ export class UserListComponent implements OnInit {
     onSelectPerson = (personID: string) => {
       console.log(personID);
       this.router.navigate([`/people/${personID}`]);
-  }
+    }
 
 }
