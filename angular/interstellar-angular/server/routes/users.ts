@@ -45,11 +45,47 @@ userRouter.get('/', (req: any, res: any) => {
         });
 });
 
+userRouter.post('/', (req: any, res: any) => {
+    console.log('post user');
+    const user = req.body;
+    const id = req.body['id'];
+    // console.log(req.body);
+    // console.log(req.body.id);
+    firedb.collection('users').doc(id).set(user)
+        .then((documentSnapshot: any) => {
+            console.log(documentSnapshot.data());
+            res.status(res.statusCode).send(documentSnapshot.data());
+        })
+        .catch((err: any) => {
+            res.status(res.statusCode).send(err);
+        });
+});
+
 userRouter.get('/:id', (req: any, res: any) => {
     const id = req.params['id'];
     firedb.collection('users').doc(id).get()
         .then((documentSnapshot: any) => {
             console.log(documentSnapshot.data());
+            res.status(res.statusCode).send(documentSnapshot.data());
+        })
+        .catch((err: any) => {
+            res.status(res.statusCode).send(err);
+        });
+});
+
+// todo ... issues differences between put / post
+userRouter.post('/:id', (req: any, res: any) => {
+    console.log('update user');
+    const user = req.body;
+    const userID = user.fbID;
+    // console.log(user);
+    // console.log(userID);
+    firedb.collection('users')
+        .doc(userID)
+        .set(user, {merge: true})
+        .then((documentSnapshot: any) => {
+            console.log('user');
+            console.log(user);
             res.status(res.statusCode).send(documentSnapshot.data());
         })
         .catch((err: any) => {
@@ -65,23 +101,6 @@ userRouter.get('/pkeys/:pubkey', (req: any, res: any) => {
         .then((QuerySnapshot: any) => {
             const userSnapShot = QuerySnapshot.docs[0].data();
             res.status(res.statusCode).send(userSnapShot);
-        })
-        .catch((err: any) => {
-            res.status(res.statusCode).send(err);
-        });
-});
-
-
-userRouter.post('/', (req: any, res: any) => {
-    console.log('post user');
-    const user = req.body;
-    const id = req.body['id'];
-    // console.log(req.body);
-    // console.log(req.body.id);
-    firedb.collection('users').doc(id).set(user)
-        .then((documentSnapshot: any) => {
-            console.log(documentSnapshot.data());
-            res.status(res.statusCode).send(documentSnapshot.data());
         })
         .catch((err: any) => {
             res.status(res.statusCode).send(err);

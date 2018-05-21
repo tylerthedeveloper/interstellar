@@ -89,19 +89,17 @@ export class UserService {
      * @param  {{}} userData
      * @returns Observable
      */
-    updateProfile(userData: string): Observable<any> {
+    updateProfile(userData: string) { // : Observable<any> {
         // console.log(userData);
         const obj = JSON.parse(userData);
-        // console.log(obj);
-        const ID = obj.id;
+        const userID = obj.id;
         const data = obj.data;
-        // console.log(ID);
-        // console.log(obj.data);
-        console.log(data);
-        return Observable.fromPromise(
-            this.usersCollection
-                .doc(ID)
-                .set(data, {merge: true}));
+        const urlString = `${this._userRouteAPIUrl}/${userID}`;
+        return this._httpService.httpPostRequest(urlString, data).then(res => res);
+        // return Observable.fromPromise(
+        //     this.usersCollection
+        //         .doc(ID)
+        //         .set(data, {merge: true}));
     }
 
     // ────────────────────────────────────────────────────────────────────────────────
@@ -117,12 +115,13 @@ export class UserService {
      * @param  {string} userID
      * @returns Observable
      */
-    getUserByID(userID: string): Promise<any> {
+    getUserByID(userID: string) { // : Promise<any> {
         const urlString = `${this._userRouteAPIUrl}/${userID}`;
         // return this.usersCollection.doc(userID).valueChanges(); // .map(user => <User>user);
-        return this._httpService.httpGetRequest(urlString);
+        return this._httpService.httpGetRequest(urlString).then(user => <User> JSON.parse(user));
     }
 
+    // todo
     /**
      * @param  {any} queryPayload
      * @returns Observable

@@ -66,24 +66,25 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
     /** Page Objects */
     private _userModel: User;
-    private user: Observable<User>;
+    private user: User;
+    // private user: Observable<User>;
     private balances: AssetBalance[];
     private products: Observable<Product[]>;
 
-    // todo: test
-    private orders: Observable<Order[]>;
-    private transactionSales: Observable<TransactionRecord[]>;
-
     /** Page Identifiers */
-    private _userID: string;
+    private _myUserID: string;
     private _pagePersonID: string;
     private isMyProfile;
+
+    // todo: test
+    /** User entities */
+    private orders: Observable<Order[]>;
+    private transactionSales: Observable<TransactionRecord[]>;
+    private _acceptedAssets: Asset[];
 
     /** Page Helpers */
     private edit = false;
     private hasAddress = false;
-
-    private _acceptedAssets: Asset[];
 
     constructor(private _userService: UserService,
                 private _productService: ProductService,
@@ -96,13 +97,11 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('prof');
-
         // User Init //
         // switch too this.user$ ... auto destroy / unsubscribe
         // this.userModel = new User('', '', '', '', '', '', 0);
         const myUserID = this.myBaseUserID; // sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-        this._userID = myUserID;
+        this._myUserID = myUserID;
         const pagePersonID = this._route.snapshot.params['id'];
         const path = this._route.snapshot.routeConfig.path;
         this._pagePersonID = pagePersonID;
@@ -113,24 +112,30 @@ export class ProfileComponent extends BaseComponent implements OnInit {
             // console.log('its me ');
         }
 
-        console.log('myUserID ' + myUserID );
         // todo: listen for add address
         this._userService.getUserByID(pagePersonID)
+            // .then((res: string) => JSON.stringify(res))
+            // .then((res: string) => JSON.parse(res))
             .then(user => {
-                console.log(user);
-                this.user = user;
+                const c = <User> JSON.parse(JSON.stringify(user));
                 // console.log(user);
-                const userTyped = <User> user;
+                // this.user = Observable.of(user);
+                // user = <User> JSON.parse(JSON.stringify(c));
+                // const userTyped = <User> JSON.parse(user);
+                const userTyped = user;
                 this._userModel = userTyped;
+                console.log(userTyped.userName);
                 this._acceptedAssets = (userTyped.acceptedAssets) ? userTyped.acceptedAssets : new Array(stellarTermAssets2[0]);
                 if (this.isMyProfile) {
                     this.hasAddress = (userTyped.address) ? true : false;
-                    // todo: ORDERS AND TRANSACTIONS FOR CURRENT USER ...
                     this.orders = this._orderService.Orders;
                     if (!this.hasAddress) {
                         this.handleUpdateAddress();
                     }
                 }
+                // console.log(userTyped);
+                this.user = user;
+                return user;
         });
         this.products = this._productService.getProductsByUserID(pagePersonID);
         this.balances = new Array<AssetBalance>();
@@ -174,14 +179,15 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                     // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarTermAssets[i]) : null);
                     // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarAssetsMapper2[i].asset_type) : null);
                 formObject.acceptedAssets = acceptedAssetsTempArray;
+                formObject.fbID = this._myUserID;
                 this._acceptedAssets = acceptedAssetsTempArray;
                 console.log(formObject.acceptedAssets);
                 this.edit = !this.edit;
                 const payload = {
-                    id: this._userID,
+                    id: this._myUserID,
                     data: formObject
                 };
-                return this._userService.updateProfile(JSON.stringify(payload));
+                return this._userService.updateProfile(JSON.stringify(payload)).then(res => console.log(res));
             }
         });
     }

@@ -19,7 +19,7 @@ export class HttpService {
     httpPostRequest(urlString: string, args: any) {
         // const key = args.key;
         // const param = args.param;
-        console.log(args);
+        // console.log(args);
         return this._httpClient.post(urlString, args).toPromise().then(response => console.log(JSON.stringify(response)));
     }
 
