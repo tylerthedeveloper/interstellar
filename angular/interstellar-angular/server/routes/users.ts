@@ -86,7 +86,9 @@ userRouter.post('/:id', (req: any, res: any) => {
         .then((documentSnapshot: any) => {
             console.log('user');
             console.log(user);
-            res.status(res.statusCode).send(documentSnapshot.data());
+            // console.log('empty');
+            // console.log(documentSnapshot);
+            res.status(res.statusCode).send(user);
         })
         .catch((err: any) => {
             res.status(res.statusCode).send(err);

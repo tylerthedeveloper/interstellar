@@ -44,6 +44,8 @@ import { shippingAddressQuestions } from 'app/marketplace/shipping/shipping.deta
 import { Asset } from 'app/stellar/assets/asset';
 import { stellarTermAssets2 } from 'app/stellar/stellar-term/asset.mappers';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-profile',
@@ -66,10 +68,14 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
     /** Page Objects */
     private _userModel: User;
-    private user: User;
     // private user: Observable<User>;
-    private balances: AssetBalance[];
-    private products: Observable<Product[]>;
+    user: Subject<User> = new BehaviorSubject<User>(null);
+
+    // uzr = new Subject<User>();
+    // uzr$ = this.uzr.asObservable();
+
+    balances: AssetBalance[];
+    products: Observable<Product[]>;
 
     /** Page Identifiers */
     private _myUserID: string;
@@ -78,12 +84,12 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
     // todo: test
     /** User entities */
-    private orders: Observable<Order[]>;
-    private transactionSales: Observable<TransactionRecord[]>;
+    orders: Observable<Order[]>;
+    transactionSales: Observable<TransactionRecord[]>;
     private _acceptedAssets: Asset[];
 
     /** Page Helpers */
-    private edit = false;
+    // private edit = false;
     private hasAddress = false;
 
     constructor(private _userService: UserService,
@@ -116,7 +122,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         this._userService.getUserByID(pagePersonID)
             // .then((res: string) => JSON.stringify(res))
             // .then((res: string) => JSON.parse(res))
-            .then(user => {
+            .subscribe(user => {
                 const c = <User> JSON.parse(JSON.stringify(user));
                 // console.log(user);
                 // this.user = Observable.of(user);
@@ -124,8 +130,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                 // const userTyped = <User> JSON.parse(user);
                 const userTyped = user;
                 this._userModel = userTyped;
-                console.log(userTyped.userName);
                 this._acceptedAssets = (userTyped.acceptedAssets) ? userTyped.acceptedAssets : new Array(stellarTermAssets2[0]);
+                console.log(this._acceptedAssets)
                 if (this.isMyProfile) {
                     this.hasAddress = (userTyped.address) ? true : false;
                     this.orders = this._orderService.Orders;
@@ -135,7 +141,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                 }
                 // console.log(userTyped);
                 this.user = user;
-                return user;
+                // this.uzr$ = user;
         });
         this.products = this._productService.getProductsByUserID(pagePersonID);
         this.balances = new Array<AssetBalance>();
@@ -174,7 +180,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                     // .map((asset, i) => (asset) ? console.log(stellarTermAssets[i]) : null)
                     .map((asset, i) => {
                         // console.log(asset + ' ' + i)
-                        return (asset) ? acceptedAssetsTempArray.push(stellarTermAssets2[i + 1]) : null;
+                        return (asset) ? acceptedAssetsTempArray.push(stellarTermAssets2[i]) : null;
                     });
                     // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarTermAssets[i]) : null);
                     // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarAssetsMapper2[i].asset_type) : null);
@@ -182,12 +188,20 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                 formObject.fbID = this._myUserID;
                 this._acceptedAssets = acceptedAssetsTempArray;
                 console.log(formObject.acceptedAssets);
-                this.edit = !this.edit;
+                // Object.keys(this.user).map(key => {
+                //     if (!formObject[key]) {
+                //         console.log(key);
+                //     }
+                // });
+                // this.edit = !this.edit;
                 const payload = {
                     id: this._myUserID,
                     data: formObject
                 };
-                return this._userService.updateProfile(JSON.stringify(payload)).then(res => console.log(res));
+                this._userService.updateProfile(JSON.stringify(payload))
+                    .map(res => JSON.parse(res))
+                    .subscribe(user => this.user = user);
+                // this._userService.getCurrentUser().subscribe(user => this.uzr$ = user);
             }
         });
     }
@@ -203,60 +217,6 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         this.router.navigate(['../products/list-new-product'], acceptedAssetQueryParams);
         // this.router.navigate(['../products/list-new-product'], { queryParams: { user: this._userID } });
     }
-
-
-    /**
-     * @returns void
-     */
-    // todo: confirm success
-    addProduct(): void {
-        const dialogRef = this.dialog.open(DialogComponent, {
-            data: { component: DynamicFormComponent,
-                    payload: {
-                        questions: productFormData,
-                    }
-            }
-        });
-
-        dialogRef.afterClosed().subscribe((result: string) => {
-            if (result) {
-                const product = <Product> JSON.parse(JSON.stringify(result));
-                try {
-                    product.quantity = Number(product.quantity);
-                    product.fixedUSDAmount = Number(product.fixedUSDAmount);
-                    if (!areValidProductTypes(product)) {
-                        alert('invalid product error');
-                        return;
-                    }
-                    const newProductID = this._productService.getNewProductID();
-                    this.uploadThumbnailImage(newProductID).subscribe(
-                        (imageUploadResultURL: string) => {
-                            if (imageUploadResultURL) {
-                                product.id = newProductID;
-                                product.productThumbnailLink = imageUploadResultURL;
-                                this.handleNewProduct(product);
-                            }
-                        },
-                        err => {
-                            alert('errror: \n ' + err);
-                        });
-                } catch (e) {
-                    alert('invalid product details:\n' + e);
-                }
-            }
-        });
-    }
-
-    /**
-     * @param  {string} productID
-     * @returns Observable
-     */
-    uploadThumbnailImage(productID: string): Observable<any> {
-        const dialogRef = this.dialog.open(FileUploadDialogComponent, {
-            data: { productID: productID }
-        });
-        return dialogRef.afterClosed();
-    }
     // ────────────────────────────────────────────────────────────────────────────────
 
 
@@ -267,33 +227,6 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     //
     contactSeller(): void {
         this.router.navigate(['../chat'], { queryParams: { receiverID: this._pagePersonID } });
-    }
-
-    handleNewProduct(product: any) {
-
-        // todo: TEST THESE ARENT EVER NULL!!!!!!
-        product.productListedAt = Date.now();
-        product.productPrices = [
-            new AssetBalance({ balance: '7.00000', asset_type: 'native', coin_name: 'Lumens'})
-        ];
-        product.productSellerData = {
-            productSellerID: sessionStorage.getItem('user_doc_id'),
-            productSellerName: sessionStorage.getItem('user_name') || '', // TODO: store user data in session storage!!!
-            productSellerPublicKey: sessionStorage.getItem('public_key')
-        };
-
-        if (!(product.productPrices &&
-              product.productSellerData.productSellerID &&
-            //   product.productSellerData.productSellerName
-              product.productSellerData.productSellerPublicKey && product.productThumbnailLink)) {
-                alert('invalid product error');
-                return;
-        }
-
-        const p = JSON.stringify(product);
-        this._productService.addProduct(p)
-                    .catch(err => console.log(err))
-                    .then(res => this.router.navigate(['/products', res]));
     }
 
     /**

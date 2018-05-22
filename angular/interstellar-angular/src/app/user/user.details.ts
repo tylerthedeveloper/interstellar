@@ -40,6 +40,7 @@ const userFormData = [
             if (asset.asset_type === 'XLM') {
                 // console.log(asset);
                 // FIXME: DO WE HAVE TO ENFORCE XLM???
+                console.log('I AM XLM')
                 return { key: asset.asset_type,  value: asset.coin_name, checked: true, disabled: true };
             }
             return { key: asset.asset_type,  value: asset.coin_name };

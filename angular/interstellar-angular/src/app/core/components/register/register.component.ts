@@ -125,7 +125,7 @@ export class RegisterComponent {
                 // localStorage.setItem('my_balances', res);
         sessionStorage.setItem('my_balances', res);
         this._userService.addUser(_user, _localStore)
-            .then(() => this._eventEmiter.sendMessage(data));
+            .map(() => this._eventEmiter.sendMessage(data));
 
         // let dialogRef: MatDialogRef<ConfirmDialogComponent>;
         // dialogRef = this.dialog.open(ConfirmDialogComponent);

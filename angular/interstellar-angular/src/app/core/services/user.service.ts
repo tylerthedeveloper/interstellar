@@ -29,7 +29,7 @@ export class UserService {
     /**
      * @returns Promise
      */
-    getAllUsers(): Promise<string> {
+    getAllUsers() { // : Promise<string> {
         // return this.usersCollection;
         return this._httpService.httpGetRequest(this._userRouteAPIUrl); // then(res => console.log(res));
     }
@@ -41,7 +41,7 @@ export class UserService {
     getCurrentUser(_publicKey: string = ''): Observable<any> {
         let _keyLoginId = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         if (_keyLoginId) {
-            return Observable.fromPromise(this.getUserByID(_keyLoginId));
+            return this.getUserByID(_keyLoginId);
         } else if (_keyLoginId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key') || _publicKey) {
             const urlString = `${this._userRouteAPIUrl}/pkeys/${_keyLoginId}`;
             return Observable.fromPromise(this._httpService.httpGetRequestWithArgs(urlString)
@@ -89,13 +89,15 @@ export class UserService {
      * @param  {{}} userData
      * @returns Observable
      */
-    updateProfile(userData: string) { // : Observable<any> {
-        // console.log(userData);
+    updateProfile(userData: string): Observable<any> {
         const obj = JSON.parse(userData);
         const userID = obj.id;
         const data = obj.data;
         const urlString = `${this._userRouteAPIUrl}/${userID}`;
-        return this._httpService.httpPostRequest(urlString, data).then(res => res);
+        // console.log(data);
+        return Observable.fromPromise(this._httpService.httpPostRequest(urlString, data).toPromise().then(res => res));
+        // .toPromise(); // .then(res => console.log(res)); // .then(res => res));
+        // return Observable.fromPromise(this._httpService.httpPostRequest(urlString, data)); // .then(res => res));
         // return Observable.fromPromise(
         //     this.usersCollection
         //         .doc(ID)
@@ -115,10 +117,12 @@ export class UserService {
      * @param  {string} userID
      * @returns Observable
      */
-    getUserByID(userID: string) { // : Promise<any> {
+    getUserByID(userID: string): Observable<any> { // : Promise<any> {
         const urlString = `${this._userRouteAPIUrl}/${userID}`;
         // return this.usersCollection.doc(userID).valueChanges(); // .map(user => <User>user);
-        return this._httpService.httpGetRequest(urlString).then(user => <User> JSON.parse(user));
+        return this._httpService.httpGetRequest(urlString); // .first().map(user => <User> JSON.parse(user));
+        // return Observable.create(observer =>
+        //     this._httpService.httpGetRequest(urlString).first().map(user => observer.next(<User> JSON.parse(user))));
     }
 
     // todo
