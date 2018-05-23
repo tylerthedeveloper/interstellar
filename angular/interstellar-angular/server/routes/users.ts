@@ -3,29 +3,28 @@
 
 // /** Firesbase */
 // require('firebase');
-const firebase = require('firebase');
-const admin = require('firebase-admin');
+require('firebase');
 // const config = require('../_firebase.js').firebaseConfig;
 // // admin.initializeApp(config);
-const serviceAccount = require('../galactic-storage-firebase-adminsdk-hvsjj-29f8ca05ab.json');
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://galactic-storage.firebaseio.com'
-});
-// const db = admin.firestore();
-// const firedb = require('firebase').db;
-const firedb = admin.firestore();
+// const firedb = admin.firestore();
+// const serviceAccount = require('../galactic-storage-firebase-adminsdk-hvsjj-29f8ca05ab.json');
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+//     databaseURL: 'https://galactic-storage.firebaseio.com'
+// });
+// const req.db = require('../server.js')
+//  .get('admin').firestore();
 
-const userUtils = require('./utils.js');
+// const userUtils = require('./utils.js');
 
 /** Express */
-const expressImport = require('express');
-const expressEngine = expressImport();
+// const expressImport = require('express');
+// const expressEngine = expressImport();
 const userRouter = require('express').Router();
 
 /** Cors */
-const cors = require('cors');
-expressEngine.use(cors({ origin: true }));
+// const cors = require('cors');
+// expressEngine.use(cors({ origin: true }));
 
 // ────────────────────────────────────────────────────────────────────────────────
 // import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
@@ -35,7 +34,8 @@ expressEngine.use(cors({ origin: true }));
 // ────────────────────────────────────────────────────────────────────────────────
 
 userRouter.get('/', (req: any, res: any) => {
-    firedb.collection('users').get()
+    console.log('users');
+    req.db.collection('users').get()
         .then((collectionSnapshot: any) => {
             const docs = collectionSnapshot.docs.map((documentSnapshot: any) => documentSnapshot.data());
             res.status(res.statusCode).send(docs);
@@ -51,7 +51,7 @@ userRouter.post('/', (req: any, res: any) => {
     const id = req.body['id'];
     // console.log(req.body);
     // console.log(req.body.id);
-    firedb.collection('users').doc(id).set(user)
+    req.db.collection('users').doc(id).set(user)
         .then((documentSnapshot: any) => {
             console.log(documentSnapshot.data());
             res.status(res.statusCode).send(documentSnapshot.data());
@@ -63,7 +63,9 @@ userRouter.post('/', (req: any, res: any) => {
 
 userRouter.get('/:id', (req: any, res: any) => {
     const id = req.params['id'];
-    firedb.collection('users').doc(id).get()
+    console.log('user')
+    console.log(id)
+    req.db.collection('users').doc(id).get()
         .then((documentSnapshot: any) => {
             console.log(documentSnapshot.data());
             res.status(res.statusCode).send(documentSnapshot.data());
@@ -80,7 +82,7 @@ userRouter.post('/:id', (req: any, res: any) => {
     const userID = user.fbID;
     // console.log(user);
     // console.log(userID);
-    firedb.collection('users')
+    req.db.collection('users')
         .doc(userID)
         .set(user, {merge: true})
         .then((documentSnapshot: any) => {
@@ -97,7 +99,7 @@ userRouter.post('/:id', (req: any, res: any) => {
 
 userRouter.get('/pkeys/:pubkey', (req: any, res: any) => {
     const publicKey = req.params['pubkey'];
-    firedb.collection('users')
+    req.db.collection('users')
         .where('publicKey', '==', publicKey)
         .get()
         .then((QuerySnapshot: any) => {
@@ -111,7 +113,7 @@ userRouter.get('/pkeys/:pubkey', (req: any, res: any) => {
 
 userRouter.delete('/:id', (req: any, res: any) => {
     const id = req.params['id'];
-    firedb.collection('users').doc(id).delete()
+    req.db.collection('users').doc(id).delete()
         .then((documentSnapshot: any) => {
             res.status(res.statusCode).send(res.statusCode);
         })

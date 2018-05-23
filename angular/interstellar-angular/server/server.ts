@@ -20,9 +20,19 @@ const root = './'; // Root path
 const api = require('./routes/api.js'); // API file
 const docsPath = 'app/documentation'; // Docs Path
 
+/** Firebase */
+const firebase = require('firebase');
+const admin = require('firebase-admin');
+const serviceAccount = require('./galactic-storage-firebase-adminsdk-hvsjj-29f8ca05ab.json');
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: 'https://galactic-storage.firebaseio.com'
+});
+const firedb = admin.firestore();
 
-// Headers
-app.use(function(req, res, next) {
+/** Headers */
+app.use(function(req: any, res: any, next) {
+    req.db = res.db = firedb;
     // res.header("Access-Control-Allow-Origin", "http://localhost:4200");
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -32,14 +42,18 @@ app.use(function(req, res, next) {
 
 /** Setters */
 app.use(express.static(path.join(root, 'dist'))); // Angular DIST output folder
-app.use('/api', api); // API location
+app.use('/api', api.router); // API location
 app.use('/documentation', express.static(path.join(root, 'documentation'))); // Docs location
+app.set('admin', api.admin);
+app.set('firedb', api.firedb);
 
 // Serve the application at the given port
 app.listen(port, () => {
     // Success callbackw
     console.log(`Listening at http://localhost:${port}/`);
 });
+
+module.exports = app;
 // new end comment 9
 
 // https://stackoverflow.com/questions/42637794/how-to-pass-multiple-params-to-express-with-the-angularjs-service

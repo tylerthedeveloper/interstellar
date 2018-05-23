@@ -13,18 +13,24 @@ import { stellarKeyLength } from 'app/core/_constants/quantities';
 /**
  * @returns FormGroup
  */
+// TODO: FUCKING FIX ANGULAR CHECKBOXES OVVERRIDE CHECKED
 const createFormGroup = (questions: any, objectMapper: any): FormGroup => {
     const group: any = {};
     questions.forEach(question => {
         const key = question.key;
-        const value = (objectMapper) ? objectMapper[key] || question.value || '' : question.value || '';
+        const value = (objectMapper) ? objectMapper[key] : question.value || '';
         if (question.controlType === 'checkbox-group') {
-                group[question.key] = new FormArray((question as any).options
-                    .map(option => {
-                        const _disabled = option.disabled;
-                        const _value = question.value && question.value.some(y => y === option.value) ? option.key : '';
-                        return new FormControl({value: _value, disabled: _disabled});
-                    }));
+            const curKeyMapper = Object.keys((objectMapper[key] as Array<any>)[0] as {})[0];
+            const curValueSet = objectMapper[key] as Array<any>;
+            group[question.key] = new FormArray((question as any).options
+                .map(option => {
+                    const _disabled = option.disabled;
+                    const _value = question.value && question.value.some(y => y === option.value) ? option.key : '';
+                    const optionKey = option.key;
+                    const _checked = (curValueSet.find(opt => opt[curKeyMapper] === optionKey)) ? true : false;
+                    // console.log(_checked)
+                    return new FormControl({value: _value, disabled: _disabled});
+                }));
         } else if (question.type === 'number') {
             // console.log(question);
             const val: number = +(objectMapper) ? +objectMapper[key] || +question.value || 1 : +question.value || 1;

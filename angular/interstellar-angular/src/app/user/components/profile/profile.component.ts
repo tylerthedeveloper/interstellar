@@ -92,6 +92,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     // private edit = false;
     private hasAddress = false;
 
+    // todo: NULL CHECK ON ORDER SERVICE
     constructor(private _userService: UserService,
                 private _productService: ProductService,
                 private _orderService: OrderService,
@@ -123,15 +124,14 @@ export class ProfileComponent extends BaseComponent implements OnInit {
             // .then((res: string) => JSON.stringify(res))
             // .then((res: string) => JSON.parse(res))
             .subscribe(user => {
-                const c = <User> JSON.parse(JSON.stringify(user));
-                // console.log(user);
+                // const c = <User> JSON.parse(JSON.stringify(user));
                 // this.user = Observable.of(user);
                 // user = <User> JSON.parse(JSON.stringify(c));
                 // const userTyped = <User> JSON.parse(user);
-                const userTyped = user;
-                this._userModel = userTyped;
+                const userTyped = this._userModel = user;
+                // this._userModel = userTyped;
                 this._acceptedAssets = (userTyped.acceptedAssets) ? userTyped.acceptedAssets : new Array(stellarTermAssets2[0]);
-                console.log(this._acceptedAssets)
+                // console.log(this._acceptedAssets)
                 if (this.isMyProfile) {
                     this.hasAddress = (userTyped.address) ? true : false;
                     this.orders = this._orderService.Orders;
@@ -139,9 +139,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                         this.handleUpdateAddress();
                     }
                 }
-                // console.log(userTyped);
                 this.user = user;
-                // this.uzr$ = user;
         });
         this.products = this._productService.getProductsByUserID(pagePersonID);
         this.balances = new Array<AssetBalance>();
@@ -180,14 +178,14 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                     // .map((asset, i) => (asset) ? console.log(stellarTermAssets[i]) : null)
                     .map((asset, i) => {
                         // console.log(asset + ' ' + i)
-                        return (asset) ? acceptedAssetsTempArray.push(stellarTermAssets2[i]) : null;
+                        return (asset) ? acceptedAssetsTempArray.push(stellarTermAssets2[i + 1]) : null;
                     });
                     // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarTermAssets[i]) : null);
                     // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarAssetsMapper2[i].asset_type) : null);
                 formObject.acceptedAssets = acceptedAssetsTempArray;
                 formObject.fbID = this._myUserID;
                 this._acceptedAssets = acceptedAssetsTempArray;
-                console.log(formObject.acceptedAssets);
+                // console.log(formObject.acceptedAssets);
                 // Object.keys(this.user).map(key => {
                 //     if (!formObject[key]) {
                 //         console.log(key);
