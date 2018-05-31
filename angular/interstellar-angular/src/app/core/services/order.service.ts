@@ -24,6 +24,7 @@ export class OrderService {
 
     private _userID: string;
 
+    // todo: 
     /** AFS Collections */
     private ordersCollection: AngularFirestoreCollection<Order>;
     private userOrdersRef: firebase.firestore.CollectionReference;
