@@ -74,10 +74,10 @@ export class CartComponent extends BaseComponent implements OnInit {
      */
     ngOnInit(): void {
         this.loading = false;
-        this._userService.getUserByID(this.myBaseUserID).then(user => {
-            this.user = user;
+        this.user = this._userService.getUserByID(this.myBaseUserID).map(user => {
             const userTyped = <User> user;
             this.hasAddress = (userTyped.address) ? true : false;
+            return user;
         });
         // todo: promise -> promise -> promise
         this.pullCurrentTickerValues();

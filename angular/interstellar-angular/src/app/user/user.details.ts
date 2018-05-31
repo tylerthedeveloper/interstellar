@@ -37,12 +37,14 @@ const userFormData = [
         label: 'Accepted Assets',
         // options: stellarAssetsMapper2.map(asset => ({key: asset.asset_type,  value: asset.coin_name})),
         options: stellarTermAssets2.map(asset => {
-            if (asset.asset_type === 'XLM') {
+            if (asset.asset_type === 'XLM' || asset.asset_type === 'native') {
                 // console.log(asset);
                 // FIXME: DO WE HAVE TO ENFORCE XLM???
-                return { key: asset.asset_type,  value: asset.coin_name, checked: true, disabled: true };
+                // console.log('I AM XLM')
+                return { key: asset.asset_type,  value: asset.coin_name, disabled: true, checked: true };
+            } else {
+                return { key: asset.asset_type,  value: asset.coin_name, checked: false };
             }
-            return { key: asset.asset_type,  value: asset.coin_name };
         }),
         order: 4}),
     new NumberInputQuestion({key: 'age', label: 'Age', type : 'number', value: 1, required: false, order: 1 }),

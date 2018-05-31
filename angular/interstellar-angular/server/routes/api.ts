@@ -19,11 +19,47 @@ const router = express.Router();
 // };
 
 
+// const firebase = require('firebase');
+// const admin = require('firebase-admin');
+// const serviceAccount = require('../galactic-storage-firebase-adminsdk-hvsjj-29f8ca05ab.json');
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+//     databaseURL: 'https://galactic-storage.firebaseio.com'
+// });
+// // const db = admin.firestore();
+// // const firedb = require('firebase').db;
+// const firedb = admin.firestore();
+
+const userUtils = require('./utils.js');
+
+/** Express */
+const expressImport = require('express');
+const expressEngine = expressImport();
+
+/** Cors */
+const cors = require('cors');
+expressEngine.use(cors({ origin: true }));
+
 /** Import Routes */
-const userRoute = require('./users.js');
+const usersRoute = require('./users.js');
+const productsRoute = require('./products.js');
 
 /** Assign Routes */
-router.use('/users', userRoute);
+router.use('/users', usersRoute);
+// router.use('/products', productsRoute);
+
 
 /** Exports */
-module.exports = router;
+const exporter = {
+        router: router,
+        // admin: admin,
+        // firedb: firedb,
+        expressEngine: expressEngine,
+};
+
+module.exports = exporter;
+// {
+//     router: router,
+//     firedb: firedb,
+//     expressEngine: expressEngine,
+// };
