@@ -21,13 +21,13 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/fromPromise';
 
-import { easyPostConfig } from '../../../../_ups';
-import * as EasyPost from '@easypost/api';
+// import { easyPostConfig } from '../../../../_ups';
+// import * as EasyPost from '@easypost/api';
 // @easypost/api/easypost.6-lts
 // import * as EasyPost from '@easypost/api/easypost';
 // import * as EasyPost from '@easypost/api/src/easypost'; // ERROR:
-import * as easyBabelPoly from 'babel-polyfill';
-const easyPostApi = new EasyPost(easyPostConfig.apiKey);
+// import * as easyBabelPoly from 'babel-polyfill';
+// const easyPostApi = new EasyPost(easyPostConfig.apiKey);
 
 // import * as Shippo from 'shippo';
 // declare const shippo: any;
@@ -69,15 +69,15 @@ export class ShipperService {
         // params.set('addr', pair.publicKey());
 
         console.log('creatomg address');
-        const toAddress = new easyPostApi.Address({
-            name: 'Dr. Steve Brule',
-            street1: '179 N Harbor Dr',
-            city: 'Redondo Beach',
-            state: 'CA',
-            zip: '90277',
-            country: 'US',
-            phone: '310-808-5243'
-          });
+        // const toAddress = new easyPostApi.Address({
+        //     name: 'Dr. Steve Brule',
+        //     street1: '179 N Harbor Dr',
+        //     city: 'Redondo Beach',
+        //     state: 'CA',
+        //     zip: '90277',
+        //     country: 'US',
+        //     phone: '310-808-5243'
+        //   });
         //   toAddress.save().then(addr => {
         //     console.log(addr.id);
         //   });
@@ -141,18 +141,18 @@ export class ShipperService {
 
 
         // const urlEndpoint = 'https://api.easypost.com/v2/addresses';
-        const urlEndpoint = 'https://api.easypost.com/v2/addresses';
-        const options = {
-            'headers': headers,
-            'body': toAddress,
-            // 'body': fromAddress
-            // tracking_code: "EZ4000000004",
-            // carrier: "UPS"
-        };
-        const reqOptions = {
-            headers : headers
-        };
-        this._http.post(urlEndpoint, toAddress, reqOptions).subscribe(a => console.log(a));
+        // const urlEndpoint = 'https://api.easypost.com/v2/addresses';
+        // const options = {
+        //     'headers': headers,
+        //     'body': toAddress,
+        //     // 'body': fromAddress
+        //     // tracking_code: "EZ4000000004",
+        //     // carrier: "UPS"
+        // };
+        // const reqOptions = {
+        //     headers : headers
+        // };
+        // this._http.post(urlEndpoint, toAddress, reqOptions).subscribe(a => console.log(a));
         // shippo.setApiKey()
     }
 

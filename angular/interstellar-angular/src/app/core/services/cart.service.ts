@@ -14,11 +14,12 @@ import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
+import 'rxjs/add/observable/of';
+
 import { calcTotalsForMultipleAssets, AssetBalance } from 'app/stellar';
 
 import { CartItem } from '../../marketplace/_market-models/cart-item';
 
-import 'rxjs/add/observable/of';
 
 @Injectable()
 export class CartService {

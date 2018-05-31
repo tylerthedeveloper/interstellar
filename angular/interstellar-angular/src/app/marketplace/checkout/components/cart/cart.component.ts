@@ -1,11 +1,14 @@
 /** Angular */
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
+
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 /** Material / UI */
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent, DialogComponent } from 'app/shared/components';
+
 
 /** shared */
 import { BaseComponent } from 'app/base.component';
@@ -21,13 +24,12 @@ import { UserService, ProductService } from 'app/core/services';
 import { userFormData } from 'app/user/user.details';
 
 /** Stellar */
-import { AssetBalance, calcTotalsForMultipleAssets, getBalanceforAsset, isValidNewBalance } from 'app/stellar';
-import { StellarTermService } from 'app/core/services/stellar-term.service';
-import { stellarTermAssets } from 'app/stellar/stellar-term/asset.mappers';
-import { Subscription } from 'rxjs/Subscription';
-import { validateNewQuantity } from 'app/marketplace/products/product.utils';
+import { AssetBalance, calcTotalsForMultipleAssets, getBalanceforAsset, isValidNewBalance } from '../../../../stellar';
 
 import 'rxjs/operator/toPromise';
+import { stellarTermAssets } from 'app/stellar/stellar-term/asset.mappers';
+import { StellarTermService } from 'app/core/services/stellar-term.service';
+import { validateNewQuantity } from 'app/marketplace/products/product.utils';
 
 @Component({
   selector: 'app-cart',
@@ -72,10 +74,10 @@ export class CartComponent extends BaseComponent implements OnInit {
      */
     ngOnInit(): void {
         this.loading = false;
-        this._userService.getUserByID(this.myBaseUserID).first().subscribe(user => {
-            this.user = user;
+        this.user = this._userService.getUserByID(this.myBaseUserID).map(user => {
             const userTyped = <User> user;
             this.hasAddress = (userTyped.address) ? true : false;
+            return user;
         });
         // todo: promise -> promise -> promise
         this.pullCurrentTickerValues();
@@ -226,7 +228,7 @@ export class CartComponent extends BaseComponent implements OnInit {
     pullCurrentTickerValues(assetTypes: Set<string> = new Set()) {
         if (!assetTypes || assetTypes.size === 0) {
             assetTypes = new Set(stellarTermAssets);
-            console.log('em,pty')
+            console.log('em,pty');
         }
         this._stellarTermService.getPriceForAssets(assetTypes)
             // .toPromise()

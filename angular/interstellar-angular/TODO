@@ -39,7 +39,7 @@ Todo:
     ☐ implement error handling for all services
   
 ☐ MAJOR 
-    ☐ SERVICE WORKER 
+    ☐ PWA + SERVICE WORKER 
     ☐ NGRX store
       ☐ immutable
 

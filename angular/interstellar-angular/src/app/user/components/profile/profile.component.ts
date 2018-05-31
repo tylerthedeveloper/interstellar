@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 
 /** Stellar */
 // import StellarSdk from 'stellar-sdk';
-import { AssetBalance, stellarAssetsMapper2 } from 'app/stellar';
+import { AssetBalance } from 'app/stellar';
 
 /** Observable */
 import { Observable } from 'rxjs/Observable';
@@ -40,10 +40,12 @@ import { userFormData } from 'app/user/user.details';
 import { BaseComponent } from 'app/base.component';
 import { TransactionRecord } from 'app/marketplace/_market-models/transaction';
 import { shippingAddressQuestions } from 'app/marketplace/shipping/shipping.details';
-import { ShipperService } from 'app/core/services/shipper.service';
+// import { ShipperService } from 'app/core/services/shipper.service';
 import { Asset } from 'app/stellar/assets/asset';
 import { stellarTermAssets2 } from 'app/stellar/stellar-term/asset.mappers';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-profile',
@@ -67,43 +69,47 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
     /** Page Objects */
     private _userModel: User;
-    private user: Observable<User>;
-    private balances: AssetBalance[];
-    private products: Observable<Product[]>;
+    // private user: Observable<User>;
+    user: Subject<User> = new BehaviorSubject<User>(null);
 
-    // todo: test
-    private orders: Observable<Order[]>;
-    private transactionSales: Observable<TransactionRecord[]>;
+    // uzr = new Subject<User>();
+    // uzr$ = this.uzr.asObservable();
+
+    balances: AssetBalance[];
+    products: Observable<Product[]>;
 
     /** Page Identifiers */
-    private _userID: string;
+    private _myUserID: string;
     private _pagePersonID: string;
     private isMyProfile;
 
-    /** Page Helpers */
-    private edit = false;
-    private hasAddress = false;
-
+    // todo: test
+    /** User entities */
+    orders: Observable<Order[]>;
+    transactionSales: Observable<TransactionRecord[]>;
     private _acceptedAssets: Asset[];
 
+    /** Page Helpers */
+    // private edit = false;
+    private hasAddress = false;
+
+    // todo: NULL CHECK ON ORDER SERVICE
     constructor(private _userService: UserService,
                 private _productService: ProductService,
                 private _orderService: OrderService,
                 private dialog: MatDialog,
                 private _route: ActivatedRoute,
-                private _shipperService: ShipperService,
+                // private _shipperService: ShipperService,
                 public router: Router) {
                     super();
     }
 
     ngOnInit(): void {
-
         // User Init //
         // switch too this.user$ ... auto destroy / unsubscribe
-        // this.user = this._userService.getCurrentUser().first();
         // this.userModel = new User('', '', '', '', '', '', 0);
         const myUserID = this.myBaseUserID; // sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
-        this._userID = myUserID;
+        this._myUserID = myUserID;
         const pagePersonID = this._route.snapshot.params['id'];
         const path = this._route.snapshot.routeConfig.path;
         this._pagePersonID = pagePersonID;
@@ -116,30 +122,31 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
         // todo: listen for add address
         this._userService.getUserByID(pagePersonID)
+            // .then((res: string) => JSON.stringify(res))
+            // .then((res: string) => JSON.parse(res))
             .subscribe(user => {
-                this.user = user;
-                // console.log(user);
+                // const c = <User> JSON.parse(JSON.stringify(user));
+                // this.user = Observable.of(user);
+                // user = <User> JSON.parse(JSON.stringify(c));
+                // const userTyped = <User> JSON.parse(user);
+                const userTyped = this._userModel = user;
+                // this._userModel = userTyped;
+                this._acceptedAssets = (userTyped.acceptedAssets) ? userTyped.acceptedAssets : new Array(stellarTermAssets2[0]);
+                // console.log(this._acceptedAssets)
                 if (this.isMyProfile) {
-                    const userTyped = <User> user;
-                    this._userModel = userTyped;
-                    this._acceptedAssets = (userTyped.acceptedAssets) ? userTyped.acceptedAssets : new Array(stellarTermAssets2[0]);
                     this.hasAddress = (userTyped.address) ? true : false;
+                    this.orders = this._orderService.Orders;
                     if (!this.hasAddress) {
                         this.handleUpdateAddress();
                     }
                 }
+                this.user = user;
         });
-        this.products = this._productService.getProductsByUserID(myUserID);
-        this.orders = this._orderService.Orders;
+        this.products = this._productService.getProductsByUserID(pagePersonID);
         this.balances = new Array<AssetBalance>();
-        // const _balances = sessionStorage.getItem('my_balances') || localStorage.getItem('my_balances');
         const _balances = this.myBaseBalances;
         if (_balances) { this.balances = <AssetBalance[]>JSON.parse(_balances); }
-
-        this.transactionSales = this._orderService.TransactionSales;
-        // this.transactionSales = this._orderService.Transactions.filter(t => t.orderType === OrderType.Sale);
-        // .pipe(filter((transaction: TransactionRecord) => transaction.orderType === OrderType.Sale));
-                        // ((transaction: TransactionRecord) => transaction.orderType === OrderType.Sale));
+        this.transactionSales = this._orderService.getTransactionSalesByUserID(this._pagePersonID);
     }
 
 
@@ -177,16 +184,30 @@ export class ProfileComponent extends BaseComponent implements OnInit {
                     // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarTermAssets[i]) : null);
                     // .map((asset, i) => (asset) ? acceptedAssetsTempArray.push(stellarAssetsMapper2[i].asset_type) : null);
                 formObject.acceptedAssets = acceptedAssetsTempArray;
+                formObject.fbID = this._myUserID;
                 this._acceptedAssets = acceptedAssetsTempArray;
-                console.log(formObject.acceptedAssets);
-                this.edit = !this.edit;
+                // console.log(formObject.acceptedAssets);
+                // Object.keys(this.user).map(key => {
+                //     if (!formObject[key]) {
+                //         console.log(key);
+                //     }
+                // });
+                // this.edit = !this.edit;
                 const payload = {
-                    id: this._userID,
+                    id: this._myUserID,
                     data: formObject
                 };
-                return this._userService.updateProfile(JSON.stringify(payload));
+                this._userService.updateProfile(JSON.stringify(payload))
+                    .map(res => JSON.parse(res))
+                    .subscribe(user => this.user = user);
+                // this._userService.getCurrentUser().subscribe(user => this.uzr$ = user);
             }
         });
+    }
+
+    // todo: BEG USER NOT TOO
+    deleteMe() {
+        this._userService.deleteUser(this._pagePersonID).then(() => this.router.navigate(['home']));
     }
 
     goToAddProductpage(): void {
@@ -194,60 +215,6 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         const acceptedAssetQueryParams = { queryParams: { acceptedAssets: acceptedAssetKeys } };
         this.router.navigate(['../products/list-new-product'], acceptedAssetQueryParams);
         // this.router.navigate(['../products/list-new-product'], { queryParams: { user: this._userID } });
-    }
-
-
-    /**
-     * @returns void
-     */
-    // todo: confirm success
-    addProduct(): void {
-        const dialogRef = this.dialog.open(DialogComponent, {
-            data: { component: DynamicFormComponent,
-                    payload: {
-                        questions: productFormData,
-                    }
-            }
-        });
-
-        dialogRef.afterClosed().subscribe((result: string) => {
-            if (result) {
-                const product = <Product> JSON.parse(JSON.stringify(result));
-                try {
-                    product.quantity = Number(product.quantity);
-                    product.fixedUSDAmount = Number(product.fixedUSDAmount);
-                    if (!areValidProductTypes(product)) {
-                        alert('invalid product error');
-                        return;
-                    }
-                    const newProductID = this._productService.getNewProductID();
-                    this.uploadThumbnailImage(newProductID).subscribe(
-                        (imageUploadResultURL: string) => {
-                            if (imageUploadResultURL) {
-                                product.id = newProductID;
-                                product.productThumbnailLink = imageUploadResultURL;
-                                this.handleNewProduct(product);
-                            }
-                        },
-                        err => {
-                            alert('errror: \n ' + err);
-                        });
-                } catch (e) {
-                    alert('invalid product details:\n' + e);
-                }
-            }
-        });
-    }
-
-    /**
-     * @param  {string} productID
-     * @returns Observable
-     */
-    uploadThumbnailImage(productID: string): Observable<any> {
-        const dialogRef = this.dialog.open(FileUploadDialogComponent, {
-            data: { productID: productID }
-        });
-        return dialogRef.afterClosed();
     }
     // ────────────────────────────────────────────────────────────────────────────────
 
@@ -259,33 +226,6 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     //
     contactSeller(): void {
         this.router.navigate(['../chat'], { queryParams: { receiverID: this._pagePersonID } });
-    }
-
-    handleNewProduct(product: any) {
-
-        // todo: TEST THESE ARENT EVER NULL!!!!!!
-        product.productListedAt = Date.now();
-        product.productPrices = [
-            new AssetBalance({ balance: '7.00000', asset_type: 'native', coin_name: 'Lumens'})
-        ];
-        product.productSellerData = {
-            productSellerID: sessionStorage.getItem('user_doc_id'),
-            productSellerName: sessionStorage.getItem('user_name') || '', // TODO: store user data in session storage!!!
-            productSellerPublicKey: sessionStorage.getItem('public_key')
-        };
-
-        if (!(product.productPrices &&
-              product.productSellerData.productSellerID &&
-            //   product.productSellerData.productSellerName
-              product.productSellerData.productSellerPublicKey && product.productThumbnailLink)) {
-                alert('invalid product error');
-                return;
-        }
-
-        const p = JSON.stringify(product);
-        this._productService.addProduct(p)
-                    .catch(err => console.log(err))
-                    .then(res => this.router.navigate(['/products', res]));
     }
 
     /**

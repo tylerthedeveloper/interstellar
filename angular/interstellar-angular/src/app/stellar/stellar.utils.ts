@@ -84,7 +84,7 @@ const calcTotalsForMultipleAssets = (assets: AssetBalance[]): AssetBalance[] => 
 
 const calcDifferenceForMultipleAssets = (balances: AssetBalance[], assetPriceTotals: AssetBalance[]): AssetBalance[] => {
     const updatedAssets: AssetBalance[] = new Array<AssetBalance>();
-    console.log(balances[0])
+    console.log(balances[0]);
     for (const asset of balances) {
     // balances.map(sset => {
         // let ass = asset as AssetBalance;

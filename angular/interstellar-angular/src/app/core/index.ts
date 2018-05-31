@@ -21,6 +21,7 @@ import { ChatService } from './services';
 import { RegisterComponent } from './components/register/register.component';
 import { ShipperService } from 'app/core/services/shipper.service';
 import { StellarTermService } from './services/stellar-term.service';
+import { HttpService } from 'app/core/services/http.service';
 // import { ConfirmDialogComponent } from 'app/shared/components';
 
 @NgModule({
@@ -55,6 +56,7 @@ import { StellarTermService } from './services/stellar-term.service';
         EventEmitterService,
         ChatService,
         CartService,
+        HttpService,
         OrderService,
         ProductService,
         ShipperService,
