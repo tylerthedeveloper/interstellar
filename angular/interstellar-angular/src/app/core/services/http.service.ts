@@ -10,7 +10,7 @@ export class HttpService {
 
     constructor(private _httpClient: HttpClient) { }
 
-    httpGetRequest(urlString: string) {
+    httpGetRequest(urlString: string): Observable<any> {
         return this._httpClient.get(urlString);
         // return Observable.fromPromise(this._httpClient.get(urlString) .toPromise().then(response => JSON.stringify(response)));
     }

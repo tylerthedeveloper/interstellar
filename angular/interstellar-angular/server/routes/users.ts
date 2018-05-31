@@ -63,8 +63,8 @@ userRouter.post('/', (req: any, res: any) => {
 
 userRouter.get('/:id', (req: any, res: any) => {
     const id = req.params['id'];
-    console.log('user')
-    console.log(id)
+    console.log('user');
+    console.log(id);
     req.db.collection('users').doc(id).get()
         .then((documentSnapshot: any) => {
             console.log(documentSnapshot.data());

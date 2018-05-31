@@ -9,7 +9,8 @@ export const environment = {
 
     production: false, // not in production
 
-    apiUrl: 'http://localhost:4200', // URL of development API
+    // apiUrl: 'http://localhost:4200', // URL of development API
+    apiUrl: 'api', // URL of development API
 
     firebase: firebaseConfig
 };

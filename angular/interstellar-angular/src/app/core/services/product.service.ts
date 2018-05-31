@@ -19,10 +19,13 @@ import * as firebase from 'firebase/app';
 import { ProductCategory } from 'app/marketplace/_market-models/product-category';
 import { Product } from 'app/marketplace/_market-models/product';
 import { User } from 'app/user/user';
+import { HttpService } from './http.service';
 
 
 @Injectable()
 export class ProductService {
+
+    private _productRouteAPIUrl = 'api/products';
 
     /** AFS Collections */
     private productsCollection: AngularFirestoreCollection<Product>;
@@ -32,7 +35,8 @@ export class ProductService {
 
     private _userID: string;
 
-    constructor(private afs: AngularFirestore) {
+    constructor(private _httpService: HttpService,
+                private afs: AngularFirestore) {
         // TODO: READ BELOW
         // infinite scroll, etstablish socket!
         // sesh storage... service:
@@ -52,8 +56,11 @@ export class ProductService {
     /**
      * @returns Observable
      */
-    getAllProducts(): Observable<Product[]> {
-        return this.productsCollection.valueChanges();
+    getAllProducts() {
+        // return this.productsCollection.valueChanges();
+        return this._httpService.httpGetRequest(this._productRouteAPIUrl)
+                .map(products => JSON.stringify(products))
+                .map(products => <Array<Product>> JSON.parse(products)); // then(res => console.log(res));
     }
 
     /**
