@@ -76,7 +76,7 @@ export class ProductService {
      * @returns Promise
      */
     addProduct(productData: string): Promise<string> {
-        const _productData = <Product>JSON.parse(productData);
+        const _productData = JSON.parse(productData);
         // const _docID = _productData.id;
         // const _cat = _productData.productCategory;
         // const batch = this.afs.firestore.batch();
