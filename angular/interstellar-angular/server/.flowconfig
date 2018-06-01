@@ -1,0 +1,10 @@
+[include]
+# ... only need one dir???
+
+[ignore]
+#.*/build/.*
+**/*.json
+.*/*.json
+
+[libs]
+./lib

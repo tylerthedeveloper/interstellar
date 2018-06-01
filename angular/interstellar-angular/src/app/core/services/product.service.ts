@@ -77,13 +77,26 @@ export class ProductService {
      */
     addProduct(productData: string): Promise<string> {
         const _productData = <Product>JSON.parse(productData);
-        const _docID = _productData.id;
-        const _cat = _productData.productCategory;
-        const batch = this.afs.firestore.batch();
-        batch.set(this.productsCollection.doc(_docID).ref, _productData);
-        batch.set(this.userProductsCollection.doc(this._userID).collection('products').doc(_docID).ref, _productData);
-        batch.set(this.productCategoriesCollection.doc(_cat).collection('products').doc(_docID).ref, _productData);
-        return batch.commit().then(() => _docID);
+        // const _docID = _productData.id;
+        // const _cat = _productData.productCategory;
+        // const batch = this.afs.firestore.batch();
+        // batch.set(this.productsCollection.doc(_docID).ref, _productData);
+        // batch.set(this.userProductsCollection.doc(this._userID).collection('products').doc(_docID).ref, _productData);
+        // batch.set(this.productCategoriesCollection.doc(_cat).collection('products').doc(_docID).ref, _productData);
+        // return batch.commit().then(() => _docID);
+        return this._httpService.httpPostRequest(this._productRouteAPIUrl, _productData)
+                .toPromise()
+                .then(res => {
+                    console.log(res)
+                    return res;
+                })
+                // .then(res => res);
+                // .then(res => JSON.parse(res))
+    //             .then(res => {
+    //                 const prod = JSON.parse(res.then(prod => prod));
+    //                 console.log(res);
+    //     return res['id'];
+    // });
     }
 
     /**

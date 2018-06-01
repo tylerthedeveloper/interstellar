@@ -30,7 +30,7 @@ export const stellarTermAssets = [
 ];
 
 export const stellarTermAssets2: Array<Asset> = [
-    {asset_type: 'native', coin_name: 'XLM-native'},
+    {asset_type: 'XLM', coin_name: 'XLM-native'},
     {asset_type: 'CNY', coin_name: 'CNY-coin'},
     {asset_type: 'MOBI', coin_name: 'Mobius tokens'},
     {asset_type: 'RMT', coin_name: 'RMT-coins'},

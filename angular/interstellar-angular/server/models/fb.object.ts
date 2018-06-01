@@ -8,10 +8,10 @@ class FbObject {
              fields: Array<any>,
              name: string,
              updateTime: string) {
-        this.createTime = createTime;
-        this.fields = fields ;
-        this.name = name;
-        this.updateTime = updateTime;
+                this.createTime = createTime;
+                this.fields = fields ;
+                this.name = name;
+                this.updateTime = updateTime;
     }
 }
 

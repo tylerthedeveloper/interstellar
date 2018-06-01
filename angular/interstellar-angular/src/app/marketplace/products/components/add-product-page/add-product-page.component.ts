@@ -175,7 +175,8 @@ export class AddProductPageComponent implements OnInit {
         if (this.handleNewProduct()) {
             this._productService.addProduct(JSON.stringify(this.productInfo))
                         .catch(err => console.log(err))
-                        .then(res => this.router.navigate(['/products/product', res]));
+                        .then((res: any) => JSON.parse(res))
+                        .then((res: any) => this.router.navigate(['/products/product', res.id]));
 
         }
     }
@@ -246,15 +247,33 @@ export class AddProductPageComponent implements OnInit {
         const acceptedAssets = this._route.snapshot.queryParams['acceptedAssets'];
         console.log(acceptedAssets);
         product.productAssetOptions = acceptedAssets;
-        const assetBalances: Array<AssetBalance> = acceptedAssets.map(asset_type => {
-            const asset = stellarTermAssets2.find(STA => STA.asset_type === asset_type);
+        let assetBalances: Array<AssetBalance> = new Array();
+        if (typeof acceptedAssets === 'string') {
+            const asset = stellarTermAssets2.find(STA => STA.asset_type === acceptedAssets);
             const assetObj = {
                 asset_type: asset.asset_type,
                 coin_name: asset.coin_name,
                 balance: '0.0000'
             };
-            return new AssetBalance(assetObj);
-        });
+            assetBalances.push(new AssetBalance(assetObj));
+        } else {
+            assetBalances = acceptedAssets.map(asset_type => {
+                const asset = stellarTermAssets2.find(STA => STA.asset_type === asset_type);
+                // console.log(asset)
+                // console.log(asset_type)
+                // stellarTermAssets2.map(STA => {
+                //     console.log(STA)
+                //     console.log(STA.asset_type)
+                //     console.log(STA.asset_type === asset_type)
+                // })
+                const assetObj = {
+                    asset_type: asset.asset_type,
+                    coin_name: asset.coin_name,
+                    balance: '0.0000'
+                };
+                return new AssetBalance(assetObj);
+            });
+        }
         product.productPrices = assetBalances;
         console.log(assetBalances);
         // product.productPrices = [

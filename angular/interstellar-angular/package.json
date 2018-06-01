@@ -66,6 +66,7 @@
     "babel-preset-flow": "^6.23.0",
     "codelyzer": "^4.0.1",
     "firebase-tools": "^3.18.4",
+    "flow-bin": "^0.73.0",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",

@@ -19,15 +19,21 @@ const createFormGroup = (questions: any, objectMapper: any): FormGroup => {
     questions.forEach(question => {
         const key = question.key;
         const value = (objectMapper) ? objectMapper[key] : question.value || '';
+        // console.log(key)
+        // console.log(objectMapper)
+        // console.log(objectMapper[key])
         if (question.controlType === 'checkbox-group') {
-            const curKeyMapper = Object.keys((objectMapper[key] as Array<any>)[0] as {})[0];
-            const curValueSet = objectMapper[key] as Array<any>;
+            let curKeyMapper, curValueSet;
+            if (objectMapper && objectMapper.hasOwnProperty(key)) {
+                curKeyMapper = Object.keys((objectMapper[key] as Array<any>)[0] as {})[0];
+                curValueSet = objectMapper[key] as Array<any>;
+            }
             group[question.key] = new FormArray((question as any).options
                 .map(option => {
                     const _disabled = option.disabled;
                     const _value = question.value && question.value.some(y => y === option.value) ? option.key : '';
                     const optionKey = option.key;
-                    const _checked = (curValueSet.find(opt => opt[curKeyMapper] === optionKey)) ? true : false;
+                    // const _checked = (curValueSet.find(opt => opt[curKeyMapper] === optionKey)) ? true : false;
                     // console.log(_checked)
                     return new FormControl({value: _value, disabled: _disabled});
                 }));
