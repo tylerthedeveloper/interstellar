@@ -123,16 +123,12 @@ export class CartService {
             if (findCartItem) {
                 return reject('Error-message: item already in cart');
             }
+            const urlString = `${this._cartRouteAPIUrl}/${this._userID}`;
             this.cartItemProductIDs.push(_cartItemData.productID);
-            return resolve(this.userCartCollection.doc(_docID)
-                            .set(_cartItemData)
-                            .then(() => true)
-                            .catch(this.HandleError));
+            return resolve(this._httpService.httpPostRequest(urlString, _cartItemData)
+                .then(res => {console.log(res); return true; })
+                .catch(this.HandleError));
         });
-
-        // this.userCartCollection.doc(this._userID).collection('cartItems').add(_cartItemData)
-        // .then(res => res)
-        // .map()
     }
 
     /**
@@ -147,10 +143,13 @@ export class CartService {
     /**
      * @param  {string} cartItemID
      */
-    removeCartItem(cartItemID: string, cartItemProductID: string) {
-        this.userCartCollection.doc(cartItemID).delete();
-        this.cartItemProductIDs.filter(_cartItemProdID => _cartItemProdID !== cartItemProductID);
-        this.cartItemIDs.filter(_cartItemID => _cartItemID !== cartItemID);
+    removeCartItem(cartItemID: string, cartItemProductID: string, userID: string) {
+        const urlString = `${this._cartRouteAPIUrl}/${userID}/${cartItemID}`;
+        return this._httpService.httpDeleteRequest(urlString)
+            .then(() => {
+                this.cartItemProductIDs.filter(_cartItemProdID => _cartItemProdID !== cartItemProductID);
+                this.cartItemIDs.filter(_cartItemID => _cartItemID !== cartItemID);
+        });
     }
     // ────────────────────────────────────────────────────────────────────────────────
 
@@ -218,7 +217,12 @@ export class CartService {
                 this.cartItemProductIDs = [];
                 return Promise.resolve(res);
             });
-        // console.log(this.cartItemIDs);
+        // const urlString = `${this._cartRouteAPIUrl}/${this._userID}`;
+        // return this._httpService.httpDeleteRequest(urlString)
+        //     .then(() => {
+        //         this.cartItemProductIDs.filter(_cartItemProdID => _cartItemProdID !== cartItemProductID);
+        //         this.cartItemIDs.filter(_cartItemID => _cartItemID !== cartItemID);
+        // });
     }
     // ────────────────────────────────────────────────────────────────────────────────
 

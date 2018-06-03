@@ -98,8 +98,8 @@ export class ProductPageComponent extends BaseComponent implements OnInit {
      * @returns void
      */
     public addProductAndGoToCart() {
-        this.addToCartHelper().then((res) => {
-            // console.log(res);
+        return this.addToCartHelper().then(res => {
+            console.log('res' + res);
             if (!res) { return; }
             this.onCompleteProductAction();
             this._router.navigate(['/cart']);
@@ -114,9 +114,9 @@ export class ProductPageComponent extends BaseComponent implements OnInit {
      * @returns boolean
      */
     public addProductToCart(): Promise<boolean> {
-        return this.addToCartHelper().then((res) => {
+        return this.addToCartHelper().then(res => {
             // if (!res) { throw new Error('error: item already in cart1') }
-            // console.log(res);
+            console.log(res);
             if (!res) { return false; }
             //  todo
             alert('success: this item has been added to your cart');
@@ -132,14 +132,16 @@ export class ProductPageComponent extends BaseComponent implements OnInit {
             const cartItem = this.createCartItem(this.purchaseQuantity);
             return this._cartService.addToCart(JSON.stringify(cartItem))
                 .then(res => {
-                    // console.log(res);
+                    console.log(res);
                     return (res) ? this.onCompleteProductAction() : false;
                 })
                 .catch(e => {
+                    console.log(e);
                     // return false;
                     return this.errorAndAlert(`There was an error:\n ${e}`);
                 });
-        } else {
+            } else {
+            console.log('else');
             return Promise.resolve(false);
         }
     }

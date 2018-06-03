@@ -105,7 +105,7 @@ export class ChatPageComponent extends BaseComponent implements OnInit {
         console.log(this.activeThread.receiverFbID);
         const messageObj = new ChatMessage({
             isRead: false,
-            sentAt: Date.now(),
+            sentAt: Date.now(), // todo: test server latency
             sender: this.myBaseUserID,
             receiver: this.activeThread.receiverFbID,
             text: message,

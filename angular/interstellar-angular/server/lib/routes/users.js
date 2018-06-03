@@ -13,6 +13,7 @@ userRouter.get('/', (req, res) => {
         res.status(res.statusCode).json({ error: err.toString() });
     });
 });
+
 userRouter.post('/', (req, res) => {
     console.log('post user');
     const user = req.body;
@@ -42,6 +43,7 @@ userRouter.get('/:id', (req, res) => {
             res.status(res.statusCode).send(err);
         });
 });
+
 // todo ... issues differences between put / post
 userRouter.post('/:id', (req, res) => {
     console.log('update user');
@@ -61,6 +63,7 @@ userRouter.post('/:id', (req, res) => {
         res.status(res.statusCode).send(err);
     });
 });
+
 userRouter.get('/pkeys/:pubkey', (req, res) => {
     const publicKey = req.params['pubkey'];
     req.db.collection('users')
@@ -74,6 +77,7 @@ userRouter.get('/pkeys/:pubkey', (req, res) => {
         res.status(res.statusCode).send(err);
     });
 });
+
 userRouter.delete('/:id', (req, res) => {
     const id = req.params['id'];
     req.db.collection('users').doc(id).delete()
@@ -84,5 +88,6 @@ userRouter.delete('/:id', (req, res) => {
         res.status(res.statusCode).send(err);
     });
 });
+
 module.exports = userRouter;
 //# sourceMappingURL=users.js.map

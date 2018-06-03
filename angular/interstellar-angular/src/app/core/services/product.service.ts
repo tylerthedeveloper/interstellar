@@ -25,6 +25,7 @@ import { HttpService } from './http.service';
 @Injectable()
 export class ProductService {
 
+    /** API endpoint */
     private _productRouteAPIUrl = 'api/products';
 
     /** AFS Collections */
@@ -77,9 +78,7 @@ export class ProductService {
      */
     addProduct(productData: string): Promise<string> {
         const _productData = JSON.parse(productData);
-        return this._httpService.httpPostRequest(this._productRouteAPIUrl, _productData)
-            .toPromise()
-            .then(res => res);
+        return this._httpService.httpPostRequest(this._productRouteAPIUrl, _productData).then(res => res);
     }
 
     // todo:
@@ -118,7 +117,7 @@ export class ProductService {
      * @param  {string} category
      * @returns Promise
      */
-    deleteProduct(productID: string): Promise<void> {
+    deleteProduct(productID: string) { // : Promise<void> {
         // const batch = this.afs.firestore.batch();
         // batch.delete(this.productsCollection.doc(productID).ref);
         // batch.delete(this.userProductsCollection.doc(`${this._userID}/products/${productID}`).ref);

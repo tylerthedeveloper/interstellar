@@ -95,7 +95,7 @@ export class UserService {
         const data = obj.data;
         const urlString = `${this._userRouteAPIUrl}/${userID}`;
         // console.log(data);
-        return Observable.fromPromise(this._httpService.httpPostRequest(urlString, data).toPromise().then(res => res));
+        return Observable.fromPromise(this._httpService.httpPostRequest(urlString, data).then(res => res));
         // .toPromise(); // .then(res => console.log(res)); // .then(res => res));
         // return Observable.fromPromise(this._httpService.httpPostRequest(urlString, data)); // .then(res => res));
         // return Observable.fromPromise(

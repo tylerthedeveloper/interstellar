@@ -34,10 +34,12 @@ const cors = require('cors');
 expressEngine.use(cors({ origin: true }));
 /** Import Routes */
 const cartRoute = require('./cart.js');
+const chatRoute = require('./chat.js');
 const usersRoute = require('./users.js');
 const productsRoute = require('./products.js');
 /** Assign Routes */
 router.use('/cart', cartRoute);
+router.use('/chat', chatRoute);
 router.use('/products', productsRoute);
 router.use('/users', usersRoute);
 /** Exports */

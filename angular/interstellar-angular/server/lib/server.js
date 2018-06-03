@@ -20,6 +20,8 @@ const docsPath = 'app/documentation'; // Docs Path
 /** Firebase */
 const firebase = require('firebase');
 const admin = require('firebase-admin');
+const angularFireStore = require('angularfire2/firestore').AngularFirestore;
+
 // const serviceAccount = require('./galactic-storage-firebase-adminsdk-hvsjj-29f8ca05ab.json');
 const serviceAccount = require('./_firebase.js');
 admin.initializeApp({
@@ -30,6 +32,7 @@ const firedb = admin.firestore();
 /** Headers */
 app.use(function (req, res, next) {
     req.db = res.db = firedb;
+    req.afs = res.afs = angularFireStore;
     // res.header("Access-Control-Allow-Origin", "http://localhost:4200");
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -41,7 +44,7 @@ app.use(express.static(path.join(root, 'dist'))); // Angular DIST output folder
 app.use('/api', api.router); // API location
 app.use('/documentation', express.static(path.join(root, 'documentation'))); // Docs location
 app.set('admin', api.admin);
-app.set('firedb', api.firedb);
+// app.set('firedb', api.firedb);
 // Serve the application at the given port
 app.listen(port, () => {
     // Success callbackw

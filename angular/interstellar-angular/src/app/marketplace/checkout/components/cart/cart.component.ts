@@ -300,7 +300,7 @@ export class CartComponent extends BaseComponent implements OnInit {
                 this._cartService.updateCartItem(_cartItemID, newCartItemData);
                 break;
             case 'remove':
-                this._cartService.removeCartItem(_cartItemID, _cartItemProductID);
+                this._cartService.removeCartItem(_cartItemID, _cartItemProductID, this.myBaseUserID);
                 break;
             case 'checkItem':
                 this._checkedCartItemIDs.push(_cartItemID);
