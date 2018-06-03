@@ -82,7 +82,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
             this.curSeedKey = this.myBaseSeedKey;
             this.balances = <Array<AssetBalance>> (JSON.parse(this.myBaseBalances));
             console.log(this.balances);
-            this.checkoutItemsSource = this._cartService.Cart.map(cartItems => {
+            this.checkoutItemsSource = this._cartService.Cart(this.myBaseUserID).map(cartItems => {
                 const arr = cartItems.filter(check => check.isInCheckout === true);
                 if (!arr || arr.length === 0) {
                     const alertMessage = 'It seems your currently don\'t have items to checkout, returning to cart';
