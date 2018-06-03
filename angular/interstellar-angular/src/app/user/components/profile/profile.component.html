@@ -167,7 +167,8 @@
                 <div style="height: 420px; overflow: scroll; background-color: rgb(244,244,244); border: 1px solid rgb(224,224,244); border-radius: 0px 0px 3px 3px; border-top: none;">
 
                   <div style="display: inline-block; width: 33.33%; height: 100%; margin: auto; cursor: pointer;" *ngFor="let prod of products | async">
-                      <div class="card card-ecommerce z-depth-0" style="margin: 2% 2% 2% 2%; border: 1px solid rgb(224,224,244);">
+                      <div class="card card-ecommerce z-depth-0" style="margin: 2% 2% 2% 2%; border: 1px solid rgb(224,224,244);"
+                            (click)="selectProduct(prod.id)">
                           <!--Card image-->
                           <div class="view overlay z-depth-0">
                               <a><img src="{{ (prod) ? prod?.productThumbnailLink : '' }}" class="img-fluid" alt="missing image"

@@ -68,7 +68,6 @@ export class ProductPageComponent extends BaseComponent implements OnInit {
         this.assetTypes = Object.keys(currencyAssetsMapper).map((type: any) => <Array<AssetBalance>>type);
         this._productService
             .getProductByProductId(this._route.snapshot.params['id'])
-            .map(product => <Product>product)
             .subscribe(product => {
                 this.product = product;
                 if (product) {
@@ -162,7 +161,8 @@ export class ProductPageComponent extends BaseComponent implements OnInit {
         this._sellerShortData = null;
         this.isInStock = this.isMyProduct = false;
         this._router.navigate(['../profile']).then(() =>
-            this._productService.deleteProduct(this.product.id, this.product.productCategory));
+        // this._productService.deleteProduct(this.product.id, this.product.productCategory));
+            this._productService.deleteProduct(this.product.id));
     }
     // ────────────────────────────────────────────────────────────────────────────────
 

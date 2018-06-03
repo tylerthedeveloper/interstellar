@@ -111,6 +111,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         const myUserID = this.myBaseUserID; // sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         this._myUserID = myUserID;
         const pagePersonID = this._route.snapshot.params['id'];
+        console.log(pagePersonID)
+        // FIXME: HANDLE NULL .... NOT LOGGED IN 
         const path = this._route.snapshot.routeConfig.path;
         this._pagePersonID = pagePersonID;
         this.isMyProfile = (pagePersonID === myUserID);
@@ -224,8 +226,20 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     //   :::::: P A G E   H E L P E R S : :  :   :    :     :        :          :
     // ──────────────────────────────────────────────────────────────────────────
     //
+    /**
+     * @returns void
+     */
     contactSeller(): void {
         this.router.navigate(['../chat'], { queryParams: { receiverID: this._pagePersonID } });
+    }
+
+    /**
+     * @param  {string} product
+     * @returns void
+     */
+    selectProduct = (productID: string): void => {
+        // console.log(productID)
+        this.router.navigate(['../products/product', productID]);
     }
 
     /**

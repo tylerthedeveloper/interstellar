@@ -19,10 +19,13 @@ import 'rxjs/add/observable/of';
 import { calcTotalsForMultipleAssets, AssetBalance } from 'app/stellar';
 
 import { CartItem } from '../../marketplace/_market-models/cart-item';
+import { HttpService } from './http.service';
 
 
 @Injectable()
 export class CartService {
+
+    private _cartRouteAPIUrl = 'api/cart';
 
     /** AFS Collections */
     public userCartCollection: AngularFirestoreCollection<CartItem>;
@@ -38,7 +41,7 @@ export class CartService {
 
     // https://blog.cloudboost.io/build-simple-shopping-cart-with-angular-4-observables-subject-subscription-part-2-2d3735cde5f
 
-    constructor(private afs: AngularFirestore) {
+    constructor(private _httpService: HttpService, private afs: AngularFirestore) {
         this._userID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         if (this._userID) {
             this.userCartCollection = afs.collection('user-cart').doc(this._userID).collection('cartItems');
@@ -77,7 +80,10 @@ export class CartService {
     get Cart(): Observable<CartItem[]> {
         // get Cart(): Observable<any> {
         // return Observable.of({ items: this.userCartItems, totals: this.assetTotals});
-        return this.userCartItems;
+        // return this.userCartItems;
+        return this._httpService.httpGetRequest(this._cartRouteAPIUrl)
+            // .map(cartItems => JSON.stringify(products))
+            .map(cartItems => <Array<CartItem>> JSON.parse(cartItems)); 
     }
 
     /**

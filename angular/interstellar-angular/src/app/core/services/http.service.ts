@@ -16,7 +16,7 @@ export class HttpService {
     }
 
     httpGetRequestWithArgs(urlString: string, args: any = {}) {
-        return this._httpClient.get(urlString, args).toPromise().then(response => JSON.stringify(response));
+        return this._httpClient.get(urlString, args).map(response => JSON.stringify(response));
     }
 
     httpPostRequest(urlString: string, args: any) {

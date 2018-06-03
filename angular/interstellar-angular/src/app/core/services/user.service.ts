@@ -44,16 +44,16 @@ export class UserService {
             return this.getUserByID(_keyLoginId);
         } else if (_keyLoginId = sessionStorage.getItem('public_key') || localStorage.getItem('public_key') || _publicKey) {
             const urlString = `${this._userRouteAPIUrl}/pkeys/${_keyLoginId}`;
-            return Observable.fromPromise(this._httpService.httpGetRequestWithArgs(urlString)
-                .then((res: any) => JSON.parse(res))
-                .then((res: object) => {
+            return this._httpService.httpGetRequestWithArgs(urlString)
+                .map((res: any) => JSON.parse(res))
+                .map((res: object) => {
                     // return observer.next('no current user');
                     // return observer.next(observer.error('nop user'));
                     const id = res['id'];
                     sessionStorage.setItem('user_doc_id', id);
                     return res;
                 }
-            ));
+            );
         } else {
             console.log('no user');
             return Observable.create((observer: any) => observer.error('no current user'));

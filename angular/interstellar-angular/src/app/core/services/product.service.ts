@@ -57,12 +57,12 @@ export class ProductService {
      * @returns Observable
      */
     getAllProducts() {
-        // return this.productsCollection.valueChanges();
         return this._httpService.httpGetRequest(this._productRouteAPIUrl)
                 .map(products => JSON.stringify(products))
                 .map(products => <Array<Product>> JSON.parse(products)); // then(res => console.log(res));
     }
 
+    // todo:
     /**
      * @returns string
      */
@@ -77,28 +77,12 @@ export class ProductService {
      */
     addProduct(productData: string): Promise<string> {
         const _productData = JSON.parse(productData);
-        // const _docID = _productData.id;
-        // const _cat = _productData.productCategory;
-        // const batch = this.afs.firestore.batch();
-        // batch.set(this.productsCollection.doc(_docID).ref, _productData);
-        // batch.set(this.userProductsCollection.doc(this._userID).collection('products').doc(_docID).ref, _productData);
-        // batch.set(this.productCategoriesCollection.doc(_cat).collection('products').doc(_docID).ref, _productData);
-        // return batch.commit().then(() => _docID);
         return this._httpService.httpPostRequest(this._productRouteAPIUrl, _productData)
-                .toPromise()
-                .then(res => {
-                    console.log(res)
-                    return res;
-                })
-                // .then(res => res);
-                // .then(res => JSON.parse(res))
-    //             .then(res => {
-    //                 const prod = JSON.parse(res.then(prod => prod));
-    //                 console.log(res);
-    //     return res['id'];
-    // });
+            .toPromise()
+            .then(res => res);
     }
 
+    // todo:
     /**
      * @param  {string} key
      * @param  {{}} newProductData
@@ -108,6 +92,7 @@ export class ProductService {
         return this.productsCollection.doc(key).update(newProductData);
     }
 
+    // todo:
     /**
      * @param  {Array<any>} pairArray
      * @returns Observable
@@ -133,12 +118,14 @@ export class ProductService {
      * @param  {string} category
      * @returns Promise
      */
-    deleteProduct(productID: string, category: string): Promise<void> {
-        const batch = this.afs.firestore.batch();
-        batch.delete(this.productsCollection.doc(productID).ref);
-        batch.delete(this.userProductsCollection.doc(`${this._userID}/products/${productID}`).ref);
-        batch.delete(this.productCategoriesCollection.doc(`${category}/products/${productID}`).ref);
-        return batch.commit();
+    deleteProduct(productID: string): Promise<void> {
+        // const batch = this.afs.firestore.batch();
+        // batch.delete(this.productsCollection.doc(productID).ref);
+        // batch.delete(this.userProductsCollection.doc(`${this._userID}/products/${productID}`).ref);
+        // batch.delete(this.productCategoriesCollection.doc(`${category}/products/${productID}`).ref);
+        // return batch.commit();
+        const urlString = `${this._productRouteAPIUrl}/${productID}`;
+        return this._httpService.httpDeleteRequest(urlString); // then(res => console.log(res));
     }
     // ────────────────────────────────────────────────────────────────────────────────
 
@@ -155,15 +142,12 @@ export class ProductService {
      * @returns Observable
      */
     getProductByProductId(productID: string): Observable<any> {
-        return Observable.create((observer: any) => {
-            this.afs.collection('products', ref => ref.where('id', '==', productID))
-                .valueChanges()
-                .subscribe(prod => {
-                    observer.next(prod[0]);
-                });
-        });
+        const urlString = `${this._productRouteAPIUrl}/${productID}`;
+        return this._httpService.httpGetRequestWithArgs(urlString)
+                .map(product => <Product> JSON.parse(product));
     }
 
+    // todo:
     getProductQuantity(productID: string) {
         return Observable.create((observer: any) => {
             // this.productsCollection
@@ -182,7 +166,11 @@ export class ProductService {
      * @returns Observable
      */
     getProductsByUserID(userID: string): Observable<any> {
-        return this.userProductsCollection.doc(userID).collection('products').valueChanges();
+        // return this.userProductsCollection.doc(userID).collection('products').valueChanges();
+        const urlString = `${this._productRouteAPIUrl}/user-products/${userID}`;
+        return this._httpService.httpGetRequestWithArgs(urlString)
+            .map(products => <Array<Product>> JSON.parse(products)); // then(res => console.log(res));
+
     }
 
     getProductsByUserName(name: string): Observable<any> {
@@ -194,7 +182,11 @@ export class ProductService {
      * @returns Observable
      */
     getProductsByCategory(category: string): Observable<any> {
-        return this.productCategoriesCollection.doc(category).collection('products').valueChanges();
+        // return this.productCategoriesCollection.doc(category).collection('products').valueChanges();
+        const urlString = `${this._productRouteAPIUrl}/categories/${category}`;
+        return this._httpService.httpGetRequestWithArgs(urlString)
+            .map(products => <Array<Product>> JSON.parse(products));
+
     }
     // ────────────────────────────────────────────────────────────────────────────────
 }
