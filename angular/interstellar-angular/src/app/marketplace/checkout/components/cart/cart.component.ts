@@ -248,7 +248,7 @@ export class CartComponent extends BaseComponent implements OnInit {
                     this.currentAssetValuesDict[_assetType] = asset.balance;
                 });
                     // console.log(this.currentAssetValuesDict);
-                this.cartItemsSource = this._cartService.Cart.map(cartItems => {
+                this.cartItemsSource = this._cartService.Cart(this.myBaseUserID).map(cartItems => {
                     const updatedCartItems = cartItems.map(item => {
                         this.cartItemIDs.push(item.cartItemID);
                         const curAssetValue = this.currentAssetValuesDict[item.assetPurchaseDetails.asset_type];

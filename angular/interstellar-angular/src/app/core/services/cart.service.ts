@@ -77,13 +77,12 @@ export class CartService {
     /**
      * @returns Observable
      */
-    get Cart(): Observable<CartItem[]> {
-        // get Cart(): Observable<any> {
-        // return Observable.of({ items: this.userCartItems, totals: this.assetTotals});
-        // return this.userCartItems;
-        return this._httpService.httpGetRequest(this._cartRouteAPIUrl)
-            // .map(cartItems => JSON.stringify(products))
-            .map(cartItems => <Array<CartItem>> JSON.parse(cartItems)); 
+    Cart(userID: string): Observable<CartItem[]> {
+        console.log(userID)
+        const urlString = `${this._cartRouteAPIUrl}/${userID}`;
+        return this._httpService.httpGetRequest(urlString)
+            .map(cartItems => JSON.stringify(cartItems))
+            .map(cartItems => <Array<CartItem>> JSON.parse(cartItems));
     }
 
     /**
@@ -110,7 +109,6 @@ export class CartService {
      */
     getCartAssetTotals2() {
         return this.assetTotals;
-        // return Observable.of(this.assetTotals);
     }
     /**
      * @param  {string} newCartItem
