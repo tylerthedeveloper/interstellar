@@ -1,15 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-/lib
-/*.js
-/**/.js
-
-
 # delete all below
-
-
-
-
+*.map
+*/*.map
 
 # compiled output
 /dist

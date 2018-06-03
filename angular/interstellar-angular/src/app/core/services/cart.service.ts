@@ -78,7 +78,7 @@ export class CartService {
      * @returns Observable
      */
     Cart(userID: string): Observable<CartItem[]> {
-        console.log(userID)
+        console.log(userID);
         const urlString = `${this._cartRouteAPIUrl}/${userID}`;
         return this._httpService.httpGetRequest(urlString)
             .map(cartItems => JSON.stringify(cartItems))

@@ -20,9 +20,9 @@ export class UserListComponent implements OnInit {
     ngOnInit() {
         const myUserID = sessionStorage.getItem('user_doc_id') || localStorage.getItem('user_doc_id');
         this._peopleList = this._userService.getAllUsers()
-            .map(users => users)
+            // .map(users => users)
             .map(users => {
-                console.log('users')
+                console.log('users');
                 const _users = new Array(users);
                 return _users['0'].filter((user: User) => user.id !== myUserID);
             });
