@@ -73,7 +73,7 @@ userRouter.get('/pkeys/:pubkey', (req, res) => {
         const userSnapShot = QuerySnapshot.docs[0].data();
         res.status(res.statusCode).send(userSnapShot);
     })
-        .catch((err) => {
+    .catch((err) => {
         res.status(res.statusCode).send(err);
     });
 });

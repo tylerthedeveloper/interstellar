@@ -1,12 +1,33 @@
 "use strict";
-/* app/server.ts */
 Object.defineProperty(exports, "__esModule", { value: true });
 // Import everything from express and assign it to the express variable
 const express = require("express");
 // Create a new express application instance
 const app = express();
+// Import graphQL fore express
+const graphqlHTTP = require('express-graphql');
+
+const schema = require('./graphql/schema');
+
+// The root provides a resolver function for each API endpoint
+const root = {
+    rollDice: function (args) {
+        var output = [];
+        for (var i = 0; i < args.numDice; i++) {
+            output.push(1 + Math.floor(Math.random() * (args.numSides || 6)));
+        }
+        return output;
+    }
+};
+
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    rootValue: root,
+    graphiql: true,
+  }));
+  
 // The port the express app will listen on
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 /** Imports */
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -14,7 +35,7 @@ const http = require('http');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 /** Paths */
-const root = './'; // Root path
+const rootPath = './'; // Root path
 const api = require('./routes/api.js'); // API file
 const docsPath = 'app/documentation'; // Docs Path
 /** Firebase */
@@ -40,9 +61,9 @@ app.use(function (req, res, next) {
     next();
 });
 /** Setters */
-app.use(express.static(path.join(root, 'dist'))); // Angular DIST output folder
-app.use('/api', api.router); // API location
-app.use('/documentation', express.static(path.join(root, 'documentation'))); // Docs location
+app.use(express.static(path.join(rootPath, 'dist'))); // Angular DIST output folder
+// app.use('/api', api.router); // API location
+// app.use('/documentation', express.static(path.join(rootPath, 'documentation'))); // Docs location
 app.set('admin', api.admin);
 // app.set('firedb', api.firedb);
 // Serve the application at the given port
