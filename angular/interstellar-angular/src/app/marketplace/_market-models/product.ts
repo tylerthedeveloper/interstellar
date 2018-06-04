@@ -32,6 +32,7 @@ export class Product {
     productRating: number;
     productReviews: string[];
 
-    shippingInfo: ShippingInformation; //  = new ShippingInformation();
+    //  = new ShippingInformation();
+    shippingInfo: ShippingInformation;
 }
 
