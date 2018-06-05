@@ -20,8 +20,8 @@ const schema = `
     }
 
     type Query {
-        users: [User]
-        user(id: String!): User
+        allUsers: [User]
+        userByID(id: String!): User
     }
 
     type Mutation {

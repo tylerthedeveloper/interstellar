@@ -4,11 +4,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 // Create a new express application instance
 const app = express();
-// Import graphQL fore express
+
+// TODO: ISSUE WITH IMPORT
+// const jsonGraphqlExpress = require('json-graphql-server');
+// const data = require('./graphql/mock-db/db.js').data;
+// app.use('/graphql', jsonGraphqlExpress(data));
+
+// Import graphQL for express
 const graphqlHTTP = require('express-graphql');
-
 const schema = require('./graphql/schema');
-
 // The root provides a resolver function for each API endpoint
 const root = {
     rollDice: function (args) {
@@ -24,7 +28,7 @@ app.use('/graphql', graphqlHTTP({
     schema: schema,
     rootValue: root,
     graphiql: true,
-  }));
+}));
   
 // The port the express app will listen on
 const port = process.env.PORT || 4000;

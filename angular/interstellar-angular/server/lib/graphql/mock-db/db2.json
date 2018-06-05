@@ -1,0 +1,38 @@
+{
+    "posts": [
+        {
+            "id": 1,
+            "title": "Lorem Ipsum",
+            "views": 254,
+            "user_id": 123,
+            "tag_id": "foo"
+        },
+        {
+            "id": 2,
+            "title": "Sic Dolor amet",
+            "views": 65,
+            "user_id": 456,
+            "tag_id": "bar"
+        }
+    ],
+    "users": [
+        {
+            "id": 123,
+            "name": "John Doe"
+        },
+        {
+            "id": 456,
+            "name": "Jane Doe"
+        }
+    ],
+    "tags": [
+        {
+            "id": "foo",
+            "name": "Foo"
+        },
+        {
+            "id": "bar",
+            "name": "Bar"
+        }
+    ]
+}
