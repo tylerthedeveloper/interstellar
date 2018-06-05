@@ -18,6 +18,21 @@ Todo:
     * Finalize name (Interstellar might not be received well in the competition given it uses "stellar").
     ☐ Logo and branding (color scheme and feel).
     * User acquisition.
+    
+  ☐ MODULES 
+    √ Home (still need to figure out what this should be used for, or get rid of it)
+    √ Categories
+    * Category Pages | needs search and product filtering within category
+    * Users | needs user search and filtering by ratings
+    * User (or "Merchant") Profiles | needs selective information output depending on  
+    √ Cart
+    * Checkout Process | few bugs to work out (payment failures).
+    √ Chat
+    
+    **** Tyler ****
+    √ CREATE USER-ESQUE MODULE... PROFILE... USER LIST...     
+    √ HOME MODULE... MAIN PAGES
+    ***************
 
   ☐ UI
     * Theming - Currently angular & MDbootstrap.  
@@ -31,19 +46,6 @@ Todo:
       process and information verified.   
     * Profiles - Show information depending on if it is the users profile or another's profile. | In process (currently using 
       cheap html workarounds)
-
-  ☐ MODULES 
-    √ Home (still need to figure out what this should be used for, or get rid of it)
-    √ Categories
-    * Category Pages | needs search and product filtering within category
-    * Users | needs user search and filtering by ratings
-    * User (or "Merchant") Profiles | needs selective information output depending on  
-    √ Cart
-    * Checkout Process | few bugs to work out (payment failures).
-    √ Chat
-    
-    √ CREATE USER-ESQUE MODULE... PROFILE... USER LIST...     
-    √ HOME MODULE... MAIN PAGES
 
   ☐ FEATURES
     √ Chat   
