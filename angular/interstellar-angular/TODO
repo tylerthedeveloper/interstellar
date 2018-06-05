@@ -9,11 +9,15 @@ Todo:
   ☐ UI
     ☐ Theming - Currently angular & MDbootstrap.  
     √ Categories - Show categories in a card format. Helps with filtering. | Done    
-    ☐ Category Feeds - Show category products in a card format. Allow filtering by tags assigned to products (when user initially uploads). | In Process    
+    ☐ Category Feeds - Show category products in a card format. Allow filtering by tags assigned to products 
+      (when user initially uploads). | In Process    
     ☐ People - Show all merchants in a card format and allow search. *question* Should we allow filtering of merchants? 
-    √ Chat - Messaging between buyers and sellers on the platform. Allows transparency and keeps the service from feeling like a "black box" | Done    
-    √ Checkout Cart - Show items in cart and allow buy/remove selected and buy/remove all. Checkout should be step by step process and information verified. | Done   
-    ☐ Profile - Show information depending on if it is the users profile or another's profile. | In process (currently using cheap html workarounds)
+    √ Chat - Messaging between buyers and sellers on the platform. Allows transparency and keeps the service from feeling 
+      like a "black box" | Done    
+    √ Checkout Cart - Show items in cart and allow buy/remove selected and buy/remove all. Checkout should be step by step 
+      process and information verified. | Done   
+    ☐ Profile - Show information depending on if it is the users profile or another's profile. | In process (currently using 
+      cheap html workarounds)
 
   ☐ MODULES    
     √ CREATE USER-ESQUE MODULE... PROFILE... USER LIST...     
@@ -22,14 +26,18 @@ Todo:
   ☐ FEATURES
     √ Chat | Done/nearly done    
     ☐ Shipping | Not done
-      ☐ Shipping process should be easy for merchants and users. Anything we can handle on our end to enable merchants when shipping. | Not a priority (chat allows information exchange) 
+      ☐ Shipping process should be easy for merchants and users. Anything we can handle on our end to enable merchants when 
+        shipping. | Not a priority (chat allows information exchange) 
       ☐ Either: ask for shipping information from users at checkout or when they create an account      
     ☐ Search | Not done
       ☐ On individual category pages to filter by things like merchant rating, price, and more specific category details.
-      ☐ On the people page to allow users to find reputable merchant (*does it make sense to have a people page? Or should users be accessing merchant profiles only through product listings?*)      
-    ☐ Merchant ratings/reviews - allow users who bought a product to review the merchant who sold them the product. This is an important feature to give users confidence when purchasing over the platform. | Not started
+      ☐ On the people page to allow users to find reputable merchant (*does it make sense to have a people page? Or should 
+        users be accessing merchant profiles only through product listings?*)      
+    ☐ Merchant ratings/reviews - allow users who bought a product to review the merchant who sold them the product. This is an 
+      important feature to give users confidence when purchasing over the platform. | Not started
       ☐ Seller history with associated ratings (if given) should be visisible on each merchant profile.    
-    ☐ Price Anchor - Anchor item price in lumens to USD value. Allows merchants to be confident in the price they get for their product at time of sale. Is necessary until cryptocurrency becomes more ubiquitous and less volatile. | *Status unknown (Tyler)*
+    ☐ Price Anchor - Anchor item price in lumens to USD value. Allows merchants to be confident in the price they get for their 
+      product at time of sale. Is necessary until cryptocurrency becomes more ubiquitous and less volatile. | *Status unknown (Tyler)*
       ☐ Pull from live feed
 
   ☐ MISC  
