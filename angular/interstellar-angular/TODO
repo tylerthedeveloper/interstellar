@@ -14,12 +14,14 @@ Todo:
     ☐ HANDLE ALL 404'S AND REDIRECTS
   ******************
     
-  ☐ "Business Side"
+  "Business Side"
+  ---------------
     * Finalize name (Interstellar might not be received well in the competition given it uses "stellar").
     ☐ Logo and branding (color scheme and feel).
     * User acquisition.
     
-  ☐ MODULES 
+  MODULES 
+  -------
     √ Home (still need to figure out what this should be used for, or get rid of it)
     √ Categories
     * Category Pages | needs search and product filtering within category
@@ -34,7 +36,8 @@ Todo:
     √ HOME MODULE... MAIN PAGES
     ***************
 
-  ☐ UI
+   UI
+  ----
     * Theming - Currently angular & MDbootstrap.  
     √ Categories - Show categories in a card format. Helps with filtering.    
     * Category Feeds - Show category products in a card format. Allow filtering by tags assigned to products 
@@ -47,7 +50,8 @@ Todo:
     * Profiles - Show information depending on if it is the users profile or another's profile. | In process (currently using 
       cheap html workarounds)
 
-  ☐ FEATURES
+  FEATURES
+  ---------
     √ Chat   
     ☐ Shipping
       ☐ Shipping process should be easy for merchants and users. Anything we can handle on our end to enable merchants when 
