@@ -31,7 +31,7 @@ app.use('/graphql', graphqlHTTP({
 }));
   
 // The port the express app will listen on
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 /** Imports */
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -66,8 +66,8 @@ app.use(function (req, res, next) {
 });
 /** Setters */
 app.use(express.static(path.join(rootPath, 'dist'))); // Angular DIST output folder
-// app.use('/api', api.router); // API location
-// app.use('/documentation', express.static(path.join(rootPath, 'documentation'))); // Docs location
+app.use('/api', api.router); // API location
+app.use('/documentation', express.static(path.join(rootPath, 'documentation'))); // Docs location
 app.set('admin', api.admin);
 // app.set('firedb', api.firedb);
 // Serve the application at the given port
